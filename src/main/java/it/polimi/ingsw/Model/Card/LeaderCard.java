@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.Card;
 import java.util.HashMap;
-
+import it.polimi.ingsw.Model.SpecialAbility;
 
 public class LeaderCard extends Card {
 

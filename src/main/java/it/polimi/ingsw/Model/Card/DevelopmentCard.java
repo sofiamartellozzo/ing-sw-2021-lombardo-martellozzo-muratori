@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Model.Card;
+import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Resource.Resource;
+
 import java.util.HashMap;
 
-public class DevelopementCard extends Card {
+public class DevelopmentCard extends Card {
 
     protected Color color;
     protected int level;

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.TypeResource;
 
 public class FaithMarker extends Resource{
     private int position;
     private Color color;
-    private TypeResources typeResource;
+    private TypeResource typeResource;
 
     @Override
     public void setColor(Color color) {
@@ -16,12 +18,12 @@ public class FaithMarker extends Resource{
     }
 
     @Override
-    public void setType(TypeResources typeResource) {
+    public void setType(TypeResource typeResource) {
         super.typeResource=typeResource;
     }
 
     @Override
-    public TypeResources getType() {
+    public TypeResource getType() {
         return super.typeResource;
     }
 
