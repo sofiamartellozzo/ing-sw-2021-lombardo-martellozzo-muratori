@@ -1,7 +1,18 @@
 package it.polimi.ingsw.Model.board.resourcemanagement;
 
+import it.polimi.ingsw.Model.Resource;
+
 public class Warehouse implements ResourceManagement{
-    public void addResource(Resource resource){};
-    public void removeResource(Resource resource){};
-    public int moveResource(Resource resource, int floor1, int floor2){};
+    @Override
+    public void addResources(Resource resource) {
+
+    }
+
+    @Override
+    public void removeResources(Resource resource) {
+
+    }
+    public void moveResource(Resource resource, Depot depot1, Depot deot2){
+
+    }
 }

@@ -1,8 +1,7 @@
 package it.polimi.ingsw.Model;
+import it.polimi.ingsw.Model.Card.LeaderCard;
 import it.polimi.ingsw.Model.Card.DevelopmentCard;
 import it.polimi.ingsw.Model.board.PersonalBoard;
-import it.polimi.ingsw.Model.Card.LeaderCard;
-import it.polimi.ingsw.Model.Resource.Resource;
 
 public class Player {
     private int number;

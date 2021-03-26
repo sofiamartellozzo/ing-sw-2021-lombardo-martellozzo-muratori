@@ -1,5 +1,5 @@
 package it.polimi.ingsw.Model.board;
-import it.polimi.ingsw.Model.Resource.FaithMarker;
+import FaithMarker;
 
 public class FaithTrack {
     private FaithMarker faithMarker;

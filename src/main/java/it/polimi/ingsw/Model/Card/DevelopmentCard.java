@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.Card;
 import it.polimi.ingsw.Model.Color;
-import it.polimi.ingsw.Model.Resource.Resource;
+import it.polimi.ingsw.Model.Resource;
 
 import java.util.HashMap;
 
@@ -8,7 +8,7 @@ public class DevelopmentCard extends Card {
 
     protected Color color;
     protected int level;
-    private HashMap<Integer,Resource> cost;
+    private HashMap<Integer, Resource> cost;
     private Resource[] costProductionPower;
     private Resource[] proceedsProductionPower;
 
