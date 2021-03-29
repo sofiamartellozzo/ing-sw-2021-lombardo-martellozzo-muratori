@@ -3,6 +3,9 @@ package it.polimi.ingsw.Model.market;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 
+/*
+ * GIANLUCA
+ * */
 public abstract class Marble {
     private Color color;
     private int[][] position;

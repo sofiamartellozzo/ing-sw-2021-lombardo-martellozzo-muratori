@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Resource;
 import java.util.ArrayList;
 
 /*
-* Gianluca
+* GIANLUCA
 * It represents the StrongBox in the PersonalBoard, it can contains
 * infinite resources.
 * Attributes:

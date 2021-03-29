@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Model.cardability;
 import it.polimi.ingsw.Model.Resource;
 
+/*
+* GIANLUCA
+* */
+
 public abstract class SpecialAbility {
     // Indicates if the ability is active or not
     private boolean active;

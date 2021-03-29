@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Resource;
 import java.util.ArrayList;
 
 /*
-* Gianluca
+* GIANLUCA
 * It represents one of the three depots from the warehouse.
 * Attributes:
 * resource -> indicates what and how many resources are in the depot;

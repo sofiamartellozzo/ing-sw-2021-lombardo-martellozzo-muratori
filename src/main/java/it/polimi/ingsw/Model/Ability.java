@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+/*
+ * GIANLUCA
+ * */
 public class Ability {
     private Resource resource;
 

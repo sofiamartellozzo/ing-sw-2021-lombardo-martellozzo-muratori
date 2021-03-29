@@ -6,8 +6,7 @@ import it.polimi.ingsw.Model.TypeResource;
 import java.util.ArrayList;
 
 /*
- * Gianluca
- * ATTENZIONE FORSE DA CAMBIARE NOME
+ * GIANLUCA
  * It represents the depots made by the special ability "SpecialDepot",
  * the size is always 2, so it doesn't need a "size" attribute as RealDepot class.
  * Attributes:

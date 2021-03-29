@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model.board;
 
+/*
+* GIANLUCA
+* */
 public class PopesFavorTile {
     // Indicates which of the three Pope's Favore Tile that we refer
     private int position;

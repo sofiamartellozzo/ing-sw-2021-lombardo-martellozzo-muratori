@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Resource;
 import java.util.ArrayList;
 
 /*
-* Gianluca
+* GIANLUCA
 * */
 
 public class WarehouseStandard extends Warehouse{

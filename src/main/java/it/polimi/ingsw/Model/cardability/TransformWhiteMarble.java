@@ -2,6 +2,10 @@ package it.polimi.ingsw.Model.cardability;
 
 import it.polimi.ingsw.Model.Resource;
 
+
+/*
+* GIANLUCA
+* */
 // It allows to the Player to take one Resource (indicated by the Special Ability)
 // for each White Marble he draws
 

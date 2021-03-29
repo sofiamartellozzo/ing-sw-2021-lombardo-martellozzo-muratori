@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model.board;
 
+/*
+* GIANLUCA
+* */
 public class SimpleBox extends Box{
 
     public SimpleBox(int whichSection, int numberBox) {

@@ -4,6 +4,10 @@ package it.polimi.ingsw.Model.board;
 import it.polimi.ingsw.Model.board.resourcemanagement.StrongBox;
 import it.polimi.ingsw.Model.board.resourcemanagement.WarehouseStandard;
 
+/*
+* GIANLUCA
+* */
+
 public class PersonalBoard {
     // These attributes refers to the components of the Personal Board
     private FaithTrack faithTrack;

@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model.board;
 
+/*
+* GIANLUCA
+* */
 public class VaticanSection {
     //Indicates which of the three section is
     private int which;

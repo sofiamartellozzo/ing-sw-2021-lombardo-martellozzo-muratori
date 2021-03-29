@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.board.resourcemanagement;
 import it.polimi.ingsw.Model.TypeResource;
 
 /*
-* Gianluca
+* GIANLUCA
 * PATTERN
 * It allows to create SpecialDepot "to decorate" the Warehouse.
 * */

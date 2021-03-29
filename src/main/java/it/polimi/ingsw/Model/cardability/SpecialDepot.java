@@ -2,6 +2,10 @@ package it.polimi.ingsw.Model.cardability;
 
 import it.polimi.ingsw.Model.Resource;
 
+
+/*
+* GIANLUCA
+* */
 // It creates a Special Depot in which the Player can insert
 // maximum two Resources (indicated by the "type" attribute
 // of the SpecialAbility abstract class
