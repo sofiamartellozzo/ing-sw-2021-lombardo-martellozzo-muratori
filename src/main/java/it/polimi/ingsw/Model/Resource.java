@@ -6,6 +6,12 @@ public class Resource{
     private Color color;
     private TypeResource typeResource;
 
+    //constructor of the class
+    public Resource(Color color,TypeResource typeResource){
+        this.color=color;
+        this.typeResource=typeResource;
+    }
+
     public void setColor(Color color){
         this.color = color;
     }
