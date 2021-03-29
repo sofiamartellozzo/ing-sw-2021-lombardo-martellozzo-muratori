@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 import java.util.ArrayList;
-import it.polimi.ingsw.Model.CellType;
+import java.util.NoSuchElementException;
 
 public class ResourcesSupply {
     private ArrayList<Cell> content;
@@ -11,7 +11,7 @@ public class ResourcesSupply {
         this.content=content;
     }
 
-    public ArrayList<Cell> getContent(CellType cell) {
+    public ArrayList<Cell> getContent(Cell cell) {
         return content;
     }
 
@@ -21,9 +21,15 @@ public class ResourcesSupply {
 
     /*this method gives to the player the resources he asked*/
     public Resource returnResourceAsked(Resource resource){
-        return resource;
+        Cell c = getCell(resource);
+        return c.getResources();
     }
 
-    /*this method is used to put back in the resource supply a resource*/
-    public void reInsertResources(Resource resource){ }
+    private Cell getCell(Resource resource){
+        for (Cell cell: content) {
+            if (cell.getResources().equals(resource))
+                return cell;
+        }
+    }
+
 }

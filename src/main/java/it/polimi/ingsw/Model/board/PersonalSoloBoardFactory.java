@@ -1,39 +1,44 @@
 package it.polimi.ingsw.Model.board;
 
 import it.polimi.ingsw.Model.ActionToken;
+import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.actionAbility.CardActionAbility;
-import it.polimi.ingsw.Model.board.resourcemanagement.ResourceManagement;
-import it.polimi.ingsw.Model.board.resourcemanagement.StrongBox;
-import it.polimi.ingsw.Model.board.resourcemanagement.WarehouseStandard;
+import it.polimi.ingsw.Model.actionAbility.PlusTwoBlackCrossActionAbility;
+import it.polimi.ingsw.Model.actionAbility.PlusUneAndShuffleActionAbility;
+import it.polimi.ingsw.Model.board.resourceManagement.StrongBox;
+import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class PersonalSoloBoardFactory {
+public class PersonalSoloBoardFactory extends PersonalBoardFactory{
+
     public SoloPersonalBoard createGame(){
-        //CardSpace cardSpace1 = new CardSpace();
-        //CardSpace cardSpace2 = new CardSpace();
-        //CardSpace cardSpace3 = new CardSpace();
-        //List<CardSpace> allCardSpace = new ArrayList<>();
-        //allCardSpace.add(new CardSpace());
-        //allCardSpace.add(new CardSpace());
-        //allCardSpace.add(new CardSpace());
-        /*StrongBox strongBox = new StrongBox();*/
-        WarehouseStandard warehouseStandard = new WarehouseStandard();
-        FaithTrack faithTrack = createFaithTrack();
-        return new SoloPersonalBoard(createActionToken());
+        ArrayList<CardSpace> allCardSpace = super.createGame().getCardSpaces();
+        StrongBox strongBox = super.createGame().getStrongbox();
+        WarehouseStandard warehouseStandard = super.createGame().getWarehouse();
+        FaithTrack faithTrack = super.createGame().getFaithTrack();
+        ArrayList<ActionToken> actionTokens = createActionToken();
+        return new SoloPersonalBoard(faithTrack, warehouseStandard, strongBox, allCardSpace, actionTokens);
     }
 
-    private FaithTrack createFaithTrack(){
-        //FaithMarker faithMarker = new FaithMarker();
-        return new FaithTrack();
-    }
 
     private ArrayList<ActionToken> createActionToken(){
         //where I have to take all these cards an create the dek to put in the Solo Board
-        ActionToken at = new ActionToken(new CardActionAbility());
+        ActionToken actionToken1 = new ActionToken(new CardActionAbility(Color.PURPLE));
+        ActionToken actionToken2 = new ActionToken(new CardActionAbility(Color.YELLOW));
+        ActionToken actionToken3 = new ActionToken(new CardActionAbility(Color.GREEN));
+        ActionToken actionToken4 = new ActionToken(new CardActionAbility(Color.BLUE));
+        ActionToken actionToken5 = new ActionToken(new PlusTwoBlackCrossActionAbility());
+        ActionToken actionToken6 = new ActionToken(new PlusTwoBlackCrossActionAbility());
+        ActionToken actionToken7 = new ActionToken(new PlusUneAndShuffleActionAbility());
         ArrayList<ActionToken> list = new ArrayList<>();
-        list.add(at);
+        list.add(actionToken1);
+        list.add(actionToken2);
+        list.add(actionToken3);
+        list.add(actionToken4);
+        list.add(actionToken5);
+        list.add(actionToken6);
+        list.add(actionToken7);
         return list;
     }
 }

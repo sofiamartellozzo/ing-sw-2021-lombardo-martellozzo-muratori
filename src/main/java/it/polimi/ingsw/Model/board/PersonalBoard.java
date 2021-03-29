@@ -1,8 +1,10 @@
 package it.polimi.ingsw.Model.board;
 
 
-import it.polimi.ingsw.Model.board.resourcemanagement.StrongBox;
-import it.polimi.ingsw.Model.board.resourcemanagement.WarehouseStandard;
+import it.polimi.ingsw.Model.board.resourceManagement.StrongBox;
+import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
+
+import java.util.ArrayList;
 
 /*
 * GIANLUCA
@@ -13,13 +15,29 @@ public class PersonalBoard {
     private FaithTrack faithTrack;
     private WarehouseStandard warehouse;
     private StrongBox strongbox;
-    private CardSpace[] cardSpaces;
+    private ArrayList<CardSpace> cardSpaces;
 
-    public PersonalBoard(FaithTrack faithTrack, WarehouseStandard warehouse, StrongBox strongbox, CardSpace[] cardSpaces) {
+    public PersonalBoard(FaithTrack faithTrack, WarehouseStandard warehouse, StrongBox strongbox, ArrayList<CardSpace> cardSpaces) {
         this.faithTrack = faithTrack;
         this.warehouse = warehouse;
         this.strongbox = strongbox;
         this.cardSpaces = cardSpaces;
+    }
+
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    public WarehouseStandard getWarehouse() {
+        return warehouse;
+    }
+
+    public StrongBox getStrongbox() {
+        return strongbox;
+    }
+
+    public ArrayList<CardSpace> getCardSpaces() {
+        return cardSpaces;
     }
 
     // This method refers to the Basic Production Power which is

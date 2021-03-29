@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Model;
-import it.polimi.ingsw.Model.Card.LeaderCard;
-import it.polimi.ingsw.Model.Card.DevelopmentCard;
-import it.polimi.ingsw.Model.Card.LeaderCardDeck;
+import it.polimi.ingsw.Model.card.LeaderCard;
 import it.polimi.ingsw.Model.board.PersonalBoard;
-import it.polimi.ingsw.Model.cardability.AdditionalPower;
 
 import java.util.ArrayList;
 
@@ -106,7 +103,7 @@ public class Player {
      */
     public void invokesProductionPower(){
         //give input of the method the chosen card
-        this.gameSpace.invokateProductionPower();
+        this.gameSpace.invokeProductionPower();
     }
 
     public void activeLeaderCardAbility(LeaderCard card){

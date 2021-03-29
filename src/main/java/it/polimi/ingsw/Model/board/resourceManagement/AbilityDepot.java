@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.board.resourcemanagement;
+package it.polimi.ingsw.Model.board.resourceManagement;
 
 import it.polimi.ingsw.Model.Resource;
 import it.polimi.ingsw.Model.TypeResource;

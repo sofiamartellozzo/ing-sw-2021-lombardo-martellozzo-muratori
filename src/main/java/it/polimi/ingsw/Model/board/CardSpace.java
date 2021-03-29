@@ -4,33 +4,21 @@ import java.util.ArrayList;
 
 public class CardSpace {
 
-    private int whichSpace;
+    private final int whichSpace;
     private int numberOfCards;
     private ArrayList<DevelopmentCard>cards;
-    private DevelopmentCard selectedCard;
 
     //constructor of the class
-    public CardSpace(int whichSpace,int numberOfCards,ArrayList<DevelopmentCard>cards)
+    public CardSpace(int whichSpace)
     {
-        this.whichSpace=whichSpace;
-        this.numberOfCards=numberOfCards;
-        this.cards=cards;
+        this.whichSpace = whichSpace;
+        this.numberOfCards = 0;
+        this.cards= new ArrayList<>();
     }
 
-    public DevelopmentCard getSelectedCard() {
-        return selectedCard;
-    }
-
-    public void setSelectedCard(DevelopmentCard selectedCard) {
-        this.selectedCard = selectedCard;
-    }
 
     public int getWhichSpace(){
         return whichSpace;
-    }
-
-    public void setWhichSpace(int whichSpace) {
-        this.whichSpace = whichSpace;
     }
 
     /*now I have the size of the List and so the number of cards*/
@@ -57,5 +45,10 @@ public class CardSpace {
 
         /* take the card in the last position (array lenght - 1 because the first index is 0)*/
         return cards.get(getNumberOfCards()-1);
+    }
+
+    public void addCard(DevelopmentCard newCard){
+        this.cards.add(newCard);
+        setNumberOfCards(this.cards.size());
     }
 }

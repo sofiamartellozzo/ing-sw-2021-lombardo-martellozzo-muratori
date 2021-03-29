@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.card;
 import java.util.HashMap;
 import it.polimi.ingsw.Model.Resource;
-import it.polimi.ingsw.Model.cardability.SpecialAbility;
+import it.polimi.ingsw.Model.cardAbility.SpecialAbility;
 
 public class LeaderCard extends Card {
 
@@ -9,10 +9,15 @@ public class LeaderCard extends Card {
     private SpecialAbility specialAbility;
     private HashMap<Integer,Object> requirements;
 
-    //constructor of the class
 
+    /**
+     * constructor of the class, he needs the points that it has, like the Abstract class Card
+     * and set the other parameter to default
+     * @param victoryPoints
+     */
     public LeaderCard(int victoryPoints) {
         super(victoryPoints);
+        this.requirements = new HashMap<>();
     }
 
     public boolean getHiddenValue(){return hidden;}
@@ -40,8 +45,5 @@ public class LeaderCard extends Card {
         return super.victoryPoints;
     }
 
-    @Override
-    public void setVictoryPoints(int victoryPoints) {
-     super.victoryPoints=victoryPoints;
-    }
+
 }

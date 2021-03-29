@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.board.resourcemanagement;
+package it.polimi.ingsw.Model.board.resourceManagement;
 
 import it.polimi.ingsw.Model.TypeResource;
 
@@ -11,6 +11,10 @@ import it.polimi.ingsw.Model.TypeResource;
 public class Decorator extends Warehouse{
     private AbilityDepot abilityDepot;
 
-    public void createDepot(TypeResource resource){};
+    //attributo ArrayList con due AbilityDepots
+
+    public void createDepot(TypeResource resource){
+        //crea lo SpecialDepots
+    }
 
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.cardability;
+package it.polimi.ingsw.Model.cardAbility;
 
 import it.polimi.ingsw.Model.Resource;
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Model.Card.LeaderCard;
+import it.polimi.ingsw.Model.card.LeaderCard;
 
 public class SoloPlayerTurn implements PlayerTurnInterface {
     private Player currentPlayer;

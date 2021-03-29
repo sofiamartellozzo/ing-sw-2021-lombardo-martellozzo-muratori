@@ -16,6 +16,9 @@ public class TurnController {
     private int numberOfPlayer;
     private ArrayList<PopesFavorTileReview> checkPopesFavorTile;
 
+    /* the parts of the game that all the player havi in common*/
+    private ResourcesSupply resourcesSupply;
+
     /* Constructor of the class */
     public TurnController(ArrayList<Player> players) {
 
@@ -26,6 +29,11 @@ public class TurnController {
         this.turnSequence.put(1, first);
         this.currenyTurnIndex = 1;
         fillSequence(players, first);
+
+        //contruct the resources supply for all the players
+        ResourcesSupplyFactory resourcesSupplyFactory = new ResourcesSupplyFactory();
+        //this.resourcesSupply = resourcesSupplyFactory.createTheResourcesSupply();
+
     }
 
     /**
@@ -58,6 +66,7 @@ public class TurnController {
 
     public void gamePlay(){
         //where the game starts
+
         if (this.numberOfPlayer == 1){
             PersonalSoloBoardFactory soloBoardFactory = new PersonalSoloBoardFactory();
             SoloPersonalBoard soloPersonalBoard = soloBoardFactory.createGame();
