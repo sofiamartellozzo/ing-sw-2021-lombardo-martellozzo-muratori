@@ -4,6 +4,10 @@ import it.polimi.ingsw.Model.Resource;
 
 import java.util.ArrayList;
 
+/*
+* Gianluca
+* */
+
 public class WarehouseStandard extends Warehouse{
-    private ArrayList<Resource> depots;
+    private ArrayList<Depot> depots;
 }
