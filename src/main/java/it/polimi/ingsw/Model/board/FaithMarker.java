@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.board;
 import it.polimi.ingsw.Model.Color;
 
 /*
-* GIANLUCA
+* ILARIA
 * */
 public class FaithMarker {
     private int position;

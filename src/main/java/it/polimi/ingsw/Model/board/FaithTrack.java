@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.board;
 
 /*
-* GIANLUCA
+* ILARIA
 * */
 public class FaithTrack {
     private FaithMarker faithMarker;

@@ -7,7 +7,6 @@ import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
 import java.util.ArrayList;
 
 /*
-* GIANLUCA
 * PATTERN
 * */
 public class PersonalBoardFactory {

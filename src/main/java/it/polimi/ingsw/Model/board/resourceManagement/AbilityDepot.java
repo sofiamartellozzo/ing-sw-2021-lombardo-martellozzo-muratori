@@ -4,8 +4,7 @@ import it.polimi.ingsw.Model.Resource;
 import it.polimi.ingsw.Model.TypeResource;
 
 import java.util.ArrayList;
-
-/*
+/**
  * GIANLUCA
  * It represents the depots made by the special ability "SpecialDepot",
  * the size is always 2, so it doesn't need a "size" attribute as RealDepot class.
@@ -15,8 +14,6 @@ import java.util.ArrayList;
  * it is specified by the special ability;
  * depot -> indicates which depot (in case of two ability, they can be two).
  * */
-
-
 
 public class AbilityDepot implements Depot{
     private ArrayList<Resource> resources;
@@ -29,7 +26,12 @@ public class AbilityDepot implements Depot{
         this.depot = depot;
     }
 
-    /*
+    @Override
+    public ArrayList<Resource> getResources() {
+        return resources;
+    }
+
+    /**
      * It adds at the end in the ArrayList one resource,
      * after checking if the depot isn't full
      * and checking if the resource we want to put
@@ -48,7 +50,7 @@ public class AbilityDepot implements Depot{
         resources.add(resource);
     }
 
-    /*
+    /**
      * It removes at the end in the ArrayList one resource,
      * after checking if the depot isn't empty, else throws Exception
      * */
