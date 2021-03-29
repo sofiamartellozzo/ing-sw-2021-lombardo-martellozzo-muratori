@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
-import it.polimi.ingsw.Model.Card.LeaderCard;
-import it.polimi.ingsw.Model.Card.DevelopmentCard;
+import it.polimi.ingsw.Model.card.LeaderCard;
+import it.polimi.ingsw.Model.card.DevelopmentCard;
 import it.polimi.ingsw.Model.board.PersonalBoard;
 
 public class Player {
