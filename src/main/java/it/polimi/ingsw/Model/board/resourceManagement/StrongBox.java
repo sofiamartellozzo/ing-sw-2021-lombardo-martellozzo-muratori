@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.board.resourceManagement;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Resource;
 
 import java.util.ArrayList;
@@ -54,10 +55,8 @@ public class StrongBox{
      * it is not empty, else throws exception.
      * */
 
-    public void removeResource(Resource resource) {
-        if(content.isEmpty()){
-            //throws Exception
-        }
+    public void removeResource(Resource resource) throws InvalidActionException {
+        if(content.isEmpty()) throw new InvalidActionException("The strongbox is empty!");
         content.remove(resource);
         numberResources--;
     }

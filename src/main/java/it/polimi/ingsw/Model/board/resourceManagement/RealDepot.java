@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.board.resourceManagement;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Resource;
 
 import java.util.ArrayList;
@@ -54,13 +55,9 @@ public class RealDepot implements Depot{
      * the method throws the relative Exception.
      * */
     @Override
-    public void putResource(Resource resource) {
-        if(resources.size()>=getSize()){
-            //throws Exception;
-        }
-        if(!resources.isEmpty() && !resources.contains(resource)){
-            //throws Exception;
-        }
+    public void putResource(Resource resource) throws InvalidActionException {
+        if(resources.size()>=getSize()) throw new InvalidActionException("The depot is full!");
+        if(!resources.isEmpty() && !resources.contains(resource)) throw new InvalidActionException("The resource you want to put in isn't the same type of the content!");
         resources.add(resource);
     }
 
@@ -69,10 +66,8 @@ public class RealDepot implements Depot{
      * after checking if the depot isn't empty, else throws Exception
      * */
     @Override
-    public void removeResource() {
-        if(resources.isEmpty()){
-            //throws Exception
-        }
+    public void removeResource() throws InvalidActionException {
+        if(resources.isEmpty()) throw new InvalidActionException("The depot is empty!");
         resources.remove(resources.size());
     }
 }

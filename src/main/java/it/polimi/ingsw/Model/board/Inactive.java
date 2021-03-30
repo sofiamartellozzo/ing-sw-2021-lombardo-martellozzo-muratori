@@ -1,14 +1,20 @@
 package it.polimi.ingsw.Model.board;
 
-/*
+/**
  * GIANLUCA
- * PATTERN
- * A component class of the State Pattern.
- * Return 0 points because the relative Pope's Favor Tile is "Inactive"
- * */
+ * State Pattern
+ * One of the component of the State Pattern.
+ */
+
 public class Inactive implements State{
+
+    /**
+     * It sets the State attribute of the relative Pope's Favor Tile to Inactive.
+     * Returns 0 points.
+     * @param popesFavorTile
+     */
     @Override
-    public int returnPoints() {
+    public int returnPoints(PopesFavorTile popesFavorTile) {
         return 0;
     }
 }

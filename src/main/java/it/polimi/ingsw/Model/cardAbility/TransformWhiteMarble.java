@@ -1,22 +1,34 @@
 package it.polimi.ingsw.Model.cardAbility;
 
+import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.market.Ability;
+import it.polimi.ingsw.Model.market.MarbleSpecial;
 
 
-/*
-* GIANLUCA
+/**
+ * GIANLUCA
+ * It allows to the Player to take one Resource (indicated by the Special Ability)
+ * for each White Marble he draws
 * */
-// It allows to the Player to take one Resource (indicated by the Special Ability)
-// for each White Marble he draws
 
 public class TransformWhiteMarble extends SpecialAbility{
-    //Constructor
-    public TransformWhiteMarble(boolean active, Resource type) {
-        super(active, type);
+    /**
+     * Constructor
+     * @param resource
+     */
+    public TransformWhiteMarble(Resource resource) {
+        super(resource);
     }
 
+    /**
+     *
+     */
     @Override
-    public void activeAbility() {
-        super.activeAbility();
+    public void activeAbility(Player player) {
+        super.activeAbility(player);
+        Ability ability = new Ability(getResource());
+        player.setWhiteSpecialAbility(new MarbleSpecial(Color.WHITE, ability));
     }
 }
