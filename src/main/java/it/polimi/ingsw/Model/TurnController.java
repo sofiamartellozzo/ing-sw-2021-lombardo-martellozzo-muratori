@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.board.PersonalSoloBoardFactory;
 import it.polimi.ingsw.Model.board.SoloPersonalBoard;
+import it.polimi.ingsw.Model.market.MarketStructure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class TurnController {
 
     /* the parts of the game that all the player havi in common*/
     private ResourcesSupply resourcesSupply;
+    private MarketStructure marketStructure;
 
     /* Constructor of the class */
     public TurnController(ArrayList<Player> players) {

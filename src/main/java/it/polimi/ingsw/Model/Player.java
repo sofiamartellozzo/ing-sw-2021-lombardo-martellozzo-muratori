@@ -1,4 +1,5 @@
 package it.polimi.ingsw.Model;
+import it.polimi.ingsw.Model.card.DevelopmentCard;
 import it.polimi.ingsw.Model.card.LeaderCard;
 import it.polimi.ingsw.Model.board.PersonalBoard;
 
@@ -12,6 +13,7 @@ public class Player {
     private ArrayList<LeaderCard>  leaderCards;
     private int victoryPoints;
     private PersonalBoard gameSpace;
+    private boolean whiteSpecialAbility;
 
     /**
      *
@@ -22,6 +24,7 @@ public class Player {
         this.username = username;
         this.victoryPoints = 0;
         this.inkpot = false;
+        this.whiteSpecialAbility = false;
     }
 
     public String getUsername() {
@@ -69,6 +72,13 @@ public class Player {
         return gameSpace;
     }
 
+    public boolean hasWhiteSpecialAbility() {
+        return whiteSpecialAbility;
+    }
+
+    public void setWhiteSpecialAbility(boolean whiteSpecialAbility) {
+        this.whiteSpecialAbility = whiteSpecialAbility;
+    }
 
     /**
      *
@@ -101,16 +111,17 @@ public class Player {
      * the player decides to invoke the power of a Development Card
      * so he ask the Board to take that from his space and active it
      */
-    public void invokesProductionPower(){
+    public void invokesProductionPowerFromStronBox(DevelopmentCard card){
+        //the production powers are activated all toghether, after one gli cannot active another one
         //give input of the method the chosen card
-        this.gameSpace.invokeProductionPower();
+        this.gameSpace.invokeProductionPowerFromStrongBox(card);
     }
 
     public void activeLeaderCardAbility(LeaderCard card){
             //LeaderCard card = chooseLeaderCardToActive();
         //method implemented by Ilaria in her local project
             //LeaderCard card =  this.leaderCards.get(wich);
-        //card.activeCard();
+        card.activeCard();
     }
 
     public LeaderCard chooseLeaderCardToActive(int number) {
@@ -119,7 +130,7 @@ public class Player {
 
     public void activeLeaderCardAbility(LeaderCard card,Resource choice){
         //method implemented by Ilaria in her local project
-        //card.activeCard(choice);
+        card.activeCard(choice);
     }
 
 
@@ -138,6 +149,10 @@ public class Player {
      */
     public boolean endTurn(){
         return true;
+    }
+
+    public void putResources(Resource resources){
+        //i ask to put this resource in this player warehouse or strongBox
     }
 
 

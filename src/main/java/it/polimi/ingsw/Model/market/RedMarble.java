@@ -1,12 +1,21 @@
 package it.polimi.ingsw.Model.market;
 
 import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.Resource;
 
 /*
- * GIANLUCA
+ * SOFIA
  * */
 public class RedMarble extends Marble{
-    public RedMarble(int[][] position) {
-        super(Color.RED, position);
+
+    /* constructor of the class */
+    public RedMarble() {
+        super(Color.RED);
+    }
+
+    @Override
+    public void choose(Player player) {
+        //player.getGameSpace().getFaithTrack().increasePosition();
     }
 }
