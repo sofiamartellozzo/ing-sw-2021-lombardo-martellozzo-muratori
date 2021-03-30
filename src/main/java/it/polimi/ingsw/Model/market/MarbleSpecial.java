@@ -2,18 +2,29 @@ package it.polimi.ingsw.Model.market;
 
 import it.polimi.ingsw.Model.Ability;
 import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.Resource;
 
 import java.util.ArrayList;
 
 /*
- * GIANLUCA
+ * SOFIA
  * */
 public class MarbleSpecial extends Marble {
     private ArrayList<Ability> ability;
 
-    public MarbleSpecial(Color color, int[][] position) {
-        super(color, position);
+    /* constructor of the class */
+    public MarbleSpecial(Color color) {
+        super(color);
     }
 
-    public void choose(){};
+    @Override
+    public void choose(Player player) {
+        //Resource resource = this.ability.choose();
+        //if (resource != null)
+        // player.putResources(resource);
+        Resource resource = new Resource(Color.YELLOW);
+        player.putResources(resource);
+    }
+
 }

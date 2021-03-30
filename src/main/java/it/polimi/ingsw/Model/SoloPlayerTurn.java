@@ -17,6 +17,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
 
     @Override
     public void chosePlay(TurnAction action) {
+        //case to end the turn, and then invocate the getActionToken turnaction, only in the solo game
 
         switch (action){
             case BUY_CARD:
@@ -29,7 +30,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
             case BUY_FROM_MARKET:
                 this.currentPlayer.buyFromMarket();
             case ACTIVE_PRODUCTION_POWER:
-                this.currentPlayer.invokesProductionPower();
+                //this.currentPlayer.invokesProductionPower();
         }
     }
 

@@ -3,15 +3,20 @@ package it.polimi.ingsw.Model.board;
 import it.polimi.ingsw.Model.Color;
 
 /*
-* ILARIA
+* SOFIA
 * */
 public class FaithMarker {
     private int position;
     private Color color;
 
-    public int getPosition(){
-        return 0;
+    public FaithMarker() {
+        this.color = Color.RED;
+        this.position = 0;
     }
 
-    public void increasePosition(){};
+    public int getPosition(){
+        return this.position;
+    }
+
+    public void increasePosition(){this.position++;}
 }

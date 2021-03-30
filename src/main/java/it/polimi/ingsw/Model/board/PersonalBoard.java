@@ -3,11 +3,12 @@ package it.polimi.ingsw.Model.board;
 
 import it.polimi.ingsw.Model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
+import it.polimi.ingsw.Model.card.DevelopmentCard;
 
 import java.util.ArrayList;
 
 /*
-* */
+* SOFI*/
 
 public class PersonalBoard {
     // These attributes refers to the components of the Personal Board
@@ -41,5 +42,8 @@ public class PersonalBoard {
 
     // This method refers to the Basic Production Power which is
     // equipped to every Personal Board
-    public void invokeProductionPower(){};
+    public void invokeProductionPowerFromStrongBox(DevelopmentCard card){
+        //Dev Card Input needesd
+        //card.useProductionPower();
+    }
 }
