@@ -1,31 +1,56 @@
 package it.polimi.ingsw.Model.cardAbility;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
 
-/*
-* GIANLUCA
-* */
-
+/**
+ * GIANLUCA
+ * It refers to the Special Ability supplied by Leader Card
+ * Attributes:
+ * active -> a boolean to indicate if it is "active" or "inactive"
+ * type -> it refers to the resource on which the ability works
+ */
 public abstract class SpecialAbility {
-    // Indicates if the ability is active or not
     private boolean active;
-    // The function of this attribute is based
-    // on the type of the Special Ability
-    // (For example: if I have a Discount ability, it indicates the resource
-    // on which to apply the discount)
-    private Resource type;
+    private final Resource resource;
 
-    // Constructor:
-    // Initially, the "active" attribute is set to false
-    public SpecialAbility(boolean active, Resource type) {
-        this.active = active;
-        this.type = type;
+    /**
+     * Constructor: active is always "false"ù
+     * then the setter method can set it in "true".
+     * @param resource
+     */
+    public SpecialAbility(Resource resource) {
+        this.active = false;
+        this.resource = resource;
     }
 
-    // Setter:
-    // To set "active" to true
+    /**
+     * Setter Method to activate the special ability
+     * @param active
+     */
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    public void activeAbility(){};
+    /**
+     * Getter Method
+     * @return
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    public Resource getResource() {
+        return resource;
+    }
+
+    /**
+     * It actives the Ability and in the subclasses executes the function
+     */
+    public void activeAbility(Player player){
+        this.setActive(true);
+    };
 }

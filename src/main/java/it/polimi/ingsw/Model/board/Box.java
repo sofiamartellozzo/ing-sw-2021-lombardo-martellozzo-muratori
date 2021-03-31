@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.board;
 
-/*
+/**
 * GIANLUCA
 * It's composing the FaithTrack with its extensions:
 * SimpleBox, GoldBox and PopeBox.
@@ -12,24 +12,40 @@ package it.polimi.ingsw.Model.board;
 
 public abstract class Box {
 
-    private final int whichSection;
-    private final int numberBox;
+    protected final int whichVaticanSection;
+    protected final int numberBox;
 
-    /*
-    * Constructor
-    * */
+    /**
+     * Constructor
+     * @param whichSection
+     * @param numberBox
+     */
     public Box(int whichSection, int numberBox) {
-        this.whichSection = whichSection;
+        this.whichVaticanSection = whichSection;
         this.numberBox = numberBox;
     }
 
-    /*
-    * Getter Methods
-    * */
-    public int getWhichSection() {
-        return whichSection;
+    /**
+     * Constructor: in case the boxes are not in a Vatican Section
+     * @param numberBox
+     */
+    public Box(int numberBox) {
+        this.whichVaticanSection=0;
+        this.numberBox = numberBox;
     }
 
+    /**
+     * Getter Method
+     * @return
+     */
+    public int getWhichSection() {
+        return whichVaticanSection;
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
     public int getNumberBox() {
         return numberBox;
     }

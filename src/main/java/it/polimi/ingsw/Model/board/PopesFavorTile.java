@@ -1,23 +1,58 @@
 package it.polimi.ingsw.Model.board;
 
-/*
-* GIANLUCA
-* */
+/**
+ * GIANLUCA
+ * It represents the Pope's Favor Tile.
+ * Attribute:
+ * whichVaticanSection -> If it is the 1st, 2nd or 3rd Tile of the relative section
+ * victoryPoints -> It contains the value of Victory Points.
+ * state -> It indicates if it "active" or "inactive", using the State Pattern.
+ */
 public class PopesFavorTile {
-    // Indicates which of the three Pope's Favore Tile that we refer
-    private int position;
-    // The value of Victory Points
-    private int victoryPoints;
-    // Attribute of the type State Pattern to know if active/inactive,
-    // useful to know which of Tiles we have to consider
-    // for calculating Victory Points at the end of the game
+    private final int whichVaticanSection;
+    private final int victoryPoints;
     private State state;
 
-    // Constructor:
-    // The "state" attribute is set to "Inactive", when the game starts
-    public PopesFavorTile(int position, int victoryPoints, State state) {
-        this.position = position;
+    /**
+     * Constructor
+     * @param whichVaticanSection
+     * @param victoryPoints
+     */
+    public PopesFavorTile(int whichVaticanSection, int victoryPoints) {
+        this.whichVaticanSection = whichVaticanSection;
         this.victoryPoints = victoryPoints;
-        this.state=state;
+        this.state= new Inactive();
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    public int getWhichVaticanSection() {
+        return whichVaticanSection;
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    public int getVictoryPoints() {
+        return victoryPoints;
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    public State getState() {
+        return state;
+    }
+
+    /**
+     * Setter Method for the State Pattern
+     * @param state
+     */
+    public void setState(State state) {
+        this.state = state;
     }
 }

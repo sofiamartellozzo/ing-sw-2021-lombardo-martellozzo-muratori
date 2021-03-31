@@ -4,6 +4,8 @@ package it.polimi.ingsw.Model.board.resourceManagement;
  * GIANLUCA
  * */
 
+import com.sun.jdi.InvalidLineNumberException;
+import it.polimi.ingsw.Exception.*;
 import it.polimi.ingsw.Model.Resource;
 
 public class WarehouseStandard extends Warehouse{
@@ -15,13 +17,10 @@ public class WarehouseStandard extends Warehouse{
      * @param depot
      */
     @Override
-    public void addResource(Resource resource, Depot depot) {
-        if(depot==null || resource==null){
-            //throws exception;
-        }
-        if(!depots.contains(depot)){
-            //throws exception;
-        }
+    public void addResource(Resource resource, Depot depot) throws InvalidActionException {
+        if(depot==null) throw new InvalidActionException("Choose a depot!");
+        if(resource==null)throw new InvalidActionException("Choose a resource");
+        if(!depots.contains(depot))throw new InvalidActionException("The depot doesn't exist!");
         depot.putResource(resource);
     }
 
@@ -37,18 +36,12 @@ public class WarehouseStandard extends Warehouse{
      * @param depot2
      */
     @Override
-    public void moveResource(Resource resource, Depot depot1, Depot depot2) {
-        if(resource==null || depot1==null || depot2==null){
-            //throws exception
-        }
-        if(depot1.getResources().get(0).equals(resource)){
-            //throws exception
-        }
-        if(!depots.contains(depot1) || !depots.contains(depot2)){
-            //però teoricamente non è detto che sia lo stesso arraylist uno potrebbe essere
-            //deposito speciale e uno no
-            //throws exception
-        }
+    public void moveResource(Resource resource, Depot depot1, Depot depot2) throws InvalidActionException {
+        if(resource==null) throw new InvalidActionException("Choose a resource!");
+        if(depot1==null) throw new InvalidActionException("Choose the first depot!");
+        if(depot2==null) throw new InvalidActionException("Choose the second depot!");
+        if(!depot1.getResources().get(0).equals(resource))throw new InvalidActionException("The resource you want to move doesn't exist!");
+        if(!depots.contains(depot1) || !depots.contains(depot2))throw new InvalidActionException("The depots or one of them don't exist!");
         depot1.removeResource();
         depot2.putResource(resource);
     }
@@ -60,13 +53,10 @@ public class WarehouseStandard extends Warehouse{
      * @param depot
      */
     @Override
-    public void removeResource(Resource resource, Depot depot) {
-        if(depot==null || resource==null){
-            //throws exception;
-        }
-        if(!depots.contains(depot)){
-            //throws exception;
-        }
+    public void removeResource(Resource resource, Depot depot) throws InvalidActionException {
+        if(depot==null) throw new InvalidActionException("Choose a depot!");
+        if(resource==null) throw new InvalidActionException("Choose a resource!");
+        if(!depots.contains(depot)) throw new InvalidActionException("The resource you want to remove doesn't exist!");
         depot.removeResource();
     }
 }

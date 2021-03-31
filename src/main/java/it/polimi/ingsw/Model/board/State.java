@@ -1,13 +1,14 @@
 package it.polimi.ingsw.Model.board;
 
-/*
-* GIANLUCA
-* PATTERN
-* This interface with Active and Inactive Classes forms the State Pattern
-* in order to verify if the Pope's Favor Tile is actived.
-*/
-
+/**
+ * GIANLUCA
+ * STATE PATTERN
+ * It indicates if the Pope's Favor Tile is active or inactive,
+ * in case is active return its VictoryPoints.
+ */
 public interface State {
-    //return the point of the relative Pope's Favore Tile
-    public int returnPoints();
+    /**
+     * @return
+     */
+    public int returnPoints(PopesFavorTile popesFavorTile);
 }
