@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Model;
 
+/*
+* SOFI*/
+
 public enum TurnAction {
-    //add end turn and get action token
-    BUY_CARD, BUY_FROM_MARKET, ACTIVE_PRODUCTION_POWER, ACTIVE_CARD;
+
+    BUY_CARD, BUY_FROM_MARKET, ACTIVE_PRODUCTION_POWER, ACTIVE_CARD, END_TURN, GET_ACTION_TOKEN;
 
     @Override
     public String toString() {

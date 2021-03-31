@@ -11,7 +11,7 @@ public class RedMarble extends Marble{
 
     /* constructor of the class */
     public RedMarble() {
-        super(Color.RED);
+        this.color = Color.RED;
     }
 
     @Override

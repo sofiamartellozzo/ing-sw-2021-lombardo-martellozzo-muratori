@@ -14,8 +14,8 @@ public class MarbleSpecial extends Marble {
     private ArrayList<Ability> ability;
 
     /* constructor of the class */
-    public MarbleSpecial(Color color) {
-        super(color);
+    public MarbleSpecial() {
+        this.color = Color.WHITE;
     }
 
     @Override

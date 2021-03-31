@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Model.card.DevelopmentCard;
 import it.polimi.ingsw.Model.card.LeaderCard;
 import it.polimi.ingsw.Model.board.PersonalBoard;
+import it.polimi.ingsw.Model.cardAbility.Discount;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ public class Player {
     private ArrayList<LeaderCard>  leaderCards;
     private int victoryPoints;
     private PersonalBoard gameSpace;
-    private boolean whiteSpecialAbility;
+    private boolean whiteSpecialAbility; //remove this
 
     /**
      *
@@ -121,7 +122,7 @@ public class Player {
             //LeaderCard card = chooseLeaderCardToActive();
         //method implemented by Ilaria in her local project
             //LeaderCard card =  this.leaderCards.get(wich);
-        card.activeCard();
+        //card.activeCard(this);
     }
 
     public LeaderCard chooseLeaderCardToActive(int number) {
@@ -140,6 +141,28 @@ public class Player {
     }
 
     public void buyCard(){
+        if (checkDiscountAbility() != 0){
+            this.leaderCards.get(checkDiscountAbility()).getSpecialAbility().activeAbility();
+            //not active ability but ask the class buy card with discount!!!
+        }
+        else{
+            //normal buy
+        }
+        
+        /*check the player's Leader card:
+        * if there is one with the ability of discount I have to take this ability*/
+
+    }
+
+    public int checkDiscountAbility(){
+        if (this.leaderCards.get(1).getSpecialAbility().equals(Discount)){
+            return 1;
+        }
+        else if (this.leaderCards.get(2).getSpecialAbility().equals(Discount)){
+            return 2;
+        }
+        else
+            return 0;
 
     }
 

@@ -9,8 +9,8 @@ import it.polimi.ingsw.Model.Resource;
 public class ColoredMarble extends Marble {
 
     /* constructor of the class */
-    public ColoredMarble(Color color) {
-        super(color);
+    public ColoredMarble(Color color){
+            this.color = color;
     }
 
     @Override

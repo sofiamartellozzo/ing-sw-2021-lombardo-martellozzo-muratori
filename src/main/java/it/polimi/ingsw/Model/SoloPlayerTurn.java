@@ -31,6 +31,10 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
                 this.currentPlayer.buyFromMarket();
             case ACTIVE_PRODUCTION_POWER:
                 //this.currentPlayer.invokesProductionPower();
+            case GET_ACTION_TOKEN:
+                //the player take the action token at the end of the turn
+            default:
+                this.currentPlayer.endTurn();
         }
     }
 
