@@ -6,6 +6,8 @@ package it.polimi.ingsw.Model;
 
 public interface PlayerTurnInterface {
 
+    public BoardManager getBoardManager();
+
     public abstract Player getCurrentPlayer();
 
     public abstract void chosePlay(TurnAction action);

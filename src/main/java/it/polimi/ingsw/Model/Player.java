@@ -2,19 +2,29 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Model.card.DevelopmentCard;
 import it.polimi.ingsw.Model.card.LeaderCard;
 import it.polimi.ingsw.Model.board.PersonalBoard;
+import it.polimi.ingsw.Model.card.SpecialCard;
 import it.polimi.ingsw.Model.cardAbility.Discount;
 
 import java.util.ArrayList;
+
+/*
+ * SOFI*/
 
 public class Player {
 
     private String username;
     private int number;
     private boolean inkpot;
+
     private ArrayList<LeaderCard>  leaderCards;
     private int victoryPoints;
     private PersonalBoard gameSpace;
+
     private boolean whiteSpecialAbility; //remove this
+
+    private BuyCard buyCard;//this class pecify how the player can buy the card
+    private ArrayList<SpecialCard> specialCard;
+
 
     /**
      *
@@ -26,6 +36,25 @@ public class Player {
         this.victoryPoints = 0;
         this.inkpot = false;
         this.whiteSpecialAbility = false;
+        this.buyCard = new Buy();
+    }
+
+    public BuyCard getBuyCard() {
+        return buyCard;
+    }
+
+    public void setBuyCard(BuyCard buyCard) {
+        this.buyCard = buyCard;
+    }
+
+    public ArrayList<SpecialCard> getSpecialCard() {
+        return specialCard;
+    }
+
+    public void addSpecialCard(SpecialCard specialCard) {
+        if (this.specialCard == null)
+            this.specialCard = new ArrayList<>();
+        this.specialCard.add(specialCard);
     }
 
     public String getUsername() {
@@ -96,7 +125,6 @@ public class Player {
         int index2 = cards.indexOf(chose2);
         this.leaderCards.add(cards.remove(index2));
 
-
     }
 
     /**
@@ -140,30 +168,8 @@ public class Player {
 
     }
 
-    public void buyCard(){
-        if (checkDiscountAbility() != 0){
-            this.leaderCards.get(checkDiscountAbility()).getSpecialAbility().activeAbility();
-            //not active ability but ask the class buy card with discount!!!
-        }
-        else{
-            //normal buy
-        }
-        
-        /*check the player's Leader card:
-        * if there is one with the ability of discount I have to take this ability*/
-
-    }
-
-    public int checkDiscountAbility(){
-        if (this.leaderCards.get(1).getSpecialAbility().equals(Discount)){
-            return 1;
-        }
-        else if (this.leaderCards.get(2).getSpecialAbility().equals(Discount)){
-            return 2;
-        }
-        else
-            return 0;
-
+    public void buyCard(int row, int column, PlayerTurnInterface actualTurn, int selectedCardSpace){
+       this.buyCard.buyCard(row, column, actualTurn, selectedCardSpace);
     }
 
     /**

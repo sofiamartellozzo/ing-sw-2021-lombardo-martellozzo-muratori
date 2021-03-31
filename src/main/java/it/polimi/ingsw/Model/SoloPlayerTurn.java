@@ -2,11 +2,21 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.card.LeaderCard;
 
+/*
+ * SOFI*/
+
 public class SoloPlayerTurn implements PlayerTurnInterface {
     private Player currentPlayer;
+    private SoloBoardManager boardManager;
 
-    public SoloPlayerTurn(Player currentPlayer) {
+    public SoloPlayerTurn(Player currentPlayer, SoloBoardManager boardManager) {
         this.currentPlayer = currentPlayer;
+        this.boardManager = boardManager;
+    }
+
+    @Override
+    public BoardManager getBoardManager() {
+        return this.boardManager;
     }
 
     @Override
@@ -21,7 +31,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
 
         switch (action){
             case BUY_CARD:
-                this.currentPlayer.buyCard();
+                this.currentPlayer.buyCard(1,1, this, 1);
             case ACTIVE_CARD:
                 //method to take wich card the player want, that return the relative int
                 int num = 1; //just for not having error
@@ -33,6 +43,8 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
                 //this.currentPlayer.invokesProductionPower();
             case GET_ACTION_TOKEN:
                 //the player take the action token at the end of the turn
+                //get action token random
+                this.boardManager.getActionTokenDeck();
             default:
                 this.currentPlayer.endTurn();
         }

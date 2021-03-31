@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model.actionAbility;
 
+/*
+ * SOFI*/
+
 public class PlusTwoBlackCrossActionAbility implements ActionAbility{
     @Override
     public void activeAbility() {

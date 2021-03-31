@@ -1,13 +1,21 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.board.PersonalBoard;
+import it.polimi.ingsw.Model.board.PersonalBoardFactory;
 import it.polimi.ingsw.Model.board.PersonalSoloBoardFactory;
 import it.polimi.ingsw.Model.board.SoloPersonalBoard;
+import it.polimi.ingsw.Model.card.DevelopmentCardTable;
+import it.polimi.ingsw.Model.card.LeaderCardDeck;
 import it.polimi.ingsw.Model.market.MarketStructure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+/*
+* SOFI*/
 
 public class TurnController {
     private Map<Integer, Player> turnSequence;
@@ -18,8 +26,7 @@ public class TurnController {
     private ArrayList<PopesFavorTileReview> checkPopesFavorTile;
 
     /* the parts of the game that all the player havi in common*/
-    private ResourcesSupply resourcesSupply;
-    private MarketStructure marketStructure;
+    private BoardManager boardManager;
 
     /* Constructor of the class */
     public TurnController(ArrayList<Player> players) {
@@ -29,6 +36,7 @@ public class TurnController {
         //whe have to choose random the first player
         Player first= choiceRandomFirstPlayer(players);
         this.turnSequence.put(1, first);
+        this.currentPlayer = first;
         this.currenyTurnIndex = 1;
         fillSequence(players, first);
 
@@ -69,19 +77,28 @@ public class TurnController {
     public void gamePlay(){
         //where the game starts
 
+        //GameFactory() !!!
+        this.boardManager = new BoardManager(turnSequence, new MarketStructure(), new DevelopmentCardTable(), new LeaderCardDeck());
         if (this.numberOfPlayer == 1){
             PersonalSoloBoardFactory soloBoardFactory = new PersonalSoloBoardFactory();
             SoloPersonalBoard soloPersonalBoard = soloBoardFactory.createGame();
             this.turnSequence.get(1).setGameSpace(soloPersonalBoard);
+            startSoloPlayerTurn(this.currentPlayer);
+        }
+        else{
+            PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
+            PersonalBoard personalBoard = personalBoardFactory.createGame();
+            this.currentPlayer.setGameSpace(personalBoard);
+            startPlayerTurn(this.currentPlayer);
         }
     }
 
-    private void sratrSoloPlayerTurn(Player player){
-        SoloPlayerTurn spt = new SoloPlayerTurn(player);
+    private void startSoloPlayerTurn(Player player){
+        SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
     }
 
     private void startPlayerTurn(Player player){
-        PlayerTurn pt = new PlayerTurn(player);
+        PlayerTurn pt = new PlayerTurn(player, this.boardManager);
         if (pt.checkEndTurn())
             nextTurn();
     }
