@@ -14,6 +14,7 @@ public abstract class Box {
 
     protected final int whichVaticanSection;
     protected final int numberBox;
+    protected int victoryPoints;
 
     /**
      * Constructor
@@ -23,6 +24,7 @@ public abstract class Box {
     public Box(int whichSection, int numberBox) {
         this.whichVaticanSection = whichSection;
         this.numberBox = numberBox;
+        this.victoryPoints=0;
     }
 
     /**
@@ -48,5 +50,20 @@ public abstract class Box {
      */
     public int getNumberBox() {
         return numberBox;
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    public int getVictoryPoints(){return victoryPoints;}
+
+    /**
+     * toString Method
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Box";
     }
 }

@@ -22,17 +22,38 @@ public class PopeBox extends Box{
     }
 
     /**
-    * Getter methods
-    * */
+     * Getter Method
+     * @return
+     */
     public boolean isLast() {
         return last;
     }
 
+
     /**
-    * Setter methods
-    * */
+     * Setter Method
+     * @param last
+     */
     public void setLast(boolean last) {
         this.last = last;
+    }
+
+    /**
+     * Setter Method
+     * @return
+     */
+    public void setVictoryPoints(GoldBox lastGoldBox) {
+        if(lastGoldBox!=null) this.victoryPoints=lastGoldBox.getVictoryPoints();
+        else this.victoryPoints=0;
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    @Override
+    public int getVictoryPoints(){
+        return super.getVictoryPoints();
     }
 
     /**
@@ -41,6 +62,15 @@ public class PopeBox extends Box{
     * Pope's Favor Tile
     * */
     public void powerSPL(){
+        //It must be implemented by the Controller
     };
 
+    /**
+     * toString Method
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "PopeBox";
+    }
 }
