@@ -1,7 +1,9 @@
 package it.polimi.ingsw.Model.cardAbility;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.board.resourceManagement.Decorator;
 
 
 /**
@@ -21,11 +23,14 @@ public class SpecialDepot extends SpecialAbility{
     }
 
     /**
-     *
+     * It sets the active attribute to "true" (super.activeAbility(player)) and creates a Decorator class
+     * to call the createDepot method with the resource supplied by the SpecialDepot Ability.
+     * @param player
      */
     @Override
-    public void activeAbility(Player player) {
+    public void activeAbility(Player player) throws InvalidActionException {
         super.activeAbility(player);
-        //New BuyDiscount
+        Decorator decorator = new Decorator();
+        decorator.createDepot(this.getResource());
     }
 }

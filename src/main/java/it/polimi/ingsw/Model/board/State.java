@@ -10,5 +10,5 @@ public interface State {
     /**
      * @return
      */
-    public int returnPoints(PopesFavorTile popesFavorTile);
+    public int returnPoints(int victoryPoints);
 }
