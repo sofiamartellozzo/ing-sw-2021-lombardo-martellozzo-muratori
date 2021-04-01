@@ -1,49 +1,59 @@
 package it.polimi.ingsw.Model.card;
 import java.util.HashMap;
+
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.board.Active;
+import it.polimi.ingsw.Model.board.Inactive;
+import it.polimi.ingsw.Model.board.State;
 import it.polimi.ingsw.Model.cardAbility.SpecialAbility;
+
+/* ILA */
 
 public class LeaderCard extends Card {
 
-    private boolean hidden;
-    private SpecialAbility specialAbility;
-    private HashMap<Integer,Object> requirements;
-
-
+    //private boolean hidden;
+    private  SpecialAbility specialAbility;
+    private  HashMap<Integer,Object> requirements;
+    private  State state;
     /**
      * constructor of the class, he needs the points that it has, like the Abstract class Card
      * and set the other parameter to default
      * @param victoryPoints
      */
-    public LeaderCard(int victoryPoints) {
+
+    public LeaderCard(int victoryPoints) {  // SpecialAbility specialAbility,HashMap<Integer,Object> requirements) {
+
         super(victoryPoints);
-        this.requirements = new HashMap<>();
+        //this.requirements=requirements;
+        //this.hidden=false;
+        //this.specialAbility=specialAbility;
+        this.state = new Inactive();
     }
 
-    public boolean getHiddenValue(){return hidden;}
-    public void setHiddenValue(boolean Hidden){this.hidden=Hidden;}
+    // Getter methods
 
+    //public boolean getHiddenValue(){return hidden;}
     public SpecialAbility getSpecialAbility(){return specialAbility;}
-    public void setSpecialAbility(SpecialAbility specialAbility){this.specialAbility=specialAbility;}
-
     public HashMap<Integer,Object> getRequirements(){return requirements;}
-    public void setRequirements(HashMap<Integer,Object> requirements){this.requirements=requirements;}
+    public State getState(){return state;}
 
-    //method used to active the special ability of a card Leader Card
 
-    public void activeCard(){
-        this.specialAbility.activeAbility();
+    //method used to active the special ability of a card Leader Card with a fixed resource
+    public void activeCard(Player player){
+        state = new Active();
+        this.specialAbility.activeAbility(player);
     }
 
     // method used when the special ability is activated and the payer chose the resource he wants
-    public void activeCard(Resource resource){
-        this.specialAbility.activeAbility();
+    public void activeCard(Resource resource,Player player){
+        state = new Active();
+        this.specialAbility.activeAbility(player);
     }
 
+    /* this method gives you the victory points of the Leader Card only if the card is active, otherwise is zero */
     @Override
     public int getVictoryPoints() {
-        return super.victoryPoints;
+        return this.state.returnPoints(victoryPoints);
     }
-
-
 }

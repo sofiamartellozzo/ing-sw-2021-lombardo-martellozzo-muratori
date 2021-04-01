@@ -2,34 +2,34 @@ package it.polimi.ingsw.Model;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+/* ILA */
+
 public class ResourcesSupply {
-    private ArrayList<Cell> content;
+
+    private final ArrayList<Cell> content;
 
     //constructor of the class
 
-    public ResourcesSupply(ArrayList<Cell> content){
-        this.content=content;
+    public ResourcesSupply(ArrayList<Cell> content) {
+        this.content = content;
     }
+
+    // Getter methods
 
     public ArrayList<Cell> getContent(Cell cell) {
         return content;
     }
 
-    public void setContent(ArrayList<Cell> content) {
-        this.content = content;
-    }
-
     /*this method gives to the player the resources he asked*/
-    public Resource returnResourceAsked(Resource resource){
-        Cell c = getCell(resource);
-        return c.getResources();
-    }
+    public Resource returnResourceAsked(Resource resource) throws IllegalAccessException {
 
-    private Cell getCell(Resource resource){
-        for (Cell cell: content) {
-            if (cell.getResources().equals(resource))
-                return cell;
-        }
+        /*for (Cell cell : content) {
+            if (cell.getResources().equals(resource)) {
+                return cell.getResources();
+            }
+            else throw new IllegalAccessException(" Error input resource not valid! ");
+        }*/
+        return resource;
     }
 
 }

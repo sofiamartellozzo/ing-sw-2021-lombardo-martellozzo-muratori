@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Model;
 
+/* ILA */
 public class Cell {
 
     private final Resource resource;
-    private TypeResource type;
+    private final TypeResource type;
 
     //constructor of the class
     public Cell(TypeResource type){
@@ -14,21 +15,21 @@ public class Cell {
     private Resource createResource(TypeResource type){
         switch (type){
             case COIN:
-                return new Resource(Color.YELLOW,TypeResource.COIN );
+                return new Resource(Color.YELLOW);
             case STONE:
-                return new Resource(Color.GREY, TypeResource.STONE);
+                return new Resource(Color.GREY);
             case SERVANT:
-                return new Resource(Color.PURPLE, TypeResource.SERVANT);
+                return new Resource(Color.PURPLE);
             default:
-                return new Resource(Color.BLUE, TypeResource.SHIELD);
+                return new Resource(Color.BLUE);
         }
     }
+
+    // Getter methods
 
     public Resource getResources() {
         return resource;
     }
-
-
     public TypeResource getType() {
         return type;
     }

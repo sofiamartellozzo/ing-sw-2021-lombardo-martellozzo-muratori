@@ -1,11 +1,14 @@
 package it.polimi.ingsw.Model.card;
 import java.util.ArrayList;
 
+/* ILA */
+
 public class LeaderCardDeck {
 
     private ArrayList<LeaderCard>cards;
 
     //constructor of the class
+
     public LeaderCardDeck(ArrayList<LeaderCard>cards){
         this.cards=cards;
     }
