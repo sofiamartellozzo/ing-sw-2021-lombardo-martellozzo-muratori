@@ -4,47 +4,45 @@ import it.polimi.ingsw.Model.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/* ILA */
+
 public class DevelopmentCard extends Card {
 
-    protected Color color;
-    protected int level;
-    private HashMap<Integer,Resource> cost;
-    private ArrayList<Resource> costProductionPower;
-    private ArrayList<Resource> proceedsProductionPower;
+    private final Color color;
+    private final int level;
+    private final HashMap<Integer,Resource> cost;
+    private final ArrayList<Resource> proceedsProductionPower;
+    private final ArrayList<Resource> costProductionPower;
 
     //constructor of the class
-    public DevelopmentCard(int victoryPoints) {
+
+    public DevelopmentCard(int victoryPoints, Color color, int level, HashMap<Integer, Resource> cost, ArrayList<Resource> proceedsProductionPower, ArrayList<Resource> costProductionPower)
+    {
         super(victoryPoints);
+        this.color=color;
+        this.level=level;
+        this.cost=cost;
+        this.proceedsProductionPower = proceedsProductionPower;
+        this.costProductionPower = costProductionPower;
     }
 
+    // Getter methods
+
     public Color getColor(){ return color; }
-    public void setColor(Color color){ this.color=color; }
-
     public int getlevel(){ return level; }
-    public void setLevel(int level){ this.level=level; }
-
-    public ArrayList<Resource> getcostProductionPower(){ return costProductionPower; }
-    public void setCostProductionPower(ArrayList<Resource> costProductionPower){this.costProductionPower=costProductionPower; }
-
-    public ArrayList<Resource> getProceedsProductionPower(){ return proceedsProductionPower; }
-    public void setProceedsProductionPower(ArrayList<Resource> proceedsProductionPower){this.proceedsProductionPower=proceedsProductionPower;}
-
     public HashMap<Integer,Resource> getCost(){return cost;}
-    public void setCost(HashMap<Integer,Resource> cost){this.cost=cost;}
 
-    //this method shows to the player the production power of the card he chose
-    public ArrayList<Resource> showProductionPower(){return proceedsProductionPower;}
-
-    /*left this method without code because sofia has to implement it with the payer*/
-    public void UseProductionPower(Resource resource){}
+    //this methods show to the player the production power and the cost of the card he chose
+    public ArrayList<Resource> showCostProductionPower(){return costProductionPower;}
+    public ArrayList<Resource> showProceedsProductionPower(){return proceedsProductionPower;}
 
     @Override
     public int getVictoryPoints() {
-        return super.victoryPoints;
+        return victoryPoints;
     }
 
-    @Override
-    public void setVictoryPoints(int victoryPoints) {
-        super.victoryPoints=victoryPoints;
-    }
+    /*left this method without code because sofia has to implement it with the payer
+    public void UseProductionPower(Player player){}*/
+
+
 }

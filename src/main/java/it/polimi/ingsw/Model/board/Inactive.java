@@ -11,10 +11,10 @@ public class Inactive implements State{
     /**
      * It sets the State attribute of the relative Pope's Favor Tile to Inactive.
      * Returns 0 points.
-     * @param popesFavorTile
+     * @param victoryPoints
      */
     @Override
-    public int returnPoints(PopesFavorTile popesFavorTile) {
+    public int returnPoints(int victoryPoints) {
         return 0;
     }
 }

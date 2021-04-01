@@ -12,10 +12,13 @@ import java.util.ArrayList;
 public abstract class Warehouse{
     protected ArrayList<Depot> depots;
 
-    public void addResource(Resource resource, Depot depot) throws InvalidActionException {}
+    public void addResource(Resource resource, int depot) throws InvalidActionException {}
 
-    public void removeResource(Resource resource, Depot depot) throws InvalidActionException {}
+    public void removeResource(Resource resource, int depot) throws InvalidActionException {}
 
-    public void moveResource(Resource resource, Depot depot1, Depot depot2) throws InvalidActionException {}
+    public void moveResource(Resource resource, int depot1, int depot2) throws InvalidActionException {}
 
+    public ArrayList<Depot> getDepots() {
+        return depots;
+    }
 }

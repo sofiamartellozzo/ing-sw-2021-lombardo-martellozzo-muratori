@@ -9,7 +9,6 @@ package it.polimi.ingsw.Model.board;
 * */
 
 public class GoldBox extends Box{
-    private final int victoryPoints;
 
     /**
      * Constructor
@@ -36,7 +35,17 @@ public class GoldBox extends Box{
      * Getter Method
      * @return
      */
+    @Override
     public int getVictoryPoints() {
-        return victoryPoints;
+        return super.getVictoryPoints();
+    }
+
+    /**
+     * toString Method
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "GoldBox";
     }
 }

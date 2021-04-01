@@ -1,36 +1,33 @@
 package it.polimi.ingsw.Model.card;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
+
 import java.util.ArrayList;
+
+/* ILA */
 
 public class DevelopmentCardDeck {
 
-    private int[][]position;
-    private ArrayList<DevelopmentCard> composedOf;
+    private ArrayList<DevelopmentCard> developDeck;
 
     //constructor of the class
-
-    public DevelopmentCardDeck(int[][]position,ArrayList<DevelopmentCard> composedOf) {
-        this.composedOf = composedOf;
-        this.position=position;
+    public DevelopmentCardDeck(ArrayList<DevelopmentCard> developDeck) {
+        this.developDeck = developDeck;
     }
 
-    public int[][] getPosition() {
-        return position;
+    public ArrayList<DevelopmentCard> getDevelopDeck() {
+        return developDeck;
     }
 
-    public void setPosition(int[][] position) {
-        this.position = position;
+    public void setDevelopDeck(ArrayList<DevelopmentCard> developDeck) {
+        this.developDeck = developDeck;
     }
 
-    public ArrayList<DevelopmentCard> getComposedOf() {
-        return composedOf;
+    //method used to show the last card avaiable in a deck, if it is not empty
+
+    public void takeCard() throws IndexOutOfBoundsException {
+        if (developDeck.size() == 0)
+            throw new IndexOutOfBoundsException("Error, the deck is empty,so you can't take a card!!");
+        else developDeck.get(developDeck.size()-1);
     }
-
-    public void setComposedOf(ArrayList<DevelopmentCard> composedOf) {
-        this.composedOf = composedOf;
-    }
-
-    //method used to remove the last card avaiable in a deck
-    public void removeCard(DevelopmentCard card){composedOf.remove(card);}
-
 }

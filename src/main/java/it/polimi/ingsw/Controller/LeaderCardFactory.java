@@ -3,6 +3,9 @@ package it.polimi.ingsw.Controller;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.card.LeaderCard;
+import it.polimi.ingsw.Model.cardAbility.Discount;
+import it.polimi.ingsw.Model.cardAbility.SpecialAbility;
+import it.polimi.ingsw.Model.cardAbility.TransformWhiteMarble;
 
 public class LeaderCardFactory {
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.cardAbility;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
@@ -26,7 +27,7 @@ public class TransformWhiteMarble extends SpecialAbility{
      *
      */
     @Override
-    public void activeAbility(Player player) {
+    public void activeAbility(Player player) throws InvalidActionException {
         super.activeAbility(player);
         Ability ability = new Ability(getResource());
         player.setWhiteSpecialAbility(new MarbleSpecial(Color.WHITE, ability));

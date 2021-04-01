@@ -9,28 +9,40 @@ package it.polimi.ingsw.Model.board;
 * */
 public class SimpleBox extends Box{
 
-    private final int lastGoldBoxVictoryPoints;
-
     /**
      * Constructor
      * @param whichSection
      * @param numberBox
-     * @param lastGoldBoxVictoryPoints
      */
-    public SimpleBox(int whichSection, int numberBox, int lastGoldBoxVictoryPoints) {
+    public SimpleBox(int whichSection, int numberBox) {
         super(whichSection, numberBox);
-        this.lastGoldBoxVictoryPoints=lastGoldBoxVictoryPoints;
+    }
+
+
+    /**
+     * Setter Method
+     * @return
+     */
+    public void setVictoryPoints(GoldBox lastGoldBox) {
+        if(lastGoldBox!=null) this.victoryPoints=lastGoldBox.getVictoryPoints();
+        else this.victoryPoints=0;
     }
 
     /**
      * Getter Method
      * @return
      */
-    public int getLastGoldBoxVictoryPoints() {
-        return lastGoldBoxVictoryPoints;
+    @Override
+    public int getVictoryPoints() {
+        return super.getVictoryPoints();
     }
 
     /**
-     * New method, first two boxes return 0 points and other boxes return the victory points of the last gold box
+     * toString Method
+     * @return
      */
+    @Override
+    public String toString() {
+        return "SimpleBox";
+    }
 }
