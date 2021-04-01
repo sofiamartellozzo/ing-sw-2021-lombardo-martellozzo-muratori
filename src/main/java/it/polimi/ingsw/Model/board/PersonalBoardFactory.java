@@ -1,12 +1,15 @@
 package it.polimi.ingsw.Model.board;
 
 import it.polimi.ingsw.Model.ActionToken;
+import it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.Model.board.resourceManagement.StrongBox;
+import it.polimi.ingsw.Model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
 
 import java.util.ArrayList;
 
-/*
+/* SOFI
 * PATTERN
 * */
 public class PersonalBoardFactory {
@@ -17,8 +20,9 @@ public class PersonalBoardFactory {
         ArrayList<CardSpace> allCardSpace = createCardSpaces();
         StrongBox strongBox = new StrongBox();
         WarehouseStandard warehouseStandard = new WarehouseStandard();
+        ResourceManager resourceManager = new ResourceManager(strongBox, warehouseStandard);
         FaithTrack faithTrack = new FaithTrack();
-        return new PersonalBoard(faithTrack, warehouseStandard, strongBox, allCardSpace);
+        return new PersonalBoard(faithTrack, resourceManager, allCardSpace);
     }
 
     public ArrayList<CardSpace> createCardSpaces(){

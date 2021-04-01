@@ -31,7 +31,7 @@ public class PlayerTurn implements PlayerTurnInterface {
                 this.currentPlayer.buyCard(1,1, this, 1);
             case ACTIVE_CARD:
                 //method to take wich card the player want, that return the relative int
-                int num = 1; //just for not having error
+                int num = 1; //just for not having error, rapresent the card that the player choose
                 LeaderCard card =  this.currentPlayer.chooseLeaderCardToActive(num);
                 this.currentPlayer.activeLeaderCardAbility(card);
             case BUY_FROM_MARKET:

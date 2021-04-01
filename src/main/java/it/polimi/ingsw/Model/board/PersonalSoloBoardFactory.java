@@ -10,15 +10,18 @@ import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
 
 import java.util.ArrayList;
 
+/*
+ * SOFI*/
 public class PersonalSoloBoardFactory extends PersonalBoardFactory{
 
     public SoloPersonalBoard createGame(){
         ArrayList<CardSpace> allCardSpace = super.createGame().getCardSpaces();
         StrongBox strongBox = super.createGame().getStrongbox();
         WarehouseStandard warehouseStandard = super.createGame().getWarehouse();
+        ResourceManager resourceManager new ResourceManager(strongBox, warehouseStandard);
         FaithTrack faithTrack = super.createGame().getFaithTrack();
         ArrayList<ActionToken> actionTokens = createActionToken();
-        return new SoloPersonalBoard(faithTrack, warehouseStandard, strongBox, allCardSpace, actionTokens);
+        return new SoloPersonalBoard(faithTrack, resourceManager, allCardSpace, actionTokens);
     }
 
 

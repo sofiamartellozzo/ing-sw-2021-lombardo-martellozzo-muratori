@@ -1,4 +1,7 @@
 package it.polimi.ingsw.Model;
+import it.polimi.ingsw.Exception.InvalidActionException;
+import it.polimi.ingsw.Model.board.resourceManagement.ResourceManager;
+import it.polimi.ingsw.Model.card.Card;
 import it.polimi.ingsw.Model.card.DevelopmentCard;
 import it.polimi.ingsw.Model.card.LeaderCard;
 import it.polimi.ingsw.Model.board.PersonalBoard;
@@ -23,7 +26,7 @@ public class Player {
     private boolean whiteSpecialAbility; //remove this
 
     private BuyCard buyCard;//this class pecify how the player can buy the card
-    private ArrayList<SpecialCard> specialCard;
+    private ArrayList<SpecialCard> specialCard;//addictional card created from an Leader Card ability
 
 
     /**
@@ -39,24 +42,6 @@ public class Player {
         this.buyCard = new Buy();
     }
 
-    public BuyCard getBuyCard() {
-        return buyCard;
-    }
-
-    public void setBuyCard(BuyCard buyCard) {
-        this.buyCard = buyCard;
-    }
-
-    public ArrayList<SpecialCard> getSpecialCard() {
-        return specialCard;
-    }
-
-    public void addSpecialCard(SpecialCard specialCard) {
-        if (this.specialCard == null)
-            this.specialCard = new ArrayList<>();
-        this.specialCard.add(specialCard);
-    }
-
     public String getUsername() {
         return username;
     }
@@ -65,6 +50,49 @@ public class Player {
         return this.number;
     }
 
+    /**
+     * method for take the attribute containing the class that implement the way the player buy
+     * a card, it can be Buy if is a normal operation or BuyDiscount if this player have a discount
+     * to apply at the sale
+     * @return
+     */
+    public BuyCard getBuyCard() {
+        return buyCard;
+    }
+
+    /**
+     * setting the way the player buy a card
+     * @param buyCard
+     */
+    public void setBuyCard(BuyCard buyCard) {
+        this.buyCard = buyCard;
+    }
+
+    /**
+     * method to get the card (or cards) special of this player if he had activated
+     * the special ability of a particular Leader Card
+     * so this attribute can be null!!
+     * @return
+     */
+    public ArrayList<SpecialCard> getSpecialCard() {
+        return specialCard;
+    }
+
+    /**
+     * invocathed this method if the player active the Leader Card that create a Special Card
+     * @param specialCard
+     */
+    public void addSpecialCard(SpecialCard specialCard) {
+        if (this.specialCard == null)
+            this.specialCard = new ArrayList<>();
+        this.specialCard.add(specialCard);
+    }
+
+    /**
+     *
+     * @return true
+     * if the player is the first, else false
+     */
     public boolean hasInkpot() {
         return inkpot;
     }
@@ -73,10 +101,19 @@ public class Player {
         return this.victoryPoints;
     }
 
+    /**
+     * when the game is setted a Personal Board for each player has to be created
+     * then associated to each one their own
+     * @param personalBoard
+     */
     public void setGameSpace(PersonalBoard personalBoard){
         this.gameSpace = personalBoard;
     }
 
+    /**
+     * this attribute rapresent the position in the sequence of turn of the player this Player has
+     * @param number
+     */
     public void setNumber(int number) {
         this.number = number;
     }
@@ -90,24 +127,12 @@ public class Player {
             this.inkpot = true;
     }
 
+    /**
+     * this method return the Leader cards (2) owned by the players
+     * @return
+     */
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
-    }
-
-    public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {
-        this.leaderCards = leaderCards;
-    }
-
-    public PersonalBoard getGameSpace() {
-        return gameSpace;
-    }
-
-    public boolean hasWhiteSpecialAbility() {
-        return whiteSpecialAbility;
-    }
-
-    public void setWhiteSpecialAbility(boolean whiteSpecialAbility) {
-        this.whiteSpecialAbility = whiteSpecialAbility;
     }
 
     /**
@@ -128,22 +153,126 @@ public class Player {
     }
 
     /**
+     * method to take the personal Board of this player
+     * @return
+     */
+    public PersonalBoard getGameSpace() {
+        return gameSpace;
+    }
+
+    public boolean hasWhiteSpecialAbility() {
+        return whiteSpecialAbility;
+    }
+
+    public void setWhiteSpecialAbility(boolean whiteSpecialAbility) {
+        this.whiteSpecialAbility = whiteSpecialAbility;
+    }
+
+
+    /**
      * private method invocated when the game end, to set the total
      * points that this player has made
      */
     private void calculateVictoryPoints(){
         //sum of all points.. then set the attribute to it
-        this.victoryPoints = 0;
+        int points = 0;
+        //get points from Development Card in Card Space
+       // points += this.gameSpace.getVictoryPointsFromCardSpace();
+
+        //get points from Leader Card
+        points += this.leaderCards.get(0).getVictoryPoints();
+        points += this.leaderCards.get(1).getVictoryPoints();
+
+        //get points from PopesFavorTile and last Gold Box
+        //points += this.gameSpace.getFaithTrack().getAllVictoryPoints();
+
+        this.victoryPoints = points;
     }
 
     /**
-     * the player decides to invoke the power of a Development Card
-     * so he ask the Board to take that from his space and active it
+     * invocated the method to use the productipon Power of only Developmemnt card
+     * @param developmentCards
+     * @throws InvalidActionException
      */
-    public void invokesProductionPowerFromStronBox(DevelopmentCard card){
+    public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards) throws InvalidActionException{
         //the production powers are activated all toghether, after one gli cannot active another one
         //give input of the method the chosen card
-        this.gameSpace.invokeProductionPowerFromStrongBox(card);
+        /* create a private method that verify if the production Power can be invocated*/
+        if (verifyProductionPower(developmentCards)){
+            for (DevelopmentCard card: developmentCards) {
+                card.useProductionPower(this);
+            }
+        }
+        else
+            throw new InvalidActionException("Production Power can't be invocated! Look at the Requirements!");
+    }
+
+    /**
+     * verify only Development card request
+     * @param developmentCards
+     * @return
+     */
+    private boolean verifyProductionPower(ArrayList<DevelopmentCard> developmentCards){
+        ArrayList<Resource> requirements = new ArrayList<>();
+        ArrayList<Resource> resourcesOwned = new ArrayList<>();
+        for (DevelopmentCard card: developmentCards) {
+            requirements.addAll(card.showCostProductionPower());
+        }
+        resourcesOwned = this.gameSpace.getResourceManager().getResources();
+        if (resourcesOwned.containsAll(requirements))
+            return true;
+        else
+            return false;
+
+    }
+
+    /**
+     * the player decides to invoke the power of a Development Card and the special card
+     * so he ask the Board to take that from his space and active it
+     */
+    public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards, ArrayList<Resource> resources) throws InvalidActionException{
+        //the production powers are activated all toghether, after one gli cannot active another one
+        //give input of the method the chosen card
+        /* create a private method that verify if the production Power can be invocated*/
+        if (verifyProductionPower(specialCard, developmentCards)){
+            for (SpecialCard card: specialCard) {
+                card.useProductionPower(this, resources.get(1));
+            }
+            for (DevelopmentCard card: developmentCards) {
+                card.useProductionPower(this);
+            }
+        }
+        else
+            throw new InvalidActionException("Production Power can't be invocated! Look at the Requirements!");
+    }
+
+    /**
+     * this method verify if the player have in his strong box and warehouse all the resources
+     * requied for the production power
+     * @param developmentCards
+     * @param specialCard
+     * @return
+     */
+    private boolean verifyProductionPower(ArrayList<SpecialCard> specialCard, ArrayList<DevelopmentCard> developmentCards){
+        ArrayList<Resource> requirements = new ArrayList<>();
+        ArrayList<Resource> resourcesOwned = new ArrayList<>();
+        for (SpecialCard card: specialCard) {
+            requirements.addAll(card.getCostProductionPower());
+        }
+        for (DevelopmentCard card: developmentCards) {
+            requirements.addAll(card.showCostProductionPower());
+        }
+        resourcesOwned = this.gameSpace.getResourceManager().getResources();
+        if (resourcesOwned.containsAll(requirements))
+            return true;
+        else
+            return false;
+
+    }
+
+
+    public LeaderCard chooseLeaderCardToActive(int number) {
+        return this.leaderCards.get(number);
     }
 
     public void activeLeaderCardAbility(LeaderCard card){
@@ -153,9 +282,6 @@ public class Player {
         //card.activeCard(this);
     }
 
-    public LeaderCard chooseLeaderCardToActive(int number) {
-        return this.leaderCards.get(number);
-    }
 
     public void activeLeaderCardAbility(LeaderCard card,Resource choice){
         //method implemented by Ilaria in her local project
