@@ -4,6 +4,7 @@ package it.polimi.ingsw.Model.board;
 import it.polimi.ingsw.Model.Resource;
 import it.polimi.ingsw.Model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.Model.board.resourceManagement.StrongBox;
+import it.polimi.ingsw.Model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
 import it.polimi.ingsw.Model.card.DevelopmentCard;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 /*
 * SOFI*/
 
-public class PersonalBoard {
+public class PersonalBoard implements PersoonalBoardInterface{
     // These attributes refers to the components of the Personal Board
     private FaithTrack faithTrack;
     private ResourceManager resourceManager;
@@ -32,7 +33,7 @@ public class PersonalBoard {
         return faithTrack;
     }
 
-    public WarehouseStandard getWarehouse() {
+    public Warehouse getWarehouse() {
         return resourceManager.getWarehouse();
     }
 

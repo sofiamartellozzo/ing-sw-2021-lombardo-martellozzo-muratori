@@ -19,6 +19,8 @@ public class Player {
     private int number;
     private boolean inkpot;
 
+    private boolean playing;
+
     private ArrayList<LeaderCard>  leaderCards;
     private int victoryPoints;
     private PersonalBoard gameSpace;
@@ -40,6 +42,7 @@ public class Player {
         this.inkpot = false;
         this.whiteSpecialAbility = false;
         this.buyCard = new Buy();
+        this.playing = false;
     }
 
     public String getUsername() {
@@ -143,12 +146,15 @@ public class Player {
      * method when the player have to choose two leader card from the four that he
      * draw from the dek
      */
-    public void chooseLeaderCards(ArrayList<LeaderCard> cards, LeaderCard chose1, LeaderCard chose2){
+    public void chooseLeaderCards(ArrayList<LeaderCard> cards, int chose1, int chose2){
 
-        int index1 = cards.indexOf(chose1);
-        this.leaderCards.add(cards.remove(index1));
-        int index2 = cards.indexOf(chose2);
-        this.leaderCards.add(cards.remove(index2));
+        //int index1 = cards.indexOf(chose1);
+        //this.leaderCards.add(cards.remove(index1));
+        this.leaderCards.add(cards.remove(chose1));
+
+        //int index2 = cards.indexOf(chose2);
+        //this.leaderCards.add(cards.remove(index2));
+        this.leaderCards.add(cards.remove(chose2));
 
     }
 
@@ -177,14 +183,14 @@ public class Player {
         //sum of all points.. then set the attribute to it
         int points = 0;
         //get points from Development Card in Card Space
-       // points += this.gameSpace.getVictoryPointsFromCardSpace();
+        points += this.gameSpace.getVictoryPointsFromCardSpaces();
 
         //get points from Leader Card
         points += this.leaderCards.get(0).getVictoryPoints();
         points += this.leaderCards.get(1).getVictoryPoints();
 
         //get points from PopesFavorTile and last Gold Box
-        //points += this.gameSpace.getFaithTrack().getAllVictoryPoints();
+        points += this.gameSpace.getFaithTrack().getAllVictoryPoints();
 
         this.victoryPoints = points;
     }
@@ -200,7 +206,7 @@ public class Player {
         /* create a private method that verify if the production Power can be invocated*/
         if (verifyProductionPower(developmentCards)){
             for (DevelopmentCard card: developmentCards) {
-                card.useProductionPower(this);
+                card.UseProductionPower(this);
             }
         }
         else
@@ -235,11 +241,13 @@ public class Player {
         //give input of the method the chosen card
         /* create a private method that verify if the production Power can be invocated*/
         if (verifyProductionPower(specialCard, developmentCards)){
+            int i = 0;
             for (SpecialCard card: specialCard) {
-                card.useProductionPower(this, resources.get(1));
+                card.useProductionPower(this, resources.get(i));
+                i++;
             }
             for (DevelopmentCard card: developmentCards) {
-                card.useProductionPower(this);
+                card.UseProductionPower(this);
             }
         }
         else
@@ -257,6 +265,7 @@ public class Player {
         ArrayList<Resource> requirements = new ArrayList<>();
         ArrayList<Resource> resourcesOwned = new ArrayList<>();
         for (SpecialCard card: specialCard) {
+            //cost is a single resource
             requirements.addAll(card.getCostProductionPower());
         }
         for (DevelopmentCard card: developmentCards) {
@@ -275,35 +284,51 @@ public class Player {
         return this.leaderCards.get(number);
     }
 
-    public void activeLeaderCardAbility(LeaderCard card){
+    public void activeLeaderCardAbility(LeaderCard card) throws InvalidActionException {
             //LeaderCard card = chooseLeaderCardToActive();
         //method implemented by Ilaria in her local project
             //LeaderCard card =  this.leaderCards.get(wich);
-        //card.activeCard(this);
+        card.activeCard(this);
     }
 
 
-    public void activeLeaderCardAbility(LeaderCard card,Resource choice){
+    public void activeLeaderCardAbility(LeaderCard card,Resource choice) throws InvalidActionException {
         //method implemented by Ilaria in her local project
-        card.activeCard(choice);
+        card.activeCard(choice, this);
     }
 
 
 
-    public void buyFromMarket(){
+    public void buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException{
+        if (wich.equals("row")){
+            boardManager.getMarketStructure().rowMoveMarble(position, this);
+        }
+        else if (wich.equals("column")){
+            boardManager.getMarketStructure().columnMoveMarble(position, this);
+        }
+        else
+            throw new IllegalArgumentException("invalid action of buy from market!");
 
     }
 
-    public void buyCard(int row, int column, PlayerTurnInterface actualTurn, int selectedCardSpace){
-       this.buyCard.buyCard(row, column, actualTurn, selectedCardSpace);
+    public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException{
+       this.buyCard.buyCard(row, column, boardManager, this,  selectedCardSpace);
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
     }
 
     /**
      * method invocated when the player wants to end the game
      * @return
      */
-    public boolean endTurn(){
-        return true;
+    public void endTurn(){
+        setPlaying(false);
     }
 
     public void putResources(Resource resources){

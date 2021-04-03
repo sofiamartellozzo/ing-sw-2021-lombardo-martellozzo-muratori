@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.actionAbility.CardActionAbility;
 import it.polimi.ingsw.Model.actionAbility.PlusTwoBlackCrossActionAbility;
 import it.polimi.ingsw.Model.actionAbility.PlusUneAndShuffleActionAbility;
+import it.polimi.ingsw.Model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.Model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
 
@@ -15,13 +16,15 @@ import java.util.ArrayList;
 public class PersonalSoloBoardFactory extends PersonalBoardFactory{
 
     public SoloPersonalBoard createGame(){
-        ArrayList<CardSpace> allCardSpace = super.createGame().getCardSpaces();
-        StrongBox strongBox = super.createGame().getStrongbox();
-        WarehouseStandard warehouseStandard = super.createGame().getWarehouse();
-        ResourceManager resourceManager new ResourceManager(strongBox, warehouseStandard);
-        FaithTrack faithTrack = super.createGame().getFaithTrack();
+        ArrayList<CardSpace> allCardSpace = createCardSpaces();
+        StrongBox strongBox = new StrongBox();
+        WarehouseStandard warehouseStandard = new WarehouseStandard();
+        ResourceManager resourceManager = new ResourceManager(strongBox, warehouseStandard);
+        FaithTrack faithTrack = createFaithTrack();
+        LorenzoFaithMarker lorenzoFaithMarker = new LorenzoFaithMarker();
+        SoloFaithTrack soloFaithTrack = new SoloFaithTrack(faithTrack.getPathBox(), faithTrack.getPopesFavorTiles(), faithTrack.getFaithMarker(), lorenzoFaithMarker);
         ArrayList<ActionToken> actionTokens = createActionToken();
-        return new SoloPersonalBoard(faithTrack, resourceManager, allCardSpace, actionTokens);
+        return new SoloPersonalBoard(soloFaithTrack, resourceManager, allCardSpace, actionTokens);
     }
 
 

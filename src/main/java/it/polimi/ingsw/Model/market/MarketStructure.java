@@ -4,15 +4,24 @@ import it.polimi.ingsw.Model.Player;
 
 /*
  * SOFIA
- * */
+ *
+ * SINGLETON: istanziated only once, it's unique*/
 public class MarketStructure {
     private Marble[][] structure; //row,column
     private Marble slide;
 
+    private static MarketStructure marketStructure = null;
+
     /*Constructor*/
-    public MarketStructure(Marble[][] structure, Marble slide) {
+    private MarketStructure(Marble[][] structure, Marble slide) {
         this.structure = structure;
         this.slide = slide;
+    }
+
+    public static MarketStructure getInstance(Marble[][] structure, Marble slide){
+        if (marketStructure == null)
+            marketStructure = new MarketStructure(structure, slide);
+        return marketStructure;
     }
 
     private void setSlide(Marble newSlide){

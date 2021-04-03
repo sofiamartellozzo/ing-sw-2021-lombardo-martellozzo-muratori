@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.card.LeaderCard;
 
 /*
@@ -7,9 +8,9 @@ import it.polimi.ingsw.Model.card.LeaderCard;
 
 public class SoloPlayerTurn implements PlayerTurnInterface {
     private Player currentPlayer;
-    private SoloBoardManager boardManager;
+    private BoardManager boardManager;
 
-    public SoloPlayerTurn(Player currentPlayer, SoloBoardManager boardManager) {
+    public SoloPlayerTurn(Player currentPlayer, BoardManager boardManager) {
         this.currentPlayer = currentPlayer;
         this.boardManager = boardManager;
     }
@@ -26,27 +27,33 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
 
 
     @Override
-    public void chosePlay(TurnAction action) {
+    public void choosePlay(TurnAction action) throws InvalidActionException {
         //case to end the turn, and then invocate the getActionToken turnaction, only in the solo game
 
         switch (action){
             case BUY_CARD:
-                this.currentPlayer.buyCard(1,1, this, 1);
-            case ACTIVE_CARD:
-                //method to take wich card the player want, that return the relative int
-                int num = 1; //just for not having error
-                LeaderCard card =  this.currentPlayer.chooseLeaderCardToActive(num);
-                this.currentPlayer.activeLeaderCardAbility(card);
+                this.currentPlayer.buyCard(1,1, this.boardManager, 1);
             case BUY_FROM_MARKET:
-                this.currentPlayer.buyFromMarket();
+                //this.currentPlayer.buyFromMarket();
             case ACTIVE_PRODUCTION_POWER:
                 //this.currentPlayer.invokesProductionPower();
             case GET_ACTION_TOKEN:
                 //the player take the action token at the end of the turn
                 //get action token random
-                this.boardManager.getActionTokenDeck();
+                //this.currentPlayer.getGameSpace().getActionToken
             default:
                 this.currentPlayer.endTurn();
+        }
+    }
+
+    @Override
+    public void activeLeaderCard(int wich) throws InvalidActionException {
+        LeaderCard card =  this.currentPlayer.chooseLeaderCardToActive(wich);
+        if (card.getSpecialAbility().equals("Addictional Power")){
+            this.currentPlayer.activeLeaderCardAbility((card), new Resource(Color.YELLOW));
+        }
+        else{
+            this.currentPlayer.activeLeaderCardAbility(card);
         }
     }
 
@@ -56,8 +63,8 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
     }
 
     @Override
-    public boolean checkEndTurn() {
-        if (this.currentPlayer.endTurn())
+    public boolean checkEndTurn(){
+        if (!this.currentPlayer.isPlaying())
             return true;
         else
             return false;

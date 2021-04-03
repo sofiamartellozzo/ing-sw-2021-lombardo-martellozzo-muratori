@@ -19,11 +19,13 @@ public class BoardManagerFactory {
 
     public BoardManager createBoardManager(HashMap<Integer,Player> turnSequence)
     {
-        MarketStructure marketStructure = new MarketStructure(createStructure(),new ColoredMarble(Color.PURPLE));
+        MarketStructure marketStructure = MarketStructure.getInstance(createStructure(),new ColoredMarble(Color.PURPLE));
         DevelopmentCardTable developmentCardTable = DevelopmentCardTable.getInstance(createDevelopmentDeckTable());
         LeaderCardDeck leaderCardDeck = LeaderCardDeck.getInstance(createLeaderCardDeck());
+        ResourcesSupplyFactory resourcesSupplyFactory = new ResourcesSupplyFactory();
+        ResourcesSupply resourcesSupply = resourcesSupplyFactory.createTheResourcesSupply();
 
-        return new BoardManager(turnSequence,marketStructure,developmentCardTable,leaderCardDeck);
+        return new BoardManager(turnSequence,marketStructure,developmentCardTable,leaderCardDeck, resourcesSupply);
     }
 
     protected Marble[][] createStructure(){

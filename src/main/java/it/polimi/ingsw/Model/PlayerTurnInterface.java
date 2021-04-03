@@ -4,15 +4,19 @@ package it.polimi.ingsw.Model;
 * just the emd game is different so that method will be not in this class but in the single one
 * that extends this*/
 
+import it.polimi.ingsw.Exception.InvalidActionException;
+
 public interface PlayerTurnInterface {
 
     public BoardManager getBoardManager();
 
-    public abstract Player getCurrentPlayer();
+    public Player getCurrentPlayer();
 
-    public abstract void chosePlay(TurnAction action);
+    public void choosePlay(TurnAction action) throws InvalidActionException;
 
-    public abstract boolean checkEndGame();
+    public void activeLeaderCard(int wich) throws InvalidActionException;
 
-    public abstract boolean checkEndTurn();
+    public boolean checkEndGame();
+
+    public boolean checkEndTurn();
 }

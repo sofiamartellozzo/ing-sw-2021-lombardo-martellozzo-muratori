@@ -18,7 +18,7 @@ public class ResourcesSupply {
      * @param content
      */
 
-    private ResourcesSupply(ArrayList<Cell> content) {
+    public ResourcesSupply(ArrayList<Cell> content) {
         this.content = content;
     }
 

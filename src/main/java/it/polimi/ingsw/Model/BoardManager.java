@@ -24,12 +24,14 @@ public class BoardManager {
     private MarketStructure marketStructure;
     private DevelopmentCardTable developmentCardTable;
     private LeaderCardDeck leaderCardDeck;
+    private ResourcesSupply resourcesSupply;
 
-    public BoardManager(Map<Integer, Player> players, MarketStructure marketStructure, DevelopmentCardTable developmentCardTable, LeaderCardDeck leaderCardDeck) {
+    public BoardManager(Map<Integer, Player> players, MarketStructure marketStructure, DevelopmentCardTable developmentCardTable, LeaderCardDeck leaderCardDeck, ResourcesSupply resourcesSupply) {
         this.players = players;
         this.marketStructure = marketStructure;
         this.developmentCardTable = developmentCardTable;
         this.leaderCardDeck = leaderCardDeck;
+        this.resourcesSupply = resourcesSupply;
     }
 
     public Map<Integer, Player> getPlayers() {
@@ -46,5 +48,9 @@ public class BoardManager {
 
     public LeaderCardDeck getLeaderCardDeck() {
         return leaderCardDeck;
+    }
+
+    public ResourcesSupply getResourcesSupply() {
+        return resourcesSupply;
     }
 }

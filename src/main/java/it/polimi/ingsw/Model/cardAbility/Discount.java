@@ -31,7 +31,7 @@ public class Discount extends SpecialAbility{
             buyDiscount.addResourceWithDiscount(this.getResource());
             player.setBuyCard(buyDiscount);
         }else if (player.getBuyCard().toString().equals("BuyDiscount")){
-            player.getBuyCard().buyCard(1, 1, new PlayerTurn(player,),1);
+            player.getBuyCard().buyCard(1, 1, new PlayerTurn(player, ),1);
         }
     }
 

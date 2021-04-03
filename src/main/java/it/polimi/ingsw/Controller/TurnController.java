@@ -1,11 +1,13 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.board.PersonalBoard;
 import it.polimi.ingsw.Model.board.PersonalBoardFactory;
 import it.polimi.ingsw.Model.board.PersonalSoloBoardFactory;
 import it.polimi.ingsw.Model.board.SoloPersonalBoard;
 import it.polimi.ingsw.Model.card.DevelopmentCardTable;
+import it.polimi.ingsw.Model.card.LeaderCard;
 import it.polimi.ingsw.Model.card.LeaderCardDeck;
 import it.polimi.ingsw.Model.market.MarketStructure;
 
@@ -13,19 +15,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Stream;
 
 /*
 * SOFI*/
 
 public class TurnController {
-    private Map<Integer, Player> turnSequence;
+    private HashMap<Integer, Player> turnSequence;
     private int currenyTurnIndex;
     private PlayerTurn currentTurnIstance;
     private Player currentPlayer;
     private int numberOfPlayer;
     private ArrayList<PopesFavorTileReview> checkPopesFavorTile;
 
-    /* the parts of the game that all the player havi in common*/
+    /* the parts of the game that all the player have in common*/
     private BoardManager boardManager;
 
     /* Constructor of the class */
@@ -74,37 +77,86 @@ public class TurnController {
         }
     }
 
-    public void gamePlay(){
+    public void gamePlay() throws InvalidActionException{
         //where the game starts
 
-        //GameFactory() !!!
-        this.boardManager = new BoardManager(turnSequence, new MarketStructure(), new DevelopmentCardTable(), new LeaderCardDeck());
+        BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
+        this.boardManager = boardManagerFactory.createBoardManager(this.turnSequence);
+
         if (this.numberOfPlayer == 1){
             PersonalSoloBoardFactory soloBoardFactory = new PersonalSoloBoardFactory();
             SoloPersonalBoard soloPersonalBoard = soloBoardFactory.createGame();
             this.turnSequence.get(1).setGameSpace(soloPersonalBoard);
+            chooseLeaderCard();
             startSoloPlayerTurn(this.currentPlayer);
         }
         else{
-            PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
-            PersonalBoard personalBoard = personalBoardFactory.createGame();
-            this.currentPlayer.setGameSpace(personalBoard);
+
+            for (Integer i: this.turnSequence.keySet()) {
+                PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
+                PersonalBoard personalBoard = personalBoardFactory.createGame();
+                this.turnSequence.get(i).setGameSpace(personalBoard);
+                chooseLeaderCard();
+            }
+            giveStartResources();
             startPlayerTurn(this.currentPlayer);
         }
     }
 
+    private void chooseLeaderCard(){
+        Random random = new Random();
+        ArrayList<LeaderCard> fourLeaderCard = new ArrayList<>();
+        for (Integer j: this.turnSequence.keySet()) {
+            for (int i=0; i<4; i++){
+                fourLeaderCard.add(this.boardManager.getLeaderCardDeck().getCards().get(random.nextInt(this.boardManager.getLeaderCardDeck().getNumberOfCards())));
+            }
+            this.turnSequence.get(j).chooseLeaderCards(fourLeaderCard, 1,2);
+            this.boardManager.getLeaderCardDeck().remove(this.turnSequence.get(j).getLeaderCards());
+        }
+    }
+
+    private void giveStartResources() throws InvalidActionException {
+        if (this.turnSequence.get(1)!= null){
+            //the second player recive one resources that he choose
+            this.turnSequence.get(1).getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.YELLOW), 1);
+            if (this.turnSequence.get(2)!= null){
+                //the third player recive one resource and a faith marker(so thi increase of one his position)
+                this.turnSequence.get(2).getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.BLUE), 1);
+                this.turnSequence.get(2).getGameSpace().getFaithTrack().increasePosition();
+                if (this.turnSequence.get(3)!= null){
+                    //the fourth player recives two resources and a faith marker(so thi increase of one his position)
+                    this.turnSequence.get(3).getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.PURPLE), 2);
+                    this.turnSequence.get(3).getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.PURPLE), 2);
+                    this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
+                }
+            }
+        }
+
+
+    }
+
+
     private void startSoloPlayerTurn(Player player){
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
+
     }
 
     private void startPlayerTurn(Player player){
+        this.currentPlayer = player;
+        player.setPlaying(true);
         PlayerTurn pt = new PlayerTurn(player, this.boardManager);
-        if (pt.checkEndTurn())
+        if (pt.checkEndTurn()){
             nextTurn();
+        }
     }
 
     private void nextTurn(){
-        this.currenyTurnIndex++;
+        if (this.currenyTurnIndex == this.numberOfPlayer){
+            this.currenyTurnIndex = 1;
+        }
+        else {
+            this.currenyTurnIndex++;
+        }
         Player nextPlayer = this.turnSequence.get(currenyTurnIndex);
         startPlayerTurn(nextPlayer);
     }

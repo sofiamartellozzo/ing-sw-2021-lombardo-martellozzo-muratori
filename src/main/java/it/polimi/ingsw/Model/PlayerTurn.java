@@ -1,8 +1,12 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
+import it.polimi.ingsw.Model.card.DevelopmentCard;
 import it.polimi.ingsw.Model.card.LeaderCard;
 import it.polimi.ingsw.Model.cardAbility.Discount;
 import it.polimi.ingsw.Model.cardAbility.SpecialAbility;
+
+import java.util.ArrayList;
 
 /*
  * SOFI*/
@@ -24,22 +28,34 @@ public class PlayerTurn implements PlayerTurnInterface {
         return currentPlayer;
     }
 
-    public void chosePlay(TurnAction action){
+    public void choosePlay(TurnAction action) throws InvalidActionException{
         switch (action){
             case BUY_CARD:
                 //I need the input from the real player (person)
-                this.currentPlayer.buyCard(1,1, this, 1);
-            case ACTIVE_CARD:
-                //method to take wich card the player want, that return the relative int
-                int num = 1; //just for not having error, rapresent the card that the player choose
-                LeaderCard card =  this.currentPlayer.chooseLeaderCardToActive(num);
-                this.currentPlayer.activeLeaderCardAbility(card);
+                this.currentPlayer.buyCard(1,1, this.boardManager, 1);
             case BUY_FROM_MARKET:
-                this.currentPlayer.buyFromMarket();
+                this.currentPlayer.buyFromMarket(1, "row", this.boardManager);
             case ACTIVE_PRODUCTION_POWER:
-                //this.currentPlayer.invokesProductionPower();
+                ArrayList<DevelopmentCard> ppCard = new ArrayList<>();
+                ArrayList<Resource> cost = new ArrayList<>();
+                cost.add(new Resource(Color.YELLOW));
+                ppCard.add(new DevelopmentCard(1,Color.GREEN, 2,cost,cost,cost));
+                this.currentPlayer.invokesProductionPower(ppCard);
         }
     }
+
+    @Override
+    public void activeLeaderCard(int wich) throws InvalidActionException {
+        LeaderCard card =  this.currentPlayer.chooseLeaderCardToActive(wich);
+        if (card.getSpecialAbility().equals("Addictional Power")){
+            this.currentPlayer.activeLeaderCardAbility((card), new Resource(Color.YELLOW));
+        }
+        else{
+            this.currentPlayer.activeLeaderCardAbility(card);
+        }
+
+    }
+
 
     public boolean checkEndGame(){
         return true;
@@ -47,7 +63,7 @@ public class PlayerTurn implements PlayerTurnInterface {
 
     /* check if the player ended the turn or not */
     public boolean checkEndTurn(){
-        if (this.currentPlayer.endTurn())
+        if (!this.currentPlayer.isPlaying())
             return true;
         else
             return false;
