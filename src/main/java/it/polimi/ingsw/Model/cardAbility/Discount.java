@@ -1,9 +1,7 @@
 package it.polimi.ingsw.Model.cardAbility;
 
 import it.polimi.ingsw.Exception.InvalidActionException;
-import it.polimi.ingsw.Model.BuyDiscount;
-import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.*;
 
 /**
  * GIANLUCA
@@ -33,7 +31,12 @@ public class Discount extends SpecialAbility{
             buyDiscount.addResourceWithDiscount(this.getResource());
             player.setBuyCard(buyDiscount);
         }else if (player.getBuyCard().toString().equals("BuyDiscount")){
-            player.getBuyCard().addResourceWithDiscount(this.getResource());
+            player.getBuyCard().buyCard(1, 1, new PlayerTurn(player,),1);
         }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

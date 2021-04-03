@@ -7,6 +7,7 @@ package it.polimi.ingsw.Model.board;
  */
 
 public class Active implements State {
+
     /**
      * It sets the State attribute of the relative Pope's Favor Tile to "Active"
      * and return its Victory Points.

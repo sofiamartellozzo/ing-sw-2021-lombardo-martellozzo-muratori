@@ -32,4 +32,9 @@ public class TransformWhiteMarble extends SpecialAbility{
         Ability ability = new Ability(getResource());
         player.setWhiteSpecialAbility(new MarbleSpecial(Color.WHITE, ability));
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

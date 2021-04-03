@@ -3,10 +3,6 @@ package it.polimi.ingsw.Model.board;
 /**
  * GIANLUCA
  * It represents the Pope's Favor Tile.
- * Attribute:
- * whichVaticanSection -> If it is the 1st, 2nd or 3rd Tile of the relative section
- * victoryPoints -> It contains the value of Victory Points.
- * state -> It indicates if it "active" or "inactive", using the State Pattern.
  */
 public class PopesFavorTile {
     private final int whichVaticanSection;
@@ -15,8 +11,9 @@ public class PopesFavorTile {
 
     /**
      * Constructor
-     * @param whichVaticanSection
-     * @param victoryPoints
+     * State is set to "Inactive".
+     * @param whichVaticanSection -> If it is the 1st, 2nd or 3rd Tile of the relative section
+     * @param victoryPoints -> It contains the value of Victory Points.
      */
     public PopesFavorTile(int whichVaticanSection, int victoryPoints) {
         this.whichVaticanSection = whichVaticanSection;
@@ -49,7 +46,7 @@ public class PopesFavorTile {
     }
 
     /**
-     * Setter Method for the State Pattern
+     * Setter Method
      * @param state
      */
     public void setState(State state) {

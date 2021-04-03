@@ -3,9 +3,6 @@ package it.polimi.ingsw.Model.board;
 /**
 * GIANLUCA
  * It represents the Grey Box of the FaithTrack.
- * In addition to the Box Attribute, it has the reference to
- * the lastGoldBox, to facilitate the calculation of the Victory Points
- * at the end of the game. It can be null in case of the first two boxes.
 * */
 public class SimpleBox extends Box{
 
@@ -21,7 +18,7 @@ public class SimpleBox extends Box{
 
     /**
      * Setter Method
-     * @return
+     * @param lastGoldBox -> The reference to the last Gold Box to obtain the Victory Points
      */
     public void setVictoryPoints(GoldBox lastGoldBox) {
         if(lastGoldBox!=null) this.victoryPoints=lastGoldBox.getVictoryPoints();
@@ -35,6 +32,42 @@ public class SimpleBox extends Box{
     @Override
     public int getVictoryPoints() {
         return super.getVictoryPoints();
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    @Override
+    public VaticanSection getVaticanSection() {
+        return super.getVaticanSection();
+    }
+
+    /**
+     * Setter Method
+     * @param vaticanSection
+     */
+    @Override
+    public void setVaticanSection(VaticanSection vaticanSection) {
+        super.setVaticanSection(vaticanSection);
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    @Override
+    public int getWhichSection() {
+        return super.getWhichSection();
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    @Override
+    public int getNumberBox() {
+        return super.getNumberBox();
     }
 
     /**

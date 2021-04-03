@@ -2,12 +2,7 @@ package it.polimi.ingsw.Model.board;
 
 /**
 * GIANLUCA
-* It's composing the FaithTrack with its extensions:
-* SimpleBox, GoldBox and PopeBox.
-* Attribute:
-* whichSection -> If it is, indicates in which Vatican Section it's situated
-* to facilitate the control of the Players, if they're in or out;
-* numberBox -> the numeration of the boxes.
+* It's composing the FaithTrack with its extensions: SimpleBox, GoldBox and PopeBox.
 * */
 
 public abstract class Box {
@@ -15,25 +10,48 @@ public abstract class Box {
     protected final int whichVaticanSection;
     protected final int numberBox;
     protected int victoryPoints;
+    protected VaticanSection vaticanSection;
 
     /**
      * Constructor
-     * @param whichSection
-     * @param numberBox
+     * Victory Points are set to 0, then if it's necessary, it can be set.
+     * Same for the Vatican Section which is null and then it can be set.
+     * @param whichSection -> Indicates in which Vatican Section it's situated (1st, 2nd, 3rd)
+     * @param numberBox -> The numeration of the boxes
      */
     public Box(int whichSection, int numberBox) {
         this.whichVaticanSection = whichSection;
         this.numberBox = numberBox;
         this.victoryPoints=0;
+        this.vaticanSection=null;
     }
 
     /**
-     * Constructor: in case the boxes are not in a Vatican Section
+     * Getter Method
+     * @return -> The vatican section
+     */
+    public VaticanSection getVaticanSection() {
+        return vaticanSection;
+    }
+
+    /**
+     * Setter Method
+     * @param vaticanSection
+     */
+    public void setVaticanSection(VaticanSection vaticanSection) {
+        this.vaticanSection = vaticanSection;
+    }
+
+    /**
+     * Constructor
+     * In case the boxes are not in a Vatican Section
      * @param numberBox
      */
     public Box(int numberBox) {
         this.whichVaticanSection=0;
         this.numberBox = numberBox;
+        this.victoryPoints=0;
+        this.vaticanSection=null;
     }
 
     /**

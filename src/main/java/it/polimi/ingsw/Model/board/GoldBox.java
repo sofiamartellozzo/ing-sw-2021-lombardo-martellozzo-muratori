@@ -4,8 +4,6 @@ package it.polimi.ingsw.Model.board;
 * GIANLUCA
 * One of the type of the boxes.
 * It has the same attribute of Box class.
-* Additional attribute:
-* victoryPoints -> The value of Victory Points, to calculate the final score.
 * */
 
 public class GoldBox extends Box{
@@ -14,7 +12,7 @@ public class GoldBox extends Box{
      * Constructor
      * @param whichSection
      * @param numberBox
-     * @param victoryPoints
+     * @param victoryPoints -> The value of Victory Points, to calculate the final score.
      */
     public GoldBox(int whichSection, int numberBox, int victoryPoints) {
         super(whichSection,numberBox);
@@ -22,7 +20,8 @@ public class GoldBox extends Box{
     }
 
     /**
-     * Constructor: in case the Gold Boxes are not in a vatican section
+     * Constructor
+     * In case the Gold Boxes are not in a vatican section
      * @param numberBox
      * @param victoryPoints
      */
@@ -38,6 +37,42 @@ public class GoldBox extends Box{
     @Override
     public int getVictoryPoints() {
         return super.getVictoryPoints();
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    @Override
+    public VaticanSection getVaticanSection() {
+        return super.getVaticanSection();
+    }
+
+    /**
+     * Setter Method
+     * @param vaticanSection
+     */
+    @Override
+    public void setVaticanSection(VaticanSection vaticanSection) {
+        super.setVaticanSection(vaticanSection);
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    @Override
+    public int getWhichSection() {
+        return super.getWhichSection();
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    @Override
+    public int getNumberBox() {
+        return super.getNumberBox();
     }
 
     /**

@@ -27,6 +27,11 @@ public class AdditionalPower extends SpecialAbility{
     public void activeAbility(Player player) throws InvalidActionException {
         super.activeAbility(player);
         SpecialCard specialCard = new SpecialCard(this.getResource());
-        player.getSpecialCard().addSpecialCard(specialCard);
+        player.addSpecialCard(specialCard);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

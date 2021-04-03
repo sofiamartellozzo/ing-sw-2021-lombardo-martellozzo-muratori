@@ -5,10 +5,6 @@ import java.util.ArrayList;
 /**
  * GIANLUCA
  * It represents the Vatican Section.
- * Attributes:
- * whichVaticanSection -> Indicates which of the three section is
- * boxes -> It indicates which boxes are part of the section
- * popesFavorTile -> The relative
  */
 public class VaticanSection {
     private final int whichVaticanSection;
@@ -17,9 +13,9 @@ public class VaticanSection {
 
     /**
      * Constructor
-     * @param whichVaticanSection
-     * @param boxes
-     * @param popesFavorTile
+     * @param whichVaticanSection -> Indicates which of the three section is
+     * @param boxes -> It indicates which boxes are part of the section
+     * @param popesFavorTile -> The relative Pope's Favor Tile
      */
     public VaticanSection(int whichVaticanSection, ArrayList<Box> boxes, PopesFavorTile popesFavorTile) {
         this.whichVaticanSection = whichVaticanSection;

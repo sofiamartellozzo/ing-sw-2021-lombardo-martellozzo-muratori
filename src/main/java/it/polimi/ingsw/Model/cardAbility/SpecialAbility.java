@@ -54,4 +54,13 @@ public abstract class SpecialAbility {
     public void activeAbility(Player player) throws InvalidActionException {
         this.setActive(true);
     };
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
