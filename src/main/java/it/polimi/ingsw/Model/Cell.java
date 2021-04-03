@@ -6,7 +6,11 @@ public class Cell {
     private final Resource resource;
     private final TypeResource type;
 
-    //constructor of the class
+    /**
+     * constructor of the class
+     * @param type
+     */
+
     public Cell(TypeResource type){
         this.resource = createResource(type);
         this.type=type;
@@ -33,7 +37,6 @@ public class Cell {
     public TypeResource getType() {
         return type;
     }
-
 
     /* because the resources are limitless I don't have to control the lenght of the ArrayList before removing them*/
     public Resource askResource(Resource resource) {

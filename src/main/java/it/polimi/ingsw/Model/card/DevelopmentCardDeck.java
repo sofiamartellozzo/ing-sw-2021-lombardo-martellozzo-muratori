@@ -24,10 +24,9 @@ public class DevelopmentCardDeck {
     }
 
     //method used to show the last card avaiable in a deck, if it is not empty
-
-    public void takeCard() throws IndexOutOfBoundsException {
+    public DevelopmentCard takeCard() throws IndexOutOfBoundsException {
         if (developDeck.size() == 0)
             throw new IndexOutOfBoundsException("Error, the deck is empty,so you can't take a card!!");
-        else developDeck.get(developDeck.size()-1);
+        else return developDeck.get(developDeck.size()-1);
     }
 }

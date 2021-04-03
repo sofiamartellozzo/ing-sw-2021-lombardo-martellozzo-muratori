@@ -6,15 +6,16 @@ import java.util.ArrayList;
 * */
 
 public class FaithTrack {
+
     private FaithMarker faithMarker;
     private final ArrayList<PopesFavorTile> popesFavorTiles;
     private final ArrayList<Box> pathBox;
 
     // Constructor of the class
     public FaithTrack(ArrayList<Box> pathBox,ArrayList<PopesFavorTile> popesFavorTiles ,FaithMarker faithMarker){
-        this.faithMarker=faithMarker;
-        this.pathBox=pathBox;
-        this.popesFavorTiles=popesFavorTiles;
+        this.faithMarker = faithMarker;
+        this.pathBox = pathBox;
+        this.popesFavorTiles = popesFavorTiles;
     }
 
     // Getter methods

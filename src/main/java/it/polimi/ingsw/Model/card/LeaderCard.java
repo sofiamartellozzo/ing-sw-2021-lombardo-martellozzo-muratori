@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.card;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
 import it.polimi.ingsw.Model.board.Active;
@@ -10,24 +12,25 @@ import it.polimi.ingsw.Model.cardAbility.SpecialAbility;
 
 /* ILA */
 
-public class LeaderCard extends Card {
+public class LeaderCard extends Card{
 
     //private boolean hidden;
     private  SpecialAbility specialAbility;
-    private  HashMap<Integer,Object> requirements;
+    private  ArrayList<Object> requirements;
     private  State state;
+
     /**
      * constructor of the class, he needs the points that it has, like the Abstract class Card
      * and set the other parameter to default
      * @param victoryPoints
      */
 
-    public LeaderCard(int victoryPoints) {  // SpecialAbility specialAbility,HashMap<Integer,Object> requirements) {
+    public LeaderCard(int victoryPoints, SpecialAbility specialAbility,ArrayList<Object> requirements) {
 
         super(victoryPoints);
-        //this.requirements=requirements;
+        this.requirements=requirements;
         //this.hidden=false;
-        //this.specialAbility=specialAbility;
+        this.specialAbility=specialAbility;
         this.state = new Inactive();
     }
 
@@ -35,18 +38,20 @@ public class LeaderCard extends Card {
 
     //public boolean getHiddenValue(){return hidden;}
     public SpecialAbility getSpecialAbility(){return specialAbility;}
-    public HashMap<Integer,Object> getRequirements(){return requirements;}
+    public ArrayList<Object> getRequirements(){return requirements;}
     public State getState(){return state;}
 
 
     //method used to active the special ability of a card Leader Card with a fixed resource
-    public void activeCard(Player player){
+    public void activeCard(Player player) throws InvalidActionException {
+        if(player == null) throw new InvalidActionException("Errore, non valido!");
         state = new Active();
         this.specialAbility.activeAbility(player);
     }
 
     // method used when the special ability is activated and the payer chose the resource he wants
-    public void activeCard(Resource resource,Player player){
+    public void activeCard(Resource resource,Player player) throws InvalidActionException {
+        if(player == null) throw new InvalidActionException("Errore, non valido!");
         state = new Active();
         this.specialAbility.activeAbility(player);
     }

@@ -4,14 +4,30 @@ import java.util.NoSuchElementException;
 
 /* ILA */
 
+/* SINGLETON: because I have to instance this class only once,
+and the next time
+he has to give me back the same class*/
+
 public class ResourcesSupply {
 
     private final ArrayList<Cell> content;
+    private static ResourcesSupply resourcesSupply = null;
 
-    //constructor of the class
+    /**
+     * constructor of the class
+     * @param content
+     */
 
-    public ResourcesSupply(ArrayList<Cell> content) {
+    private ResourcesSupply(ArrayList<Cell> content) {
         this.content = content;
+    }
+
+    public static ResourcesSupply getInstance(ArrayList<Cell> content){
+        if(resourcesSupply == null)
+        {
+            resourcesSupply = new ResourcesSupply(content);
+        }
+        return resourcesSupply;
     }
 
     // Getter methods

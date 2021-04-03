@@ -1,4 +1,6 @@
 package it.polimi.ingsw.Model.card;
+import it.polimi.ingsw.Exception.InvalidActionException;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
 
 import java.util.ArrayList;
@@ -10,32 +12,35 @@ in which the player chooses the resource he wants*/
 public class SpecialCard {
 
     private final ArrayList<Resource> costProductionPower;
-    private ArrayList <Resource> proceedsProductionPower;  /* this is choosen by the player every time*/
+    private ArrayList<Resource> earnProductionPower;  /* this is chosen by the player every time*/
 
-    //constructor of the class
+    /**
+     * constructor of the class
+     * @param costProductionPower
+     */
 
-    public SpecialCard(ArrayList<Resource> costProductionPower){
-        this.costProductionPower=costProductionPower;
-        this.proceedsProductionPower=null;
+    public SpecialCard(ArrayList<Resource>  costProductionPower){
+        this.costProductionPower = costProductionPower;
+        this.earnProductionPower = null;
     }
 
-    public ArrayList<Resource> getCostProductionPower() {
+    public ArrayList<Resource>  getCostProductionPower() {
         return costProductionPower;
     }
-    public ArrayList<Resource> getProceedsProductionPower() { return proceedsProductionPower; }
+    public ArrayList<Resource> getProceedsProductionPower() { return earnProductionPower;}
 
-    // this is the resource that the player chooses to get
-    public void setProceedsProductionPower(ArrayList<Resource> proceedsProductionPower){this.proceedsProductionPower=proceedsProductionPower;}
 
-    //this method shows to the player the production power of the card he chose
-    public ArrayList<Resource> showProductionPower(){return this.proceedsProductionPower;}
+    /* in this method you remove the resource that you paid from the Warehouse
+     and put the new one in the StrongBox, farther the faithMarker of the player increase its position*/
+    public void useProductionPower(Player player, Resource resource) throws InvalidActionException {
 
-    /*left this method without code because sofia has to implement it with the player
-    public void useProductionPower(Player player, Resource resource){
+        ArrayList<Resource> resourceChosen = new ArrayList<>();
+        resourceChosen.add(0,resource);
 
-        FaithMarker faith= new FaithMarker(Color.RED, TypeResource.FAITHMARKER);
-        faith.increasePosition();
+        player.getGameSpace().getResourceManager().removeResources(costProductionPower);
+        player.getGameSpace().getResourceManager().addResourcesToStrongBox(resourceChosen);
+        player.getGameSpace().getFaithTrack().increasePosition();
 
-    }*/
+    }
 
 }
