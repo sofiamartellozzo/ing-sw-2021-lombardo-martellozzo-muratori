@@ -9,6 +9,7 @@ package it.polimi.ingsw.Model.board;
 public class PopeBox extends Box{
 
     private boolean last;
+    private boolean activated;
 
     /**
      * Constructor
@@ -92,5 +93,21 @@ public class PopeBox extends Box{
     @Override
     public String toString() {
         return "PopeBox";
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    public boolean isActivated() {
+        return activated;
+    }
+
+    /**
+     * Setter Method
+     * @param activated
+     */
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }
