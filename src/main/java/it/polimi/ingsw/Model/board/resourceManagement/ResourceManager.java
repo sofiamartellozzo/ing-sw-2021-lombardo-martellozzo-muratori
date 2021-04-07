@@ -56,9 +56,7 @@ public class ResourceManager {
     public ArrayList<Resource> getResources(){
         ArrayList<Resource> resources = new ArrayList<>();
         resources.addAll(strongBox.getContent());
-        for(int i=0;i<warehouse.getDepots().size();i++){
-            resources.addAll(warehouse.getDepots().get(i).getResources());
-        }
+        resources.addAll(warehouse.getContent());
         return resources;
     }
 
@@ -72,31 +70,16 @@ public class ResourceManager {
     }
 
     /**
-     * Removes a list of resources.
-     * First, checks if in all Depots of the Warehouse there are some resources you want to remove,
-     * if yes, it removes them, removing also in the resources parameter.
-     * Second, it tries to remove the rest of resources from the StrongBox.
+     * Removes a list of resources from both warehouse and strongbox.
      * @param resources
      */
     public void removeResources(ArrayList<Resource> resources) throws InvalidActionException {
-
-        for (int i = 0; i < warehouse.getDepots().size(); i++){
-            if(!resources.isEmpty()) {
-                Depot depot = warehouse.getDepots().get(i);
-                for (int j = 0; j < depot.getResources().size(); j++) {
-                    if (!resources.isEmpty() && resources.contains(depot.getResources().get(j))){
-                        resources.remove(depot.getResources().get(j));
-                        depot.removeResource();
-                    }else{
-                        break;
-                    }
-                }
-            }else{
-                break;
-            }
+        if(!resources.isEmpty()) {
+            removeFromWarehouse(resources);
         }
-
-        if(!resources.isEmpty()) strongBox.removeResources(resources);
+        if(!resources.isEmpty()) {
+            removeFromStrongBox(resources);
+        }
     }
 
     /**
@@ -106,5 +89,33 @@ public class ResourceManager {
     public void addResourcesToStrongBox(ArrayList<Resource> resources){
         strongBox.addResources(resources);
     }
+
+    /**
+     * Remove a list of resources from the strongbox.
+     * @param resources
+     */
+    public void removeFromStrongBox(ArrayList<Resource> resources){
+        if(!resources.isEmpty() && getWarehouse().getContent().containsAll(resources)){
+            getStrongBox().getContent().removeAll(resources);
+        }
+    }
+
+    /**
+     * Remove a list of resources from the warehouse.
+     * @param resources
+     * @throws InvalidActionException
+     */
+    public void removeFromWarehouse(ArrayList<Resource> resources) throws InvalidActionException {
+        for(Depot depot: getWarehouse().getDepots()){
+            for(Resource resource: depot.getResources()){
+                if(resources.contains(resource)){
+                  resources.remove(resource);
+                  depot.removeResource();
+                }
+            }
+        }
+    }
+
+
 
 }

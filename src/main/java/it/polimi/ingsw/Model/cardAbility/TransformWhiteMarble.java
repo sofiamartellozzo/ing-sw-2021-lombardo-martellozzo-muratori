@@ -30,7 +30,7 @@ public class TransformWhiteMarble extends SpecialAbility{
     public void activeAbility(Player player) throws InvalidActionException {
         super.activeAbility(player);
         Ability ability = new Ability(getResource());
-        player.setWhiteSpecialAbility(new MarbleSpecial(Color.WHITE, ability));
+        player.setWhiteSpecialMarble(new MarbleSpecial());
     }
 
     @Override
