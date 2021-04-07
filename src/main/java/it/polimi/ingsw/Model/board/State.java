@@ -10,5 +10,8 @@ public interface State {
     /**
      * @return
      */
-    public int returnPoints(int victoryPoints);
+    int returnPoints(int victoryPoints);
+
+    @Override
+    String toString();
 }

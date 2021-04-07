@@ -17,4 +17,9 @@ public class Inactive implements State{
     public int returnPoints(int victoryPoints) {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

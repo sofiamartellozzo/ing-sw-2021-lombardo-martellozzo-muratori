@@ -96,4 +96,13 @@ public class WarehouseStandard extends Warehouse{
     public ArrayList<Resource> getContent() {
         return super.getContent();
     }
+
+    /**
+     * toString Method
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "WarehouseStandard";
+    }
 }

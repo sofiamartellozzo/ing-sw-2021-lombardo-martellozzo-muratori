@@ -19,7 +19,6 @@ public class PopeBox extends Box{
      */
     public PopeBox(int whichSection, int numberBox, VaticanSection vaticanSection) {
         super(whichSection, numberBox);
-        this.vaticanSection = vaticanSection;
         this.last = false;
     }
 
@@ -64,24 +63,6 @@ public class PopeBox extends Box{
      * @return
      */
     @Override
-    public VaticanSection getVaticanSection() {
-        return super.getVaticanSection();
-    }
-
-    /**
-     * Setter Method
-     * @param vaticanSection
-     */
-    @Override
-    public void setVaticanSection(VaticanSection vaticanSection) {
-        super.setVaticanSection(vaticanSection);
-    }
-
-    /**
-     * Getter Method
-     * @return
-     */
-    @Override
     public int getWhichSection() {
         return super.getWhichSection();
     }
@@ -96,13 +77,12 @@ public class PopeBox extends Box{
     }
 
     /**
-     * It actives the power of the PopeBox which verify if Players
-    * are in the relative Vatican Section in order to turn (or activate) the
-    * Pope's Favor Tile.
-     * Maybe goes to the Control.
-    * */
-    public void powerSPL(){
-        //It must be implemented by the Controller
+     * After checking.
+     * It activates the power of the PopeBox.
+     * Players in the VaticanSection call this method to activate Pope's Favor Tile.
+     * */
+    public void VaticanReport(VaticanSection vaticanSection){
+        vaticanSection.getPopesFavorTile().setState(new Active());
     };
 
     /**

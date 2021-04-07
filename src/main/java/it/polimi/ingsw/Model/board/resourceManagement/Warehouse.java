@@ -143,4 +143,12 @@ public abstract class Warehouse {
         return content;
     }
 
+    /**
+     * toString Method
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Warehouse";
+    }
 }

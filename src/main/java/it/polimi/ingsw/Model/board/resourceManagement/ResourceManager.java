@@ -116,6 +116,14 @@ public class ResourceManager {
         }
     }
 
+    /**
+     * In case of draw, returns the number of all resources from both the Warehouse and the StrongBox.
+     * @return
+     */
+    public int numberAllResources(){
+        return getResources().size();
+    }
+
 
 
 }

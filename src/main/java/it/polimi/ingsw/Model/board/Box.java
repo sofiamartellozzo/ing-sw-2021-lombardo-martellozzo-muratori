@@ -10,7 +10,6 @@ public abstract class Box {
     protected final int whichVaticanSection;
     protected final int numberBox;
     protected int victoryPoints;
-    protected VaticanSection vaticanSection;
 
     /**
      * Constructor
@@ -23,24 +22,8 @@ public abstract class Box {
         this.whichVaticanSection = whichSection;
         this.numberBox = numberBox;
         this.victoryPoints=0;
-        this.vaticanSection=null;
     }
 
-    /**
-     * Getter Method
-     * @return -> The vatican section
-     */
-    public VaticanSection getVaticanSection() {
-        return vaticanSection;
-    }
-
-    /**
-     * Setter Method
-     * @param vaticanSection
-     */
-    public void setVaticanSection(VaticanSection vaticanSection) {
-        this.vaticanSection = vaticanSection;
-    }
 
     /**
      * Constructor
@@ -51,7 +34,6 @@ public abstract class Box {
         this.whichVaticanSection=0;
         this.numberBox = numberBox;
         this.victoryPoints=0;
-        this.vaticanSection=null;
     }
 
     /**

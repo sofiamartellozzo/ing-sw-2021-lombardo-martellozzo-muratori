@@ -56,7 +56,7 @@ public abstract class SpecialAbility {
     };
 
     /**
-     *
+     * toString Method
      * @return
      */
     @Override

@@ -105,4 +105,13 @@ public class SpecialWarehouse extends Decorator{
     public ArrayList<Resource> getContent() {
         return super.getContent();
     }
+
+    /**
+     * toString Method
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "SpecialWarehouse";
+    }
 }
