@@ -81,7 +81,7 @@ public class PopeBox extends Box{
      * It activates the power of the PopeBox.
      * Players in the VaticanSection call this method to activate Pope's Favor Tile.
      * */
-    public void VaticanReport(VaticanSection vaticanSection){
+    public void vaticanReport(VaticanSection vaticanSection){
         vaticanSection.getPopesFavorTile().setState(new Active());
     };
 
