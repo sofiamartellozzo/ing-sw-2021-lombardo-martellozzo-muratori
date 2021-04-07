@@ -31,6 +31,8 @@ public class Buy implements BuyCard {
 
     }
 
+
+
     private boolean checkBeforeBuy(DevelopmentCard card, Player player){
         ArrayList<Resource> requirements = new ArrayList<>();
         ArrayList<Resource> resourcesOwned = new ArrayList<>();

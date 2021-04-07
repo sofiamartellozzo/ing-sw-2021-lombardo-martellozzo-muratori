@@ -28,6 +28,9 @@ public class TurnController {
     private int numberOfPlayer;
     private ArrayList<PopesFavorTileReview> checkPopesFavorTile;
 
+    /* the solo player */
+    private SoloPlayer singlePlayer;
+
     /* the parts of the game that all the player have in common*/
     private BoardManager boardManager;
 
@@ -77,44 +80,76 @@ public class TurnController {
         }
     }
 
+    /**
+     * method to inizialized the game, creating the spaces and setting everithing
+     * exept the Board Manager the rest is setted differently if the number of player
+     * are one or more : so solo mode or multiple mode
+     * @throws InvalidActionException
+     */
     public void gamePlay() throws InvalidActionException{
         //where the game starts
 
-        BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
-        this.boardManager = boardManagerFactory.createBoardManager(this.turnSequence);
+
 
         if (this.numberOfPlayer == 1){
+            HashMap<Integer, PlayerInterface> player = new HashMap<>();
             PersonalSoloBoardFactory soloBoardFactory = new PersonalSoloBoardFactory();
             SoloPersonalBoard soloPersonalBoard = soloBoardFactory.createGame();
-            this.turnSequence.get(1).setGameSpace(soloPersonalBoard);
-            chooseLeaderCard();
-            startSoloPlayerTurn(this.currentPlayer);
+            this.singlePlayer = new SoloPlayer(this.turnSequence.get(1).getUsername());
+            this.singlePlayer.setGameSpace(soloPersonalBoard);
+            player.put(1,this.singlePlayer);
+            BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
+            this.boardManager = boardManagerFactory.createBoardManager(player);
+            chooseLeaderCard(true);
+            startSoloPlayerTurn(this.singlePlayer);
         }
         else{
 
+            BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
+            this.boardManager = boardManagerFactory.createBoardManager(this.turnSequence);
             for (Integer i: this.turnSequence.keySet()) {
                 PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
                 PersonalBoard personalBoard = personalBoardFactory.createGame();
                 this.turnSequence.get(i).setGameSpace(personalBoard);
-                chooseLeaderCard();
+                chooseLeaderCard(false);
             }
             giveStartResources();
             startPlayerTurn(this.currentPlayer);
         }
     }
 
-    private void chooseLeaderCard(){
+    /**
+     * at the start of the game all player (both single or multiple mode)
+     * have to choose 2 Leader Card from 4 choosen random
+     * @param solo
+     */
+    private void chooseLeaderCard(boolean solo){
         Random random = new Random();
         ArrayList<LeaderCard> fourLeaderCard = new ArrayList<>();
         for (Integer j: this.turnSequence.keySet()) {
             for (int i=0; i<4; i++){
                 fourLeaderCard.add(this.boardManager.getLeaderCardDeck().getCards().get(random.nextInt(this.boardManager.getLeaderCardDeck().getNumberOfCards())));
             }
-            this.turnSequence.get(j).chooseLeaderCards(fourLeaderCard, 1,2);
-            this.boardManager.getLeaderCardDeck().remove(this.turnSequence.get(j).getLeaderCards());
+            if (solo){
+                this.singlePlayer.chooseLeaderCards(fourLeaderCard, 1, 2);
+                this.boardManager.getLeaderCardDeck().remove(this.singlePlayer.getLeaderCards());
+            }
+            else{
+                this.turnSequence.get(j).chooseLeaderCards(fourLeaderCard, 1,2);
+                this.boardManager.getLeaderCardDeck().remove(this.turnSequence.get(j).getLeaderCards());
+            }
         }
     }
 
+    /**
+     * this method is called only in multiple mode, in single one is not necessary
+     * at the game start, after chose the Leader Card all player recive different stuff:
+     * the first one only the inkpot
+     * the second one recive one resource that he choose
+     * the third one (if exist) recive one resource that he choose and increasing of one position the faith market
+     * the fourth one (if exist) recive two resources that he choose and increasing of one position the paith market
+     * @throws InvalidActionException
+     */
     private void giveStartResources() throws InvalidActionException {
         if (this.turnSequence.get(1)!= null){
             //the second player recive one resources that he choose
@@ -135,12 +170,21 @@ public class TurnController {
 
     }
 
-
-    private void startSoloPlayerTurn(Player player){
+    /**
+     * start the game in solo mode, so create the Solo Player Turn that manage the different
+     * action the player can do
+     * @param player
+     */
+    private void startSoloPlayerTurn(SoloPlayer player){
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
 
     }
 
+    /**
+     * start a new Turn of a Player in multiple mode, called any time a new turn start
+     * first after setting all game, then at the end of the others player turn
+     * @param player
+     */
     private void startPlayerTurn(Player player){
         this.currentPlayer = player;
         player.setPlaying(true);
@@ -150,6 +194,10 @@ public class TurnController {
         }
     }
 
+    /**
+     * when a player end his turn, this method is called to set the next player
+     * and create a new turn for him
+     */
     private void nextTurn(){
         if (this.currenyTurnIndex == this.numberOfPlayer){
             this.currenyTurnIndex = 1;
@@ -160,6 +208,8 @@ public class TurnController {
         Player nextPlayer = this.turnSequence.get(currenyTurnIndex);
         startPlayerTurn(nextPlayer);
     }
+
+    /*check if someone is in the pop's favor tile...*/
 
 
 }

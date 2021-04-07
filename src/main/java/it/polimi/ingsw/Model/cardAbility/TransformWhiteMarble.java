@@ -36,7 +36,7 @@ public class TransformWhiteMarble extends SpecialAbility{
     public void activeAbility(Player player) throws InvalidActionException {
         super.activeAbility(player);
         Ability ability = new Ability(getResource());
-        MarbleSpecial marbleSpecial = player.getMarbleSpecial();
+        MarbleSpecial marbleSpecial = player.getWhiteSpecialMarble();
         if(marbleSpecial==null) {
             marbleSpecial = new MarbleSpecial();
             marbleSpecial.setAbility(ability);

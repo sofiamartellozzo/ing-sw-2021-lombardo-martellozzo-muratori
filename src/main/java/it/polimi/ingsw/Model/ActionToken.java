@@ -14,7 +14,7 @@ public class ActionToken {
         this.ability = ability;
     }
 
-    public void activeActionToken(){
-        this.ability.activeAbility();
+    public void activeActionToken(BoardManager boardManager, SoloPlayer player){
+        this.ability.activeAbility(boardManager, player);
     }
 }

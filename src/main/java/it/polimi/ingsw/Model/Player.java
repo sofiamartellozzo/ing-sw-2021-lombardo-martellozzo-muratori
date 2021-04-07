@@ -7,13 +7,14 @@ import it.polimi.ingsw.Model.card.LeaderCard;
 import it.polimi.ingsw.Model.board.PersonalBoard;
 import it.polimi.ingsw.Model.card.SpecialCard;
 import it.polimi.ingsw.Model.cardAbility.Discount;
+import it.polimi.ingsw.Model.market.MarbleSpecial;
 
 import java.util.ArrayList;
 
 /*
  * SOFI*/
 
-public class Player {
+public class Player implements PlayerInterface{
 
     private String username;
     private int number;
@@ -25,10 +26,11 @@ public class Player {
     private int victoryPoints;
     private PersonalBoard gameSpace;
 
-    private boolean whiteSpecialAbility; //remove this
+    private MarbleSpecial whiteSpecialMarble;
 
     private BuyCard buyCard;//this class pecify how the player can buy the card
     private ArrayList<SpecialCard> specialCard;//addictional card created from an Leader Card ability
+
 
 
     /**
@@ -40,15 +42,16 @@ public class Player {
         this.username = username;
         this.victoryPoints = 0;
         this.inkpot = false;
-        this.whiteSpecialAbility = false;
         this.buyCard = new Buy();
         this.playing = false;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
+    @Override
     public int getNumber(){
         return this.number;
     }
@@ -59,6 +62,7 @@ public class Player {
      * to apply at the sale
      * @return
      */
+    @Override
     public BuyCard getBuyCard() {
         return buyCard;
     }
@@ -67,6 +71,7 @@ public class Player {
      * setting the way the player buy a card
      * @param buyCard
      */
+    @Override
     public void setBuyCard(BuyCard buyCard) {
         this.buyCard = buyCard;
     }
@@ -77,6 +82,7 @@ public class Player {
      * so this attribute can be null!!
      * @return
      */
+    @Override
     public ArrayList<SpecialCard> getSpecialCard() {
         return specialCard;
     }
@@ -85,6 +91,7 @@ public class Player {
      * invocathed this method if the player active the Leader Card that create a Special Card
      * @param specialCard
      */
+    @Override
     public void addSpecialCard(SpecialCard specialCard) {
         if (this.specialCard == null)
             this.specialCard = new ArrayList<>();
@@ -96,10 +103,12 @@ public class Player {
      * @return true
      * if the player is the first, else false
      */
+    @Override
     public boolean hasInkpot() {
         return inkpot;
     }
 
+    @Override
     public int getVictoryPoints(){
         return this.victoryPoints;
     }
@@ -109,6 +118,7 @@ public class Player {
      * then associated to each one their own
      * @param personalBoard
      */
+    @Override
     public void setGameSpace(PersonalBoard personalBoard){
         this.gameSpace = personalBoard;
     }
@@ -117,6 +127,7 @@ public class Player {
      * this attribute rapresent the position in the sequence of turn of the player this Player has
      * @param number
      */
+    @Override
     public void setNumber(int number) {
         this.number = number;
     }
@@ -134,6 +145,7 @@ public class Player {
      * this method return the Leader cards (2) owned by the players
      * @return
      */
+    @Override
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
@@ -146,6 +158,7 @@ public class Player {
      * method when the player have to choose two leader card from the four that he
      * draw from the dek
      */
+    @Override
     public void chooseLeaderCards(ArrayList<LeaderCard> cards, int chose1, int chose2){
 
         //int index1 = cards.indexOf(chose1);
@@ -160,39 +173,72 @@ public class Player {
 
     /**
      * method to take the personal Board of this player
-     * @return
+     * @return Personal Board
      */
+    @Override
     public PersonalBoard getGameSpace() {
         return gameSpace;
     }
 
-    public boolean hasWhiteSpecialAbility() {
-        return whiteSpecialAbility;
+    /**
+     * return the special White Marble that make different for the player
+     * buy from the market
+     * @return
+     */
+    @Override
+    public MarbleSpecial getWhiteSpecialMarble() {
+        return whiteSpecialMarble;
     }
-
-    public void setWhiteSpecialAbility(boolean whiteSpecialAbility) {
-        this.whiteSpecialAbility = whiteSpecialAbility;
-    }
-
 
     /**
-     * private method invocated when the game end, to set the total
-     * points that this player has made
+     * setting this White marble when created from the special ability of a Leader Card
+     * @param whiteSpecialMarble
      */
-    private void calculateVictoryPoints(){
+    @Override
+    public void setWhiteSpecialMarble(MarbleSpecial whiteSpecialMarble) {
+        this.whiteSpecialMarble = whiteSpecialMarble;
+    }
+
+    @Override
+    public int chooseSpecialWhiteMarble(){
+        //we decided he choose the second one, this method is called only if there are 2 special marble
+        return 1;
+    }
+
+    /**
+     * method for when is asked to the player to choose a resource
+     * @return the Resource choose
+     */
+    @Override
+    public Resource chooseResource(){
+        return new Resource(Color.YELLOW);
+    }
+
+    /**
+     * method invocated when the game end, to set the total
+     * points that this player has made
+     * in order to decide the winner
+     */
+    @Override
+    public int calculateVictoryPoints(){
         //sum of all points.. then set the attribute to it
         int points = 0;
         //get points from Development Card in Card Space
         points += this.gameSpace.getVictoryPointsFromCardSpaces();
 
         //get points from Leader Card
-        points += this.leaderCards.get(0).getVictoryPoints();
-        points += this.leaderCards.get(1).getVictoryPoints();
+        for (LeaderCard leaderCard: this.leaderCards){
+            points += leaderCard.getVictoryPoints();
+        }
 
         //get points from PopesFavorTile and last Gold Box
         points += this.gameSpace.getFaithTrack().getAllVictoryPoints();
 
+        //get points from the count of the Resources owned by the player
+        points += this.gameSpace.getResourceManager().getVictoryPoints();
+
         this.victoryPoints = points;
+        return points;
     }
 
     /**
@@ -200,13 +246,15 @@ public class Player {
      * @param developmentCards
      * @throws InvalidActionException
      */
+    @Override
     public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards) throws InvalidActionException{
         //the production powers are activated all toghether, after one gli cannot active another one
         //give input of the method the chosen card
         /* create a private method that verify if the production Power can be invocated*/
-        if (verifyProductionPower(developmentCards)){
+        String where = verifyProductionPower(developmentCards);
+        if (!where.equals("None")){
             for (DevelopmentCard card: developmentCards) {
-                card.UseProductionPower(this);
+                card.useProductionPower(this, where);
             }
         }
         else
@@ -214,40 +262,47 @@ public class Player {
     }
 
     /**
-     * verify only Development card request
+     * verify only Development card request, at first if the cost can be payed from the
+     * resources stored in the wherouse if not verify if in the Strong Box there are enought
      * @param developmentCards
-     * @return
+     * @return where to take the resources for active the ability as a String
      */
-    private boolean verifyProductionPower(ArrayList<DevelopmentCard> developmentCards){
+    private String verifyProductionPower(ArrayList<DevelopmentCard> developmentCards){
         ArrayList<Resource> requirements = new ArrayList<>();
         ArrayList<Resource> resourcesOwned = new ArrayList<>();
         for (DevelopmentCard card: developmentCards) {
             requirements.addAll(card.showCostProductionPower());
         }
-        resourcesOwned = this.gameSpace.getResourceManager().getResources();
+        resourcesOwned = this.gameSpace.getResourceManager().getWarehouse().getContent();
         if (resourcesOwned.containsAll(requirements))
-            return true;
-        else
-            return false;
-
+            return "Whatehouse";
+        else{
+            resourcesOwned = this.gameSpace.getResourceManager().getStrongBox().getContent();
+            if (resourcesOwned.containsAll(requirements))
+                return "StrongBox";
+            else
+                return "None";
+        }
     }
 
     /**
      * the player decides to invoke the power of a Development Card and the special card
      * so he ask the Board to take that from his space and active it
      */
+    @Override
     public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards, ArrayList<Resource> resources) throws InvalidActionException{
         //the production powers are activated all toghether, after one gli cannot active another one
         //give input of the method the chosen card
         /* create a private method that verify if the production Power can be invocated*/
-        if (verifyProductionPower(specialCard, developmentCards)){
+        String where = verifyProductionPower(specialCard, developmentCards);
+        if (!where.equals("None")){
             int i = 0;
             for (SpecialCard card: specialCard) {
-                card.useProductionPower(this, resources.get(i));
+                card.useProductionPower(this, resources.get(i), where);
                 i++;
             }
             for (DevelopmentCard card: developmentCards) {
-                card.UseProductionPower(this);
+                card.useProductionPower(this, where);
             }
         }
         else
@@ -256,12 +311,13 @@ public class Player {
 
     /**
      * this method verify if the player have in his strong box and warehouse all the resources
-     * requied for the production power
+     * requied for the production power, at first if the cost can be payed from the
+     *      * resources stored in the wherouse if not verify if in the Strong Box there are enought
      * @param developmentCards
      * @param specialCard
-     * @return
+     * @return where to take the resources for active the ability as a String
      */
-    private boolean verifyProductionPower(ArrayList<SpecialCard> specialCard, ArrayList<DevelopmentCard> developmentCards){
+    private String verifyProductionPower(ArrayList<SpecialCard> specialCard, ArrayList<DevelopmentCard> developmentCards){
         ArrayList<Resource> requirements = new ArrayList<>();
         ArrayList<Resource> resourcesOwned = new ArrayList<>();
         for (SpecialCard card: specialCard) {
@@ -271,34 +327,65 @@ public class Player {
         for (DevelopmentCard card: developmentCards) {
             requirements.addAll(card.showCostProductionPower());
         }
-        resourcesOwned = this.gameSpace.getResourceManager().getResources();
+        resourcesOwned = this.gameSpace.getResourceManager().getWarehouse().getContent();
         if (resourcesOwned.containsAll(requirements))
-            return true;
-        else
-            return false;
-
+            return "Wharehouse";
+        else{
+            resourcesOwned = this.gameSpace.getResourceManager().getStrongBox().getContent();
+            if (resourcesOwned.containsAll(requirements))
+                return "StrongBox";
+            else
+                return "None";
+        }
     }
 
 
+    /**
+     * select the leader card to active
+     * @param number
+     * @return  the choosen Leader Card owned from the player himself
+     */
+    @Override
     public LeaderCard chooseLeaderCardToActive(int number) {
         return this.leaderCards.get(number);
     }
 
+    /**
+     * activated the Leader card, handle to produce his ability
+     * @param card
+     * @throws InvalidActionException
+     */
+    @Override
     public void activeLeaderCardAbility(LeaderCard card) throws InvalidActionException {
-            //LeaderCard card = chooseLeaderCardToActive();
-        //method implemented by Ilaria in her local project
-            //LeaderCard card =  this.leaderCards.get(wich);
+        //verify the cost
+        ArrayList<Object> costOfCard = new ArrayList<>();
+        costOfCard = card.getRequirements();
+        if (costOfCard.contains(DevelopmentCard.class))
         card.activeCard(this);
     }
 
-
+    /**
+     * same as above but in this case the special Ability requires the resource that the player want
+     * to recive with this ability
+     * @param card
+     * @param choice
+     * @throws InvalidActionException
+     */
+    @Override
     public void activeLeaderCardAbility(LeaderCard card,Resource choice) throws InvalidActionException {
-        //method implemented by Ilaria in her local project
         card.activeCard(choice, this);
     }
 
 
-
+    /**
+     * method invocated from the player when he want to buy from the market, so he have to choose
+     * a row or a column to take all the Marble ad so the Resources that them provide
+     * @param position  in the Market Structure
+     * @param wich  if he choose a row or a column
+     * @param boardManager   to reach the Market, that is common for all players
+     * @throws IllegalArgumentException
+     */
+    @Override
     public void buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException{
         if (wich.equals("row")){
             boardManager.getMarketStructure().rowMoveMarble(position, this);
@@ -311,14 +398,38 @@ public class Player {
 
     }
 
+    /**
+     * method invocated whenever the player whant to buy a Development Card
+     * so the input he have to provide are
+     * @param row   of the position of the card to buy in the table
+     * @param column   of the position of the card to buy in the table
+     * @param boardManager   the board manager to reach the Development Card Table (common for all players)
+     * @param selectedCardSpace   wich Card Space in the Personal Board the Player choose to put the new card
+     * @throws InvalidActionException
+     */
+    @Override
     public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException{
        this.buyCard.buyCard(row, column, boardManager, this,  selectedCardSpace);
     }
 
+
+    /**
+     * method to check if the player is actually playing or not,
+     * he has an attribute boolean that is set true when his turn starts
+     * when he finish his turn this attribute turned false
+     * @return --> true if the player is actually playing
+     */
+    @Override
     public boolean isPlaying() {
         return playing;
     }
 
+    /**
+     * set the boolean paramether to see if the player is actually playing
+     * or not
+     * @param playing-> true at the start of a Turn
+     */
+    @Override
     public void setPlaying(boolean playing) {
         this.playing = playing;
     }
@@ -327,12 +438,59 @@ public class Player {
      * method invocated when the player wants to end the game
      * @return
      */
+    @Override
     public void endTurn(){
         setPlaying(false);
     }
 
-    public void putResources(Resource resources){
-        //i ask to put this resource in this player warehouse or strongBox
+    @Override
+    public void putResources(Resource resource){
+        //i ask to put this resource in this player warehouse
+
+        /*we supposed that if the player is able to put the resource only moving two (or more) resources
+        * he just did it, so the check is to verify if at the end he can store this resource
+        * or not; in second case the resource is throw away and the other player move +1 their faith marker */
+        if (this.getGameSpace().getResourceManager().getWarehouse().checkAvailableDepot(resource)){
+            this.getGameSpace().getResourceManager().getWarehouse().addResource(resource, chooseDepot());
+        }
+        else{
+            //the other players move +1 their faith market
+
+        }
+    }
+
+    @Override
+    public void moveResource(int depot1, int depot2){
+        this.getGameSpace().getResourceManager().getWarehouse().moveResource(depot1,depot2
+        );
+    }
+
+    @Override
+    public int chooseDepot(){
+        return 1;
+    }
+
+    /**
+     * discard a Leader Card implies that the faith track incrise of 1 his position
+     * @param card
+     */
+    @Override
+    public void removeLeaderCard(int card) throws InvalidActionException{
+        if (this.leaderCards.get(card).getState().equals("Inactive")){
+            this.leaderCards.get(card);
+            this.getGameSpace().getFaithTrack().increasePosition();
+        }
+        else
+            throw new InvalidActionException("You can't remove a Leader Card altready active!");
+    }
+
+    @Override
+    public boolean checkEndGame(){
+        if ((gameSpace.getFaithTrack().getPositionFaithMarker()==24)||(gameSpace.getAllCards().size()==7)){
+            return true;
+        }
+        else
+            return false;
     }
 
 

@@ -15,6 +15,7 @@ public class Resource{
     /* constructor */
     public Resource(Color color){
         this.color=color;
+        setType();
     }
 
     public Color getColor(){
@@ -25,7 +26,7 @@ public class Resource{
      * set the type of the resources(class) based on wich color it is
      * @throws InvalidPropertiesFormatException
      */
-    public void setType() throws InvalidPropertiesFormatException{
+    private void setType() {
         switch (this.color){
             case RED:
                 this.typeResource = TypeResource.FAITHMARKER;
@@ -35,8 +36,7 @@ public class Resource{
                 this.typeResource = TypeResource.COIN;
             case PURPLE:
                 this.typeResource = TypeResource.SERVANT;
-            default:
-                throw new InvalidPropertiesFormatException("color not allowed for Resources!");
+
         }
     }
     public TypeResource getType(){

@@ -2,15 +2,16 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.card.LeaderCard;
+import it.polimi.ingsw.Model.board.SoloPersonalBoard;
 
 /*
  * SOFI*/
 
 public class SoloPlayerTurn implements PlayerTurnInterface {
-    private Player currentPlayer;
+    private SoloPlayer currentPlayer;
     private BoardManager boardManager;
 
-    public SoloPlayerTurn(Player currentPlayer, BoardManager boardManager) {
+    public SoloPlayerTurn(SoloPlayer currentPlayer, BoardManager boardManager) {
         this.currentPlayer = currentPlayer;
         this.boardManager = boardManager;
     }
@@ -21,7 +22,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
     }
 
     @Override
-    public Player getCurrentPlayer() {
+    public SoloPlayer getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -40,7 +41,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
             case GET_ACTION_TOKEN:
                 //the player take the action token at the end of the turn
                 //get action token random
-                //this.currentPlayer.getGameSpace().getActionToken
+                this.currentPlayer.getGameSpace().getActionTokenDeck(this.boardManager, this.currentPlayer);
             default:
                 this.currentPlayer.endTurn();
         }
@@ -59,7 +60,20 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
 
     @Override
     public boolean checkEndGame() {
-        return false;
+        if (currentPlayer.checkIfWin().equals("Check DevelopTable!")){
+            if(boardManager.getDevelopmentCardTable().checkIfEmpty()){
+                currentPlayer.setResult(Result.LOOSER);
+                return true;
+            }
+            else
+                return false;
+        }
+        else
+            return true;
+    }
+
+    public String resultOfTheGame(String result){
+
     }
 
     @Override

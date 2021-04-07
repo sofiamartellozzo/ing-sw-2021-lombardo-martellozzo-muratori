@@ -1,16 +1,17 @@
 package it.polimi.ingsw.Model.board;
 
 import it.polimi.ingsw.Model.Color;
+import it.polimi.ingsw.Model.Resource;
 
 /*
 * SOFIA
 * */
-public class FaithMarker {
+public class FaithMarker extends Resource {
     private int position;
     private Color color;
 
     public FaithMarker() {
-        this.color = Color.RED;
+        super(Color.RED);
         this.position = 0;
     }
 

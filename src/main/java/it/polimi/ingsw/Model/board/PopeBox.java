@@ -16,9 +16,8 @@ public class PopeBox extends Box{
      * Last is set to false, then it can be set to true when it's necessary.
      * @param whichSection
      * @param numberBox
-     * @param vaticanSection
      */
-    public PopeBox(int whichSection, int numberBox, VaticanSection vaticanSection) {
+    public PopeBox(int whichSection, int numberBox) {
         super(whichSection, numberBox);
         this.last = false;
     }
