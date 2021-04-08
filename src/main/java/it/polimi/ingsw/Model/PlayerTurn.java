@@ -29,10 +29,13 @@ public class PlayerTurn implements PlayerTurnInterface {
     }
 
     public void choosePlay(TurnAction action) throws InvalidActionException{
+        /*metti che può scartare la carta leader*/
         switch (action){
             case BUY_CARD:
                 //I need the input from the real player (person)
                 this.currentPlayer.buyCard(1,1, this.boardManager, 1);
+            case MOVE_RESOURCE:
+                this.currentPlayer.moveResource(1,3);
             case BUY_FROM_MARKET:
                 this.currentPlayer.buyFromMarket(1, "row", this.boardManager);
             case ACTIVE_PRODUCTION_POWER:
@@ -41,6 +44,10 @@ public class PlayerTurn implements PlayerTurnInterface {
                 cost.add(new Resource(Color.YELLOW));
                 ppCard.add(new DevelopmentCard(1,Color.GREEN, 2,cost,cost,cost));
                 this.currentPlayer.invokesProductionPower(ppCard);
+            case REMOVE_LEADER_CARD:
+                this.currentPlayer.removeLeaderCard(1);
+            default:
+                this.currentPlayer.endTurn();
         }
     }
 

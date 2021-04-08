@@ -39,24 +39,6 @@ public class SimpleBox extends Box{
      * @return
      */
     @Override
-    public VaticanSection getVaticanSection() {
-        return super.getVaticanSection();
-    }
-
-    /**
-     * Setter Method
-     * @param vaticanSection
-     */
-    @Override
-    public void setVaticanSection(VaticanSection vaticanSection) {
-        super.setVaticanSection(vaticanSection);
-    }
-
-    /**
-     * Getter Method
-     * @return
-     */
-    @Override
     public int getWhichSection() {
         return super.getWhichSection();
     }

@@ -24,6 +24,14 @@ public class MarketStructure {
         return marketStructure;
     }
 
+    public Marble[][] getStructure() {
+        return structure;
+    }
+
+    public Marble getSlide() {
+        return slide;
+    }
+
     private void setSlide(Marble newSlide){
         this.slide = newSlide;
     }

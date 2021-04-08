@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.board.resourceManagement;
 
 import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.TypeResource;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,7 @@ public class RealDepot implements Depot{
      * Getter Method
      * @return -> The size of the depot, how many resources it can contained
      */
+    @Override
     public int getSize() {
         return size;
     }
@@ -76,5 +78,31 @@ public class RealDepot implements Depot{
     public void removeResource() throws InvalidActionException {
         if(resources.isEmpty()) throw new InvalidActionException("The depot is empty!");
         resources.remove(resources.size());
+    }
+
+    /**
+     * Checks if the depot is full.
+     * @return
+     */
+    @Override
+    public boolean isFull() {
+        if(resources.size()==size){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Get the type of the content of the depot, if the depot is empty return null.
+     * @return
+     */
+    @Override
+    public TypeResource getType() {
+        if(!resources.isEmpty()){
+            return resources.get(0).getType();
+        }else{
+            return null;
+        }
     }
 }

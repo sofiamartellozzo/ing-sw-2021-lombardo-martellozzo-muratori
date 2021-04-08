@@ -20,13 +20,13 @@ SOFI
 public class BoardManager {
 
     /* the common elements for all the players */
-    private Map<Integer, Player> players;
+    private Map<Integer, PlayerInterface> players;
     private MarketStructure marketStructure;
     private DevelopmentCardTable developmentCardTable;
     private LeaderCardDeck leaderCardDeck;
     private ResourcesSupply resourcesSupply;
 
-    public BoardManager(Map<Integer, Player> players, MarketStructure marketStructure, DevelopmentCardTable developmentCardTable, LeaderCardDeck leaderCardDeck, ResourcesSupply resourcesSupply) {
+    public BoardManager(Map<Integer, PlayerInterface> players, MarketStructure marketStructure, DevelopmentCardTable developmentCardTable, LeaderCardDeck leaderCardDeck, ResourcesSupply resourcesSupply) {
         this.players = players;
         this.marketStructure = marketStructure;
         this.developmentCardTable = developmentCardTable;
@@ -34,7 +34,7 @@ public class BoardManager {
         this.resourcesSupply = resourcesSupply;
     }
 
-    public Map<Integer, Player> getPlayers() {
+    public Map<Integer, PlayerInterface> getPlayers() {
         return players;
     }
 

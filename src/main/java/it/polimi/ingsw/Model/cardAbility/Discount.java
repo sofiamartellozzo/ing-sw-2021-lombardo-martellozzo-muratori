@@ -19,22 +19,33 @@ public class Discount extends SpecialAbility{
     }
 
     /**
-     *
+     * Gets the BuyCard object from the player, verifies the type.
+     * If "Buy", creates a new BuyDiscount object, add the resource discount in it and
+     * set the object in the BuyCard of the Player.
+     * Else if "BuyDiscount", it means the BuyDiscount object is already created,
+     * so using the casting after the control I get the BuyDiscount object and add
+     * the new resource discount in it.
      * @param player
      * @throws InvalidActionException
      */
     @Override
     public void activeAbility(Player player) throws InvalidActionException {
         super.activeAbility(player);
-        if(player.getBuyCard().toString().equals("Buy")) {
+        BuyCard buyCard = player.getBuyCard();
+        if(buyCard.toString().equals("Buy")) {
             BuyDiscount buyDiscount = new BuyDiscount();
             buyDiscount.addResourceWithDiscount(this.getResource());
             player.setBuyCard(buyDiscount);
-        }else if (player.getBuyCard().toString().equals("BuyDiscount")){
-            player.getBuyCard().buyCard(1, 1, new PlayerTurn(player, ),1);
+        }else if (buyCard.toString().equals("BuyDiscount")){
+            BuyDiscount buyDiscount= (BuyDiscount) player.getBuyCard();
+            buyDiscount.addResourceWithDiscount(this.getResource());
         }
     }
 
+    /**
+     * toString Method
+     * @return
+     */
     @Override
     public String toString() {
         return super.toString();

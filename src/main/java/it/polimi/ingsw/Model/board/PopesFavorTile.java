@@ -31,10 +31,10 @@ public class PopesFavorTile {
 
     /**
      * Getter Method
-     * @return
+     * @return -> Return Victory Points based on the state attribute
      */
     public int getVictoryPoints() {
-        return victoryPoints;
+        return this.state.returnPoints(this.victoryPoints);
     }
 
     /**

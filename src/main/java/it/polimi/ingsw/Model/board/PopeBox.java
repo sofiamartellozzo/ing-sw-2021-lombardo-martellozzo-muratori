@@ -9,17 +9,16 @@ package it.polimi.ingsw.Model.board;
 public class PopeBox extends Box{
 
     private boolean last;
+    private boolean activated;
 
     /**
      * Constructor
      * Last is set to false, then it can be set to true when it's necessary.
      * @param whichSection
      * @param numberBox
-     * @param vaticanSection
      */
-    public PopeBox(int whichSection, int numberBox, VaticanSection vaticanSection) {
+    public PopeBox(int whichSection, int numberBox) {
         super(whichSection, numberBox);
-        this.vaticanSection = vaticanSection;
         this.last = false;
     }
 
@@ -64,24 +63,6 @@ public class PopeBox extends Box{
      * @return
      */
     @Override
-    public VaticanSection getVaticanSection() {
-        return super.getVaticanSection();
-    }
-
-    /**
-     * Setter Method
-     * @param vaticanSection
-     */
-    @Override
-    public void setVaticanSection(VaticanSection vaticanSection) {
-        super.setVaticanSection(vaticanSection);
-    }
-
-    /**
-     * Getter Method
-     * @return
-     */
-    @Override
     public int getWhichSection() {
         return super.getWhichSection();
     }
@@ -96,13 +77,12 @@ public class PopeBox extends Box{
     }
 
     /**
-     * It actives the power of the PopeBox which verify if Players
-    * are in the relative Vatican Section in order to turn (or activate) the
-    * Pope's Favor Tile.
-     * Maybe goes to the Control.
-    * */
-    public void powerSPL(){
-        //It must be implemented by the Controller
+     * After checking.
+     * It activates the power of the PopeBox.
+     * Players in the VaticanSection call this method to activate Pope's Favor Tile.
+     * */
+    public void vaticanReport(VaticanSection vaticanSection){
+        vaticanSection.getPopesFavorTile().setState(new Active());
     };
 
     /**
@@ -112,5 +92,21 @@ public class PopeBox extends Box{
     @Override
     public String toString() {
         return "PopeBox";
+    }
+
+    /**
+     * Getter Method
+     * @return
+     */
+    public boolean isActivated() {
+        return activated;
+    }
+
+    /**
+     * Setter Method
+     * @param activated
+     */
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }

@@ -17,4 +17,9 @@ public class Active implements State {
     public int returnPoints(int victoryPoints) {
         return victoryPoints;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

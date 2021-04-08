@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
 import it.polimi.ingsw.Model.board.resourceManagement.Decorator;
 import it.polimi.ingsw.Model.board.resourceManagement.SpecialWarehouse;
+import it.polimi.ingsw.Model.board.resourceManagement.Warehouse;
 
 
 /**
@@ -31,7 +32,13 @@ public class SpecialDepot extends SpecialAbility{
     @Override
     public void activeAbility(Player player) throws InvalidActionException {
         super.activeAbility(player);
-        SpecialWarehouse specialWarehouse = new SpecialWarehouse(player.getGameSpace().getResourceManager().getWarehouse());
+        Warehouse warehouse = player.getGameSpace().getResourceManager().getWarehouse();
+        SpecialWarehouse specialWarehouse=null;
+        if(warehouse.toString().equals("WarehouseStandard")) {
+            specialWarehouse = new SpecialWarehouse(warehouse);
+        }else if(warehouse.toString().equals("SpecialWarehouse")){
+            specialWarehouse = (SpecialWarehouse) warehouse;
+        }
         specialWarehouse.createDepot(this.getResource());
         player.getGameSpace().getResourceManager().setWarehouseStandard(specialWarehouse);
     }

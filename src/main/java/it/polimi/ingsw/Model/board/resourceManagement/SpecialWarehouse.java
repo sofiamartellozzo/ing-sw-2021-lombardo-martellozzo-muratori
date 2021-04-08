@@ -64,13 +64,54 @@ public class SpecialWarehouse extends Decorator{
 
     /**
      * Moves a chosen resource from the depot1 to the depot2.
-     * @param resource
      * @param depot1
      * @param depot2
      * @throws InvalidActionException
      */
     @Override
-    public void moveResource(Resource resource, int depot1, int depot2) throws InvalidActionException {
-        super.moveResource(resource, depot1, depot2);
+    public void moveResource(int depot1, int depot2) throws InvalidActionException {
+        super.moveResource(depot1, depot2);
+    }
+
+    /**
+     * Checks if there's some depot where the player can put the resource in input.
+     * First, checks in the normal depot of the warehouse,
+     * then, if there are, checks in the special depots created by the Special Depot ability.
+     * @param resource
+     * @return
+     */
+    @Override
+    public boolean checkAvailableDepot(Resource resource) {
+        return super.checkAvailableDepot(resource);
+    }
+
+    /**
+     * Checks if the resource is contained by other NORMAL depots different from the chosen depot.
+     * @param resource
+     * @param depot
+     * @return
+     */
+    @Override
+    public boolean checkResourceInSomeDepot(Resource resource, int depot) {
+        return super.checkResourceInSomeDepot(resource, depot);
+    }
+
+
+    /**
+     * Gets the content of ALL depots (normal and special) in an ArrayList of Resources.
+     * @return
+     */
+    @Override
+    public ArrayList<Resource> getContent() {
+        return super.getContent();
+    }
+
+    /**
+     * toString Method
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "SpecialWarehouse";
     }
 }

@@ -54,9 +54,9 @@ public class PersonalBoard implements PersoonalBoardInterface{
      */
     public int getVictoryPointsFromCardSpaces(){
         int points = 0;
-        points += this.cardSpaces.get(0).getTotVictoryPoints();
-        points += this.cardSpaces.get(1).getTotVictoryPoints();
-        points += this.cardSpaces.get(2).getTotVictoryPoints();
+        for (CardSpace cardSpace: getCardSpaces()){
+            points += cardSpace.getTotVictoryPoints();
+        }
         return points;
     }
 
@@ -89,5 +89,13 @@ public class PersonalBoard implements PersoonalBoardInterface{
     public void invokeProductionPowerFromStrongBox(DevelopmentCard card){
         //Dev Card Input needesd
         //card.useProductionPower();
+    }
+
+    public ArrayList<DevelopmentCard> getAllCards(){
+        ArrayList<DevelopmentCard> allCards = new ArrayList<>();
+        for (CardSpace space: getCardSpaces()){
+            allCards.addAll(space.getCards());
+        }
+        return allCards;
     }
 }
