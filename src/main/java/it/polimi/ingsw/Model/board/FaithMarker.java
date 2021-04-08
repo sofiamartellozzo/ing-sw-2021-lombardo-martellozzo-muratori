@@ -18,5 +18,8 @@ public class FaithMarker {
         return this.position;
     }
 
+    //added fot testing
+    public void setPosition(int position){this.position=position;}
+
     public void increasePosition(){this.position++;}
 }

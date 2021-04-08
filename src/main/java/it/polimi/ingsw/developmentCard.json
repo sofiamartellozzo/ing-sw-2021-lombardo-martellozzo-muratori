@@ -1,0 +1,8 @@
+{
+  "color": "GREEN",
+  "level": 1,
+  "costToBuy": [{"color": "BLUE"}, {"color": "BLUE"}],
+  "earnProductionPower": [{"color": "YELLOW"}],
+  "costProductionPower": [{"color": "BLUE"}],
+  "victoryPoints": 1
+}

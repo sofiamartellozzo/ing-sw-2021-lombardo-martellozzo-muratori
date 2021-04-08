@@ -10,7 +10,10 @@ public class DevelopmentCardDeck {
 
     private ArrayList<DevelopmentCard> developDeck;
 
-    //constructor of the class
+    /**
+     * constructor of the class
+     * @param developDeck
+     */
     public DevelopmentCardDeck(ArrayList<DevelopmentCard> developDeck) {
         this.developDeck = developDeck;
     }
@@ -23,10 +26,14 @@ public class DevelopmentCardDeck {
         this.developDeck = developDeck;
     }
 
-    //method used to show the last card avaiable in a deck, if it is not empty
+    /**
+     * method used to show the last card avaiable in a deck, if it is not empty
+     * @return
+     * @throws IndexOutOfBoundsException
+     */
     public DevelopmentCard takeCard() throws IndexOutOfBoundsException {
         if (developDeck.size() == 0)
             throw new IndexOutOfBoundsException("Error, the deck is empty,so you can't take a card!!");
-        else return developDeck.get(developDeck.size()-1);
+        else return developDeck.remove(developDeck.size()-1);
     }
 }

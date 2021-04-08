@@ -3,6 +3,8 @@ import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.board.FaithMarker;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -17,7 +19,15 @@ public class DevelopmentCard extends Card {
     private final ArrayList<Resource> earnProductionPower;
     private final ArrayList<Resource> costProductionPower;
 
-    //constructor of the class
+    /**
+     * constructor of the class
+     * @param victoryPoints
+     * @param color
+     * @param level
+     * @param costToBuy
+     * @param earnProductionPower
+     * @param costProductionPower
+     */
 
     public DevelopmentCard(int victoryPoints, Color color, int level, ArrayList<Resource> costToBuy, ArrayList<Resource> earnProductionPower, ArrayList<Resource> costProductionPower)
     {
@@ -30,7 +40,6 @@ public class DevelopmentCard extends Card {
     }
 
     // Getter methods
-
     public Color getColor(){ return color; }
     public int getlevel(){ return level; }
     public ArrayList<Resource> getCost(){ return costToBuy;}
@@ -44,12 +53,28 @@ public class DevelopmentCard extends Card {
         return victoryPoints;
     }
 
-    /*in this method you remove the resouces that you paid from the Warehouse (and after from strongbox)
-      and put the new ones in the StrongBox */
-    public void UseProductionPower(Player player) throws InvalidActionException {
+    /**
+     * in this method you remove the resouces that you paid from the Warehouse (and after from strongbox) but you can't do both
+     * and put the new ones in the StrongBox
+     * @param player
+     * @param where
+     * @throws InvalidActionException
+     */
+    public void useProductionPower(Player player,String where) throws InvalidActionException {
 
-        player.getGameSpace().getResourceManager().removeResources(costProductionPower);
+
+        if (where.equals("Warehouse"))
+        {
+            player.getGameSpace().getResourceManager().removeResourcesFromWhareHouse(costProductionPower);
+        }
+        if (where.equals("StrongBox")) {
+
+            player.getGameSpace().getResourceManager().removeResourcesFromStrongBox(costProductionPower);
+        }
         player.getGameSpace().getResourceManager().addResourcesToStrongBox(earnProductionPower);
+
+        //if the resource is a faithMarker I don't have to add nothing!! Only do 1 step on !!!!
+
     }
 
 

@@ -17,7 +17,12 @@ import java.util.Random;
 
 public class BoardManagerFactory {
 
-    public BoardManager createBoardManager(HashMap<Integer,Player> turnSequence)
+    /**
+     * constructor of the class
+     * @param turnSequence
+     * @return
+     */
+    public BoardManager createBoardManager(HashMap<Integer,PlayerInterface> turnSequence)
     {
         MarketStructure marketStructure = MarketStructure.getInstance(createStructure(),new ColoredMarble(Color.PURPLE));
         DevelopmentCardTable developmentCardTable = DevelopmentCardTable.getInstance(createDevelopmentDeckTable());

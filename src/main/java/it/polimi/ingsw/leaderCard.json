@@ -1,9 +1,7 @@
 {
-
-  "name": "ingsw",
-  "version": "1.0.0",
-  "dependencies": {
-
-}
+  "specialAbility": {"active": false, "resource": {"color": "PURPLE"}},
+  "requirements": [{"color": "BLUE"}],
+  "state": {},
+  "victoryPoints": 3
 }
 
