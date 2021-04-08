@@ -48,11 +48,11 @@ public class SpecialCard {
 
         if (where.equals("Warehouse"))
         {
-            player.getGameSpace().getResourceManager().removeResourcesFromWhareHouse(costProductionPower);
+            player.getGameSpace().getResourceManager().removeFromWarehouse(costProductionPower);
         }
         if ( where.equals("StrongBox")) {
 
-            player.getGameSpace().getResourceManager().removeResourcesFromStrongBox(costProductionPower);
+            player.getGameSpace().getResourceManager().removeFromStrongBox(costProductionPower);
         }
 
         player.getGameSpace().getResourceManager().addResourcesToStrongBox(resourceChosen);

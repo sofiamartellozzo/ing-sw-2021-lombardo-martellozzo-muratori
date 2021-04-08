@@ -37,7 +37,17 @@ public class FaithTrackTest extends TestCase {
         popesFavorTiles.add(1,popesFavorTile2);
         popesFavorTiles.add(2,popesFavorTile3);
 
-        faithTrack = new FaithTrack(boxes,popesFavorTiles,new FaithMarker());
+        ArrayList<Box> b = new ArrayList<>();
+        b.add(new SimpleBox(1,2));
+        b.add(new SimpleBox(1,3));
+        PopesFavorTile pop = new PopesFavorTile(1,3);
+
+        VaticanSection vaticanSection = new VaticanSection(1,b,pop);
+        VaticanSection vaticanSection1 = new VaticanSection(2,b,pop);
+
+        ArrayList<VaticanSection> vatSec = new ArrayList<>();
+
+        faithTrack = new FaithTrack(boxes,popesFavorTiles,new FaithMarker(),vatSec);
     }
 
     @After
@@ -72,9 +82,19 @@ public class FaithTrackTest extends TestCase {
 
     }
 
+    @Test
     public void testIncreasePosition() {
 
         faithTrack.getFaithMarker().increasePosition();
         assertEquals(faithTrack.getPositionFaithMarker(),1);
+    }
+
+    @Test
+    public void testCheckInvokeVaticanReport() {
+    }
+
+    @Test
+    public void testDoVaticanReport(){
+
     }
 }

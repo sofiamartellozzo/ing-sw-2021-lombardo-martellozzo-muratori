@@ -44,7 +44,10 @@ public class DevelopmentCard extends Card {
     public int getlevel(){ return level; }
     public ArrayList<Resource> getCost(){ return costToBuy;}
 
-    //this methods show to the player the production power and the cost of the card he chose
+    /**
+     * this methods show to the player the earn production power and the cost of the card he chose
+     * @return
+     */
     public ArrayList<Resource> showCostProductionPower(){return costProductionPower;}
     public ArrayList<Resource> showProceedsProductionPower(){return earnProductionPower;}
 
@@ -65,11 +68,11 @@ public class DevelopmentCard extends Card {
 
         if (where.equals("Warehouse"))
         {
-            player.getGameSpace().getResourceManager().removeResourcesFromWhareHouse(costProductionPower);
+            player.getGameSpace().getResourceManager().removeFromWarehouse(costProductionPower);
         }
         if (where.equals("StrongBox")) {
 
-            player.getGameSpace().getResourceManager().removeResourcesFromStrongBox(costProductionPower);
+            player.getGameSpace().getResourceManager().removeFromStrongBox(costProductionPower);
         }
         player.getGameSpace().getResourceManager().addResourcesToStrongBox(earnProductionPower);
 

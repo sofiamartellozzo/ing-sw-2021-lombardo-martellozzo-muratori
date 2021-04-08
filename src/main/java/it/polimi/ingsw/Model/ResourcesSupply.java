@@ -4,9 +4,10 @@ import java.util.NoSuchElementException;
 
 /* ILA */
 
-/* SINGLETON: because I have to instance this class only once,
-and the next time
-he has to give me back the same class*/
+/** SINGLETON: because I have to instance this class only once,
+    and the next time
+    he has to give me back the same class
+ */
 
 public class ResourcesSupply {
 

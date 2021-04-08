@@ -31,7 +31,10 @@ public class FaithTrack {
     public ArrayList<PopesFavorTile> getPopesFavorTiles(){return popesFavorTiles;}
     public ArrayList<Box> getPathBox() { return pathBox;}
 
-    // this method returns the position of the faithMarker in the track (a number)
+    /**
+     * this method returns the position of the faithMarker in the track (a number)
+     * @return
+     */
     public int getPositionFaithMarker() {
         return faithMarker.getPosition();
     }

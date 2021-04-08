@@ -14,7 +14,6 @@ import it.polimi.ingsw.Model.cardAbility.SpecialAbility;
 
 public class LeaderCard extends Card{
 
-    //private boolean hidden;
     private  SpecialAbility specialAbility;
     private  ArrayList<Object> requirements;
     private  State state;
@@ -29,14 +28,12 @@ public class LeaderCard extends Card{
 
         super(victoryPoints);
         this.requirements=requirements;
-        //this.hidden=false;
         this.specialAbility=specialAbility;
         this.state = new Inactive();
     }
 
     // Getter methods
 
-    //public boolean getHiddenValue(){return hidden;}
     public SpecialAbility getSpecialAbility(){return specialAbility;}
     public ArrayList<Object> getRequirements(){return requirements;}
     public State getState(){return state;}

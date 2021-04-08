@@ -16,6 +16,12 @@ public class Cell {
         this.type=type;
     }
 
+    /**
+     * method that create a new Resource using the Enum TypeResource
+     * @param type
+     * @return
+     */
+
     private Resource createResource(TypeResource type){
         switch (type){
             case COIN:
@@ -30,15 +36,15 @@ public class Cell {
     }
 
     // Getter methods
+    public Resource getResources() { return resource; }
+    public TypeResource getType() { return type; }
 
-    public Resource getResources() {
-        return resource;
-    }
-    public TypeResource getType() {
-        return type;
-    }
+    /**
+     * because the resources are limitless I don't have to control the lenght of the ArrayList before removing them
+     * @param resource
+     * @return
+     */
 
-    /* because the resources are limitless I don't have to control the lenght of the ArrayList before removing them*/
     public Resource askResource(Resource resource) {
         return createResource(this.type);
     }
