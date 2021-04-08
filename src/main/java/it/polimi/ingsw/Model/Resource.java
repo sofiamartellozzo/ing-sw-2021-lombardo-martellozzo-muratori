@@ -30,13 +30,16 @@ public class Resource{
         switch (this.color){
             case RED:
                 this.typeResource = TypeResource.FAITHMARKER;
+                break;
             case BLUE:
                 this.typeResource = TypeResource.SHIELD;
+                break;
             case YELLOW:
                 this.typeResource = TypeResource.COIN;
+                break;
             case PURPLE:
                 this.typeResource = TypeResource.SERVANT;
-
+                break;
         }
     }
     public TypeResource getType(){

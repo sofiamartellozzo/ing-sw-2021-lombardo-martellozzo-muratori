@@ -65,7 +65,7 @@ public class BoardManagerFactory {
 
     protected DevelopmentCardDeck[][] createDevelopmentDeckTable(){
 
-        DevelopmentCardDeck[][] squareCards = new DevelopmentCardDeck[1][2];
+        DevelopmentCardDeck[][] squareCards = new DevelopmentCardDeck[3][4];
 
         //create the hash map for the cost of a Card
         ArrayList<Resource> array = new ArrayList<>();
@@ -91,6 +91,31 @@ public class BoardManagerFactory {
         list.add(card4);
         DevelopmentCardDeck smallDeck1 = new DevelopmentCardDeck(list);
 
+        DevelopmentCard card91 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card92 = new DevelopmentCard(2,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card93 = new DevelopmentCard(6,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card94 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+
+        ArrayList<DevelopmentCard> list12 = new ArrayList<>();
+        list12.add(card91);
+        list12.add(card92);
+        list12.add(card93);
+        list12.add(card94);
+        DevelopmentCardDeck smallDeck12 = new DevelopmentCardDeck(list12);
+
+        DevelopmentCard card81 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card82 = new DevelopmentCard(2,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card83 = new DevelopmentCard(6,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card84 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+
+        ArrayList<DevelopmentCard> list13 = new ArrayList<>();
+        list13.add(card91);
+        list13.add(card92);
+        list13.add(card93);
+        list13.add(card94);
+        DevelopmentCardDeck smallDeck13 = new DevelopmentCardDeck(list13);
+
+
 
         DevelopmentCard card5 = new DevelopmentCard(3,Color.BLUE,1,array,proceeds,cost);
         DevelopmentCard card6 = new DevelopmentCard(2,Color.BLUE,1,array,proceeds,cost);
@@ -104,8 +129,47 @@ public class BoardManagerFactory {
         list1.add(card8);
         DevelopmentCardDeck smallDeck2 = new DevelopmentCardDeck(list1);
 
+        DevelopmentCard card9 = new DevelopmentCard(3,Color.YELLOW,1,array,proceeds,cost);
+        DevelopmentCard card10 = new DevelopmentCard(2,Color.YELLOW,1,array,proceeds,cost);
+        DevelopmentCard card11 = new DevelopmentCard(6,Color.YELLOW,1,array,proceeds,cost);
+        DevelopmentCard card12 = new DevelopmentCard(3,Color.YELLOW,1,array,proceeds,cost);
+
+        ArrayList<DevelopmentCard> list2 = new ArrayList<>();
+        list2.add(card9);
+        list2.add(card10);
+        list2.add(card11);
+        list2.add(card12);
+        DevelopmentCardDeck smallDeck3 = new DevelopmentCardDeck(list2);
+
+        DevelopmentCard card13 = new DevelopmentCard(3,Color.PURPLE,1,array,proceeds,cost);
+        DevelopmentCard card14 = new DevelopmentCard(2,Color.PURPLE,1,array,proceeds,cost);
+        DevelopmentCard card15 = new DevelopmentCard(6,Color.PURPLE,1,array,proceeds,cost);
+        DevelopmentCard card16 = new DevelopmentCard(3,Color.PURPLE,1,array,proceeds,cost);
+
+        ArrayList<DevelopmentCard> list3 = new ArrayList<>();
+        list3.add(card13);
+        list3.add(card14);
+        list3.add(card15);
+        list3.add(card16);
+        DevelopmentCardDeck smallDeck4 = new DevelopmentCardDeck(list3);
+
+
+
         squareCards[0][0] = smallDeck1;
+        squareCards[1][0]= smallDeck12;
+        squareCards[2][0]= smallDeck13;
+
         squareCards[0][1]= smallDeck2;
+        squareCards[1][1]= smallDeck2;
+        squareCards[2][1]= smallDeck2;
+
+        squareCards[0][2]= smallDeck3;
+        squareCards[1][2]= smallDeck3;
+        squareCards[2][2]= smallDeck3;
+
+        squareCards[0][3]= smallDeck4;
+        squareCards[1][3]= smallDeck4;
+        squareCards[2][3]= smallDeck4;
 
         return squareCards;
     }

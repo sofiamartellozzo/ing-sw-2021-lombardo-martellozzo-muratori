@@ -8,7 +8,7 @@ import it.polimi.ingsw.Model.card.DevelopmentCard;
 
 import java.util.ArrayList;
 
-public interface PersoonalBoardInterface {
+public interface PersonalBoardInterface {
     public FaithTrack getFaithTrack();
     public Warehouse getWarehouse();
     public StrongBox getStrongbox();

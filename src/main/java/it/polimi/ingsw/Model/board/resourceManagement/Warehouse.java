@@ -36,7 +36,8 @@ public abstract class Warehouse {
      * @throws InvalidActionException -> The thrown exception if it doesn't respect the checks.
      */
     public void addResource(Resource resource, int depot) throws InvalidActionException {
-        if (depot <= 0 || depot > depots.size()) throw new InvalidActionException("Choose a depot!");
+
+        if ((depot <= 0) || (depot > depots.size()+1)) throw new InvalidActionException("Choose a depot!");
         if (resource == null) throw new InvalidActionException("Resource not valid");
         if (!depots.contains(depots.get(depot - 1))) throw new InvalidActionException("The depot doesn't exist!");
         if (!checkAvailableDepot(resource)) throw new InvalidActionException("The resource can't be add in any depot, move some resources or discard it");

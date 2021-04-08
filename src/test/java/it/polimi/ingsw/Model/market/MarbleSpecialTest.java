@@ -43,6 +43,6 @@ public class MarbleSpecialTest extends TestCase {
             e.printStackTrace();
         }
         Resource r = new Resource(Color.YELLOW); //create the resource that this Marble shoult add to the Player Wharehouse
-        assertEquals(r, player.getGameSpace().getResourceManager().getResources().get(0)); //check if the resource is in the Wharehouse
+        assertEquals(r.getColor(), player.getGameSpace().getResourceManager().getResources().get(0).getColor()); //check if the resource is in the Wharehouse
     }
 }

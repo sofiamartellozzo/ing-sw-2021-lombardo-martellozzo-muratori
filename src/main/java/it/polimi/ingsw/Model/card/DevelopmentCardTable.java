@@ -4,6 +4,7 @@ import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Color;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 
 /* ILA */
 
@@ -88,6 +89,7 @@ public class DevelopmentCardTable {
                    else table[1][0].takeCard();
                }
                else table[2][0].takeCard();
+               break;
            case BLUE:
                if(table[2][1].getDevelopDeck().isEmpty())
                {
@@ -102,7 +104,7 @@ public class DevelopmentCardTable {
                    else table[1][1].takeCard();
                }
                else table[2][1].takeCard();
-
+               break;
            case YELLOW:
                if(table[2][2].getDevelopDeck().isEmpty())
                {
@@ -117,7 +119,7 @@ public class DevelopmentCardTable {
                    else table[1][2].takeCard();
                }
                else table[2][2].takeCard();
-
+               break;
            case PURPLE:
                if(table[2][3].getDevelopDeck().isEmpty())
                {
@@ -132,6 +134,7 @@ public class DevelopmentCardTable {
                    else table[1][3].takeCard();
                }
                else table[2][3].takeCard();
+               break;
        }
     }
 

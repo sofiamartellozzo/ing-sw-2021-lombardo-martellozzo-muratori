@@ -5,6 +5,8 @@ import it.polimi.ingsw.Model.BoardManager;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.SoloPlayer;
 
+import java.util.EmptyStackException;
+
 /*
  * SOFI*/
 

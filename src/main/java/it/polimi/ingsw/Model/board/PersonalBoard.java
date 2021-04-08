@@ -1,11 +1,9 @@
 package it.polimi.ingsw.Model.board;
 
 
-import it.polimi.ingsw.Model.Resource;
 import it.polimi.ingsw.Model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.Model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.Model.board.resourceManagement.Warehouse;
-import it.polimi.ingsw.Model.board.resourceManagement.WarehouseStandard;
 import it.polimi.ingsw.Model.card.DevelopmentCard;
 
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import java.util.ArrayList;
 /*
 * SOFI*/
 
-public class PersonalBoard implements PersoonalBoardInterface{
+public class PersonalBoard implements PersonalBoardInterface {
     // These attributes refers to the components of the Personal Board
     private FaithTrack faithTrack;
     private ResourceManager resourceManager;
