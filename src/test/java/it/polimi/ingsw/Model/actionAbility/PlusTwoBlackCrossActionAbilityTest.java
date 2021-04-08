@@ -31,7 +31,7 @@ public class PlusTwoBlackCrossActionAbilityTest extends TestCase {
         Map<Integer, Player> player = new HashMap<>();
         SoloPlayer player1 = new SoloPlayer("gigi");
         BoardManagerFactory bMF = new BoardManagerFactory();
-        BoardManager boardManager = bMF.createBoardManager()
-        a.activeAbility();
+        //BoardManager boardManager = bMF.createBoardManager();
+        //a.activeAbility();
     }
 }

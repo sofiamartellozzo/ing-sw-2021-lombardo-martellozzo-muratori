@@ -22,7 +22,7 @@ public class PersonalSoloBoardFactory extends PersonalBoardFactory{
         ResourceManager resourceManager = new ResourceManager(strongBox, warehouseStandard);
         FaithTrack faithTrack = createFaithTrack();
         LorenzoFaithMarker lorenzoFaithMarker = new LorenzoFaithMarker();
-        SoloFaithTrack soloFaithTrack = new SoloFaithTrack(faithTrack.getPathBox(), faithTrack.getPopesFavorTiles(), faithTrack.getFaithMarker(), lorenzoFaithMarker);
+        SoloFaithTrack soloFaithTrack = new SoloFaithTrack(faithTrack.getPathBox(), faithTrack.getPopesFavorTiles(), faithTrack.getFaithMarker(), faithTrack.getVaticanSections(), lorenzoFaithMarker);
         ArrayList<ActionToken> actionTokens = createActionToken();
         return new SoloPersonalBoard(soloFaithTrack, resourceManager, allCardSpace, actionTokens);
     }

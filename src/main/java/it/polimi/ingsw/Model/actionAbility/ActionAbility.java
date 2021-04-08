@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.actionAbility;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.BoardManager;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.SoloPlayer;
@@ -13,5 +14,5 @@ import it.polimi.ingsw.Model.SoloPlayer;
  */
 
 public interface ActionAbility {
-    public void activeAbility(BoardManager boardManager, SoloPlayer player);
+    public void activeAbility(BoardManager boardManager, SoloPlayer player) throws InvalidActionException;
 }

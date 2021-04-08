@@ -64,7 +64,7 @@ public class PlayerTurn implements PlayerTurnInterface {
     }
 
 
-    public boolean checkEndGame(){
+    public boolean checkEndGame() throws InvalidActionException{
         return true;
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.market;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
@@ -28,7 +29,7 @@ public class MarbleSpecial extends Marble {
     }
 
     @Override
-    public void choose(Player player) {
+    public void choose(Player player) throws InvalidActionException {
 
         if (ability.size()==2){
             int marble = player.chooseSpecialWhiteMarble();

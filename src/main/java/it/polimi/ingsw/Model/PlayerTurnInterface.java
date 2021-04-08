@@ -16,7 +16,7 @@ public interface PlayerTurnInterface {
 
     public void activeLeaderCard(int wich) throws InvalidActionException;
 
-    public boolean checkEndGame();
+    public boolean checkEndGame() throws InvalidActionException;
 
     public boolean checkEndTurn();
 }

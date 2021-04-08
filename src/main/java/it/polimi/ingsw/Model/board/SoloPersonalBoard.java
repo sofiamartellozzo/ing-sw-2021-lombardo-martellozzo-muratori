@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.board;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.ActionToken;
 import it.polimi.ingsw.Model.BoardManager;
 import it.polimi.ingsw.Model.SoloPlayer;
@@ -30,7 +31,7 @@ public class SoloPersonalBoard extends PersonalBoard{
      * this method get one Action Token random, at the end of the player turn
      * these cards are all stored in a Specific Deck
      */
-    public void getActionTokenDeck(BoardManager boardManager, SoloPlayer player) {
+    public void getActionTokenDeck(BoardManager boardManager, SoloPlayer player) throws InvalidActionException {
         Random random = new Random();
         ActionToken actionToken = this.actionTokens.get(random.nextInt(this.actionTokens.size()));
         actionToken.activeActionToken(boardManager, player);

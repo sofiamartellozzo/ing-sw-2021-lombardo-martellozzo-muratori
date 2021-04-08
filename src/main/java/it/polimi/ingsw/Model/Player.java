@@ -386,7 +386,7 @@ public class Player implements PlayerInterface{
      * @throws IllegalArgumentException
      */
     @Override
-    public void buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException{
+    public void buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException{
         if (wich.equals("row")){
             boardManager.getMarketStructure().rowMoveMarble(position, this);
         }
@@ -444,7 +444,7 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public void putResources(Resource resource){
+    public void putResources(Resource resource) throws InvalidActionException{
         //i ask to put this resource in this player warehouse
 
         /*we supposed that if the player is able to put the resource only moving two (or more) resources
@@ -460,7 +460,7 @@ public class Player implements PlayerInterface{
     }
 
     @Override
-    public void moveResource(int depot1, int depot2){
+    public void moveResource(int depot1, int depot2) throws InvalidActionException{
         this.getGameSpace().getResourceManager().getWarehouse().moveResource(depot1,depot2
         );
     }

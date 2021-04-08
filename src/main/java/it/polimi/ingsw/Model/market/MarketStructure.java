@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.market;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Player;
 
 /*
@@ -36,7 +37,7 @@ public class MarketStructure {
         this.slide = newSlide;
     }
 
-    public void rowMoveMarble(int row, Player player){
+    public void rowMoveMarble(int row, Player player) throws InvalidActionException {
         for (int i=0; i<4; i++){
             this.structure[row][i].choose(player);
         }
@@ -49,7 +50,7 @@ public class MarketStructure {
         this.structure[row][3]= oldSlide;
 
     }
-    public void columnMoveMarble(int column, Player player){
+    public void columnMoveMarble(int column, Player player) throws InvalidActionException{
         for (int i=0; i<3; i++){
             this.structure[i][column].choose(player);
         }

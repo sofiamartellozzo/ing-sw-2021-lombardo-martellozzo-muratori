@@ -65,9 +65,14 @@ public class PersonalBoardFactory {
         VaticanSection vaticanSection2 = new VaticanSection(2, boxes, popesFavorTile2);
         VaticanSection vaticanSection3 = new VaticanSection(3, boxes, popesFavorTile2);
 
+        ArrayList<VaticanSection> vaticanSections = new ArrayList<>();
+        vaticanSections.add(vaticanSection1);
+        vaticanSections.add(vaticanSection2);
+        vaticanSections.add(vaticanSection3);
+
         //create faith market
         FaithMarker faithMarker = new FaithMarker();
 
-        return new FaithTrack(boxes, array3, faithMarker);
+        return new FaithTrack(boxes, array3, faithMarker, vaticanSections);
     }
 }

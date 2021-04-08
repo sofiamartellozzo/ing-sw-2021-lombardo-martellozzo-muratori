@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.actionAbility.ActionAbility;
 
 /*
@@ -14,7 +15,7 @@ public class ActionToken {
         this.ability = ability;
     }
 
-    public void activeActionToken(BoardManager boardManager, SoloPlayer player){
+    public void activeActionToken(BoardManager boardManager, SoloPlayer player) throws InvalidActionException {
         this.ability.activeAbility(boardManager, player);
     }
 }

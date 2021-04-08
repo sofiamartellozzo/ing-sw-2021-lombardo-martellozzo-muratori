@@ -59,7 +59,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
     }
 
     @Override
-    public boolean checkEndGame() {
+    public boolean checkEndGame() throws InvalidActionException{
         if (currentPlayer.checkIfWin().equals("Check DevelopTable!")){
             if(boardManager.getDevelopmentCardTable().checkIfEmpty()){
                 currentPlayer.setResult(Result.LOOSER);
@@ -72,9 +72,6 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
             return true;
     }
 
-    public String resultOfTheGame(String result){
-
-    }
 
     @Override
     public boolean checkEndTurn(){

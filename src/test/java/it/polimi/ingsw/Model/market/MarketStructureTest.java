@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.market;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.board.PersonalBoard;
@@ -41,7 +42,7 @@ public class MarketStructureTest extends TestCase {
     }
 
     @Test
-    public void testRowMoveMarble() {
+    public void testRowMoveMarble() throws InvalidActionException {
 
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
         Player player = new Player("pippo");

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.actionAbility;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.BoardManager;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.SoloPlayer;
@@ -22,7 +23,7 @@ public class CardActionAbility implements ActionAbility {
     /**
      * method called when take the Action Token with this ability
      */
-    public void activeAbility(BoardManager boardManager, SoloPlayer player){
+    public void activeAbility(BoardManager boardManager, SoloPlayer player) throws InvalidActionException {
         //remove two card of this.color
         boardManager.getDevelopmentCardTable().getSquare(this.color);
         boardManager.getDevelopmentCardTable().getSquare(this.color);

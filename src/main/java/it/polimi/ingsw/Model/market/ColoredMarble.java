@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.market;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
@@ -20,7 +21,7 @@ public class ColoredMarble extends Marble {
     }
 
     @Override
-    public void choose(Player player) throws IllegalArgumentException{
+    public void choose(Player player) throws InvalidActionException {
         if (this.getColor() != Color.WHITE){
             Resource resource = new Resource(this.getColor());
             player.putResources(resource);

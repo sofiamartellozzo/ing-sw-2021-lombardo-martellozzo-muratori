@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.market;
 
+import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Resource;
@@ -22,5 +23,5 @@ public abstract class Marble {
      * @param player
      * @return
      */
-    public abstract void choose(Player player);
+    public abstract void choose(Player player) throws InvalidActionException;
 }

@@ -39,7 +39,7 @@ public abstract class Warehouse {
         if (depot <= 0 || depot > depots.size()) throw new InvalidActionException("Choose a depot!");
         if (resource == null) throw new InvalidActionException("Resource not valid");
         if (!depots.contains(depots.get(depot - 1))) throw new InvalidActionException("The depot doesn't exist!");
-        if (checkAvailableDepot(resource)) throw new InvalidActionException("The resource can't be add in any depot, move some resources or discard it");
+        if (!checkAvailableDepot(resource)) throw new InvalidActionException("The resource can't be add in any depot, move some resources or discard it");
         depots.get(depot - 1).addResource(resource);
     }
 
@@ -99,7 +99,7 @@ public abstract class Warehouse {
      */
     public boolean checkAvailableDepot(Resource resource) {
        for(int i=0;i<3;i++){
-           if(depots.get(i).getResources().isEmpty() && checkResourceInSomeDepot(resource,i+1)){
+           if((depots.get(i).getResources().isEmpty()) && (!checkResourceInSomeDepot(resource,i+1))){
                return true;
            }else {
                TypeResource type = depots.get(i).getType();
@@ -124,7 +124,7 @@ public abstract class Warehouse {
      */
     public boolean checkResourceInSomeDepot(Resource resource, int depot){
         for(int i=0;i<3;i++){
-            if(i+1!=depot && depots.get(i).getType().equals(resource.getType()) && depots.get(i).getType()!=null){
+            if((i+1!=depot) && (!depots.get(i).getResources().isEmpty()) && (depots.get(i).getType().equals(resource.getType())) && (depots.get(i).getType()!=null)){
                 return true;
             }
         }

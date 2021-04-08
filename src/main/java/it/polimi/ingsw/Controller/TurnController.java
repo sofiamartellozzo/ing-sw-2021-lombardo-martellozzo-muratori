@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 * SOFI*/
 
 public class TurnController {
-    private HashMap<Integer, Player> turnSequence;
+    private HashMap<Integer, PlayerInterface> turnSequence;
     private int currenyTurnIndex;
     private PlayerTurn currentTurnIstance;
     private Player currentPlayer;
@@ -205,7 +205,7 @@ public class TurnController {
         else {
             this.currenyTurnIndex++;
         }
-        Player nextPlayer = this.turnSequence.get(currenyTurnIndex);
+        Player nextPlayer = (Player) this.turnSequence.get(currenyTurnIndex);
         startPlayerTurn(nextPlayer);
     }
 

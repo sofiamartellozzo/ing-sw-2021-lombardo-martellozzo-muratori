@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class SoloFaithTrack extends FaithTrack {
 
     private LorenzoFaithMarker lorenzoFaithMarker;
-    public SoloFaithTrack(ArrayList<Box> pathBox, ArrayList<PopesFavorTile> popesFavorTiles , FaithMarker faithMarker, LorenzoFaithMarker lorenzoFaithMarker)
+    public SoloFaithTrack(ArrayList<Box> pathBox, ArrayList<PopesFavorTile> popesFavorTiles , FaithMarker faithMarker, ArrayList<VaticanSection> vaticanSections, LorenzoFaithMarker lorenzoFaithMarker)
     {
-        super(pathBox,popesFavorTiles,faithMarker);
+        super(pathBox,popesFavorTiles,faithMarker, vaticanSections);
         this.lorenzoFaithMarker = lorenzoFaithMarker;
     }
 

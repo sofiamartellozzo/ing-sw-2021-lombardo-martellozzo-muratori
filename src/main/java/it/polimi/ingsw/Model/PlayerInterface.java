@@ -33,13 +33,13 @@ public interface PlayerInterface {
     public LeaderCard chooseLeaderCardToActive(int number);
     public void activeLeaderCardAbility(LeaderCard card) throws InvalidActionException;
     public void activeLeaderCardAbility(LeaderCard card,Resource choice) throws InvalidActionException;
-    public void buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException;
+    public void buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException;
     public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException;
     public boolean isPlaying();
     public void setPlaying(boolean playing);
     public void endTurn();
-    public void putResources(Resource resource);
-    public void moveResource(int depot1, int depot2);
+    public void putResources(Resource resource) throws InvalidActionException;
+    public void moveResource(int depot1, int depot2) throws InvalidActionException;
     public int chooseDepot();
     public void removeLeaderCard(int card) throws InvalidActionException;
 
