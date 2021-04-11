@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.board;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * It represents the Pope's Favor Tile.
  */
 public class PopesFavorTile {

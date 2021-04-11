@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * It refers to the ability of the Production
  * Power provided by the LeaderCard
  * */
@@ -43,6 +44,6 @@ public class AdditionalPower extends SpecialAbility{
      */
     @Override
     public String toString() {
-        return super.toString();
+        return "AdditionalPower";
     }
 }

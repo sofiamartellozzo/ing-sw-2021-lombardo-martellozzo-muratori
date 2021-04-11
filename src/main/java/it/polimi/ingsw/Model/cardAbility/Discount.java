@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.*;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * It refers to the ability of the Discount when the relative Player
  * buy a Development Card
  */
@@ -48,6 +49,6 @@ public class Discount extends SpecialAbility{
      */
     @Override
     public String toString() {
-        return super.toString();
+        return "Discount";
     }
 }

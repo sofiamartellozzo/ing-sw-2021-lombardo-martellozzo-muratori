@@ -4,10 +4,12 @@ import it.polimi.ingsw.Exception.InvalidActionException;
 import it.polimi.ingsw.Model.Resource;
 import it.polimi.ingsw.Model.TypeResource;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * Implements Depot interface.
  * It represents one of the three depots from the warehouse.
  * resources -> Indicates what and how many resources are in the depot
@@ -65,8 +67,9 @@ public class RealDepot implements Depot{
      */
     @Override
     public void addResource(Resource resource) throws InvalidActionException {
-        if(resources.size()>=getSize()) throw new InvalidActionException("The depot is full!");
-        if(!resources.isEmpty() && !resources.contains(resource)) throw new InvalidActionException("The resource you want to put in isn't the same type of the content!");
+        if(resource==null) throw new InvalidActionException("Uncorrect reosurce");
+        if(isFull()) throw new InvalidActionException("The depot is full!");
+        if(!resources.isEmpty() && !getType().equals(resource.getType())) throw new InvalidActionException("The resource you want to put in isn't the same type of the content!");
         resources.add(resource);
     }
 
@@ -77,7 +80,7 @@ public class RealDepot implements Depot{
     @Override
     public void removeResource() throws InvalidActionException {
         if(resources.isEmpty()) throw new InvalidActionException("The depot is empty!");
-        resources.remove(resources.size());
+        resources.remove(resources.size()-1);
     }
 
     /**
@@ -103,6 +106,44 @@ public class RealDepot implements Depot{
             return resources.get(0).getType();
         }else{
             return null;
+        }
+    }
+
+    /**
+     * After checking if:
+     * - The input is correct, all resources you want to put in must be of the same type;
+     * - The depot is not full;
+     * - The type of resources in input is the same of the content of the depot, in case the depot is not empty;
+     * - There's enough space.
+     * Adds all resources in the depot.
+     * @param num
+     * @param resource
+     * @throws InvalidActionException
+     */
+    @Override
+    public void addResources(int num,Resource resource) throws InvalidActionException {
+        if (resource==null) throw new InvalidActionException("Uncorrect resources!");
+        if(!resources.isEmpty() && !getType().equals(resource.getType())) throw new InvalidActionException("The resources you want to put in isn't the same type of the content!");
+        if(num>getSize()-this.resources.size()) throw new InvalidActionException("There's no space!");
+        for(int i=0;i<num;i++){
+            resources.add(resource);
+        }
+    }
+
+    /**
+     * After checking if:
+     * - The depot is not empty;
+     * - The number of resources you want to remove is less than or equals to those that the depot contains.
+     * Removes the number of resources indicated.
+     * @param num
+     * @throws InvalidActionException
+     */
+    @Override
+    public void removeResources(int num) throws InvalidActionException {
+        if(this.resources.isEmpty()) throw new InvalidActionException("The depot is empty!");
+        if(resources.size()<num) throw new InvalidActionException("You're trying to remove more than how many it contains!");
+        for(int i=0;i<num;i++){
+            resources.remove(resources.size()-1);
         }
     }
 }

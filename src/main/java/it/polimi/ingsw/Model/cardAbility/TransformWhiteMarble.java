@@ -53,6 +53,6 @@ public class TransformWhiteMarble extends SpecialAbility{
      */
     @Override
     public String toString() {
-        return super.toString();
+        return "TransformWhiteMarble";
     }
 }

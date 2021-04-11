@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.board;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * One of the type of the boxes.
  * It has the same attribute of Box class.
  * */

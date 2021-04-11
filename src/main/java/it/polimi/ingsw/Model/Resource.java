@@ -40,6 +40,11 @@ public class Resource{
             case PURPLE:
                 this.typeResource = TypeResource.SERVANT;
                 break;
+            case GREY:
+                this.typeResource = TypeResource.STONE;
+                break;
+            default:
+                throw new IllegalArgumentException("Color not allowed for create a Resource");
         }
     }
     public TypeResource getType(){

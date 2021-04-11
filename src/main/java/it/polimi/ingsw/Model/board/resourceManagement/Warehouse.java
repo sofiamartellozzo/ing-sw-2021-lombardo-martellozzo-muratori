@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.board.resourceManagement;
 
 import it.polimi.ingsw.Exception.*;
+import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Resource;
 import it.polimi.ingsw.Model.TypeResource;
 
@@ -36,12 +37,10 @@ public abstract class Warehouse {
      * @throws InvalidActionException -> The thrown exception if it doesn't respect the checks.
      */
     public void addResource(Resource resource, int depot) throws InvalidActionException {
-
-        if ((depot <= 0) || (depot > depots.size()+1)) throw new InvalidActionException("Choose a depot!");
-        if (resource == null) throw new InvalidActionException("Resource not valid");
-        if (!depots.contains(depots.get(depot - 1))) throw new InvalidActionException("The depot doesn't exist!");
+        if ((depot < 1) || (depot > depots.size())) throw new InvalidActionException("Choose a depot!");
+        Depot depot1=depots.get(depot-1);
         if (!checkAvailableDepot(resource)) throw new InvalidActionException("The resource can't be add in any depot, move some resources or discard it");
-        depots.get(depot - 1).addResource(resource);
+        depot1.addResource(resource);
     }
 
     /**
@@ -53,33 +52,45 @@ public abstract class Warehouse {
      * @param depot
      * @throws InvalidActionException -> The thrown exception if it doesn't respect the checks
      */
-    public void removeResource(Resource resource, int depot) throws InvalidActionException {
+    public void removeResource(int depot) throws InvalidActionException {
         if (depot <= 0 || depot > depots.size()) throw new InvalidActionException("Choose a depot!");
-        if (resource == null) throw new InvalidActionException("Choose a resource!");
-        if (!depots.contains(depots.get(depot - 1))) throw new InvalidActionException("The depot doesn't exist!");
-        if (!depots.get(depot - 1).getResources().contains(resource))
-            throw new InvalidActionException("The resource you want to remove doesn't exist!");
-        depots.get(depot).removeResource();
+        depots.get(depot-1).removeResource();
     }
 
     /**
-     * Moves a resource from depot1 to depot2, after:
+     * CHANGE NAME -> moveResourceToAbilityDepot
+     * Moves 1 resource to another depot (made only for moving a resource in an AbilityDepot)
+     * @param fromDepot
+     * @param toDepot
+     */
+    public void moveResource(int fromDepot,int toDepot) throws InvalidActionException {
+        if(fromDepot==toDepot) throw new InvalidActionException("You're moving in the same depot!");
+        if (depots.size()==3) throw new InvalidActionException("There's no depot you can move it in!");
+        if (toDepot!=4 && toDepot!=5) throw new InvalidActionException("Choose a second ability depot!");
+        Resource resourceToMove = depots.get(fromDepot-1).getResources().get(0);
+        addResource(resourceToMove,toDepot);
+        removeResource(fromDepot);
+    }
+
+    /**
+     * Moves all resources from depot1 to depot2, after:
      * - Checking if the resource is not null and exists in the depot1;
      * - The depots are correct and exist;
-     *
+     * -
      * @param depot1
      * @param depot2
      * @throws InvalidActionException
      */
-    public void moveResource(int depot1, int depot2) throws InvalidActionException {
-        if (depot1 <= 0 || depot1 > depots.size()) throw new InvalidActionException("Choose the first depot!");
-        if (depot2 <= 0 || depot2 > depots.size()) throw new InvalidActionException("Choose the second depot!");
-        if (!depots.contains(depots.get(depot1 - 1)) || !depots.contains(depots.get(depot2 - 1)))
-            throw new InvalidActionException("The depots or one of them don't exist!");
-        ArrayList<Resource> movingResources = depots.get(depot1-1).getResources();
-        if(movingResources.size()>depots.get(depot2-1).getSize()-depots.get(depot2-1).getResources().size()) throw new InvalidActionException("You can't move here, because there's no enough space");
-        depots.get(depot1 - 1).getResources().removeAll(movingResources);
-        depots.get(depot2 - 1).getResources().addAll(movingResources);
+    public void moveResources(int fromDepot, int toDepot) throws InvalidActionException {
+        if (fromDepot==toDepot) throw new InvalidActionException("You're moving in the same depot!");
+        if (fromDepot <= 0 || fromDepot > depots.size()) throw new InvalidActionException("Choose the first depot!");
+        if (toDepot <= 0 || toDepot > depots.size()) throw new InvalidActionException("Choose the second depot!");
+        Depot depot1 = depots.get(fromDepot-1);
+        Depot depot2 = depots.get(toDepot-1);
+        Resource movingResource = depot1.getResources().get(0);
+        int howManyResource = depot1.getResources().size();
+        depot1.removeResources(howManyResource);
+        depot2.addResources(howManyResource,movingResource);
     }
 
     /**
@@ -104,13 +115,13 @@ public abstract class Warehouse {
                return true;
            }else {
                TypeResource type = depots.get(i).getType();
-               if (!depots.get(i).isFull() && resource.equals(type)) {
+               if (!depots.get(i).isFull() && resource.getType().equals(type)) {
                    return true;
                }
            }
        }
        for(int i=3;i<depots.size();i++){
-           if(!depots.get(i).isFull() && resource.equals(depots.get(i).getType())){
+           if(!depots.get(i).isFull() && resource.getType().equals(depots.get(i).getType())){
                return true;
            }
        }
@@ -123,7 +134,7 @@ public abstract class Warehouse {
      * @param depot
      * @return
      */
-    public boolean checkResourceInSomeDepot(Resource resource, int depot){
+    private boolean checkResourceInSomeDepot(Resource resource, int depot){
         for(int i=0;i<3;i++){
             if((i+1!=depot) && (!depots.get(i).getResources().isEmpty()) && (depots.get(i).getType().equals(resource.getType())) && (depots.get(i).getType()!=null)){
                 return true;
@@ -138,18 +149,44 @@ public abstract class Warehouse {
      */
     public ArrayList<Resource> getContent(){
         ArrayList<Resource> content = new ArrayList<>();
-        for(int i=0;i<depots.size();i++){
-            content.addAll(depots.get(i).getResources());
+        for(Depot depot:depots){
+            content.addAll(depot.getResources());
         }
         return content;
     }
 
-    /**
-     * toString Method
-     * @return
-     */
-    @Override
-    public String toString() {
-        return "Warehouse";
+    public void removeResources(ArrayList<Resource> resources) throws InvalidActionException {
+        if(!resources.isEmpty()){
+            if(!checkEnoughResources(resources)) throw new InvalidActionException("The Warehouse doesn't contain some resources you want to remove!");
+            for(Resource resource:resources){
+                depots.get(searchResource(resource)-1).removeResource();
+            }
+        }
+    }
+
+    private int countResource(ArrayList<Resource> resources, Resource resource){
+        int count = (int) resources.stream().filter(r -> r.getType().equals(resource.getType())).count();
+        return count;
+    }
+
+    private boolean checkEnoughResources(ArrayList<Resource> resources){
+        ArrayList<Resource> typeResources = new ArrayList<>();
+        typeResources.add(new Resource(Color.YELLOW));
+        typeResources.add(new Resource(Color.BLUE));
+        typeResources.add(new Resource(Color.PURPLE));
+        typeResources.add(new Resource(Color.GREY));
+        for(Resource resource: typeResources){
+            if(countResource(getContent(),resource)<countResource(resources,resource)) return false;
+        }
+        return true;
+    }
+
+    public int searchResource(Resource resource){
+        for(int i=0; i< depots.size(); i++){
+            if(depots.get(i).getType()!=null && depots.get(i).getType().equals(resource.getType())){
+                return i+1;
+            }
+        }
+        return -1;
     }
 }

@@ -15,7 +15,7 @@ public abstract class SpecialAbility {
     private final Resource resource;
 
     /**
-     * Constructor: active is always "false"ù
+     * Constructor: active is always "false"
      * then the setter method can set it in "true".
      * @param resource
      */
@@ -61,6 +61,6 @@ public abstract class SpecialAbility {
      */
     @Override
     public String toString() {
-        return super.toString();
+        return "SpecialAbility";
     }
 }

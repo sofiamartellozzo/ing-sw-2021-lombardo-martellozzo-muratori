@@ -61,5 +61,9 @@ public class BuyDiscount implements BuyCard{
 
     }
 
+    @Override
+    public String toString(){
+        return "BuyDiscount";
+    }
 
 }

@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.board.resourceManagement.Warehouse;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * It creates a Special Depot in which the Player can insert
  * maximum two Resources (indicated by the "type" attribute
  * of the SpecialAbility abstract class
@@ -33,18 +34,11 @@ public class SpecialDepot extends SpecialAbility{
     public void activeAbility(Player player) throws InvalidActionException {
         super.activeAbility(player);
         Warehouse warehouse = player.getGameSpace().getResourceManager().getWarehouse();
-        SpecialWarehouse specialWarehouse=null;
-        if(warehouse.toString().equals("WarehouseStandard")) {
-            specialWarehouse = new SpecialWarehouse(warehouse);
-        }else if(warehouse.toString().equals("SpecialWarehouse")){
-            specialWarehouse = (SpecialWarehouse) warehouse;
-        }
-        specialWarehouse.createDepot(this.getResource());
-        player.getGameSpace().getResourceManager().setWarehouseStandard(specialWarehouse);
+        SpecialWarehouse specialWarehouse=new SpecialWarehouse(warehouse,this.getResource());
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return "SpecialDepot";
     }
 }

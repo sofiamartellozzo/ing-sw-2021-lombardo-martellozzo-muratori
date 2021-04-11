@@ -1,12 +1,16 @@
 package it.polimi.ingsw.Model.board.resourceManagement;
 
 import it.polimi.ingsw.Exception.InvalidActionException;
+import it.polimi.ingsw.Model.Color;
 import it.polimi.ingsw.Model.Resource;
+import it.polimi.ingsw.Model.TypeResource;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * It represents the StrongBox in the PersonalBoard, it can contain infinite resources.
  * Attributes:
  * numberResources -> it's the number of resources that the StrongBox contains in that moment;
@@ -57,9 +61,52 @@ public class StrongBox{
      * @throws InvalidActionException
      */
     public void removeResources(ArrayList<Resource> resources) throws InvalidActionException {
-        if(content.isEmpty()) throw new InvalidActionException("The strongbox is empty");
-        if(!content.containsAll(resources)) throw new InvalidActionException("The strongbox doesn't contain some resources you want to remove!");
-        content.removeAll(resources);
-        numberResources = numberResources - resources.size();
+        if(!resources.isEmpty()){
+            if(content.isEmpty() && !resources.isEmpty()) throw new InvalidActionException("The strongbox is empty");
+            if(!checkEnoughResources(resources)) throw new InvalidActionException("The strongbox doesn't contain some resources you want to remove!");
+            for(Resource resource:resources) {
+                removeResource(resource);
+                numberResources--;
+            }
+        }
+    }
+
+    private void removeResource(Resource resource){
+        TypeResource type = resource.getType();
+        for(int i=0;i<content.size();i++){
+            if(content.get(i).getType().equals(type)){
+                content.remove(i);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Counts from "resources" the resource you want to count
+     * @param resources
+     * @param resource
+     * @return
+     */
+    private int countResource(ArrayList<Resource> resources, Resource resource){
+        int count = (int) resources.stream().filter(r -> r.getType().equals(resource.getType())).count();
+        return count;
+    }
+
+    /**
+     * Verifies if the content contains all "resources" in type and number
+     * @param resources
+     * @return
+     */
+
+    private boolean checkEnoughResources(ArrayList<Resource> resources){
+        ArrayList<Resource> typeResources = new ArrayList<>();
+        typeResources.add(new Resource(Color.YELLOW));
+        typeResources.add(new Resource(Color.BLUE));
+        typeResources.add(new Resource(Color.PURPLE));
+        typeResources.add(new Resource(Color.GREY));
+        for(Resource resource: typeResources){
+            if(countResource(content,resource)<countResource(resources,resource)) return false;
+        }
+        return true;
     }
 }

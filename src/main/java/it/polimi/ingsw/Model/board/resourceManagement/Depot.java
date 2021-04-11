@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * Interface
  * It represents all type of depots
  * */
@@ -21,7 +22,20 @@ public interface Depot {
     public ArrayList<Resource> getResources();
 
     /**
+     * Adds resources in the depot
+     * @param  -> The resources you want to put in the depot
+     */
+    public void addResources(int num,Resource resource) throws InvalidActionException;
+
+    /**
+     * Removes resources from the depot
+     * @param num -> The number of resources you want to remove from the depot
+     */
+    public void removeResources(int num) throws InvalidActionException;
+
+    /**
      * Puts the resource parameter in the depot
+     * Resources must be of the same type
      * @param resource -> The resource you want to put in the depot
      * @throws InvalidActionException
      */
@@ -50,5 +64,8 @@ public interface Depot {
      * @return
      */
     public int getSize();
+
+
+
 
 }

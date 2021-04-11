@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.board;
 
 /**
 * GIANLUCA
+ * TEST PASSED
  * It represents the Grey Box of the FaithTrack.
 * */
 public class SimpleBox extends Box{

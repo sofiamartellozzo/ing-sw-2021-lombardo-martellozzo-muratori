@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.board;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * State Pattern
  * One of the component of the State Pattern.
  */
@@ -20,6 +21,6 @@ public class Active implements State {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Active";
     }
 }

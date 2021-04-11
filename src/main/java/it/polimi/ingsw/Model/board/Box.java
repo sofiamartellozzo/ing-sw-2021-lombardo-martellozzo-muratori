@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.board;
 
 /**
 * GIANLUCA
+ * TEST PASSED
 * It's composing the FaithTrack with its extensions: SimpleBox, GoldBox and PopeBox.
 * */
 

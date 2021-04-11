@@ -47,6 +47,6 @@ public class Buy implements BuyCard {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Buy";
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * GIANLUCA
+ * TEST PASSED
  * It represents the Vatican Section.
  */
 public class VaticanSection {
