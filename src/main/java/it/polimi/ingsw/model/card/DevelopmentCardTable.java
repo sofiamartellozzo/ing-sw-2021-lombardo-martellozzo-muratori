@@ -48,7 +48,8 @@ public class DevelopmentCardTable {
     public void setColumnPosition(int columnPosition) { this.columnPosition = columnPosition; }
 
     /**
-     * method used to show the last card of the deck that the player chose in the Matrix
+     * method used to let the player take the last card available in a specific deck ( identified by row and column )
+     * and launches an exception if the deck is empty and so he can't take any card!
      * @param rowPosition
      * @param columnPosition
      * @throws IllegalArgumentException
@@ -56,87 +57,86 @@ public class DevelopmentCardTable {
 
     public DevelopmentCard takeCard (int rowPosition, int columnPosition) throws IllegalArgumentException
     {
-        if ((rowPosition < 1 || rowPosition > 3) || (columnPosition < 1 || columnPosition > 4))
+        if ((rowPosition < 0 || rowPosition > 2) || (columnPosition < 0 || columnPosition > 3))
         {
             throw new IllegalArgumentException("Error, parameters not valid!");
         }
-
-        return this.table[rowPosition][columnPosition].takeCard();
+        else if (table[rowPosition][columnPosition].getDevelopDeck().size() == 0)
+        {
+            throw new IllegalArgumentException("Error, you don't have other cards in this deck");
+        }
+       else return this.table[rowPosition][columnPosition].takeCard();
     }
 
     /**
-     * method used in the solo player to remove the card of the color indicated by the actionToken
+     * method used in the solo player to remove the last card available in a specific deck
+     * identified by the color, if the three decks of the color indicated are empty,
+     * the method launches an exception
      * @param color
      * @throws InvalidActionException
      */
 
     public void getSquare(Color color) throws InvalidActionException {
-       switch (color){
+       boolean found = false ;
+        switch (color){
            case GREEN:
-               if(table[2][0].getDevelopDeck().isEmpty())
-               {
-                   if (table[1][0].getDevelopDeck().isEmpty())
-                   {
-                       if(table[0][0].getDevelopDeck().isEmpty())
+                   //found = false;
+                   for ( int i = 2; i >= 0; i--){
+                       if(!table[i][0].getDevelopDeck().isEmpty())
                        {
-                           throw new InvalidActionException("Error, there aren't other cards of that color!");
+                            table[i][0].takeCard();
+                             found = true;
+                             i = -1;
                        }
-                       else table[0][0].takeCard();
                    }
-                   else table[1][0].takeCard();
-               }
-               else table[2][0].takeCard();
+               if (!found)
+                throw new InvalidActionException("Error, you don't have other cards of that color");
                break;
            case BLUE:
-               if(table[2][1].getDevelopDeck().isEmpty())
-               {
-                   if (table[1][1].getDevelopDeck().isEmpty())
+               //found = false;
+               for ( int i = 2; i >= 0; i--){
+                   if(!table[i][1].getDevelopDeck().isEmpty())
                    {
-                       if(table[0][1].getDevelopDeck().isEmpty())
-                       {
-                           throw new InvalidActionException("Error, there aren't other cards of that color!");
-                       }
-                       else table[0][1].takeCard();
+                       table[i][1].takeCard();
+                       found = true;
+                       i = -1;
                    }
-                   else table[1][1].takeCard();
                }
-               else table[2][1].takeCard();
-               break;
+               if (!found)
+                   throw new InvalidActionException("Error, you don't have other cards of that color");
+                break;
            case YELLOW:
-               if(table[2][2].getDevelopDeck().isEmpty())
-               {
-                   if (table[1][2].getDevelopDeck().isEmpty())
+               //found = false;
+               for ( int i = 2; i >= 0; i--){
+                   if(!table[i][2].getDevelopDeck().isEmpty())
                    {
-                       if(table[0][2].getDevelopDeck().isEmpty())
-                       {
-                           throw new InvalidActionException("Error, there aren't other cards of that color!");
-                       }
-                       else table[0][2].takeCard();
+                       table[i][2].takeCard();
+                       found = true;
+                       i = -1;
                    }
-                   else table[1][2].takeCard();
                }
-               else table[2][2].takeCard();
+               if (!found)
+                   throw new InvalidActionException("Error, you don't have other cards of that color");
                break;
            case PURPLE:
-               if(table[2][3].getDevelopDeck().isEmpty())
-               {
-                   if (table[1][3].getDevelopDeck().isEmpty())
+               //found = false;
+               for ( int i = 2; i >= 0; i--){
+                   if(!table[i][3].getDevelopDeck().isEmpty())
                    {
-                       if(table[0][3].getDevelopDeck().isEmpty())
-                       {
-                           throw new InvalidActionException("Error, there aren't other cards of that color!");
-                       }
-                       else table[0][3].takeCard();
+                       table[i][3].takeCard();
+                       found = true;
+                       i = -1;
                    }
-                   else table[1][3].takeCard();
                }
-               else table[2][3].takeCard();
+               if (!found)
+                   throw new InvalidActionException("Error, you don't have other cards of that color");
                break;
        }
     }
 
     /**
-     * method used in the soloGame to control if a column of the table is empty, in that case the player loose!
+     * method used in the soloGame to control if a column of card (of the same color)
+     * on the table is empty, in that case the player loose!
      * @return
      */
 

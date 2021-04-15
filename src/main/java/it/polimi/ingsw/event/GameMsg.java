@@ -14,14 +14,14 @@ import java.io.Serializable;
  *                              it needs the class ObjectInputStream (with method readObject)
  *                              so then the object can be received on the other side of the net
  */
-public abstract class GameEvent implements Serializable {
+public abstract class GameMsg implements Serializable {
 
 
-    public void notifyHandler(ViewListener viewListener){
+    public void notifyHandler(ViewObserver viewObserver){
 
     }
 
-    public void notifyHandler(ControllerListener controllerListener){
+    public void notifyHandler(ControllerObserver controllerObserver){
 
     }
 }

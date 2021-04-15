@@ -9,12 +9,12 @@ import java.util.List;
  */
 public abstract class Observable {
 
-    private List<ViewListener> viewListener;
-    private List<ControllerListener> controllerListener;
+    private List<ViewObserver> viewObserver;
+    private List<ControllerObserver> controllerObserver;
 
     public Observable() {
-        this.viewListener = new ArrayList<>();
-        this.controllerListener = new ArrayList<>();
+        this.viewObserver = new ArrayList<>();
+        this.controllerObserver = new ArrayList<>();
     }
 
     public void notifyAllObserver(){

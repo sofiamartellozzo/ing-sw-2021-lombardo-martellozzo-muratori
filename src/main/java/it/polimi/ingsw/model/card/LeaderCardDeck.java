@@ -34,14 +34,15 @@ public class LeaderCardDeck {
     //public void setCards(ArrayList<LeaderCard>cards){this.cards=cards;}
 
     /**
-     * method used to have the number of the Cards of a Deck,
-     * so when you give to a player 4 of them, the number decrease
+     * method used to have the actual number of the Cards in the Leader Deck,
+     * so when you give to a player 4 of them, the number decreases
      * @return cards.size()
      */
     public int getNumberOfCards(){ return cards.size(); }
 
     /**
-     * method used to remove the cards from the deck composed by 16 leader Card
+     * method used to remove the cards that a player chooses
+     * from the deck composed by 16 leader Card
      */
     public void remove(ArrayList<LeaderCard> card){cards.removeAll(card);}
 }

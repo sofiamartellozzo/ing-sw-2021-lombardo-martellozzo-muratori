@@ -25,10 +25,12 @@ public class DevelopmentCardDeck {
     }
 
     /**
-     * method used to show the last card avaiable in a deck, if it is not empty
+     * method used to show the last card available in a deck,
+     * if it is not empty the method returns and removes it, otherwise it launches an exception
      * @return
      * @throws IndexOutOfBoundsException
      */
+
     public DevelopmentCard takeCard() throws IndexOutOfBoundsException {
         if (developDeck.size() == 0)
             throw new IndexOutOfBoundsException("Error, the deck is empty,so you can't take a card!!");

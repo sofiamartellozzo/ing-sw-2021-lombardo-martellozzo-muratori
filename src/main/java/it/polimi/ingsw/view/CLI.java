@@ -1,10 +1,12 @@
 package it.polimi.ingsw.view;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import it.polimi.ingsw.connection.client.ClientSocket;
+import it.polimi.ingsw.event.message.ViewConnectionRequestMsg;
 import it.polimi.ingsw.view.display.WriteMessageDisplay;
 
 /**
@@ -59,6 +61,32 @@ public class CLI {
         String IP;
         IP = askIPAddress();
 
+        /* Initialize client socket */
+        client = new ClientSocket(IP);
+
+        /* repeat this cycle until the connection go ON and the client reaches the server */
+        while (connectionOFF) {
+            try {
+                client.beginConnection();            //open connection with the client
+                System.out.println("Client Connected");
+                clearScreen();
+
+                String user = askUsername();
+                /* put inside the variable username the name that the client chose*/
+                username = user;
+
+                /* try to create the connection sending the username, port and ip */
+                ViewConnectionRequestMsg request = new ViewConnectionRequestMsg(IP,0,username);
+
+                // start client Thread ....
+
+                connectionOFF = false;
+            } catch (IOException e) {
+                System.out.println(" Error, can't reach the server");
+                connectionOFF = true;
+            }
+        }
+
     }
 
 
@@ -83,6 +111,23 @@ public class CLI {
                 }
             }
         }
+        return ip;
+    }
+
+    /**
+     * method to ask the player its Username, and check if it is valid
+     */
+    public String askUsername(){
+        /* preparing an Input scanner in order to take the Username from the client*/
+        in = new Scanner(System.in);
+        in.reset();
+
+        String username = null;
+        out.println("Please insert the Username that you want ");
+
+        username = in.nextLine();
+
+        return username;
     }
 
     /**
@@ -92,5 +137,30 @@ public class CLI {
         System.out.println("reset and clear the screen");
         System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
         System.out.flush();
+    }
+
+
+    /**
+     * method to print the the antagonist's Cards
+     */
+    public void showAntagonistCards()
+    {
+        for (Map.Entry<String,Integer> antagonists: antagonistLeaderCards.entrySet())
+        {
+            System.out.println("Card : " + antagonists.getValue());
+        }
+
+    }
+
+    /**
+     * method to print my Info
+     */
+    public void showMyInfo()
+    {
+        /* show every Leader card that the player has (max 2) */
+        for (int card: myLeaderCards) {
+            System.out.println(" My Card "+ card);
+        }
+
     }
 }

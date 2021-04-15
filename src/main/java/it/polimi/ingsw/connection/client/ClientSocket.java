@@ -28,7 +28,7 @@ public class ClientSocket implements Runnable{
     /**
      * try to open the connection
      */
-    public void beguin() throws IOException{
+    public void beginConnection() throws IOException{
         serverSocket = null;
         //open a connection with the server
         try{

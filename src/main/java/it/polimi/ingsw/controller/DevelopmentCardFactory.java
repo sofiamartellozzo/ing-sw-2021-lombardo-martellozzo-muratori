@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import com.google.gson.Gson;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.board.FaithMarker;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class DevelopmentCardFactory {
         requirements.add(new Resource(Color.BLUE));
 
         ArrayList<Resource> earnProductionPower = new ArrayList<>();
-        earnProductionPower.add(new Resource(Color.YELLOW));
+        earnProductionPower.add(new FaithMarker());
 
         ArrayList<Resource> costProductionPower = new ArrayList<>();
         costProductionPower.add(new Resource(Color.BLUE));

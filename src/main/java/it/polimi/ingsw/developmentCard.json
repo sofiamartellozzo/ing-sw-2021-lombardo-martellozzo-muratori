@@ -1,8 +1,1916 @@
 {
-  "color": "GREEN",
-  "level": 1,
-  "costToBuy": [{"color": "BLUE"}, {"color": "BLUE"}],
-  "earnProductionPower": [{"color": "YELLOW"}],
-  "costProductionPower": [{"color": "BLUE"}],
-  "victoryPoints": 1
+  "DevelopmentCard1": {
+    "color": "GREEN",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "victoryPoints": 1
+  },
+  "DevelopmentCard2": {
+    "color": "GREEN",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 2
+  },
+  "DevelopmentCard3": {
+    "color": "GREEN",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 3
+  },
+  "DevelopmentCard4": {
+    "color": "GREEN",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 4
+  },
+  "DevelopmentCard5": {
+    "color": "GREEN",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 5
+  },
+  "DevelopmentCard6": {
+    "color": "GREEN",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 6
+  },
+  "DevelopmentCard7": {
+    "color": "GREEN",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "victoryPoints": 7
+  },
+  "DevelopmentCard8": {
+    "color": "GREEN",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "BLU"
+      },
+      {
+        "color": "BLU"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "victoryPoints": 8
+  },
+  "DevelopmentCard9": {
+    "color": "GREEN",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "victoryPoints": 9
+  },
+  "DevelopmentCard10": {
+    "color": "GREEN",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 10
+  },
+  "DevelopmentCard11": {
+    "color": "GREEN",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 11
+  },
+  "DevelopmentCard12": {
+    "color": "GREEN",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 12
+  },
+  "DevelopmentCard13": {
+    "color": "BLUE",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 1
+  },
+  "DevelopmentCard14": {
+    "color": "BLUE",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "GREY"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 2
+  },
+  "DevelopmentCard15": {
+    "color": "BLUE",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 3
+  },
+  "DevelopmentCard16": {
+    "color": "BLU",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 4
+  },
+  "DevelopmentCard17": {
+    "color": "BLUE",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 5
+  },
+  "DevelopmentCard18": {
+    "color": "BLUE",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 6
+  },
+  "DevelopmentCard19": {
+    "color": "BLUE",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 7
+  },
+  "DevelopmentCard20": {
+    "color": "BLUE",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 8
+  },
+  "DevelopmentCard21": {
+    "color": "BLUE",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 9
+  },
+  "DevelopmentCard22": {
+    "color": "BLUE",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 10
+  },
+  "DevelopmentCard23": {
+    "color": "BLUE",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 11
+  },
+  "DevelopmentCard24": {
+    "color": "BLUE",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 12
+  },
+  "DevelopmentCard25": {
+    "color": "YELLOW",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 1
+  },
+  "DevelopmentCard26": {
+    "color": "YELLOW",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 2
+  },
+  "DevelopmentCard27": {
+    "color": "YELLOW",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 3
+  },
+  "DevelopmentCard28": {
+    "color": "YELLOW",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 4
+  },
+  "DevelopmentCard29": {
+    "color": "YELLOW",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 5
+  },
+  "DevelopmentCard30": {
+    "color": "YELLOW",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 6
+  },
+  "DevelopmentCard31": {
+    "color": "YELLOW",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 7
+  },
+  "DevelopmentCard32": {
+    "color": "YELLOW",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 8
+  },
+  "DevelopmentCard33": {
+    "color": "YELLOW",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 9
+  },
+  "DevelopmentCard34": {
+    "color": "YELLOW",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 10
+  },
+  "DevelopmentCard35": {
+    "color": "YELLOW",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 11
+  },
+  "DevelopmentCard36": {
+    "color": "YELLOW",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 12
+  },
+  "DevelopmentCard37": {
+    "color": "PURPLE",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 1
+  },
+  "DevelopmentCard38": {
+    "color": "PURPLE",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "BLUE"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "victoryPoints": 2
+  },
+  "DevelopmentCard39": {
+    "color": "PURPLE",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "victoryPoints": 3
+  },
+  "DevelopmentCard40": {
+    "color": "PURPLE",
+    "level": 1,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 4
+  },
+  "DevelopmentCard41": {
+    "color": "PURPLE",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "victoryPoints": 5
+  },
+  "DevelopmentCard42": {
+    "color": "PURPLE",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "victoryPoints": 6
+  },
+  "DevelopmentCard43": {
+    "color": "PURPLE",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 7
+  },
+  "DevelopmentCard44": {
+    "color": "PURPLE",
+    "level": 2,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 8
+  },
+  "DevelopmentCard45": {
+    "color": "PURPLE",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "RED"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "GREY"
+      }
+    ],
+    "victoryPoints": 9
+  },
+  "DevelopmentCard46": {
+    "color": "PURPLE",
+    "level": 3,
+    "costToBuy": [
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      }
+    ],
+    "earnProductionPower": [
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "YELLOW"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "PURPLE"
+      },
+      {
+        "color": "RED"
+      }
+    ],
+    "costProductionPower": [
+      {
+        "color": "GREY"
+      },
+      {
+        "color": "BLUE"
+      }
+    ],
+    "victoryPoints": 10,
+    "DevelopmentCard47": {
+      "color": "PURPLE",
+      "level": 3,
+      "costToBuy": [
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        }
+      ],
+      "earnProductionPower": [
+        {
+          "color": "GREY"
+        },
+        {
+          "color": "RED"
+        },
+        {
+          "color": "RED"
+        },
+        {
+          "color": "RED"
+        }
+      ],
+      "costProductionPower": [
+        {
+          "color": "YELLOW"
+        }
+      ],
+      "victoryPoints": 11
+    },
+    "DevelopmentCard48": {
+      "color": "PURPLE",
+      "level": 3,
+      "costToBuy": [
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "PURPLE"
+        },
+        {
+          "color": "BLUE"
+        },
+        {
+          "color": "BLUE"
+        },
+        {
+          "color": "BLUE"
+        },
+        {
+          "color": "BLUE"
+        }
+      ],
+      "earnProductionPower": [
+        {
+          "color": "GREY"
+        },
+        {
+          "color": "GREY"
+        },
+        {
+          "color": "GREY"
+        },
+        {
+          "color": "PURPLE"
+        }
+      ],
+      "costProductionPower": [
+        {
+          "color": "YELLOW"
+        }
+      ],
+      "victoryPoints": 12
+    }
+  }
 }

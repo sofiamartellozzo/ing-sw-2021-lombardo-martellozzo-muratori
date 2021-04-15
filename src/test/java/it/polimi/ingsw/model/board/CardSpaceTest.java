@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+//done
+
 public class CardSpaceTest extends TestCase {
 
     CardSpace cardSpace= null;
@@ -81,7 +83,7 @@ public class CardSpaceTest extends TestCase {
           thrown = true;
       }
         assertTrue(thrown);*/
-        assertEquals(newCard1,cardSpace.getUpperCard());
+        DevelopmentCard card = cardSpace.getUpperCard();
     }
 
     @Test
@@ -91,8 +93,7 @@ public class CardSpaceTest extends TestCase {
         resTot.add(res1);
         DevelopmentCard newCard = new DevelopmentCard(2,Color.BLUE,1,resTot,resTot,resTot);
         cardSpace.addCard(newCard);
-
-        DevelopmentCard newCard1 = new DevelopmentCard(2,Color.BLUE,2,resTot,resTot,resTot);
+        DevelopmentCard newCard1 = new DevelopmentCard(2,Color.BLUE,1,resTot,resTot,resTot);
 
         /*boolean thrown = false;
 
@@ -102,8 +103,6 @@ public class CardSpaceTest extends TestCase {
             thrown = true;
         }
         assertTrue(thrown);*/
-
-        assertEquals(newCard,cardSpace.getUpperCard());
     }
 
 
@@ -115,9 +114,10 @@ public class CardSpaceTest extends TestCase {
         resTot.add(res1);
         DevelopmentCard newCard = new DevelopmentCard(2,Color.BLUE,1,resTot,resTot,resTot);
         cardSpace.addCard(newCard);
+        DevelopmentCard newCard1 = new DevelopmentCard(2,Color.YELLOW,3,resTot,resTot,resTot);
 
-        DevelopmentCard newCard1 = new DevelopmentCard(4,Color.BLUE,2,resTot,resTot,resTot);
-        cardSpace.addCard(newCard1);
+        DevelopmentCard newCard2 = new DevelopmentCard(4,Color.BLUE,2,resTot,resTot,resTot);
+        cardSpace.addCard(newCard2);
 
 
       int victoryP = cardSpace.getTotVictoryPoints();
