@@ -77,61 +77,40 @@ public class DevelopmentCardTable {
      */
 
     public void getSquare(Color color) throws InvalidActionException {
-       boolean found = false ;
-        switch (color){
-           case GREEN:
-                   //found = false;
-                   for ( int i = 2; i >= 0; i--){
-                       if(!table[i][0].getDevelopDeck().isEmpty())
-                       {
-                            table[i][0].takeCard();
-                             found = true;
-                             i = -1;
-                       }
-                   }
-               if (!found)
-                throw new InvalidActionException("Error, you don't have other cards of that color");
-               break;
-           case BLUE:
-               //found = false;
-               for ( int i = 2; i >= 0; i--){
-                   if(!table[i][1].getDevelopDeck().isEmpty())
-                   {
-                       table[i][1].takeCard();
-                       found = true;
-                       i = -1;
-                   }
-               }
-               if (!found)
-                   throw new InvalidActionException("Error, you don't have other cards of that color");
-                break;
-           case YELLOW:
-               //found = false;
-               for ( int i = 2; i >= 0; i--){
-                   if(!table[i][2].getDevelopDeck().isEmpty())
-                   {
-                       table[i][2].takeCard();
-                       found = true;
-                       i = -1;
-                   }
-               }
-               if (!found)
-                   throw new InvalidActionException("Error, you don't have other cards of that color");
-               break;
-           case PURPLE:
-               //found = false;
-               for ( int i = 2; i >= 0; i--){
-                   if(!table[i][3].getDevelopDeck().isEmpty())
-                   {
-                       table[i][3].takeCard();
-                       found = true;
-                       i = -1;
-                   }
-               }
-               if (!found)
-                   throw new InvalidActionException("Error, you don't have other cards of that color");
-               break;
-       }
+        boolean found = false;
+        int column = selectColumn(color);
+
+        for (int i = 2; i >= 0; i--) {
+            if (!table[i][column].getDevelopDeck().isEmpty()) {
+                table[i][column].takeCard();
+                found = true;
+                i = -1;
+            }
+        }
+        if (!found)
+            throw new InvalidActionException("Error, you don't have other cards of that color");
+    }
+
+    /**
+     * local method to select the column in the card Table based on the color
+     * @param color
+     * @return
+     */
+    private int selectColumn (Color color)
+    {
+        switch (color)
+        {
+            case GREEN:
+                 return 0;
+            case BLUE:
+                return 1;
+            case YELLOW:
+                return 2;
+            case PURPLE:
+                return 3;
+            default:
+                throw new IllegalArgumentException ("Error, column not valid !");
+        }
     }
 
     /**

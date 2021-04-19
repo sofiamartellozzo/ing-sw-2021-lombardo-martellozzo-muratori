@@ -22,7 +22,7 @@ public class LeaderCardTest extends TestCase {
 
         ArrayList<Object> req = new ArrayList<>();
         req.add(0,new Resource(Color.PURPLE));
-        leaderCard = new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
+        leaderCard = new LeaderCard(1,2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
     }
 
     @After

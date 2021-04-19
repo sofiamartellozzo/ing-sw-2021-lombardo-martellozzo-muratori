@@ -175,12 +175,11 @@ public class DevelopmentCardTableTest extends TestCase {
     }
 
     @Test
-    public void testGetUpperCardOfSquare() throws InvalidActionException {
+    public void testGetSquare() throws InvalidActionException {
 
         boolean thrown = false;
            try {
 
-               /*developmentCardTable.getSquare(Color.GREEN);
                developmentCardTable.getSquare(Color.GREEN);
                developmentCardTable.getSquare(Color.GREEN);
                developmentCardTable.getSquare(Color.GREEN);
@@ -192,7 +191,7 @@ public class DevelopmentCardTableTest extends TestCase {
                developmentCardTable.getSquare(Color.GREEN);
                developmentCardTable.getSquare(Color.GREEN);
                developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);*/
+               developmentCardTable.getSquare(Color.GREEN);
 
                developmentCardTable.getSquare(Color.BLUE);
                developmentCardTable.getSquare(Color.BLUE);

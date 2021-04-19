@@ -16,15 +16,17 @@ public class LeaderCard extends Card{
     private  SpecialAbility specialAbility;
     private  ArrayList<Object> requirements;
     private  State state;
+    private int cardID;
 
     /**
      * constructor of the class
      * @param victoryPoints
      */
 
-    public LeaderCard(int victoryPoints, SpecialAbility specialAbility,ArrayList<Object> requirements) {
+    public LeaderCard(int cardID,int victoryPoints, SpecialAbility specialAbility,ArrayList<Object> requirements) {
 
         super(victoryPoints);
+        this.cardID = cardID;
         this.requirements=requirements;
         this.specialAbility=specialAbility;
         this.state = new Inactive();
@@ -36,6 +38,14 @@ public class LeaderCard extends Card{
     public SpecialAbility getSpecialAbility(){return specialAbility;}
     public ArrayList<Object> getRequirements(){return requirements;}
     public State getState(){return state;}
+
+    /**
+     * method to take the ID of a Leader Card (an integer number that goes from 1 to 16)
+     * @return
+     */
+    public int getCardID() {
+        return cardID;
+    }
 
     /**
      * method used to active the special ability of a card Leader Card with a fixed resource as

@@ -45,4 +45,24 @@ public class LeaderCardDeck {
      * from the deck composed by 16 leader Card
      */
     public void remove(ArrayList<LeaderCard> card){cards.removeAll(card);}
+
+
+    /**
+     * method used to return only the card from the Deck with a specific Id (if present),
+     * otherwise it returns an exception
+     * @param IdCard
+     * @return
+     * @throws IllegalArgumentException
+     */
+    public LeaderCard getLeaderCardById (int IdCard) throws IllegalArgumentException {
+        for (LeaderCard card: cards) {
+            if (card.getCardID() == IdCard)
+            {
+                return card;
+            }
+
+        }
+        throw new IllegalArgumentException(" Error, that Id card is not present!");
+    }
+
 }
