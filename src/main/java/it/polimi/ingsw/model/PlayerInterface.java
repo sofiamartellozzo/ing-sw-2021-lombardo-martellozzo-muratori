@@ -21,6 +21,7 @@ public interface PlayerInterface {
     public void setGameSpace(PersonalBoard personalBoard);
     public void setNumber(int number);
     public ArrayList<LeaderCard> getLeaderCards();
+    public void setLeaderCards(ArrayList<LeaderCard> card);
     public void chooseLeaderCards(ArrayList<LeaderCard> cards, int chose1, int chose2);
     public PersonalBoard getGameSpace();
     public MarbleSpecial getWhiteSpecialMarble();

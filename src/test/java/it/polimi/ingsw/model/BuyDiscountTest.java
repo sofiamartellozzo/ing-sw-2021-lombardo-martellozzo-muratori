@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.factory.BoardManagerFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.PersonalBoard;
-import it.polimi.ingsw.model.board.PersonalBoardFactory;
+import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;

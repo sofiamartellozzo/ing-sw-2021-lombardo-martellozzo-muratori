@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.actionAbility;
 
+import it.polimi.ingsw.controller.factory.BoardManagerFactory;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.board.PersonalSoloBoardFactory;
+import it.polimi.ingsw.controller.factory.PersonalSoloBoardFactory;
 import it.polimi.ingsw.model.board.SoloPersonalBoard;
 import junit.framework.TestCase;
 import org.junit.After;

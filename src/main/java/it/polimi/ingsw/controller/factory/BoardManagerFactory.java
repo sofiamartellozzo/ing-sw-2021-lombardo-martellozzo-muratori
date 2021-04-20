@@ -1,5 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.controller.factory;
 
+import it.polimi.ingsw.controller.factory.ResourcesSupplyFactory;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.model.cardAbility.Discount;
 import it.polimi.ingsw.model.cardAbility.SpecialAbility;
@@ -15,14 +17,19 @@ import java.util.Random;
 
 /* ILA */
 
+/**
+ * FACTORY
+ * this class is used to create the board manager at the initialization of the game
+ */
+
 public class BoardManagerFactory {
 
     /**
      * constructor of the class
-     * @param turnSequence
+     * @param turnSequence the sequence of the players in the game
      * @return
      */
-    public BoardManager createBoardManager(HashMap<Integer,PlayerInterface> turnSequence)
+    public BoardManager createBoardManager(HashMap<Integer, PlayerInterface> turnSequence)
     {
         MarketStructure marketStructure = MarketStructure.getInstance(createStructure(),new ColoredMarble(Color.PURPLE));
         DevelopmentCardTable developmentCardTable = DevelopmentCardTable.getInstance(createDevelopmentDeckTable());

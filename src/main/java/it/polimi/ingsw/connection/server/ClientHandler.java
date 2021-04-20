@@ -1,6 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
-import it.polimi.ingsw.event.GameEvent;
+import it.polimi.ingsw.message.GameMsg;
 
 import java.io.*;
 import java.net.Socket;
@@ -43,9 +43,9 @@ public class ClientHandler implements Runnable{
 
 
         /* now waith listening for a message (Event) */
-        GameEvent recived;
+        GameMsg recived;
         try {
-            recived = (GameEvent) in.readObject(); //deserialized
+            recived = (GameMsg) in.readObject(); //deserialized
             //notify observer
         } catch (ClassNotFoundException | /*EOFException |*/ IOException  e){
             System.err.println("Error from input client message");
@@ -55,9 +55,9 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    public void sendMsg (/*event*/){
+    public void sendMsg(GameMsg msg){
         try {
-            // out.writeObject(event);
+            out.writeObject(msg);
             out.flush();
         } catch (IOException e){
             System.err.println("unable to send msg to client");
@@ -71,5 +71,12 @@ public class ClientHandler implements Runnable{
             e.printStackTrace();
             System.out.println("Error closing socket");
         }
+    }
+
+    public String getUserIP() {
+        return IP;
+    }
+    public int getUserPort(){
+        return clientSocket.getPort();
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.factory.BoardManagerFactory;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;

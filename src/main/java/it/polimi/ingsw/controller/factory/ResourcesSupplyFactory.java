@@ -1,7 +1,18 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.controller.factory;
+
+import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.ResourcesSupply;
+import it.polimi.ingsw.model.TypeResource;
 
 import java.util.ArrayList;
 
+/**
+ * FACTORY
+ * this class creates the Resources Supply, one for all the player in a Room
+ * it is composed of 4 cell, each one of them contains a different type
+ * of resource.
+ * We suppose that the number of resources in each cell are unlimited
+ */
 public class ResourcesSupplyFactory {
     public ResourcesSupply createTheResourcesSupply(){
         //before I have to create an array of resources, and his cell

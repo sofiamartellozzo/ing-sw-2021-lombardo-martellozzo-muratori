@@ -1,10 +1,11 @@
-package it.polimi.ingsw.model.board;
+package it.polimi.ingsw.controller.factory;
 
 import it.polimi.ingsw.model.ActionToken;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.actionAbility.CardActionAbility;
 import it.polimi.ingsw.model.actionAbility.PlusTwoBlackCrossActionAbility;
 import it.polimi.ingsw.model.actionAbility.PlusUneAndShuffleActionAbility;
+import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.WarehouseStandard;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 
 /*
  * SOFI*/
-public class PersonalSoloBoardFactory extends PersonalBoardFactory{
+public class PersonalSoloBoardFactory extends PersonalBoardFactory {
 
     public SoloPersonalBoard createGame(){
         ArrayList<CardSpace> allCardSpace = createCardSpaces();

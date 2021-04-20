@@ -148,6 +148,19 @@ public class Player implements PlayerInterface{
     }
 
     /**
+     * method used in the initialization of the game afret the player
+     * chose the two leader card, then store it in his attribute
+     * @param card the Leader Card chosen
+     */
+    @Override
+    public void setLeaderCards(ArrayList<LeaderCard> card){
+        for (int i=0; i<card.size(); i++){
+            this.leaderCards.add(card.remove(i));
+        }
+
+    }
+
+    /**
      *
      * @param cards
      * @param chose1

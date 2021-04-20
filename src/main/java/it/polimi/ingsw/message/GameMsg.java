@@ -1,9 +1,10 @@
-package it.polimi.ingsw.event;
+package it.polimi.ingsw.message;
 
 import java.io.Serializable;
 
 /**
  * a generic GameEvent that notify an EventListener (View or Controller)
+ * that are two Observer
  *
  * SERIALIZABLE: Interface that that allow an activity to save an object (or a graph of objects)
  *              in a byte stream, that can be saved persistently after on the network.
@@ -14,14 +15,19 @@ import java.io.Serializable;
  *                              it needs the class ObjectInputStream (with method readObject)
  *                              so then the object can be received on the other side of the net
  */
-public abstract class GameEvent implements Serializable {
+public abstract class GameMsg implements Serializable {
 
+    private final String msgContent;
 
-    public void notifyHandler(ViewListener viewListener){
+    public GameMsg(String msgContent){
+        this.msgContent = msgContent;
+    }
+
+    public void notifyHandler(ViewObserver viewObserver){
 
     }
 
-    public void notifyHandler(ControllerListener controllerListener){
+    public void notifyHandler(ControllerObserver controllerObserver){
 
     }
 }

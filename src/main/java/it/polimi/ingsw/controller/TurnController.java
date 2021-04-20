@@ -1,10 +1,12 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.factory.BoardManagerFactory;
+import it.polimi.ingsw.controller.factory.ResourcesSupplyFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.PersonalBoard;
-import it.polimi.ingsw.model.board.PersonalBoardFactory;
-import it.polimi.ingsw.model.board.PersonalSoloBoardFactory;
+import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
+import it.polimi.ingsw.controller.factory.PersonalSoloBoardFactory;
 import it.polimi.ingsw.model.board.SoloPersonalBoard;
 import it.polimi.ingsw.model.card.LeaderCard;
 

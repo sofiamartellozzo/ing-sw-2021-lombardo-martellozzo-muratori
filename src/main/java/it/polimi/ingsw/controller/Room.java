@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
-import it.polimi.ingsw.event.Observable;
+import it.polimi.ingsw.message.Observable;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
@@ -19,6 +19,12 @@ public class Room extends Observable {
     private List<String> playersId;
     /* number of players */
     private int numberOfPlayer;
+
+    /* inizialized a size for the room (set by the first player acceded)*/
+    //private final int SIZE;
+
+    /* boolean to notify if the player want to play in Solo Mode, so the room has to be of size 1!*/
+    private boolean isSoloMode;
 
     /* board manager of this room (to simplify the connection between Model and Controller) */
     private BoardManager boardManager;
@@ -42,11 +48,28 @@ public class Room extends Observable {
         this.roomID = roomID;
         playersId = new ArrayList<>();
         numberOfPlayer = 0;
+        //SIZE = size;
+        isSoloMode = false;
         gameCanStart = false;
         turnSequence = new HashMap<>();
         cleanRoom = false;
         printRoomMesssage("Room created");
     }
+
+    public boolean isSoloMode() {
+        return isSoloMode;
+    }
+
+    public void setSoloMode(boolean soloMode) {
+        isSoloMode = soloMode;
+    }
+
+    public List<String> getPlayersId() {
+        return playersId;
+    }
+
+
+    /*----------------------------------------------------------------------------------------------------------------*/
 
     /**
      * adding all the users logged in, in the room to start the game
@@ -71,6 +94,31 @@ public class Room extends Observable {
         } catch (LimitExceededException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * method to check if the room is full (4 player maximum) or not
+     * @param
+     */
+    public boolean isFull(){
+        if (isSoloMode && numberOfPlayer==1){
+            //this room is occupied by a player in Solo Mode
+            return true;
+        }
+        else if (numberOfPlayer == 4){
+            //this room is Full
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * initialized the game for these players
+     */
+    public void initializedGame(){
+        //creating the controller for the initialization
+        initializedController = new InitializedController((ArrayList<String>) playersId);
+        initializedController.createGame();
     }
 
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.actionAbility;
 
+import it.polimi.ingsw.controller.factory.BoardManagerFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.*;
 import junit.framework.TestCase;

@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model.board;
+package it.polimi.ingsw.controller.factory;
 
+import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.WarehouseStandard;
@@ -7,12 +8,14 @@ import it.polimi.ingsw.model.board.resourceManagement.WarehouseStandard;
 import java.util.ArrayList;
 
 /* SOFI
-* PATTERN
-* */
+*/
+
+/**
+ * Pattern: FACTORY
+ * this class is made to create the Personal Board of each Player
+ */
 public class PersonalBoardFactory {
-    /*
-    * In order to create the Personal Board of each Player
-    */
+
     public PersonalBoard createGame(){
         ArrayList<CardSpace> allCardSpace = createCardSpaces();
         StrongBox strongBox = new StrongBox();

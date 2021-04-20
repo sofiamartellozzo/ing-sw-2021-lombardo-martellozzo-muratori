@@ -19,7 +19,7 @@ public class GameServer {
     /**
      * Version of the server.
      */
-    public static final String SERVER_VERSION = "1.1.0";
+    public static final String SERVER_VERSION = "2.1.0";
 
     public static void main(String[] args) {
 

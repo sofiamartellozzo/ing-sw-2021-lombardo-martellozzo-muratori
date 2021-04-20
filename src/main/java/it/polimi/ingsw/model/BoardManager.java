@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
+import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
 import it.polimi.ingsw.model.market.MarketStructure;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -49,5 +52,17 @@ public class BoardManager {
 
     public ResourcesSupply getResourcesSupply() {
         return resourcesSupply;
+    }
+
+    /**
+     * get all the id of the card contained in the Leader Card Deck
+     * @return ArrayList of Integer, referred to the Leader Card Id
+     */
+    public ArrayList<Integer> getAllLeaderCard(){
+        ArrayList<Integer> allCards = new ArrayList<>();
+        for (LeaderCard card: leaderCardDeck.getCards()) {
+            //allCards.add(card.getId());
+        }
+        return allCards;
     }
 }

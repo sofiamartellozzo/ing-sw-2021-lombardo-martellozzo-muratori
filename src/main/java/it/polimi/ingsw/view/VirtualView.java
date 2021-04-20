@@ -1,0 +1,147 @@
+package it.polimi.ingsw.view;
+
+import it.polimi.ingsw.connection.server.ClientHandler;
+import it.polimi.ingsw.controller.Lobby;
+import it.polimi.ingsw.message.*;
+import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
+import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
+import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
+import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
+import it.polimi.ingsw.message.viewMsg.*;
+
+/**
+ * Virtual View class, it simulates the View in the Server side and each client has associated an unique instance of this class.
+ * The class decides which events need to be send to the client and which to the server.
+ */
+public class VirtualView extends Observable implements ControllerObserver, ViewObserver {
+
+    private String username;
+    private String gameMode;    //0 for solo mode, 1 for multiplayer
+
+    private Lobby lobby;        //the game Lobby on this Server
+
+    private ClientHandler client;
+
+    private boolean inLobby;           //if true this client is waiting in the lobby
+
+
+    public VirtualView(ClientHandler client) {
+        this.client = client;
+        this.lobby = Lobby.getInstance();
+    }
+
+    /**
+     * send a message to the client throw his Client Handler
+     */
+    private void sendToClient(GameMsg msg){
+        client.sendMsg(msg);
+    }
+
+
+
+    /**
+     * receiving the message of a Request of connection by the client
+     * this has to be send to the Controller
+     * @param msg
+     */
+    public void receiveMsg(VConnectionRequestMsg msg){
+
+        //save the username of the client associated to this virtual view
+        username = msg.getUsername();
+        //save the mode the client choose
+        gameMode = msg.getGameSize();
+        //create the message to send to the controller with the username the client send
+        CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of connection by a client",client.getUserIP(), client.getUserPort(), username, gameMode);
+        // "send" the message to the controller
+        notifyAllObserver(ObserverType.CONTROLLER, requestToController);
+
+        tryToStartGame();
+    }
+
+    @Override
+    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
+        //not implemented here (in Initialized Controller)
+    }
+
+    @Override
+    public void receiveMsg(CChooseResourceAndDepotMsg msg) {
+        //not implemented here (in Initialized Controller)
+    }
+
+    @Override
+    public void receiveMsg(CConnectionRequestMsg msg) {
+        //not implemented here (in Lobby)
+    }
+
+    /**
+     * this msg is received from the controller when the username is not valid
+     * or there are not a room available
+     * then forward the event to the client (as a notify)
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(CNackConnectionRequestMsg msg) {
+        //set the boolean that specify if the user is waiting in the lobby to false
+        inLobby = false;
+
+        /* send this message (notify) to the client */
+        sendToClient(msg);
+    }
+
+    /**
+     * msg recived from the controller (Lobby) asking to the client the size of the room
+     * he want to play in
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VRoomSizeRequestMsg msg) {
+        sendToClient(msg);
+    }
+
+    /**
+     * msg from the controller (Initialized) when the client has to chose 2 leader card
+     * from a 4 cards deck
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VChooseLeaderCardRequestMsg msg){
+        //check if the username is mine
+        if (msg.getUsername().equals(this.username)){
+            /* send this message (notify) to the client */
+            sendToClient(msg);
+        }
+    }
+
+    /**
+     * msg received when is asked to the client to chose a Resource
+     * and the depots where to store it
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VChooseResourceAndDepotMsg msg) {
+        //check if the username is mine
+        if (msg.getUsername().equals(this.username)){
+            /* send this message (notify) to the client */
+            sendToClient(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
+        //ce pensiamo doamni
+    }
+
+
+
+
+    /*---------------------------------------------------------------------------------------------------------------------*/
+
+     //METHODS PRIVATE AUXILIARY
+
+    private void tryToStartGame(){
+        //check if the connection is ON and ask to the Lobby if the Game can start
+        if (lobby.canInitializeGameFor(this.username)){
+            lobby.startInitializationOfTheGame(username);
+        }
+    }
+}
