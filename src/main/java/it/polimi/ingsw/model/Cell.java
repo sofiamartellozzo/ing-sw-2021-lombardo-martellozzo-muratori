@@ -1,6 +1,10 @@
 package it.polimi.ingsw.model;
 
 /* ILA */
+
+/**
+ * this class creates the Cell of the resourcesSupply, composed by a specific type of resource
+ */
 public class Cell {
 
     private final Resource resource;
@@ -17,7 +21,7 @@ public class Cell {
     }
 
     /**
-     * method that create a new Resource using the Enum TypeResource
+     * method that creates a new Resource using the Enum TypeResource
      * @param type
      * @return
      */
@@ -40,14 +44,13 @@ public class Cell {
     public TypeResource getType() { return type; }
 
     /**
-     * because the resources are limitless I don't have to control the lenght of the ArrayList before removing them
-     * @param resource
+     * method created to give to the player the resource of the type he asked
+     * because the resources are limitless we don't have to control the length of the ArrayLists before removing them
      * @return
      */
 
-    public Resource askResource(Resource resource) {
-        return createResource(this.type);
+    public Resource askResource() {
+        return createResource(this.getType());
     }
-
 
 }

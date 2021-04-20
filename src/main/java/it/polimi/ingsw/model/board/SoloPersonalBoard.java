@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * this class is the same as the Personal Board but for the Solo Game
  */
-public class SoloPersonalBoard extends PersonalBoard{
+    public class SoloPersonalBoard extends PersonalBoard{
 
     private List<ActionToken> actionTokens;
     private LorenzoFaithMarker lorenzoIlMagnifico;

@@ -32,7 +32,8 @@ public class FaithTrack {
     public ArrayList<Box> getPathBox() { return pathBox;}
 
     /**
-     * this method returns the position of the faithMarker in the track (a number)
+     * this method returns the position of the faithMarker in the FaithTrack, at the beginning it is set in
+     * the first box and during the game the player move it
      * @return
      */
     public int getPositionFaithMarker() {
@@ -40,9 +41,13 @@ public class FaithTrack {
     }
 
     // Setter method for testing
-    public void setFaithMarker() {faithMarker.setPosition(3);}
+    public void setFaithMarker() {faithMarker.setPosition(4);}
 
 
+    /**
+     * returns an array of only the popeBoxes from the faithTrack
+     * @return
+     */
     public ArrayList<PopeBox> getPopeBoxes() {
         ArrayList<PopeBox> popeBoxes = new ArrayList<>();
         for (Box box :pathBox ) {
@@ -55,8 +60,9 @@ public class FaithTrack {
     }
 
     /**
-     * method used to check if the FaithMarker is in a PopeBox that hasn't been activated yet
-     * @return
+     * method used to check if the position of the FaithMarker is in a PopeBox that hasn't been activated yet,
+     * in that case it returns the section of the PopeBox in which we have to do the control
+     * @return vaticanSection
      */
 
     public int checkInvokeVaticanReport() {
@@ -71,7 +77,8 @@ public class FaithTrack {
     }
 
     /**
-     * method used to do the vatican report and so control if the FaithMarker is inside a vatican section or not
+     * method used to do the vatican report and control if the FaithMarker is up to a vatican section or not, if it is in
+     * the vatican section the player will take the points of the relative popesFavorTiles, otherwise not.
      * @param section
      */
 
@@ -91,8 +98,8 @@ public class FaithTrack {
     }
 
     /**
-     * Take the Victory points of the box in which the faithMarker is plus the points of the popesFavorTiles,
-     * so you have all the points of the FaithTrack
+     * Take the Victory points of the box in which the faithMarker is plus the points of the popesFavorTiles
+     * that during the game the player activated with the vatican Reports, so you have all the points of the FaithTrack
      * @return TotPoints + BoxPoints
      */
 
@@ -102,6 +109,7 @@ public class FaithTrack {
         int TotPoints = 0;
 
         if(faithMarker.getPosition()==0) { BoxPoints = 0;}
+
         else {BoxPoints = pathBox.get(getPositionFaithMarker()).getVictoryPoints();}
 
         for (int i = 0; i < 3; i++)
@@ -113,7 +121,7 @@ public class FaithTrack {
     }
 
     /**
-     * with this method you increase the position of your faithMarker in your faithTrack
+     * with this method the player increase the position of his faithMarker in the faithTrack
      */
 
     public void increasePosition() {

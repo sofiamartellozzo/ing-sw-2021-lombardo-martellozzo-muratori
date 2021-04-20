@@ -8,8 +8,8 @@ import java.util.ArrayList;
 /* ILA */
 
 /**
- * this special card generated with the AdditionalPower will create a new type of card,
- * in which the player chooses the resource he wants
+ * this special card created with the AdditionalPower, will create a new type of card,
+ * in which the player receive one faithMarker points and chooses the resource he wants
  */
 public class SpecialCard {
 
@@ -33,8 +33,8 @@ public class SpecialCard {
 
 
     /**
-     * in this method you remove the resource that you paid from the Warehouse or from StrongBox
-     * and put the new one in the StrongBox, farther the faithMarker of the player increase its position
+     * with this method the player removes the resources that he paid from the Warehouse or from StrongBox
+     * and put the new one in the StrongBox, plus  the faithMarker of the player increases its position
      * @param player
      * @param resource
      * @param where
