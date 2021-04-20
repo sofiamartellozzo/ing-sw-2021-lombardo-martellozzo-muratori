@@ -8,6 +8,7 @@ import it.polimi.ingsw.message.viewMsg.VConnectionRequestMsg;
 /**
  * OBSERVER
  * interface with the method of the controllers
+ * not all yet
  */
 public interface ControllerObserver extends Observer{
 

@@ -9,6 +9,7 @@ import it.polimi.ingsw.message.viewMsg.VRoomSizeRequestMsg;
 /**
  * OBSERVER
  * interface with the method of the view
+ * not all yet
  */
 public interface ViewObserver extends Observer{
 

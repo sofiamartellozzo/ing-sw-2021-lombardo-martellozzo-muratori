@@ -17,6 +17,11 @@ public abstract class Observable {
         this.controllerObserver = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param observerType
+     * @param msg
+     */
     public synchronized void notifyAllObserver(ObserverType observerType, GameMsg msg){
         switch (observerType){
             case VIEW:
