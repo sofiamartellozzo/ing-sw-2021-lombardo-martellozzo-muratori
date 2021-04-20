@@ -7,19 +7,17 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-public class FaithTrackTest extends TestCase {
+public class SoloFaithTrackTest extends TestCase {
 
-    FaithTrack faithTrack = null;
+    SoloFaithTrack soloFaithTrack = null;
 
     @Before
     public void setUp() throws Exception {
-
         GoldBox box = new GoldBox(1,0,9);
         GoldBox box1 = new GoldBox(1,1,2);
         GoldBox box2 = new GoldBox(1,2,1);
-        PopeBox box4 = new PopeBox(1,3);
+        SimpleBox box4 = new SimpleBox(1,3);
         box4.setVictoryPoints(box2);
-        box4.setActivated(true);
         PopeBox pop = new PopeBox(1,4);
         pop.setVictoryPoints(box2);
         pop.setActivated(false);
@@ -46,10 +44,10 @@ public class FaithTrackTest extends TestCase {
         popesFavorTiles.add(2,popesFavorTile3);
 
         ArrayList<Box> b = new ArrayList<>();
-        b.add(boxes.get(0));
-        b.add(boxes.get(1));
-        b.add(boxes.get(2));
-        b.add(boxes.get(3));
+        b.add(new SimpleBox(1,2));
+        b.add(new SimpleBox(1,3));
+        b.add(new GoldBox(1,4,5));
+        b.add(new PopeBox(1,4));
         PopesFavorTile popes = new PopesFavorTile(1,3);
 
         VaticanSection vaticanSection = new VaticanSection(1,b,popes);
@@ -58,54 +56,22 @@ public class FaithTrackTest extends TestCase {
         ArrayList<VaticanSection> vatSec = new ArrayList<>();
         vatSec.add(vaticanSection);
         vatSec.add(vaticanSection1);
+        LorenzoFaithMarker lorenzoFaithMarker = new LorenzoFaithMarker();
 
-        faithTrack = new FaithTrack(boxes,popesFavorTiles,new FaithMarker(),vatSec);
-
+        soloFaithTrack = new SoloFaithTrack(boxes,popesFavorTiles,new FaithMarker(),vatSec,lorenzoFaithMarker);
     }
 
     @After
     public void tearDown() throws Exception {
-        faithTrack = null;
+        soloFaithTrack = null;
     }
 
     @Test
-    public void testGetPopesFavorTiles() {
+    public void testIncreaseLorenzoPosition() {
+        soloFaithTrack.increaseLorenzoPosition();
+        soloFaithTrack.increaseLorenzoPosition();
+        int num = soloFaithTrack.getPositionFaithMarker();
 
-        ArrayList<PopesFavorTile> p = new ArrayList<>();
-        p = faithTrack.getPopesFavorTiles();
-    }
-
-    @Test
-    public void testGetAllVictoryPoints() {
-
-        faithTrack.setFaithMarker();
-        int j = faithTrack.getAllVictoryPoints();
-
-        assertEquals(j,10);
-
-    }
-
-    @Test
-    public void testIncreasePosition() {
-
-        faithTrack.getFaithMarker().increasePosition();
-        assertEquals(faithTrack.getPositionFaithMarker(),1);
-    }
-
-    @Test
-    public void testCheckInvokeVaticanReport() {
-
-        faithTrack.setFaithMarker();
-        int num = faithTrack.checkInvokeVaticanReport();
-        assertEquals(num,1);
-
-    }
-
-    @Test
-    public void testDoVaticanReport(){
-
-        faithTrack.setFaithMarker();
-        faithTrack.doVaticanReport(1);
-
+        assertEquals(num, 2);
     }
 }

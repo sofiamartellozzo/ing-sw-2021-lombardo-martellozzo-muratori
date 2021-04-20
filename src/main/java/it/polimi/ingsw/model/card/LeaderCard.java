@@ -16,19 +16,21 @@ public class LeaderCard extends Card{
     private  SpecialAbility specialAbility;
     private  ArrayList<Object> requirements;
     private  State state;
+    private int cardID;
 
     /**
-     * constructor of the class, he needs the points that it has, like the Abstract class Card
-     * and set the other parameter to default
+     * constructor of the class
      * @param victoryPoints
      */
 
-    public LeaderCard(int victoryPoints, SpecialAbility specialAbility,ArrayList<Object> requirements) {
+    public LeaderCard(int cardID,int victoryPoints, SpecialAbility specialAbility,ArrayList<Object> requirements) {
 
         super(victoryPoints);
+        this.cardID = cardID;
         this.requirements=requirements;
         this.specialAbility=specialAbility;
         this.state = new Inactive();
+
     }
 
     // Getter methods
@@ -38,7 +40,16 @@ public class LeaderCard extends Card{
     public State getState(){return state;}
 
     /**
-     * method used to active the special ability of a card Leader Card with a fixed resource
+     * method to take the ID of a Leader Card (an integer number that goes from 1 to 16)
+     * @return
+     */
+    public int getCardID() {
+        return cardID;
+    }
+
+    /**
+     * method used to active the special ability of a card Leader Card with a fixed resource as
+     * earn production power
      * @param player
      * @throws InvalidActionException
      */
@@ -49,7 +60,8 @@ public class LeaderCard extends Card{
     }
 
     /**
-     *  method used when the special ability is activated and the payer chose the resource he wants
+     * method used when the special ability is activated and create the special card,
+     * so the payer has to choose the resource he wants
      * @param resource
      * @param player
      * @throws InvalidActionException
@@ -61,7 +73,8 @@ public class LeaderCard extends Card{
     }
 
     /**
-     * this method gives you the victory points of the Leader Card only if the card is active, otherwise is zero
+     * this method gives you the victory points of the Leader Card only if the card is active,
+     * otherwise it returns zero
      * @return
      */
     @Override

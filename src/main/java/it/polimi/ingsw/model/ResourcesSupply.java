@@ -4,9 +4,10 @@ import java.util.ArrayList;
 /* ILA */
 
 /** SINGLETON: because I have to instance this class only once,
-    and the next time
-    he has to give me back the same class
+    and the next time he has to give me back the same class
  */
+
+/** in this class we have an Arraylist of 4 Cells containing the four different resources, one foreach Cell*/
 
 public class ResourcesSupply {
 
@@ -36,15 +37,10 @@ public class ResourcesSupply {
         return content;
     }
 
-    /*this method gives to the player the resources he asked*/
+    /** @param resource
+     * this method gives to the player the resource he asked
+     * */
     public Resource returnResourceAsked(Resource resource) throws IllegalAccessException {
-
-        /*for (Cell cell : content) {
-            if (cell.getResources().equals(resource)) {
-                return cell.getResources();
-            }
-            else throw new IllegalAccessException(" Error input resource not valid! ");
-        }*/
         return resource;
     }
 

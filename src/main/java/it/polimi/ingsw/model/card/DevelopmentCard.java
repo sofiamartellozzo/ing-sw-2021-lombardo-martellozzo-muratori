@@ -54,8 +54,9 @@ public class DevelopmentCard extends Card {
     }
 
     /**
-     * in this method you remove the resouces that you paid from the Warehouse (and after from strongbox) but you can't do both
-     * and put the new ones in the StrongBox
+     * when the player chose to activate the production power,
+     * he removes the resources that he paid from the Warehouse of from the strongbox
+     * ( the player chooses) and put the new resources received in the StrongBox
      * @param player
      * @param where
      * @throws InvalidActionException
@@ -67,13 +68,32 @@ public class DevelopmentCard extends Card {
         {
             player.getGameSpace().getResourceManager().removeFromWarehouse(costProductionPower);
         }
-        if (where.equals("StrongBox")) {
+
+        if (where.equals(player.getGameSpace().getResourceManager().getStrongBox().toString()))
+        {
 
             player.getGameSpace().getResourceManager().removeFromStrongBox(costProductionPower);
         }
-        player.getGameSpace().getResourceManager().addResourcesToStrongBox(earnProductionPower);
 
-        //if the resource is a faithMarker I don't have to add nothing!! Only do 1 step on !!!!
+        /*
+         * if inside the earn production power of the card is contained the Faith Marker,
+         * the player doesn't have to add anything but only to move on his faith marker,
+         * and add to the strongBox the other resources (if present)
+         */
+
+        for (Resource res: earnProductionPower) {
+            ArrayList<Resource> toAdd = new ArrayList<>();
+
+            if (res.getColor().equals(Color.RED))
+            {
+                player.getGameSpace().getFaithTrack().getFaithMarker().increasePosition();
+            }
+            else
+            {
+                toAdd.add(res);
+                player.getGameSpace().getResourceManager().addResourcesToStrongBox(toAdd);
+            }
+        }
 
     }
 

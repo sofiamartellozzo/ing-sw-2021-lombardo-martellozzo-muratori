@@ -24,7 +24,7 @@ public class CardSpace {
 
     // Getter methods
     /**
-     * now I have the size of the List and so the number of cards
+     * this method returns the size of the List and so the number of cards
      * @return
      */
     public int getNumberOfCards() {
@@ -37,7 +37,6 @@ public class CardSpace {
         return whichSpace;
     }
 
-
     // Setter methods
     private void setNumberOfCards(int numberOfCards) {
         this.numberOfCards = numberOfCards;
@@ -46,7 +45,7 @@ public class CardSpace {
 
     /**
      * Method used to take the upper card of the Card space,
-     *  One player can use the production power only of the upper card.
+     * because the player can use the production power only of the upper card.
      * @return
      * @throws IllegalArgumentException
      */
@@ -59,10 +58,13 @@ public class CardSpace {
 
     /**
      * method used to add a development card to a card space and after increase the size of it,
-     * but if you already have a card on it, you have to check that the level is 1 higher than the previous one
+     * if it is empty you don't have to do any control, but if you already have a card on it,
+     * you have to check that the level of the new card is 1 bigger than the previous one ...
+     * you don't care about the color!
      * @param newCard
      * @throws IllegalArgumentException
      */
+
     public void addCard(DevelopmentCard newCard) throws IllegalArgumentException {
         if(newCard==null) throw new IllegalArgumentException("Error, card not valid!");
 
@@ -80,7 +82,8 @@ public class CardSpace {
     }
 
     /**
-     * in this method I calculate the sum of Victory points in a CardSpace
+     * this method is used to calculate the sum of the Victory points in a CardSpace,
+     * you do a sum of the victory points of each card in a card space (considering also the covered cards)
      * @return
      */
     public int getTotVictoryPoints ()
