@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.card.*;
 import it.polimi.ingsw.model.cardAbility.Discount;
 import it.polimi.ingsw.model.cardAbility.SpecialAbility;
 import it.polimi.ingsw.model.cardAbility.SpecialDepot;
+import it.polimi.ingsw.model.cardAbility.TypeAbility;
 import it.polimi.ingsw.model.market.ColoredMarble;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarketStructure;
@@ -183,15 +184,13 @@ public class BoardManagerFactory {
 
     private ArrayList<LeaderCard> createLeaderCardDeck()
     {
-        SpecialAbility special1 = new SpecialDepot(new Resource(Color.BLUE));
-        SpecialAbility special2 = new Discount(new Resource(Color.YELLOW));
 
         ArrayList<Object> requirements = new ArrayList<Object>();
         requirements.add(0,new Resource(Color.BLUE));
         requirements.add(1,new Resource(Color.GREY));
 
-        LeaderCard card1 = new LeaderCard(3,1,special1,requirements);
-        LeaderCard card2 = new LeaderCard(4,1,special2,requirements);
+        LeaderCard card1 = new LeaderCard(3,1, TypeAbility.SPECIAL_DEPOT,TypeResource.COIN,requirements);
+        LeaderCard card2 = new LeaderCard(4,1,TypeAbility.ADDITIONAL_POWER,TypeResource.COIN,requirements);
 
         ArrayList<LeaderCard> cards = new ArrayList<>();
         cards.add(0,card1);

@@ -24,7 +24,7 @@ public class ClientHandler extends Observable implements Runnable{
     private Socket clientSocket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private String IP;
+    private InetAddress IP;
     private VirtualView virtualView; //the virtual view created for this client (this specific client handler indeed)
     private Thread ping;  //to keep alive the connection
 
@@ -33,7 +33,7 @@ public class ClientHandler extends Observable implements Runnable{
         /* when create the cHandler, create his virtual view too */
         virtualView = new VirtualView(this);
         //attach it to the Observable, because is an Observer
-        attachListener(ObserverType.VIEW, virtualView);
+        attachObserver(ObserverType.VIEW, virtualView);
     }
 
     @Override

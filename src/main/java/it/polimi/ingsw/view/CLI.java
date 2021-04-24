@@ -5,6 +5,7 @@ import java.awt.font.NumericShaper;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -448,6 +449,26 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
 
         System.out.println(" Player X increased his faithMarker position of one position");
+    }
+
+    @Override
+    public void receiveMsg(VNotValidDepotMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VMoveResourceRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VBuyFromMarketRequestMsg msg) {
+
     }
 
     /**

@@ -8,10 +8,12 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.cardAbility.SpecialAbility;
 import it.polimi.ingsw.model.cardAbility.SpecialDepot;
+import it.polimi.ingsw.model.cardAbility.TypeAbility;
 import it.polimi.ingsw.utility.SmallDevelopCard;
 import netscape.javascript.JSObject;
 
@@ -33,7 +35,7 @@ public class LeaderCardFactory {
         //requirements.add(new DevelopmentCard(1, Color.GREEN, 2, cost, cost, cost ));
         requirements.add(new SmallDevelopCard(Color.GREEN, 0));
         requirements.add(new SmallDevelopCard(Color.BLUE, 1));
-        LeaderCard card = new LeaderCard(3,2,new SpecialDepot(new Resource(Color.PURPLE)),requirements);
+        LeaderCard card = new LeaderCard(3,2, TypeAbility.ADDITIONAL_POWER, TypeResource.COIN,requirements);
         String json = gson.toJson(card);
         System.out.println(json);
         /* from json to create Java class*/
