@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TypeResource;
 
 /*
  * SOFIA
@@ -22,5 +23,5 @@ public abstract class Marble {
      * @param player
      * @return
      */
-    public abstract void choose(Player player) throws InvalidActionException;
+    public abstract TypeResource choose(Player player) throws InvalidActionException;
 }

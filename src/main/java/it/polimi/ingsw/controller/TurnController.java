@@ -3,11 +3,17 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.controller.factory.BoardManagerFactory;
 import it.polimi.ingsw.controller.factory.ResourcesSupplyFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.message.ControllerObserver;
+import it.polimi.ingsw.message.Observable;
+import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.controllerMsg.*;
+import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.controller.factory.PersonalSoloBoardFactory;
 import it.polimi.ingsw.model.board.SoloPersonalBoard;
+import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.util.ArrayList;
@@ -19,156 +25,104 @@ import java.util.Random;
 
 /**
  * this class is the part of the controller that arraing the start of the game, and set the turn sequence
+ * it is specific for a single room, to manage
  */
 
-public class TurnController {
+public class TurnController extends Observable implements ControllerObserver {
+    /* all player in a Room */
     private HashMap<Integer, PlayerInterface> turnSequence;
-    private int currenyTurnIndex;
+    private int numberOfPlayer;
+
+    private int currentTurnIndex;
     private PlayerTurn currentTurnIstance;
     private Player currentPlayer;
-    private int numberOfPlayer;
+
     private ArrayList<PopesFavorTileReview> checkPopesFavorTile;
 
     /* the solo player */
     private SoloPlayer singlePlayer;
+    /* same as in Room class, to check immediately */
+    private boolean isSoloMode;
+    /*the attribute for the class that handle the turn*/
+    private SoloPlayerTurn currentSoloTurnIstance;
 
     /* the parts of the game that all the player have in common*/
     private BoardManager boardManager;
 
+    /*set true when is called the last turn*/
+    private boolean lastTurns;
+    /*at the end of the game there is a last turn for each player except the one that ended it, this keep the track of it*/
+    private int numberOfLastTurn;
+
     /* Constructor of the class */
-    public TurnController(ArrayList<Player> players) {
+    public TurnController(HashMap<Integer, PlayerInterface> players, BoardManager boardManager) {
 
-        this.numberOfPlayer = players.size();
         this.turnSequence = new HashMap<>();
-        //whe have to choose random the first player
-        Player first= choiceRandomFirstPlayer(players);
-        this.turnSequence.put(1, first);
-        this.currentPlayer = first;
-        this.currenyTurnIndex = 1;
-        fillSequence(players, first);
+        setTurnSequence(players);
+        this.boardManager = boardManager;
+        this.currentTurnIndex = 1;
+        this.currentPlayer = (Player) players.get(1);
+        setVaticanSectionUnchecked();
+        lastTurns = false;
+        numberOfLastTurn = numberOfPlayer-1;
+    }
 
-        //contruct the resources supply for all the players
-        ResourcesSupplyFactory resourcesSupplyFactory = new ResourcesSupplyFactory();
-        //this.resourcesSupply = resourcesSupplyFactory.createTheResourcesSupply();
+    /* override of the constructor, for the Solo Mode */
+    public TurnController(SoloPlayer player, BoardManager boardManager) {
 
+        this.turnSequence = null;
+        this.singlePlayer = player;
+        this.numberOfPlayer = 1;
+        this.boardManager = boardManager;
+        this.currentTurnIndex = 1;
+        setVaticanSectionUnchecked();
     }
 
     /**
-     *
+     * setting the turn sequence, created in the room
      * @param players
-     * @return the first player of the game, chosen random
      */
-    private Player choiceRandomFirstPlayer(ArrayList<Player> players){
-        Random random = new Random();
-        Player first = players.get(random.nextInt(players.size()));
-        first.setNumber(1);
-        return first;
+    private void setTurnSequence(HashMap<Integer, PlayerInterface> players){
+        turnSequence = players;
+        numberOfPlayer = players.keySet().size();
     }
 
     /**
-     *
-     * @param players
-     * @param first
-     * fill the map attribute to create a sequence of the turn, with the other player except the first
-     * that is altready in the sequence
+     * at the initialization of the class set all vatican section to unchecked
      */
-    private void fillSequence(ArrayList<Player> players, Player first){
-        players.remove(first);
-        for (int j = 2; (j< 5)/*&&(players.size() > 0)*/;j++){
-            players.get(j-2).setNumber(j);
-            this.turnSequence.put(j, players.get(j-2));
-
+    private void setVaticanSectionUnchecked(){
+        for (int i=0; i<3; i++){
+            checkPopesFavorTile.add(PopesFavorTileReview.UNCHECKED);
         }
     }
 
     /**
-     * method to inizialized the game, creating the spaces and setting everithing
+     * settings the boolean parameter for check if is Solo Mode or not
+     * */
+    private void isSoloMode(){
+        if (numberOfPlayer == 1){
+            isSoloMode = true;
+        }
+        else {
+            isSoloMode = false;
+        }
+    }
+
+    /**
+     * method to initialized the game, creating the spaces and setting everithing
      * exept the Board Manager the rest is setted differently if the number of player
      * are one or more : so solo mode or multiple mode
      * @throws InvalidActionException
      */
     public void gamePlay() throws InvalidActionException{
-        //where the game starts
-
-
-
-        if (this.numberOfPlayer == 1){
-            HashMap<Integer, PlayerInterface> player = new HashMap<>();
-            PersonalSoloBoardFactory soloBoardFactory = new PersonalSoloBoardFactory();
-            SoloPersonalBoard soloPersonalBoard = soloBoardFactory.createGame();
-            this.singlePlayer = new SoloPlayer(this.turnSequence.get(1).getUsername());
-            this.singlePlayer.setGameSpace(soloPersonalBoard);
-            player.put(1,this.singlePlayer);
-            BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
-            this.boardManager = boardManagerFactory.createBoardManager(player);
-            chooseLeaderCard(true);
+        //where the turn game starts
+        printTurnCMesssage("A Turn can start...");
+        if (isSoloMode){
             startSoloPlayerTurn(this.singlePlayer);
         }
         else{
-
-            BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
-            this.boardManager = boardManagerFactory.createBoardManager(this.turnSequence);
-            for (Integer i: this.turnSequence.keySet()) {
-                PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
-                PersonalBoard personalBoard = personalBoardFactory.createGame();
-                this.turnSequence.get(i).setGameSpace(personalBoard);
-                chooseLeaderCard(false);
-            }
-            giveStartResources();
             startPlayerTurn(this.currentPlayer);
         }
-    }
-
-    /**
-     * at the start of the game all player (both single or multiple mode)
-     * have to choose 2 Leader Card from 4 choosen random
-     * @param solo
-     */
-    private void chooseLeaderCard(boolean solo){
-        Random random = new Random();
-        ArrayList<LeaderCard> fourLeaderCard = new ArrayList<>();
-        for (Integer j: this.turnSequence.keySet()) {
-            for (int i=0; i<4; i++){
-                fourLeaderCard.add(this.boardManager.getLeaderCardDeck().getCards().get(random.nextInt(this.boardManager.getLeaderCardDeck().getNumberOfCards())));
-            }
-            if (solo){
-                this.singlePlayer.chooseLeaderCards(fourLeaderCard, 1, 2);
-                this.boardManager.getLeaderCardDeck().remove(this.singlePlayer.getLeaderCards());
-            }
-            else{
-                this.turnSequence.get(j).chooseLeaderCards(fourLeaderCard, 1,2);
-                this.boardManager.getLeaderCardDeck().remove(this.turnSequence.get(j).getLeaderCards());
-            }
-        }
-    }
-
-    /**
-     * this method is called only in multiple mode, in single one is not necessary
-     * at the game start, after chose the Leader Card all player recive different stuff:
-     * the first one only the inkpot
-     * the second one recive one resource that he choose
-     * the third one (if exist) recive one resource that he choose and increasing of one position the faith market
-     * the fourth one (if exist) recive two resources that he choose and increasing of one position the paith market
-     * @throws InvalidActionException
-     */
-    private void giveStartResources() throws InvalidActionException {
-        if (this.turnSequence.get(1)!= null){
-            //the second player recive one resources that he choose
-            this.turnSequence.get(1).getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.YELLOW), 1);
-            if (this.turnSequence.get(2)!= null){
-                //the third player recive one resource and a faith marker(so thi increase of one his position)
-                this.turnSequence.get(2).getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.BLUE), 1);
-                this.turnSequence.get(2).getGameSpace().getFaithTrack().increasePosition();
-                if (this.turnSequence.get(3)!= null){
-                    //the fourth player recives two resources and a faith marker(so thi increase of one his position)
-                    this.turnSequence.get(3).getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.PURPLE), 2);
-                    this.turnSequence.get(3).getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.PURPLE), 2);
-                    this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
-                }
-            }
-        }
-
-
     }
 
     /**
@@ -176,9 +130,14 @@ public class TurnController {
      * action the player can do
      * @param player
      */
-    private void startSoloPlayerTurn(SoloPlayer player){
+    private void startSoloPlayerTurn(SoloPlayer player) throws InvalidActionException {
+        printTurnCMesssage("You choose to play in Solo Mode, ready to fight against Lorenzo il Magnifico?");
+        player.setPlaying(true);
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
-
+        currentSoloTurnIstance = spt;
+        if (spt.checkEndGame()){
+            startSoloPlayerTurn(player);
+        }
     }
 
     /**
@@ -187,9 +146,13 @@ public class TurnController {
      * @param player
      */
     private void startPlayerTurn(Player player){
-        this.currentPlayer = player;
+        printTurnCMesssage("New Turn is ready to start, and you?...");
         player.setPlaying(true);
         PlayerTurn pt = new PlayerTurn(player, this.boardManager);
+        currentTurnIstance = pt;
+        //send the msg to the client, to choose the action he want to make
+        VChooseActionTurnMsg msg = new VChooseActionTurnMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
+        notifyAllObserver(ObserverType.VIEW, msg);
         if (pt.checkEndTurn()){
             nextTurn();
         }
@@ -200,17 +163,76 @@ public class TurnController {
      * and create a new turn for him
      */
     private void nextTurn(){
-        if (this.currenyTurnIndex == this.numberOfPlayer){
-            this.currenyTurnIndex = 1;
+        if (this.currentTurnIndex == this.numberOfPlayer){
+            this.currentTurnIndex = 1;
         }
         else {
-            this.currenyTurnIndex++;
+            this.currentTurnIndex++;
         }
-        Player nextPlayer = (Player) this.turnSequence.get(currenyTurnIndex);
+        Player nextPlayer = (Player) this.turnSequence.get(currentTurnIndex);
         startPlayerTurn(nextPlayer);
     }
 
     /*check if someone is in the pop's favor tile...*/
+
+    private void printTurnCMesssage(String messageToPrint){
+        System.out.println(messageToPrint);
+    }
+
+    /*------------------------------------------------------------------------------------------------------------------*/
+
+            //WAIT THE MSG FROM THE CLIENT
+
+
+    /**
+     * receive the msg from the client with the Action he choose
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+
+        printTurnCMesssage("New action of the game");
+        ActionController controller = new ActionController(currentPlayer, currentTurnIstance, boardManager);
+    }
+
+    /*------------------------------------------------------------------------------------------------------------------*/
+
+    @Override
+    public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
+        //IN ACTIONCONTROLLER
+    }
+
+
+    @Override
+    public void receiveMsg(CMoveResourceInfoMsg msg) {
+        //IN ACTIONCONTROLLER
+    }
+
+    @Override
+    public void receiveMsg(CBuyFromMarketInfoMsg msg) {
+        //IN ACTIONCONTROLLER
+    }
+
+
+    @Override
+    public void receiveMsg(CConnectionRequestMsg msg) {
+        //not here
+    }
+
+    @Override
+    public void receiveMsg(VConnectionRequestMsg msg) {
+        //not here
+    }
+
+    @Override
+    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
+        //not here
+    }
+
+    @Override
+    public void receiveMsg(CChooseResourceAndDepotMsg msg) {
+        //not here
+    }
 
 
 }

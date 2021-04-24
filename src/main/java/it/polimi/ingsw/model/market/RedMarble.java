@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TypeResource;
 
 /*
  * SOFIA
@@ -21,7 +22,8 @@ public class RedMarble extends Marble{
     }
 
     @Override
-    public void choose(Player player) throws InvalidActionException {
+    public TypeResource choose(Player player) throws InvalidActionException {
         player.getGameSpace().getFaithTrack().increasePosition();
+        return TypeResource.FAITHMARKER;
     }
 }

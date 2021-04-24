@@ -6,15 +6,22 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 
+import java.util.ArrayList;
+
 public interface PlayerTurnInterface {
+
+    public ArrayList<TurnAction> getAvailableAction();
+
+    public void removeAction(TurnAction actionToRemove);
 
     public BoardManager getBoardManager();
 
     public Player getCurrentPlayer();
 
-    public void choosePlay(TurnAction action) throws InvalidActionException;
 
-    public void activeLeaderCard(int wich) throws InvalidActionException;
+    public void activeLeaderCard(int which) throws InvalidActionException;
+
+    public void discardLeaderCard(int which) throws InvalidActionException;
 
     public boolean checkEndGame() throws InvalidActionException;
 

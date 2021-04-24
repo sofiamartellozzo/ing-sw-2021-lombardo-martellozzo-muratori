@@ -356,7 +356,7 @@ public class Player implements PlayerInterface{
      * @return  the choosen Leader Card owned from the player himself
      */
     @Override
-    public LeaderCard chooseLeaderCardToActive(int number) {
+    public LeaderCard selectLeaderCard(int number) {
         return this.leaderCards.get(number);
     }
 
@@ -394,18 +394,34 @@ public class Player implements PlayerInterface{
      * @param wich  if he choose a row or a column
      * @param boardManager   to reach the Market, that is common for all players
      * @throws IllegalArgumentException
+     * @return
      */
     @Override
-    public void buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException{
+    public ArrayList<TypeResource> buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException{
+        ArrayList<TypeResource> resourcesFromMarket = null;
         if (wich.equals("row")){
-            boardManager.getMarketStructure().rowMoveMarble(position, this);
+            resourcesFromMarket = boardManager.getMarketStructure().rowMoveMarble(position, this);
         }
         else if (wich.equals("column")){
-            boardManager.getMarketStructure().columnMoveMarble(position, this);
+            resourcesFromMarket = boardManager.getMarketStructure().columnMoveMarble(position, this);
         }
         else
             throw new IllegalArgumentException("invalid action of buy from market!");
 
+        return resourcesFromMarket;
+    }
+
+    /**
+     * method called if the player has 2 white special marble, so when invocated
+     * by the market he have to choose one of them
+     * @return
+     */
+    @Override
+    public ArrayList<TypeResource> getWhiteSpecialResources() {
+        ArrayList<TypeResource> possibleResources = new ArrayList<>();
+        possibleResources.add(whiteSpecialMarble.getAbility().get(0).getResource().getType());
+        possibleResources.add(whiteSpecialMarble.getAbility().get(1).getResource().getType());
+        return possibleResources;
     }
 
     /**
@@ -492,6 +508,14 @@ public class Player implements PlayerInterface{
         }
         else
             throw new InvalidActionException("You can't remove a Leader Card altready active!");
+    }
+
+    /**
+     * increase the position of this player
+     */
+    @Override
+    public void increasePosition() {
+        this.gameSpace.getFaithTrack().increasePosition();
     }
 
     @Override

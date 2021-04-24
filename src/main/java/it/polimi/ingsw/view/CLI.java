@@ -9,12 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import it.polimi.ingsw.connection.client.ClientSocket;
-import it.polimi.ingsw.event.Observable;
-import it.polimi.ingsw.event.ViewObserver;
-import it.polimi.ingsw.event.message.CChooseLeaderCardResponseMsg;
-import it.polimi.ingsw.event.message.VChooseLeaderCardRequestMsg;
-import it.polimi.ingsw.event.message.VConnectionRequestMsg;
-import it.polimi.ingsw.event.message.ViewGameMsg;
+
+
+import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
+import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
+import it.polimi.ingsw.message.viewMsg.*;
+import it.polimi.ingsw.message.Observable;
+import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
+import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
 import it.polimi.ingsw.view.display.WriteMessageDisplay;
 
 /**
@@ -213,6 +216,16 @@ public class CLI extends Observable implements ViewObserver {
     }
 
 
+    @Override
+    public void receiveMsg(CNackConnectionRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VRoomSizeRequestMsg msg) {
+
+    }
+
     /**
      * the Client has to choose two cards from the card list composed by four cards, so there will be two Arrays,
      * one composed by the two chosen Cards, and the other composed by the two that the player denied
@@ -281,8 +294,38 @@ public class CLI extends Observable implements ViewObserver {
             }
         }
 
-        CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ",chosenCards,deniedCards,msg.getUsername());
+        CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ",chosenCards,deniedCards,msg.getUsername(), "firstChoose");
         this.client.sendMsg(response);
+    }
+
+    @Override
+    public void receiveMsg(VChooseResourceAndDepotMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VNotValidDepotMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VMoveResourceRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VBuyFromMarketRequestMsg msg) {
+
     }
 
     /**

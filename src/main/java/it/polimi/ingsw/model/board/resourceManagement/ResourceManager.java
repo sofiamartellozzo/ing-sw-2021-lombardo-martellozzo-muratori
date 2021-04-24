@@ -18,7 +18,7 @@ public class ResourceManager {
     /**
      * Constructor
      * @param strongBox -> The Strongbox where the Player puts in resources produced by the Production Power of Development Cards
-     * @param warehouseStandard -> The Warehouse where the Player puts in all the rest of resources
+     * @param warehouse -> The Warehouse where the Player puts in all the rest of resources
      */
     public ResourceManager(StrongBox strongBox, Warehouse warehouse) {
         this.strongBox = strongBox;

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.message.Observable;
+import it.polimi.ingsw.model.SoloPlayer;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
@@ -19,6 +21,9 @@ public class Room extends Observable {
     private List<String> playersId;
     /* number of players */
     private int numberOfPlayer;
+
+    /* the solo player if is only one */
+    private SoloPlayer singlePlayer;
 
     /* inizialized a size for the room (set by the first player acceded)*/
     //private final int SIZE;
@@ -115,15 +120,27 @@ public class Room extends Observable {
     /**
      * initialized the game for these players
      */
-    public void initializedGame(){
+    public void initializedGame() throws InvalidActionException {
         //creating the controller for the initialization
         initializedController = new InitializedController((ArrayList<String>) playersId);
         initializedController.createGame();
+        boardManager = initializedController.getBoardManager();
+        turnSequence = initializedController.getTurnSequence();
+        printRoomMesssage("the game has been initialized, starting...");
+        startFirstTurn();
     }
 
-
-
-
+    public void startFirstTurn() throws InvalidActionException {
+        //creating the controller for the turn
+        if (!isSoloMode){
+            turnController = new TurnController(turnSequence, boardManager);
+        }
+        else{
+            singlePlayer = initializedController.getSinglePlayer();
+            turnController = new TurnController(singlePlayer, boardManager);
+        }
+        turnController.gamePlay();
+    }
 
 
     private void printRoomMesssage(String messageToPrint){

@@ -190,8 +190,8 @@ public class BoardManagerFactory {
         requirements.add(0,new Resource(Color.BLUE));
         requirements.add(1,new Resource(Color.GREY));
 
-        LeaderCard card1 = new LeaderCard(3,special1,requirements);
-        LeaderCard card2 = new LeaderCard(4,special2,requirements);
+        LeaderCard card1 = new LeaderCard(3,1,special1,requirements);
+        LeaderCard card2 = new LeaderCard(4,1,special2,requirements);
 
         ArrayList<LeaderCard> cards = new ArrayList<>();
         cards.add(0,card1);

@@ -34,8 +34,16 @@ public abstract class Observable {
 
     }
 
-    public void attachListener(){
+    public void attachListener(ObserverType observerType, Observer observer){
 
+        switch (observerType){
+            case VIEW:
+                viewObserver.add((ViewObserver) observer);
+                break;
+            case CONTROLLER:
+                controllerObserver.add((ControllerObserver) observer);
+                break;
+        }
     }
 
     public void detachListener(){

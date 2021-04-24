@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.card.LeaderCard;
 
+import java.util.ArrayList;
+
 /*
  * SOFI*/
 
@@ -16,6 +18,16 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
     }
 
     @Override
+    public ArrayList<TurnAction> getAvailableAction() {
+        return null;
+    }
+
+    @Override
+    public void removeAction(TurnAction actionToRemove) {
+
+    }
+
+    @Override
     public BoardManager getBoardManager() {
         return this.boardManager;
     }
@@ -26,7 +38,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
     }
 
 
-    @Override
+
     public void choosePlay(TurnAction action) throws InvalidActionException {
         //case to end the turn, and then invocate the getActionToken turnaction, only in the solo game
 
@@ -47,14 +59,19 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
     }
 
     @Override
-    public void activeLeaderCard(int wich) throws InvalidActionException {
-        LeaderCard card =  this.currentPlayer.chooseLeaderCardToActive(wich);
+    public void activeLeaderCard(int which) throws InvalidActionException {
+        LeaderCard card =  this.currentPlayer.selectLeaderCard(which);
         if (card.getSpecialAbility().equals("Addictional Power")){
             this.currentPlayer.activeLeaderCardAbility((card), new Resource(Color.YELLOW));
         }
         else{
             this.currentPlayer.activeLeaderCardAbility(card);
         }
+    }
+
+    @Override
+    public void discardLeaderCard(int which) {
+
     }
 
     @Override

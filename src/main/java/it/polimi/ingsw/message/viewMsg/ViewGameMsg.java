@@ -9,4 +9,5 @@ public abstract class ViewGameMsg extends GameMsg {
     public ViewGameMsg(String msgContent) {
         super(msgContent);
     }
+
 }

@@ -19,10 +19,10 @@ public class LeaderCardDeckTest extends TestCase {
 
         ArrayList<Object> req = new ArrayList<>();
         req.add(0,new Resource(Color.PURPLE));
-        LeaderCard card1= new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
-        LeaderCard card2= new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
-        LeaderCard card3= new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
-        LeaderCard card4= new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
+        LeaderCard card1= new LeaderCard(2,1,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
+        LeaderCard card2= new LeaderCard(2,1,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
+        LeaderCard card3= new LeaderCard(2,1,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
+        LeaderCard card4= new LeaderCard(2,1,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
         ArrayList<LeaderCard> cards = new ArrayList<>();
         cards.add(card1);
         cards.add(card2);

@@ -4,6 +4,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 
 /*
 * SOFIA*/
@@ -21,10 +22,11 @@ public class ColoredMarble extends Marble {
     }
 
     @Override
-    public void choose(Player player) throws InvalidActionException {
+    public TypeResource choose(Player player) throws InvalidActionException {
         if (this.getColor() != Color.WHITE){
             Resource resource = new Resource(this.getColor());
-            player.putResources(resource);
+            return resource.getType();
+            //player.putResources(resource);
         }
         else if (this.getColor() == Color.WHITE){
             if(player.getWhiteSpecialMarble() != null){
@@ -32,5 +34,6 @@ public class ColoredMarble extends Marble {
                 player.getWhiteSpecialMarble().choose(player);
             }
         }
+        return null;
     }
 }

@@ -23,6 +23,10 @@ public abstract class GameMsg implements Serializable {
         this.msgContent = msgContent;
     }
 
+    public String getMsgContent() {
+        return msgContent;
+    }
+
     public void notifyHandler(ViewObserver viewObserver){
 
     }
