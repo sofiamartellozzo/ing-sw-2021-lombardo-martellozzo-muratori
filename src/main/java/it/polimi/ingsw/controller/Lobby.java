@@ -1,15 +1,16 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.exception.NotFreeRoomAvailableError;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
 import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VConnectionRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VRoomSizeRequestMsg;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
@@ -177,12 +178,15 @@ public class Lobby extends Observable implements ControllerObserver {
     public void startInitializationOfTheGame(String username){
         try {
             findUserRoom(username).initializedGame();
-        } catch (NotFreeRoomAvailableError error) {
+        } catch (NotFreeRoomAvailableError | InvalidActionException error) {
             error.printStackTrace();
         }
     }
 
-    /*-------------------------------------------------------------------------------------------*/
+    /*-----------------------------------------------------------------------------------------------------------------*/
+            //HANDLE EVENTS
+
+
     /**
      * this method respond at a message from the client that ask for a connection
      * here is needed a check of the username given:
@@ -261,11 +265,31 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-
+        //not implemented here (Initialized Controller)
     }
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
+        //not implemented here (Initialized Controller)
+    }
+
+    @Override
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CMoveResourceInfoMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CBuyFromMarketInfoMsg msg) {
 
     }
 

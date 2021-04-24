@@ -3,10 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.connection.server.ClientHandler;
 import it.polimi.ingsw.controller.Lobby;
 import it.polimi.ingsw.message.*;
-import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
-import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
-import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
-import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
+import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 
 /**
@@ -66,6 +63,26 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //not implemented here (in Initialized Controller)
+    }
+
+    @Override
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+        //not here
+    }
+
+    @Override
+    public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CMoveResourceInfoMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CBuyFromMarketInfoMsg msg) {
+
     }
 
     @Override
@@ -129,6 +146,37 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
         //ce pensiamo doamni
+    }
+
+    /**
+     * receive this msg from controller when the player chose an invalid depots
+     * because he cannot store the resource he chose (Like at first when the resource are
+     * given to the players in multiple Mode, not the first player!)
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VNotValidDepotMsg msg) {
+        sendToClient(msg);
+    }
+
+    /**
+     * send to the client this msg to ask wich development card wants to buy
+     * @param msg-> contains all the available position of the table where to buy
+     */
+    @Override
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
+        sendToClient(msg);
+
+    }
+
+    @Override
+    public void receiveMsg(VMoveResourceRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VBuyFromMarketRequestMsg msg) {
+
     }
 
 

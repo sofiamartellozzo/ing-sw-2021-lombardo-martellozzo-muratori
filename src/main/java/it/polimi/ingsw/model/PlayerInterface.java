@@ -26,15 +26,23 @@ public interface PlayerInterface {
     public PersonalBoard getGameSpace();
     public MarbleSpecial getWhiteSpecialMarble();
     public void setWhiteSpecialMarble(MarbleSpecial whiteSpecialMarble);
-    public int chooseSpecialWhiteMarble();
+
+
+    public int chooseSpecialWhiteMarble();//INUTILE
+
+
     public Resource chooseResource();
     public int calculateVictoryPoints();
     public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards) throws InvalidActionException;
     public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards, ArrayList<Resource> resources) throws InvalidActionException;
-    public LeaderCard chooseLeaderCardToActive(int number);
+
+    public LeaderCard selectLeaderCard(int number);
     public void activeLeaderCardAbility(LeaderCard card) throws InvalidActionException;
     public void activeLeaderCardAbility(LeaderCard card,Resource choice) throws InvalidActionException;
-    public void buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException;
+
+    public ArrayList<TypeResource> buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException;
+    public ArrayList<TypeResource> getWhiteSpecialResources();
+
     public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException;
     public boolean isPlaying();
     public void setPlaying(boolean playing);
@@ -42,7 +50,9 @@ public interface PlayerInterface {
     public void putResources(Resource resource) throws InvalidActionException;
     public void moveResource(int depot1, int depot2) throws InvalidActionException;
     public int chooseDepot();
+
     public void removeLeaderCard(int card) throws InvalidActionException;
+    public void increasePosition();
 
     public boolean checkEndGame();
 }

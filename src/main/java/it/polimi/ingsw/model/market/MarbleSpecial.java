@@ -4,6 +4,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 
 import java.util.ArrayList;
 
@@ -28,17 +29,23 @@ public class MarbleSpecial extends Marble {
         ability.add(ability1);
     }
 
+    public ArrayList<Ability> getAbility() {
+        return ability;
+    }
+
     @Override
-    public void choose(Player player) throws InvalidActionException {
+    public TypeResource choose(Player player) throws InvalidActionException {
 
         if (ability.size()==2){
-            int marble = player.chooseSpecialWhiteMarble();
-            Resource resource2 = ability.get(marble).getResource();
-            player.putResources(resource2);
+            //int marble = player.chooseSpecialWhiteMarble();
+            //Resource resource2 = ability.get(marble).getResource();
+            return TypeResource.BLANK;   //blank because the player have to decide which one
+            //player.putResources(resource2);
         }
         else{
             Resource resource1 = ability.get(0).getResource();
-            player.putResources(resource1);
+            return resource1.getType();
+            //player.putResources(resource1);
         }
 
     }

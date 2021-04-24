@@ -1,7 +1,10 @@
 package it.polimi.ingsw.connection.client;
 
 import it.polimi.ingsw.message.GameMsg;
+import it.polimi.ingsw.message.Observable;
+import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.connection.PingMsg;
+import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -12,10 +15,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * this class is where is readed the input from the client
+ * this class is where is readed the input from the CLIENT
  * and send the output for the server
  */
-public class ClientSocket implements Runnable{
+public class ClientSocket extends Observable implements Runnable{
 
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -46,17 +49,20 @@ public class ClientSocket implements Runnable{
             e.printStackTrace();
         }
 
-        /* start the ping process */
-        startPing();
 
         /* open the in/out Stream to communicate */
         try {
-            in = new ObjectInputStream(new BufferedInputStream(serverSocket.getInputStream()));
             out = new ObjectOutputStream(serverSocket.getOutputStream());
+            in = new ObjectInputStream(serverSocket.getInputStream());
         } catch (IOException e1){
             e1.printStackTrace();
+            System.out.println("The Socket cannot open the connection!");
         }
+
+        /* start the ping process */
+        startPing();
     }
+
 
     /**
      * private method to start the Ping process, so keep the connection alive
@@ -113,7 +119,15 @@ public class ClientSocket implements Runnable{
     public void run(){
         while (true){
             try{
-                Object recived = in.readObject(); //deserialized the msg from the server
+                Object received = in.readObject(); //deserialized the msg from the server
+                /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the view*/
+                if (!(received instanceof PingMsg)){
+                    //casting the msg because it is a ViewMsg type for sure
+                    ViewGameMsg msg = (ViewGameMsg) received;
+                    //then notify all the observer (viewer) about the new message arrived from the Server
+                    notifyAllObserver(ObserverType.VIEW, msg);
+                }
+
             } catch (IOException | ClassNotFoundException e){
                 System.out.println("this client disconnected from the server");
                 /* setting the attribute to false because the connection shut down */

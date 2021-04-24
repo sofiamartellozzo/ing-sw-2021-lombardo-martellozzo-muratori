@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TypeResource;
+
+import java.util.ArrayList;
 
 /*
  * SOFIA
@@ -37,9 +40,14 @@ public class MarketStructure {
         this.slide = newSlide;
     }
 
-    public void rowMoveMarble(int row, Player player) throws InvalidActionException {
+    public ArrayList<TypeResource> rowMoveMarble(int row, Player player) throws InvalidActionException {
+        ArrayList<TypeResource> resourceFromMarket = new ArrayList<>();
+        TypeResource resource = null;
         for (int i=0; i<4; i++){
-            this.structure[row][i].choose(player);
+            resource = this.structure[row][i].choose(player);
+            if (resource!=null){
+                resourceFromMarket.add(resource);
+            }
         }
         Marble newSlide = this.structure[row][0];
         Marble oldSlide = this.slide;
@@ -49,10 +57,17 @@ public class MarketStructure {
         this.structure[row][2]= this.structure[row][3];
         this.structure[row][3]= oldSlide;
 
+        return resourceFromMarket;
+
     }
-    public void columnMoveMarble(int column, Player player) throws InvalidActionException{
+    public ArrayList<TypeResource> columnMoveMarble(int column, Player player) throws InvalidActionException{
+        ArrayList<TypeResource> resourceFromMarket = new ArrayList<>();
+        TypeResource resource = null;
         for (int i=0; i<3; i++){
-            this.structure[i][column].choose(player);
+            resource = this.structure[i][column].choose(player);
+            if (resource!=null){
+                resourceFromMarket.add(resource);
+            }
         }
         Marble newSlide = this.structure[0][column];
         Marble oldSlide = this.slide;
@@ -60,5 +75,7 @@ public class MarketStructure {
         this.structure[0][column] = this.structure[1][column];
         this.structure[1][column] = this.structure[2][column];
         this.structure[2][column] = oldSlide;
+
+        return resourceFromMarket;
     }
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.connection.server;
 
 import it.polimi.ingsw.connection.server.ClientHandler;
 
@@ -41,7 +41,7 @@ public class GameServer {
             try {
                 /* now the server accept the connections
                  * for each connection create a new Thread
-                 * that execute a Clienbt Handler*/
+                 * that execute a Client Handler*/
                 clientSocket = socket.accept(); //get the client socket
                 String clientIpAddress = clientSocket.getInetAddress().toString().substring(1);
                 System.out.println("New client accepted:\tIPAddress: " + clientIpAddress + "\tPort: " + clientSocket.getPort());
@@ -51,7 +51,7 @@ public class GameServer {
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
 
                 //create a new thread to handle this client
-                Thread thread = new Thread(clientHandler, /*clientSocket.getInetAddress()*/ threadID);
+                Thread thread = new Thread(clientHandler, threadID);
                 thread.start();
                 System.out.println("Client " + clientIpAddress + " in thread: " + threadID);
 

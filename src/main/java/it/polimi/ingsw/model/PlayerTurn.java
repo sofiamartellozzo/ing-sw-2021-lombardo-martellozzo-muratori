@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exception.InvalidActionException;
-import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.util.ArrayList;
@@ -12,10 +11,43 @@ import java.util.ArrayList;
 public class PlayerTurn implements PlayerTurnInterface {
     private Player currentPlayer;
     private BoardManager boardManager;
+    private ArrayList<TurnAction> availableAction;
 
     public PlayerTurn(Player currentPlayer, BoardManager boardManager) {
         this.currentPlayer = currentPlayer;
         this.boardManager = boardManager;
+        availableAction = new ArrayList<>();
+        setAvailableAction();
+    }
+
+    private void setAvailableAction(){
+        for (TurnAction action: TurnAction.values()) {
+            availableAction.add(action);
+        }
+        //at first he cannot pass, he have to choose at least one action, than can pass ending the turn
+        availableAction.remove(TurnAction.END_TURN);
+    }
+
+
+    @Override
+    public ArrayList<TurnAction> getAvailableAction() {
+        return availableAction;
+    }
+
+    /**
+     * method called after an action of a player that can't be activated again
+     * @param actionToRemove
+     */
+    @Override
+    public void removeAction(TurnAction actionToRemove){
+        ArrayList<TurnAction> onlyOneOfThese = new ArrayList<>();
+        onlyOneOfThese.add(TurnAction.BUY_CARD);
+        onlyOneOfThese.add(TurnAction.BUY_FROM_MARKET);
+        onlyOneOfThese.add(TurnAction.ACTIVE_PRODUCTION_POWER);
+        if (onlyOneOfThese.contains(actionToRemove)){
+            //the player did one of these 3, so I have to eliminate all of them from the available ones in this class
+            availableAction.removeAll(onlyOneOfThese);
+        }
     }
 
     public BoardManager getBoardManager() {
@@ -26,39 +58,26 @@ public class PlayerTurn implements PlayerTurnInterface {
         return currentPlayer;
     }
 
-    public void choosePlay(TurnAction action) throws InvalidActionException{
-        /*metti che può scartare la carta leader*/
-        switch (action){
-            case BUY_CARD:
-                //I need the input from the real player (person)
-                this.currentPlayer.buyCard(1,1, this.boardManager, 1);
-            case MOVE_RESOURCE:
-                this.currentPlayer.moveResource(1,3);
-            case BUY_FROM_MARKET:
-                this.currentPlayer.buyFromMarket(1, "row", this.boardManager);
-            case ACTIVE_PRODUCTION_POWER:
-                ArrayList<DevelopmentCard> ppCard = new ArrayList<>();
-                ArrayList<Resource> cost = new ArrayList<>();
-                cost.add(new Resource(Color.YELLOW));
-                ppCard.add(new DevelopmentCard(1,Color.GREEN, 2,cost,cost,cost));
-                this.currentPlayer.invokesProductionPower(ppCard);
-            case REMOVE_LEADER_CARD:
-                this.currentPlayer.removeLeaderCard(1);
-            default:
-                this.currentPlayer.endTurn();
-        }
-    }
 
     @Override
-    public void activeLeaderCard(int wich) throws InvalidActionException {
-        LeaderCard card =  this.currentPlayer.chooseLeaderCardToActive(wich);
-        if (card.getSpecialAbility().equals("Addictional Power")){
+    public void activeLeaderCard(int which) throws InvalidActionException {
+        LeaderCard card =  this.currentPlayer.selectLeaderCard(which);
+        if (card!=null && card.getSpecialAbility().equals("Addictional Power")){
             this.currentPlayer.activeLeaderCardAbility((card), new Resource(Color.YELLOW));
         }
         else{
             this.currentPlayer.activeLeaderCardAbility(card);
         }
 
+    }
+
+    @Override
+    public void discardLeaderCard(int which) throws InvalidActionException {
+        LeaderCard card =  this.currentPlayer.selectLeaderCard(which);
+        if (card!=null){
+            currentPlayer.removeLeaderCard(which);
+
+        }
     }
 
 

@@ -1,10 +1,7 @@
 package it.polimi.ingsw.message;
 
 import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VChooseResourceAndDepotMsg;
-import it.polimi.ingsw.message.viewMsg.VNotifyAllIncreasePositionMsg;
-import it.polimi.ingsw.message.viewMsg.VRoomSizeRequestMsg;
+import it.polimi.ingsw.message.viewMsg.*;
 
 /**
  * OBSERVER
@@ -18,4 +15,8 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VChooseLeaderCardRequestMsg msg);
     public void receiveMsg(VChooseResourceAndDepotMsg msg);
     public void receiveMsg(VNotifyAllIncreasePositionMsg msg);
+    public void receiveMsg(VNotValidDepotMsg msg);
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg);
+    public void receiveMsg(VMoveResourceRequestMsg msg);
+    public void receiveMsg(VBuyFromMarketRequestMsg msg);
 }
