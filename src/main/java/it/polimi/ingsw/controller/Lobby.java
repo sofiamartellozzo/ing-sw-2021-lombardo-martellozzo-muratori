@@ -4,6 +4,8 @@ import it.polimi.ingsw.exception.NotFreeRoomAvailableError;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
+import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
 import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VConnectionRequestMsg;
@@ -199,7 +201,7 @@ public class Lobby extends Observable implements ControllerObserver {
         //check if the username is not used yet
         if (usersAssigned.contains(msg.getUsername())){
             //username used yet
-            sendNackConnectionRequest(msg);
+            sendNackConnectionRequest(msg,"USER_NOT_VALID");
             System.out.println("Error, username " +msg.getUsername()+ "not valid because is taken already");
         }
         else{
@@ -232,13 +234,13 @@ public class Lobby extends Observable implements ControllerObserver {
             }
             else if (this.numberOfRooms == MAX_NUMBER_ROOM){
                 //all rooms are full and is not possible to create a new room
-                sendNackConnectionRequest(msg);
+                sendNackConnectionRequest(msg,"FULL_SIZE");
                 System.out.println("Error: all rooms are Full, Sorry try later!");
             }
             else if (!canCreateRoom.get()){
                 //if you arrived here this means that all rooms are occupied but the server is not full (#room==16) so the reason is that someone else is creating a new room
-                sendNackConnectionRequest(msg);
-                System.out.println("Error: someone else is creating a room, please wait a fiew seconds!");
+                sendNackConnectionRequest(msg,"WAIT");
+                System.out.println("Error: someone else is creating a room, please wait a few seconds!");
             }
         }
     }
@@ -247,14 +249,24 @@ public class Lobby extends Observable implements ControllerObserver {
      * creating the Error message to send to the client, after notify the view
      * @param msg
      */
-    private void sendNackConnectionRequest(CConnectionRequestMsg msg){
-        CNackConnectionRequestMsg nackMsg = new CNackConnectionRequestMsg("Connection cannot be established ",msg.getUsername());
+    private void sendNackConnectionRequest(CConnectionRequestMsg msg, String errorInformation){
+        CNackConnectionRequestMsg nackMsg = new CNackConnectionRequestMsg("Connection cannot be established ", msg.getPort(), msg.getIP(),msg.getUsername(),errorInformation);
         notifyAllObserver(ObserverType.VIEW, nackMsg);
     }
 
     @Override
     public void receiveMsg(VConnectionRequestMsg msg) {
         //not implemented here (in Virtual View)
+    }
+
+    @Override
+    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseResourceAndDepotMsg msg) {
+
     }
 
 

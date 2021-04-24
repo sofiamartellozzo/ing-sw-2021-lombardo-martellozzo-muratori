@@ -1,5 +1,5 @@
-{
-  "DevelopmentCard1": {
+[
+   {
     "color": "GREEN",
     "level": 1,
     "costToBuy": [
@@ -22,7 +22,7 @@
     ],
     "victoryPoints": 1
   },
-  "DevelopmentCard2": {
+   {
     "color": "GREEN",
     "level": 1,
     "costToBuy": [
@@ -48,7 +48,7 @@
     ],
     "victoryPoints": 2
   },
-  "DevelopmentCard3": {
+  {
     "color": "GREEN",
     "level": 1,
     "costToBuy": [
@@ -83,7 +83,7 @@
     ],
     "victoryPoints": 3
   },
-  "DevelopmentCard4": {
+  {
     "color": "GREEN",
     "level": 1,
     "costToBuy": [
@@ -121,7 +121,7 @@
     ],
     "victoryPoints": 4
   },
-  "DevelopmentCard5": {
+  {
     "color": "GREEN",
     "level": 2,
     "costToBuy": [
@@ -153,7 +153,7 @@
     ],
     "victoryPoints": 5
   },
-  "DevelopmentCard6": {
+ {
     "color": "GREEN",
     "level": 2,
     "costToBuy": [
@@ -194,7 +194,7 @@
     ],
     "victoryPoints": 6
   },
-  "DevelopmentCard7": {
+  {
     "color": "GREEN",
     "level": 2,
     "costToBuy": [
@@ -238,7 +238,7 @@
     ],
     "victoryPoints": 7
   },
-  "DevelopmentCard8": {
+   {
     "color": "GREEN",
     "level": 2,
     "costToBuy": [
@@ -279,7 +279,7 @@
     ],
     "victoryPoints": 8
   },
-  "DevelopmentCard9": {
+   {
     "color": "GREEN",
     "level": 3,
     "costToBuy": [
@@ -329,7 +329,7 @@
     ],
     "victoryPoints": 9
   },
-  "DevelopmentCard10": {
+  {
     "color": "GREEN",
     "level": 3,
     "costToBuy": [
@@ -382,7 +382,7 @@
     ],
     "victoryPoints": 10
   },
-  "DevelopmentCard11": {
+  {
     "color": "GREEN",
     "level": 3,
     "costToBuy": [
@@ -429,7 +429,7 @@
     ],
     "victoryPoints": 11
   },
-  "DevelopmentCard12": {
+  {
     "color": "GREEN",
     "level": 3,
     "costToBuy": [
@@ -479,7 +479,7 @@
     ],
     "victoryPoints": 12
   },
-  "DevelopmentCard13": {
+  {
     "color": "BLUE",
     "level": 1,
     "costToBuy": [
@@ -502,7 +502,7 @@
     ],
     "victoryPoints": 1
   },
-  "DevelopmentCard14": {
+  {
     "color": "BLUE",
     "level": 1,
     "costToBuy": [
@@ -528,7 +528,7 @@
     ],
     "victoryPoints": 2
   },
-  "DevelopmentCard15": {
+  {
     "color": "BLUE",
     "level": 1,
     "costToBuy": [
@@ -563,7 +563,7 @@
     ],
     "victoryPoints": 3
   },
-  "DevelopmentCard16": {
+  {
     "color": "BLU",
     "level": 1,
     "costToBuy": [
@@ -601,7 +601,7 @@
     ],
     "victoryPoints": 4
   },
-  "DevelopmentCard17": {
+   {
     "color": "BLUE",
     "level": 2,
     "costToBuy": [
@@ -633,7 +633,7 @@
     ],
     "victoryPoints": 5
   },
-  "DevelopmentCard18": {
+  {
     "color": "BLUE",
     "level": 2,
     "costToBuy": [
@@ -668,7 +668,7 @@
     ],
     "victoryPoints": 6
   },
-  "DevelopmentCard19": {
+   {
     "color": "BLUE",
     "level": 2,
     "costToBuy": [
@@ -712,7 +712,7 @@
     ],
     "victoryPoints": 7
   },
-  "DevelopmentCard20": {
+  {
     "color": "BLUE",
     "level": 2,
     "costToBuy": [
@@ -753,7 +753,7 @@
     ],
     "victoryPoints": 8
   },
-  "DevelopmentCard21": {
+   {
     "color": "BLUE",
     "level": 3,
     "costToBuy": [
@@ -803,7 +803,7 @@
     ],
     "victoryPoints": 9
   },
-  "DevelopmentCard22": {
+   {
     "color": "BLUE",
     "level": 3,
     "costToBuy": [
@@ -856,7 +856,7 @@
     ],
     "victoryPoints": 10
   },
-  "DevelopmentCard23": {
+   {
     "color": "BLUE",
     "level": 3,
     "costToBuy": [
@@ -903,7 +903,7 @@
     ],
     "victoryPoints": 11
   },
-  "DevelopmentCard24": {
+   {
     "color": "BLUE",
     "level": 3,
     "costToBuy": [
@@ -953,7 +953,7 @@
     ],
     "victoryPoints": 12
   },
-  "DevelopmentCard25": {
+  {
     "color": "YELLOW",
     "level": 1,
     "costToBuy": [
@@ -976,7 +976,7 @@
     ],
     "victoryPoints": 1
   },
-  "DevelopmentCard26": {
+  {
     "color": "YELLOW",
     "level": 1,
     "costToBuy": [
@@ -1002,7 +1002,7 @@
     ],
     "victoryPoints": 2
   },
-  "DevelopmentCard27": {
+   {
     "color": "YELLOW",
     "level": 1,
     "costToBuy": [
@@ -1037,7 +1037,7 @@
     ],
     "victoryPoints": 3
   },
-  "DevelopmentCard28": {
+   {
     "color": "YELLOW",
     "level": 1,
     "costToBuy": [
@@ -1075,7 +1075,7 @@
     ],
     "victoryPoints": 4
   },
-  "DevelopmentCard29": {
+   {
     "color": "YELLOW",
     "level": 2,
     "costToBuy": [
@@ -1107,7 +1107,7 @@
     ],
     "victoryPoints": 5
   },
-  "DevelopmentCard30": {
+  {
     "color": "YELLOW",
     "level": 2,
     "costToBuy": [
@@ -1148,7 +1148,7 @@
     ],
     "victoryPoints": 6
   },
-  "DevelopmentCard31": {
+   {
     "color": "YELLOW",
     "level": 2,
     "costToBuy": [
@@ -1192,7 +1192,7 @@
     ],
     "victoryPoints": 7
   },
-  "DevelopmentCard32": {
+   {
     "color": "YELLOW",
     "level": 2,
     "costToBuy": [
@@ -1233,7 +1233,7 @@
     ],
     "victoryPoints": 8
   },
-  "DevelopmentCard33": {
+   {
     "color": "YELLOW",
     "level": 3,
     "costToBuy": [
@@ -1283,7 +1283,7 @@
     ],
     "victoryPoints": 9
   },
-  "DevelopmentCard34": {
+   {
     "color": "YELLOW",
     "level": 3,
     "costToBuy": [
@@ -1336,7 +1336,7 @@
     ],
     "victoryPoints": 10
   },
-  "DevelopmentCard35": {
+   {
     "color": "YELLOW",
     "level": 3,
     "costToBuy": [
@@ -1383,7 +1383,7 @@
     ],
     "victoryPoints": 11
   },
-  "DevelopmentCard36": {
+   {
     "color": "YELLOW",
     "level": 3,
     "costToBuy": [
@@ -1433,7 +1433,7 @@
     ],
     "victoryPoints": 12
   },
-  "DevelopmentCard37": {
+   {
     "color": "PURPLE",
     "level": 1,
     "costToBuy": [
@@ -1456,7 +1456,7 @@
     ],
     "victoryPoints": 1
   },
-  "DevelopmentCard38": {
+  {
     "color": "PURPLE",
     "level": 1,
     "costToBuy": [
@@ -1482,7 +1482,7 @@
     ],
     "victoryPoints": 2
   },
-  "DevelopmentCard39": {
+  {
     "color": "PURPLE",
     "level": 1,
     "costToBuy": [
@@ -1517,7 +1517,7 @@
     ],
     "victoryPoints": 3
   },
-  "DevelopmentCard40": {
+   {
     "color": "PURPLE",
     "level": 1,
     "costToBuy": [
@@ -1555,7 +1555,7 @@
     ],
     "victoryPoints": 4
   },
-  "DevelopmentCard41": {
+   {
     "color": "PURPLE",
     "level": 2,
     "costToBuy": [
@@ -1587,7 +1587,7 @@
     ],
     "victoryPoints": 5
   },
-  "DevelopmentCard42": {
+   {
     "color": "PURPLE",
     "level": 2,
     "costToBuy": [
@@ -1628,7 +1628,7 @@
     ],
     "victoryPoints": 6
   },
-  "DevelopmentCard43": {
+   {
     "color": "PURPLE",
     "level": 2,
     "costToBuy": [
@@ -1672,7 +1672,7 @@
     ],
     "victoryPoints": 7
   },
-  "DevelopmentCard44": {
+   {
     "color": "PURPLE",
     "level": 2,
     "costToBuy": [
@@ -1713,7 +1713,7 @@
     ],
     "victoryPoints": 8
   },
-  "DevelopmentCard45": {
+  {
     "color": "PURPLE",
     "level": 3,
     "costToBuy": [
@@ -1763,7 +1763,7 @@
     ],
     "victoryPoints": 9
   },
-  "DevelopmentCard46": {
+  {
     "color": "PURPLE",
     "level": 3,
     "costToBuy": [
@@ -1814,8 +1814,9 @@
         "color": "BLUE"
       }
     ],
-    "victoryPoints": 10,
-    "DevelopmentCard47": {
+    "victoryPoints": 10
+  },
+     {
       "color": "PURPLE",
       "level": 3,
       "costToBuy": [
@@ -1862,7 +1863,7 @@
       ],
       "victoryPoints": 11
     },
-    "DevelopmentCard48": {
+     {
       "color": "PURPLE",
       "level": 3,
       "costToBuy": [
@@ -1912,5 +1913,5 @@
       ],
       "victoryPoints": 12
     }
-  }
-}
+
+]

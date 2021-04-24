@@ -1,14 +1,18 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.viewMsg.VPlayerDisconnectedMsg;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.message.Observable;
+import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Room extends Observable {
 
@@ -28,6 +32,9 @@ public class Room extends Observable {
 
     /* board manager of this room (to simplify the connection between Model and Controller) */
     private BoardManager boardManager;
+
+    /* map to connect every player to his virtual view */
+    private Map<String,VirtualView> listOfVirtualView;
 
     /* the controller for setting the game */
     private InitializedController initializedController;
@@ -128,5 +135,21 @@ public class Room extends Observable {
 
     private void printRoomMesssage(String messageToPrint){
         System.out.println("Room " +this.roomID + ": " + messageToPrint);
+    }
+
+
+    /**
+     * method used to manage the disconnection of a single player from a game, and delete his connection
+     * with the virtual view
+     * @param username
+     */
+    private void disconnectPlayer(String username){
+
+        playersId.remove(username);       //remove the name of the player disconnected from the list
+
+        VirtualView playerVirtualView = listOfVirtualView.get(username);     //get the virtual view of the player disconnected
+        playerVirtualView.detachObserver(ObserverType.CONTROLLER,turnController);
+        turnController.detachObserver(ObserverType.VIEW,playerVirtualView);
+        listOfVirtualView.remove(username); //remove the username from the map in which every player is associated to his virtual view
     }
 }

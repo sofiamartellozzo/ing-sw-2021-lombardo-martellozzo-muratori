@@ -2,18 +2,21 @@ package it.polimi.ingsw.model.card;
 import java.util.ArrayList;
 
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.board.Active;
 import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.board.State;
-import it.polimi.ingsw.model.cardAbility.SpecialAbility;
+import it.polimi.ingsw.model.cardAbility.*;
 
 /* ILA */
 
 public class LeaderCard extends Card{
 
     private  SpecialAbility specialAbility;
+    private  TypeResource specialResource;
     private  ArrayList<Object> requirements;
     private  State state;
     private int cardID;
@@ -23,12 +26,13 @@ public class LeaderCard extends Card{
      * @param victoryPoints
      */
 
-    public LeaderCard(int cardID,int victoryPoints, SpecialAbility specialAbility,ArrayList<Object> requirements) {
+    public LeaderCard(int cardID, int victoryPoints, TypeAbility typeSpecialAbility, TypeResource specialResource, ArrayList<Object> requirements) {
 
         super(victoryPoints);
         this.cardID = cardID;
-        this.requirements=requirements;
-        this.specialAbility=specialAbility;
+        this.requirements = requirements;
+        this.specialResource = specialResource;
+        this.specialAbility = createSpecialAbility(typeSpecialAbility);
         this.state = new Inactive();
 
     }
@@ -38,6 +42,7 @@ public class LeaderCard extends Card{
     public SpecialAbility getSpecialAbility(){return specialAbility;}
     public ArrayList<Object> getRequirements(){return requirements;}
     public State getState(){return state;}
+    //public void setSpecialResource(TypeResource type){this.specialResource = type;}
 
     /**
      * method to take the ID of a Leader Card (an integer number that goes from 1 to 16)
@@ -46,6 +51,50 @@ public class LeaderCard extends Card{
     public int getCardID() {
         return cardID;
     }
+
+    /**
+     * auxiliary method used to create the real special ability object starting from the TypeAbility
+     * @param typeSpecialAbility
+     * @return
+     */
+
+    public TransformWhiteMarble createSpecialAbility(TypeAbility typeSpecialAbility){
+        switch (typeSpecialAbility){
+            case DISCOUNT:
+                return new TransformWhiteMarble(createResource(specialResource));
+                //return new Discount(createResource(specialResource));
+            case SPECIAL_DEPOT:
+                return new TransformWhiteMarble(createResource(specialResource));
+                //return new SpecialDepot(createResource(specialResource));
+            case TRANSFORM_WHITE:
+                return new TransformWhiteMarble(createResource(specialResource));
+            case ADDITIONAL_POWER:
+                return new TransformWhiteMarble(createResource(specialResource));
+                //return new AdditionalPower(createResource(specialResource));
+        }
+
+        throw new IllegalArgumentException(" Error, typeAbility not valid! ");
+    }
+
+    /**
+     * auxiliary method used to create the resource using the typeResource
+     * @param typeResource
+     * @return
+     */
+    public Resource createResource(TypeResource typeResource){
+        switch (typeResource){
+            case COIN:
+                return new Resource(Color.YELLOW);
+            case STONE:
+                return new Resource(Color.GREY);
+            case SHIELD:
+                return new Resource(Color.BLUE);
+            case SERVANT:
+                return new Resource(Color.PURPLE);
+        }
+        throw new IllegalArgumentException(" Error, typeResource not valid! ");
+    }
+
 
     /**
      * method used to active the special ability of a card Leader Card with a fixed resource as

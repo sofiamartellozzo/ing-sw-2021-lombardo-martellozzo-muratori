@@ -1,20 +1,29 @@
 package it.polimi.ingsw.controller.factory;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.board.FaithMarker;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.card.LeaderCard;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class DevelopmentCardFactory {
-    public static void main(String[] args) {
-        Gson gson1 = new Gson();
+    public static void main(String[] args) throws FileNotFoundException {
+
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
 
         /* from java class to Json */
 
-        ArrayList<Resource> requirements = new ArrayList<>();
+        /*ArrayList<Resource> requirements = new ArrayList<>();
         requirements.add(new Resource(Color.BLUE));
         requirements.add(new Resource(Color.BLUE));
 
@@ -27,6 +36,13 @@ public class DevelopmentCardFactory {
         DevelopmentCard card = new DevelopmentCard(1,Color.GREEN,1,requirements,earnProductionPower,costProductionPower);
 
         String json = gson1.toJson(card);
-        System.out.println(json);
+        System.out.println(json);*/
+
+        /* from json to create Java class */
+
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/java/it/polimi/ingsw/developmentCard.json"));
+        Type list = new TypeToken<ArrayList<DevelopmentCard>>(){}.getType();
+        ArrayList<DevelopmentCard> cards = gson.fromJson(reader,list);
+
     }
 }

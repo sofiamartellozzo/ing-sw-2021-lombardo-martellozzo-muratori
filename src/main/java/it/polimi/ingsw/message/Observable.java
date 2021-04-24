@@ -25,20 +25,46 @@ public abstract class Observable {
     public synchronized void notifyAllObserver(ObserverType observerType, GameMsg msg){
         switch (observerType){
             case VIEW:
-                msg.notifyHandler(viewObserver.get(1));
+                for (ViewObserver observerV :viewObserver) {
+                    msg.notifyHandler(observerV);
+                }
                 break;
             case CONTROLLER:
-                msg.notifyHandler(controllerObserver.get(1));
+                for (ControllerObserver observerC :controllerObserver) {
+                    msg.notifyHandler(observerC);
+                }
                 break;
         }
 
     }
 
-    public void attachListener(){
+    /**
+     * method used to attach the observer
+     */
+    public void attachObserver(ObserverType observerType,Observer observer){
+        switch (observerType){
 
+            case VIEW:
+                viewObserver.add((ViewObserver) observer);
+                break;
+            case CONTROLLER:
+                controllerObserver.add((ControllerObserver) observer);
+                break;
+        }
     }
 
-    public void detachListener(){
+    /**
+     * method used to detach an observer
+     */
+    public void detachObserver(ObserverType observerType,Observer observer){
+        switch (observerType){
 
+            case VIEW:
+                viewObserver.remove((ViewObserver) observer);
+                break;
+            case CONTROLLER:
+                controllerObserver.remove((ControllerObserver) observer);
+                break;
+        }
     }
 }

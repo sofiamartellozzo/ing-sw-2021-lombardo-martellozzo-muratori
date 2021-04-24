@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.board.PersonalBoard;
-import it.polimi.ingsw.model.board.PersonalBoardFactory;
+import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.WarehouseStandard;
 import junit.framework.TestCase;

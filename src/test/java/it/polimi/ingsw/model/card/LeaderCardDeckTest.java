@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.card;
 
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.cardAbility.TransformWhiteMarble;
+import it.polimi.ingsw.model.cardAbility.TypeAbility;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -19,10 +21,10 @@ public class LeaderCardDeckTest extends TestCase {
 
         ArrayList<Object> req = new ArrayList<>();
         req.add(0,new Resource(Color.PURPLE));
-        LeaderCard card1= new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
-        LeaderCard card2= new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
-        LeaderCard card3= new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
-        LeaderCard card4= new LeaderCard(2,new TransformWhiteMarble(new Resource(Color.BLUE)),req);
+        LeaderCard card1= new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
+        LeaderCard card2= new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
+        LeaderCard card3= new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
+        LeaderCard card4= new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
         ArrayList<LeaderCard> cards = new ArrayList<>();
         cards.add(card1);
         cards.add(card2);

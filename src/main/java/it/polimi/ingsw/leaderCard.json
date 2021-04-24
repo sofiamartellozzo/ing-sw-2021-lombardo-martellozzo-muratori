@@ -1,448 +1,428 @@
-{
-  "LeaderCard1": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        },
-        "typeAbility": "ADDITIONAL_POWER"
+[
+  {
+    "typeAbility": "TRANSFORM_WHITE",
+    "specialResource": "COIN",
+    "requirements": [
+      {
+        "color": "GREEN",
+        "typeResource": "SERVANT"
+      }
+    ],
+    "cardID": 1,
+    "victoryPoints": 4
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "GREY",
+        "typeResource": "STONE"
       },
-      "requirements": [
-        {
-          "color": "GREEN",
-          "level": 2
-        }
-      ],
-      "state": {},
-      "victoryPoints": 4
-    }
-  ],
-  "LeaderCard2": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "GREY",
-          "typeResource": "STONE"
-        },
-        "typeAbility": "ADDITIONAL_POWER"
-      },
-      "requirements": [
-        {
-          "color": "PURPLE",
-          "level": 2
-        }
-      ],
-      "state": {},
-      "victoryPoints": 4
-    }
-  ],
-  "LeaderCard3": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        },
-        "typeAbility": "ADDITIONAL_POWER"
-      },
-      "requirements": [
-        {
-          "color": "BLUE",
-          "level": 2
-        }
-      ],
-      "state": {},
-      "victoryPoints": 4
-    }
-  ],
-  "LeaderCard4": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        },
-        "typeAbility": "ADDITIONAL_POWER"
-      },
-      "requirements": [
-        {
-          "color": "YELLOW",
-          "level": 2
-        }
-      ],
-      "state": {},
-      "victoryPoints": 4
-    }
-  ],
-  "LeaderCard5": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        },
-        "typeAbility": "TRANSFORM_WHITE"
-      },
-      "requirements": [
-        {
-          "color": "PURPLE",
-          "level": 0
-        },
-        {
-          "color": "PURPLE",
-          "level": 0
-        },
-        {
-          "color": "GREEN",
-          "level": 0
-        }
-      ],
-      "state": {},
-      "victoryPoints": 5
-    }
-  ],
-  "LeaderCard6": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "GREY",
-          "typeResource": "STONE"
-        },
-        "typeAbility": "TRANSFORM_WHITE"
+      "typeAbility": "ADDITIONAL_POWER"
     },
-      "requirements": [
-        {
-          "color": "BLUE",
-          "level": 0
-        },
-        {
-          "color": "BLUE",
-          "level": 0
-        },
-        {
-          "color": "YELLOW",
-          "level": 0
-        }
-      ],
-      "state": {
+    "specialResource": "STONE",
+    "requirements": [
+      {
+        "color": "PURPLE",
+        "level": 2
+      }
+    ],
+    "state": {},
+    "cardID": 2,
+    "victoryPoints": 4
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
       },
-      "victoryPoints": 5
-    }
-  ],
-  "LeaderCard7": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        },
-        "typeAbility": "TRANSFORM_WHITE"
+      "typeAbility": "ADDITIONAL_POWER"
+    },
+    "specialResource": "SERVANT",
+    "requirements": [
+      {
+        "color": "BLUE",
+        "level": 2
+      }
+    ],
+    "state": {},
+    "cardID": 3,
+    "victoryPoints": 4
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      "typeAbility": "ADDITIONAL_POWER"
+    },
+    "specialResource": "SHIELD",
+    "requirements": [
+      {
+        "color": "YELLOW",
+        "level": 2
+      }
+    ],
+    "state": {},
+    "cardID": 4,
+    "victoryPoints": 4
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      "typeAbility": "TRANSFORM_WHITE"
+    },
+    "specialResource": "COIN",
+    "requirements": [
+      {
+        "color": "PURPLE",
+        "level": 0
+      },
+      {
+        "color": "PURPLE",
+        "level": 0
+      },
+      {
+        "color": "GREEN",
+        "level": 0
+      }
+    ],
+    "state": {},
+    "cardID": 5,
+    "victoryPoints": 5
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      "typeAbility": "TRANSFORM_WHITE"
+    },
+    "specialResource": "STONE",
+    "requirements": [
+      {
+        "color": "BLUE",
+        "level": 0
+      },
+      {
+        "color": "BLUE",
+        "level": 0
+      },
+      {
+        "color": "YELLOW",
+        "level": 0
+      }
+    ],
+    "state": {},
+    "cardID": 6,
+    "victoryPoints": 5
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      "typeAbility": "TRANSFORM_WHITE"
+    },
+    "specialResource": "SHIELD",
+    "requirements": [
+      {
+        "color": "GREEN",
+        "level": 0
+      },
+      {
+        "color": "GREEN",
+        "level": 0
+      },
+      {
+        "color": "PURPLE",
+        "level": 0
+      }
+    ],
+    "state": {},
+    "cardID": 7,
+    "victoryPoints": 5
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      "typeAbility": "TRANSFORM_WHITE"
+    },
+    "specialResource": "SERVANT",
+    "requirements": [
+      {
+        "color": "YELLOW",
+        "level": 0
+      },
+      {
+        "color": "YELLOW",
+        "level": 0
+      },
+      {
+        "color": "BLUE",
+        "level": 0
+      }
+    ],
+    "state": {},
+    "cardID": 8,
+    "victoryPoints": 5
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      "typeAbility": "SPECIAL_DEPOT"
+    },
+    "specialResource": "COIN",
+    "requirements": [
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      }
+    ],
+    "state": {},
+    "cardID": 9,
+    "victoryPoints": 3
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      "typeAbility": "SPECIAL_DEPOT"
+    },
+    "specialResource": "SHIELD",
+    "requirements": [
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      }
+    ],
+    "state": {},
+    "cardID": 10,
+    "victoryPoints": 3
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      "typeAbility": "SPECIAL_DEPOT"
+    },
+    "specialResource": "SERVANT",
+    "requirements": [
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      }
+    ],
+    "state": {},
+    "cardID": 11,
+    "victoryPoints": 3
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      "typeAbility": "SPECIAL_DEPOT"
+    },
+    "specialResource": "STONE",
+    "requirements": [
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      }
+    ],
+    "state": {},
+    "cardID": 12,
+    "victoryPoints": 3
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      "typeAbility": "DISCOUNT"
+    },
+    "specialResource": "COIN",
+    "requirements": [
+      {
+        "color": "YELLOW",
+        "level": 0
+      },
+      {
+        "color": "PURPLE",
+        "level": 0
+      }
+    ],
+    "state": {},
+    "cardID": 13,
+    "victoryPoints": 2
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      "typeAbility": "DISCOUNT"
+    },
+    "specialResource": "STONE",
+    "requirements": [
+      {
+        "color": "GREEN",
+        "level": 0
+      },
+      {
+        "color": "BLUE",
+        "level": 0
+      }
+    ],
+    "state": {},
+    "cardID": 14,
+    "victoryPoints": 2
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      "typeAbility": "DISCOUNT"
+    },
+    "specialResource": "SHIELD",
+    "requirements": [
+      {
+        "color": "BLUE",
+        "level": 0
+      },
+      {
+        "color": "PURPLE",
+        "level": 0
+      }
+    ],
+    "state": {},
+    "cardID": 15,
+    "victoryPoints": 2
+  },
+  {
+    "specialAbility": {
+      "active": false,
+      "resource": {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      "typeAbility": "DISCOUNT"
+    },
+    "specialResource": "SERVANT",
+    "requirements": [
+      {
+        "color": "YELLOW",
+        "level": 0
+      },
+      {
+        "color": "GREEN",
+        "level": 0
+      }
+    ],
+    "state": {},
+    "cardID": 16,
+    "victoryPoints": 2
+  }
+]
 
-    },
-      "requirements": [
-        {
-          "color": "GREEN",
-          "level": 0
-        },
-        {
-          "color": "GREEN",
-          "level": 0
-        },
-        {
-          "color": "PURPLE",
-          "level": 0
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 5
-    }
-  ],
-  "LeaderCard8": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        },
-        "typeAbility": "TRANSFORM_WHITE"
 
-    },
-      "requirements": [
-        {
-          "color": "YELLOW",
-          "level": 0
-        },
-        {
-          "color": "YELLOW",
-          "level": 0
-        },
-        {
-          "color": "BLUE",
-          "level": 0
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 5
-    }
-  ],
-  "LeaderCard9": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        },
-        "typeAbility": "SPECIAL_DEPOT"
-
-    },
-      "requirements": [
-        {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        },
-        {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        },
-        {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        },
-        {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        },
-        {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 3
-    }
-  ],
-  "LeaderCard10": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        },
-        "typeAbility": "SPECIAL_DEPOT"
-      },
-      "requirements": [
-        {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        },
-        {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        },
-        {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        },
-        {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        },
-        {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 3
-    }
-  ],
-  "LeaderCard11": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        },
-        "typeAbility": "SPECIAL_DEPOT"
-      },
-      "requirements": [
-        {
-          "color": "GREY",
-          "typeResource": "STONE"
-        },
-        {
-          "color": "GREY",
-          "typeResource": "STONE"
-        },
-        {
-          "color": "GREY",
-          "typeResource": "STONE"
-        },
-        {
-          "color": "GREY",
-          "typeResource": "STONE"
-        },
-        {
-          "color": "GREY",
-          "typeResource": "STONE"
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 3
-    }
-  ],
-  "LeaderCard12": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "GREY",
-          "typeResource": "STONE"
-        },
-        "typeAbility": "SPECIAL_DEPOT"
-      },
-      "requirements": [
-        {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        },
-        {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        },
-        {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        },
-        {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        },
-        {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 3
-    }
-  ],
-  "LeaderCard13": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "YELLOW",
-          "typeResource": "COIN"
-        },
-        "typeAbility": "DISCOUNT"
-      },
-      "requirements": [
-        {
-          "color": "YELLOW",
-          "level": 0
-        },
-        {
-          "color": "PURPLE",
-          "level": 0
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 2
-    }
-  ],
-  "LeaderCard14": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "GREY",
-          "typeResource": "STONE"
-        },
-        "typeAbility": "DISCOUNT"
-      },
-      "requirements": [
-        {
-          "color": "GREEN",
-          "level": 0
-        },
-        {
-          "color": "BLUE",
-          "level": 0
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 2
-    }
-  ],
-  "LeaderCard15": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "BLUE",
-          "typeResource": "SHIELD"
-        },
-        "typeAbility": "DISCOUNT"
-      },
-      "requirements": [
-        {
-          "color": "BLUE",
-          "level": 0
-        },
-        {
-          "color": "PURPLE",
-          "level": 0
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 2
-    }
-  ],
-  "LeaderCard16": [
-    {
-      "specialAbility": {
-        "active": false,
-        "resource": {
-          "color": "PURPLE",
-          "typeResource": "SERVANT"
-        },
-        "typeAbility": "DISCOUNT"
-      },
-      "requirements": [
-        {
-          "color": "YELLOW",
-          "level": 0
-        },
-        {
-          "color": "GREEN",
-          "level": 0
-        }
-      ],
-      "state": {
-      },
-      "victoryPoints": 2
-    }
-  ]
-}
