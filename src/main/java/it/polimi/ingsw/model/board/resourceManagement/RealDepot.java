@@ -43,6 +43,7 @@ public class RealDepot implements Depot{
      * Getter Method
      * @return -> The number of the floor/depot, for istance 1 indicates first floor/depot
      */
+    @Override
     public int getFloor() {
         return floor;
     }

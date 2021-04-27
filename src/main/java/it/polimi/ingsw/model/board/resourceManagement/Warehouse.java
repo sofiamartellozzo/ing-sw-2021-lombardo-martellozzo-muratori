@@ -5,7 +5,9 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * GIANLUCA
@@ -163,7 +165,7 @@ public abstract class Warehouse {
         }
     }
 
-    private int countResource(ArrayList<Resource> resources, Resource resource){
+    public int countResource(ArrayList<Resource> resources, Resource resource){
         int count = (int) resources.stream().filter(r -> r.getType().equals(resource.getType())).count();
         return count;
     }
@@ -187,5 +189,13 @@ public abstract class Warehouse {
             }
         }
         return -1;
+    }
+
+    public HashMap<Integer,TypeResource> getInstanceContent(){
+        HashMap<Integer,TypeResource> content = new HashMap<Integer,TypeResource>();
+        for(Depot depot:depots){
+            content.put(depot.getFloor(),depot.getType());
+        }
+        return content;
     }
 }

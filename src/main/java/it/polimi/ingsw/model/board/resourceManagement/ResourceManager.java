@@ -160,10 +160,17 @@ public class ResourceManager {
      * @param resource
      * @return
      */
-    private int countResource(ArrayList<Resource> resources, Resource resource){
+    public int countResource(ArrayList<Resource> resources, Resource resource){
         int count = (int) resources.stream().filter(r -> r.getType().equals(resource.getType())).count();
         return count;
     }
 
-
+    public ArrayList<Resource> getContent(){
+        ArrayList<Resource> content= new ArrayList<>();
+        for(Depot depot:getWarehouse().getDepots()){
+            content.addAll(depot.getResources());
+        }
+        content.addAll(getStrongBox().getContent());
+        return content;
+    }
 }

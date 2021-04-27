@@ -135,5 +135,24 @@ public class DevelopmentCardTable {
         return false;
     }
 
+    /**
+     * Scans all the decks of the table and check if some of them are completely empty.
+     * If yes the boolean matrix with the position of the deck [row][column] is set to false,
+     * else true.
+     * @return
+     */
+    public boolean[][] getAvailable(){
+        boolean[][] availableDecks = new boolean[3][4];
+        for(int i=0;i<3;i++){
+            for(int j=0;j<4;j++){
+                if(table[i][j].getDevelopDeck().isEmpty()){
+                    availableDecks[i][j]=false;
+                }else{
+                    availableDecks[i][j]=true;
+                }
+            }
+        }
+        return availableDecks;
+    }
 
 }

@@ -8,13 +8,17 @@ SOFIA
 
 public class Resource{
 
-    private final Color color;
+    private Color color;
     private TypeResource typeResource;
 
     /* constructor */
     public Resource(Color color){
         this.color=color;
         setType();
+    }
+    public Resource(TypeResource type){
+        this.typeResource=type;
+        setColor();
     }
 
     public Color getColor(){
@@ -44,6 +48,31 @@ public class Resource{
                 break;
             case BLACK:
                 this.typeResource = TypeResource.LORENZO;
+                break;
+            default:
+                throw new IllegalArgumentException("Color not allowed for create a Resource!");
+        }
+    }
+
+    private void setColor() {
+        switch (this.typeResource){
+            case SHIELD:
+                this.color = Color.BLUE;
+                break;
+            case STONE:
+                this.color = Color.GREY;
+                break;
+            case COIN:
+                this.color = Color.YELLOW;
+                break;
+            case SERVANT:
+                this.color = Color.PURPLE;
+                break;
+            case FAITHMARKER:
+                this.color = Color.RED;
+                break;
+            case LORENZO:
+                this.color = Color.BLACK;
                 break;
             default:
                 throw new IllegalArgumentException("Color not allowed for create a Resource!");

@@ -64,7 +64,7 @@ public interface Depot {
      */
     public int getSize();
 
-
+    public int getFloor();
 
 
 }

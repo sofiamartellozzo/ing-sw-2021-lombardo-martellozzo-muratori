@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.market.MarbleSpecial;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface PlayerInterface {
     public String getUsername();
@@ -55,4 +56,5 @@ public interface PlayerInterface {
     public void increasePosition();
 
     public boolean checkEndGame();
+    public HashMap<Integer, Boolean> getActivableLeaderCard();
 }

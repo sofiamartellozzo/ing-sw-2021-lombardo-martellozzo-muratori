@@ -6,15 +6,14 @@ import it.polimi.ingsw.exception.*;
 
 import java.util.ArrayList;
 /**
- * GIANLUCA
- * TEST PASSED
  * Implements Depot interface.
  * It represents the depots made by the special ability "SpecialDepot",
- * the size is always 2, so it doesn't need a "size" attribute as the RealDepot class.
- * resources -> indicates what and how many resources are in the depot;
+ * The "resources" attribute represents the content of the depot.
+ * The "type" attribute indicates what resource type the depot can contain.
+ * The "depot" is the same of the "floor" of the RealDepot object (in this case can assume 4 or 5)
  * */
 public class AbilityDepot implements Depot{
-    private ArrayList<Resource> resources;
+    private final ArrayList<Resource> resources;
     private final TypeResource type;
     private final int depot;
 
@@ -22,7 +21,7 @@ public class AbilityDepot implements Depot{
      * Constructor
      * Initializing ArrayList<Resource> resource
      * @param type -> Indicates what type of resource can be add in the depot, it is specified by the special ability
-     * @param depot -> Indicates which depot (in case of two ability, they can be two)
+     * @param depot -> Indicates which depot (in case of two ability, they can be two), it corresponds to the floor of the depot
      */
     public AbilityDepot(TypeResource type, int depot) {
         this.resources = new ArrayList<>();
@@ -40,27 +39,27 @@ public class AbilityDepot implements Depot{
     }
 
     /**
-     * It adds at the end in the ArrayList one resource,
-     * after checking if the depot isn't full
-     * and checking if the resource we want to put
-     * into respects the TypeResource content attribute.
-     * If one of this condition isn't satisfied
-     * the method throws the relative Exception.
+     * Adds the "resource" in the depot.
+     * After checking:
+     * - The resource is not null;
+     * - The depot is not fulls;
+     * - The resource is the same type of depot
      * @param resource -> The resource you want to put in (SHIELD, STONE, COIN, SERVANT)
-     * @throws InvalidActionException
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
     @Override
     public void addResource(Resource resource) throws InvalidActionException {
-        if(resource==null) throw new InvalidActionException("Uncorrect resource!");
+        if(resource==null) throw new InvalidActionException("Incorrect resource!");
         if(isFull()) throw new InvalidActionException("The depot is full!");
         if(!resource.getType().equals(type)) throw new InvalidActionException("The resource you want to put in isn't the same type of the content!");
         resources.add(resource);
     }
 
     /**
-     * It removes at the end in the ArrayList one resource,
-     * after checking if the depot isn't empty, else throws Exception.
-     * @throws InvalidActionException
+     * Removes a resource from the depot.
+     * After checking:
+     * - The depot is not empty.
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
     @Override
     public void removeResource() throws InvalidActionException {
@@ -69,8 +68,7 @@ public class AbilityDepot implements Depot{
     }
 
     /**
-     * Checks if the depot is full.
-     * @return
+     * @return -> True if the depot is full, else false.
      */
     @Override
     public boolean isFull() {
@@ -79,7 +77,7 @@ public class AbilityDepot implements Depot{
 
     /**
      * Getter Method
-     * @return
+     * @return -> The content type of the depot.
      */
     @Override
     public TypeResource getType() {
@@ -87,8 +85,7 @@ public class AbilityDepot implements Depot{
     }
 
     /**
-     * Return the size (2 resources) of the depot.
-     * @return
+     * @return -> How many resource the depot can contain.
      */
     @Override
     public int getSize(){
@@ -96,40 +93,49 @@ public class AbilityDepot implements Depot{
     }
 
     /**
-     * After checking if:
-     * - The input is correct, all resources you want to put in must be of the same type;
-     * - The depot is not full;
-     * - The type of resources in input is the same of the content of the depot, in case the depot is not empty;
-     * - There's enough space.
-     * Adds all resources in the depot.
-     * @param resource
-     * @throws InvalidActionException
+     * Adds "n" resources of "resource".
+     * After checking:
+     * - The resource is not null;
+     * - The resource is of the same type of the depot content.
+     * - There's enough space or is not full.
+     * @param n -> The number of resource you want to put in
+     * @param resource -> The resource you want to put in
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
     @Override
-    public void addResources(int num, Resource resource) throws InvalidActionException {
-        if(resource==null) throw new InvalidActionException("Uncorrect resources!");
+    public void addResources(int n, Resource resource) throws InvalidActionException {
+        if(resource==null) throw new InvalidActionException("Incorrect resources!");
         if(!getType().equals(resource.getType())) throw new InvalidActionException("The resources you want to put in isn't the same type of the content!");
-        if(num>getSize()-this.resources.size()) throw new InvalidActionException("There's no space!");
-        for(int i=0;i<num;i++){
+        if(isFull() || n>getSize()-this.resources.size()) throw new InvalidActionException("There's no space!");
+        for(int i=0;i<n;i++){
             resources.add(resource);
         }
 
     }
 
     /**
-     * After checking if:
+     * Removes "n" resources from the depot.
+     * After checking:
      * - The depot is not empty;
-     * - The number of resources you want to remove is less than or equals to those that the depot contains.
-     * Removes the number of resources indicated.
-     * @param num
-     * @throws InvalidActionException
+     * - The depot contains enough resources to remove.
+     * @param n -> The number of resources you want to remove
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
     @Override
-    public void removeResources(int num) throws InvalidActionException {
+    public void removeResources(int n) throws InvalidActionException {
         if(this.resources.isEmpty()) throw new InvalidActionException("The depot is empty!");
-        if(resources.size()<num) throw new InvalidActionException("You're trying to remove more than how many it contains!");
-        for(int i=0;i<num;i++){
+        if(resources.size()<n) throw new InvalidActionException("You're trying to remove more than how many it contains!");
+        for(int i=0;i<n;i++){
             resources.remove(resources.size()-1);
         }
+    }
+
+    /**
+     * Getter Method
+     * @return -> The number of the "floor"/"depot"
+     */
+    @Override
+    public int getFloor() {
+        return depot;
     }
 }

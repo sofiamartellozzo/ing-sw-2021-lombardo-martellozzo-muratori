@@ -1,12 +1,15 @@
 package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.market.MarbleSpecial;
+import jdk.internal.icu.impl.Trie2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
  * SOFI*/
@@ -527,5 +530,18 @@ public class Player implements PlayerInterface{
             return false;
     }
 
-
+    /**
+     * @return -> HashMap with which and what LeaderCard is activatable
+     */
+    public HashMap<Integer, Boolean> getActivableLeaderCard(){
+        HashMap<Integer,Boolean> activatableLeaderCard= new HashMap<Integer,Boolean>();
+        for(int i=0;i<leaderCards.size();i++){
+            if(leaderCards.get(i).getState() instanceof Inactive) {
+                activatableLeaderCard.put(i, false);
+            }else{
+                activatableLeaderCard.put(i,true);
+            }
+        }
+        return activatableLeaderCard;
+    }
 }

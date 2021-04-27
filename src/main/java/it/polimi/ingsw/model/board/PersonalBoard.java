@@ -1,11 +1,18 @@
 package it.polimi.ingsw.model.board;
 
 
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerInterface;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.card.LeaderCard;
+import it.polimi.ingsw.model.cardAbility.AdditionalPower;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /*
@@ -127,5 +134,39 @@ public class PersonalBoard implements PersonalBoardInterface {
             points += cardSpace.getTotVictoryPoints();
         }
         return points;
+    }
+
+    @Override
+    public ArrayList<Integer> getActivatableCardSpace(PlayerInterface player) {
+        ArrayList<Integer> activatableCardSpace = new ArrayList<>();
+        //Basic Production Power
+        if(resourceManager.getContent().size()>=2){
+            activatableCardSpace.add(0);
+        }
+        //Normal Production Power
+        for(CardSpace cardSpace:cardSpaces){
+            boolean activatable = true;
+            for(TypeResource type: cardSpace.getContentTypeUpperCard()){
+                if((resourceManager.countResource(resourceManager.getWarehouse().getContent(),new Resource(type))<cardSpace.getResourceProductionPower(type))||(resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(type))<cardSpace.getResourceProductionPower(type))){
+                    activatable=false;
+                }
+            }
+            if(activatable){
+               activatableCardSpace.add(cardSpace.getWhichSpace());
+            }
+        }
+        //Ability Production Power
+        int count=0;
+        for(LeaderCard leaderCard: player.getLeaderCards()){
+            if(leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility() instanceof AdditionalPower && (
+                    resourceManager.countResource(resourceManager.getWarehouse().getContent(), new Resource(leaderCard.getSpecialAbility().getResource().getColor()))>=1)||(
+                    resourceManager.countResource(resourceManager.getStrongBox().getContent(), new Resource(leaderCard.getSpecialAbility().getResource().getColor()))>=1)){
+                count++;
+            }
+        }
+        for(int i=0;i<count;i++){
+            activatableCardSpace.add(4+i);
+        }
+        return activatableCardSpace;
     }
 }

@@ -65,4 +65,14 @@ public class BoardManager {
         }
         return allCards;
     }
+
+    /**
+     * Scans all the decks of the table and check if some of them are completely empty.
+     * If yes the boolean matrix with the position of the deck [row][column] is set to false,
+     * else true.
+     * @return
+     */
+    public boolean[][] getAvailable(){
+        return developmentCardTable.getAvailable();
+    }
 }

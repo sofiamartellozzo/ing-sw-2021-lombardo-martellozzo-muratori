@@ -86,7 +86,7 @@ public class StrongBox{
      * @param resource
      * @return
      */
-    private int countResource(ArrayList<Resource> resources, Resource resource){
+    public int countResource(ArrayList<Resource> resources, Resource resource){
         int count = (int) resources.stream().filter(r -> r.getType().equals(resource.getType())).count();
         return count;
     }

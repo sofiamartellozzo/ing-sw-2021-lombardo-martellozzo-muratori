@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.board;
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /* ILA */
@@ -98,5 +102,19 @@ public class CardSpace {
              TotPoints += c.getVictoryPoints();
         }
         return TotPoints;
+    }
+
+    public ArrayList<TypeResource> getContentTypeUpperCard(){
+        ArrayList<TypeResource> contentType = new ArrayList<TypeResource>();
+        for(Resource resource: getUpperCard().showCostProductionPower()){
+            if(!contentType.contains(resource.getType())){
+                contentType.add(resource.getType());
+            }
+        }
+        return contentType;
+    }
+
+    public int getResourceProductionPower(TypeResource type){
+        return (int) getUpperCard().showCostProductionPower().stream().filter(r -> r.getType().equals(type)).count();
     }
 }
