@@ -1,16 +1,14 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Color;
-import java.awt.font.NumericShaper;
+
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.PrintStream;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import it.polimi.ingsw.connection.client.ClientSocket;
+import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.controllerMsg.*;
@@ -253,7 +251,7 @@ public class CLI extends Observable implements ViewObserver {
         username = newUsername;
         /* the login process has to restart, so the client try again sending another request */
 
-        CConnectionRequestMsg request = new CConnectionRequestMsg("Trying to connect",iP,0,username,gameSize);
+        VConnectionRequestMsg request = new VConnectionRequestMsg("Trying to connect",iP,0,username,gameSize);
         this.client.sendMsg(request);
     }
 
@@ -337,14 +335,14 @@ public class CLI extends Observable implements ViewObserver {
         chosenCards.add(cardId2);
 
         /* put the remaining cards not chosen by the player in another ArrayList*/
-        for (int card: msg.getMiniDeckLeaderCardFour()) {
-            if (card != cardId1 && card != cardId2)
+        for (Integer card: msg.getMiniDeckLeaderCardFour()) {
+            if (!card.equals(cardId1) && card != cardId2)
             {
                 deniedCards.add(card);
             }
         }
 
-        CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ",chosenCards,deniedCards,msg.getUsername());
+        CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ",chosenCards,deniedCards,msg.getUsername(), "firstChoose");
         this.client.sendMsg(response);
     }
 

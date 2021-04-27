@@ -50,7 +50,7 @@ public class ActionController extends Observable implements ControllerObserver {
         switch (msg.getActionChose()){
             case BUY_CARD:
                 //I need the input from the real player (person)
-                boolean[][] matrix = new boolean[4][3]; //this will be 4x3
+                boolean[][] matrix = new boolean[4][3]; //this will be 3x4
                 matrix[1][1] = true; //only to not have errors right now
                 //from boardManager.getAvailable
                 VChooseDevelopCardRequestMsg request = new VChooseDevelopCardRequestMsg("You chose to buy a Development Card, select which one: ", player.getUsername(), matrix);
@@ -161,10 +161,13 @@ public class ActionController extends Observable implements ControllerObserver {
                 resourcesFromMarket = player.buyFromMarket(msg.getWhichRorC(), msg.getRowOrColumn(), boardManager);
                 for (TypeResource resource: resourcesFromMarket) {
                     if (!resource.equals(TypeResource.BLANK)){
-                        VChooseDepotMsg request = new VChooseDepotMsg("chose the depot where to store this resource",this.player.getUsername(), resource);
-                        notifyAllObserver(ObserverType.VIEW, request);
                         if (resource.equals(TypeResource.FAITHMARKER)){
                             VNotifyAllIncreasePositionMsg notification = new VNotifyAllIncreasePositionMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
+                            notifyAllObserver(ObserverType.VIEW, notification);
+                        }
+                        else{
+                            VChooseDepotMsg request = new VChooseDepotMsg("chose the depot where to store this resource",this.player.getUsername(), resource);
+                            notifyAllObserver(ObserverType.VIEW, request);
                         }
                     }
                     else{
@@ -182,6 +185,12 @@ public class ActionController extends Observable implements ControllerObserver {
             }
         }
     }
+
+    @Override
+    public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+
+    }
+
 
     /**
      * this msg from the client is for active a Leader Card or Discard it
@@ -240,6 +249,11 @@ public class ActionController extends Observable implements ControllerObserver {
                 notifyAllObserver(ObserverType.VIEW, msg1);
             }
         }
+    }
+
+    @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+
     }
 
 

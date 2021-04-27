@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.connection.server.ClientHandler;
+import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.controller.Lobby;
 import it.polimi.ingsw.message.*;
 import it.polimi.ingsw.message.controllerMsg.*;
@@ -82,6 +82,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
 
     }
 

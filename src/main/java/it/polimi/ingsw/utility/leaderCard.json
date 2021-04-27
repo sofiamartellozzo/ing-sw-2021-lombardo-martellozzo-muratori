@@ -1,33 +1,19 @@
 [
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "YELLOW",
-        "typeResource": "COIN"
-      },
-      "typeAbility": "ADDITIONAL_POWER"
-    },
+    "typeAbility": "TRANSFORM_WHITE",
     "specialResource": "COIN",
     "requirements": [
       {
         "color": "GREEN",
-        "level": 2
+        "typeResource": "SERVANT"
       }
     ],
-    "state": {},
     "cardID": 1,
     "victoryPoints": 4
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "GREY",
-        "typeResource": "STONE"
-      },
       "typeAbility": "ADDITIONAL_POWER"
-    },
+    ,
     "specialResource": "STONE",
     "requirements": [
       {
@@ -35,19 +21,14 @@
         "level": 2
       }
     ],
-    "state": {},
+
     "cardID": 2,
     "victoryPoints": 4
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "PURPLE",
-        "typeResource": "SERVANT"
-      },
+
       "typeAbility": "ADDITIONAL_POWER"
-    },
+    ,
     "specialResource": "SERVANT",
     "requirements": [
       {
@@ -55,19 +36,14 @@
         "level": 2
       }
     ],
-    "state": {},
+
     "cardID": 3,
     "victoryPoints": 4
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "BLUE",
-        "typeResource": "SHIELD"
-      },
+
       "typeAbility": "ADDITIONAL_POWER"
-    },
+    ,
     "specialResource": "SHIELD",
     "requirements": [
       {
@@ -75,19 +51,13 @@
         "level": 2
       }
     ],
-    "state": {},
     "cardID": 4,
     "victoryPoints": 4
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "YELLOW",
-        "typeResource": "COIN"
-      },
+
       "typeAbility": "TRANSFORM_WHITE"
-    },
+    ,
     "specialResource": "COIN",
     "requirements": [
       {
@@ -103,19 +73,13 @@
         "level": 0
       }
     ],
-    "state": {},
     "cardID": 5,
     "victoryPoints": 5
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "GREY",
-        "typeResource": "STONE"
-      },
+
       "typeAbility": "TRANSFORM_WHITE"
-    },
+    ,
     "specialResource": "STONE",
     "requirements": [
       {
@@ -131,19 +95,12 @@
         "level": 0
       }
     ],
-    "state": {},
     "cardID": 6,
     "victoryPoints": 5
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "BLUE",
-        "typeResource": "SHIELD"
-      },
       "typeAbility": "TRANSFORM_WHITE"
-    },
+    ,
     "specialResource": "SHIELD",
     "requirements": [
       {
@@ -159,19 +116,13 @@
         "level": 0
       }
     ],
-    "state": {},
     "cardID": 7,
     "victoryPoints": 5
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "PURPLE",
-        "typeResource": "SERVANT"
-      },
+
       "typeAbility": "TRANSFORM_WHITE"
-    },
+    ,
     "specialResource": "SERVANT",
     "requirements": [
       {
@@ -187,19 +138,13 @@
         "level": 0
       }
     ],
-    "state": {},
     "cardID": 8,
     "victoryPoints": 5
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "YELLOW",
-        "typeResource": "COIN"
-      },
+
       "typeAbility": "SPECIAL_DEPOT"
-    },
+    ,
     "specialResource": "COIN",
     "requirements": [
       {
@@ -223,19 +168,13 @@
         "typeResource": "SHIELD"
       }
     ],
-    "state": {},
     "cardID": 9,
     "victoryPoints": 3
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "BLUE",
-        "typeResource": "SHIELD"
-      },
+
       "typeAbility": "SPECIAL_DEPOT"
-    },
+    ,
     "specialResource": "SHIELD",
     "requirements": [
       {
@@ -259,19 +198,13 @@
         "typeResource": "SERVANT"
       }
     ],
-    "state": {},
     "cardID": 10,
     "victoryPoints": 3
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "PURPLE",
-        "typeResource": "SERVANT"
-      },
+
       "typeAbility": "SPECIAL_DEPOT"
-    },
+    ,
     "specialResource": "SERVANT",
     "requirements": [
       {
@@ -295,19 +228,13 @@
         "typeResource": "STONE"
       }
     ],
-    "state": {},
     "cardID": 11,
     "victoryPoints": 3
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "GREY",
-        "typeResource": "STONE"
-      },
+
       "typeAbility": "SPECIAL_DEPOT"
-    },
+    ,
     "specialResource": "STONE",
     "requirements": [
       {
@@ -331,19 +258,13 @@
         "typeResource": "COIN"
       }
     ],
-    "state": {},
     "cardID": 12,
     "victoryPoints": 3
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "YELLOW",
-        "typeResource": "COIN"
-      },
+
       "typeAbility": "DISCOUNT"
-    },
+    ,
     "specialResource": "COIN",
     "requirements": [
       {
@@ -355,19 +276,13 @@
         "level": 0
       }
     ],
-    "state": {},
     "cardID": 13,
     "victoryPoints": 2
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "GREY",
-        "typeResource": "STONE"
-      },
+
       "typeAbility": "DISCOUNT"
-    },
+    ,
     "specialResource": "STONE",
     "requirements": [
       {
@@ -379,19 +294,13 @@
         "level": 0
       }
     ],
-    "state": {},
     "cardID": 14,
     "victoryPoints": 2
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "BLUE",
-        "typeResource": "SHIELD"
-      },
+
       "typeAbility": "DISCOUNT"
-    },
+    ,
     "specialResource": "SHIELD",
     "requirements": [
       {
@@ -403,19 +312,13 @@
         "level": 0
       }
     ],
-    "state": {},
     "cardID": 15,
     "victoryPoints": 2
   },
   {
-    "specialAbility": {
-      "active": false,
-      "resource": {
-        "color": "PURPLE",
-        "typeResource": "SERVANT"
-      },
+
       "typeAbility": "DISCOUNT"
-    },
+    ,
     "specialResource": "SERVANT",
     "requirements": [
       {
@@ -427,8 +330,9 @@
         "level": 0
       }
     ],
-    "state": {},
     "cardID": 16,
     "victoryPoints": 2
   }
 ]
+
+

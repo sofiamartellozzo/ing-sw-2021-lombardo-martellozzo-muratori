@@ -1,4 +1,4 @@
-package it.polimi.ingsw.connection.client;
+package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.Observable;
@@ -53,14 +53,15 @@ public class ClientSocket extends Observable implements Runnable{
         /* open the in/out Stream to communicate */
         try {
             out = new ObjectOutputStream(serverSocket.getOutputStream());
-            in = new ObjectInputStream(serverSocket.getInputStream());
+            in = new ObjectInputStream(new BufferedInputStream(serverSocket.getInputStream()));
         } catch (IOException e1){
             e1.printStackTrace();
             System.out.println("The Socket cannot open the connection!");
         }
 
-        /* start the ping process */
-        startPing();
+
+        /* start the ping process
+        startPing();*/
     }
 
 
@@ -97,6 +98,9 @@ public class ClientSocket extends Observable implements Runnable{
         }
     }
 
+    /**
+     * interrupting the sending of Pinging msg
+     */
     private void stopPing(){
         ping.interrupt();
     }
@@ -119,6 +123,7 @@ public class ClientSocket extends Observable implements Runnable{
     public void run(){
         while (true){
             try{
+                System.out.println("Start the client");
                 Object received = in.readObject(); //deserialized the msg from the server
                 /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the view*/
                 if (!(received instanceof PingMsg)){
@@ -126,6 +131,9 @@ public class ClientSocket extends Observable implements Runnable{
                     ViewGameMsg msg = (ViewGameMsg) received;
                     //then notify all the observer (viewer) about the new message arrived from the Server
                     notifyAllObserver(ObserverType.VIEW, msg);
+                }
+                else{
+                    System.out.println(((PingMsg) received).getMsgContent()+ " from the server: ");
                 }
 
             } catch (IOException | ClassNotFoundException e){
@@ -138,6 +146,9 @@ public class ClientSocket extends Observable implements Runnable{
     }
 
     public void closeConnection(){
+        if(ping.isAlive()){
+            stopPing();
+        }
         try{
             serverSocket.close();
         } catch (IOException e){

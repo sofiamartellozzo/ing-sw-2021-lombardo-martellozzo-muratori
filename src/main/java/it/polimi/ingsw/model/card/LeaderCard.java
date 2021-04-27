@@ -32,7 +32,7 @@ public class LeaderCard extends Card{
         this.cardID = cardID;
         this.requirements = requirements;
         this.specialResource = specialResource;
-        this.specialAbility = createSpecialAbility(typeSpecialAbility);
+        createSpecialAbility(typeSpecialAbility);
         this.state = new Inactive();
 
     }
@@ -58,22 +58,27 @@ public class LeaderCard extends Card{
      * @return
      */
 
-    public TransformWhiteMarble createSpecialAbility(TypeAbility typeSpecialAbility){
+    private void createSpecialAbility(TypeAbility typeSpecialAbility){
         switch (typeSpecialAbility){
             case DISCOUNT:
-                return new TransformWhiteMarble(createResource(specialResource));
+                this.specialAbility = new Discount(createResource(specialResource));
                 //return new Discount(createResource(specialResource));
+                break;
             case SPECIAL_DEPOT:
-                return new TransformWhiteMarble(createResource(specialResource));
+                this.specialAbility = new SpecialDepot(createResource(specialResource));
                 //return new SpecialDepot(createResource(specialResource));
+                break;
             case TRANSFORM_WHITE:
-                return new TransformWhiteMarble(createResource(specialResource));
+                this.specialAbility = new TransformWhiteMarble(createResource(specialResource));
+                break;
             case ADDITIONAL_POWER:
-                return new TransformWhiteMarble(createResource(specialResource));
+                this.specialAbility = new AdditionalPower(createResource(specialResource));
                 //return new AdditionalPower(createResource(specialResource));
+                break;
+            default:
+                throw new IllegalArgumentException(" Error, typeAbility not valid! ");
         }
 
-        throw new IllegalArgumentException(" Error, typeAbility not valid! ");
     }
 
     /**
@@ -105,7 +110,7 @@ public class LeaderCard extends Card{
     public void activeCard(Player player) throws InvalidActionException {
         if(player == null) throw new InvalidActionException("Error, not valid!");
         state = new Active();
-        this.specialAbility.activeAbility(player);
+        //this.specialAbility.activeAbility(player);
     }
 
     /**

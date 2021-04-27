@@ -1,17 +1,14 @@
-package it.polimi.ingsw.connection.server;
+package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.connection.PingMsg;
-import it.polimi.ingsw.message.controllerMsg.ControllerGameMsg;
-import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * class in the SERVER that rapresent the server, it manage the comunication
@@ -22,18 +19,22 @@ import java.net.UnknownHostException;
 public class ClientHandler extends Observable implements Runnable{
 
     private Socket clientSocket;
+
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private InetAddress IP;
+
     private VirtualView virtualView; //the virtual view created for this client (this specific client handler indeed)
     private Thread ping;  //to keep alive the connection
+    private String threadId; //the id for this thread that handle one specific client
 
-    public ClientHandler(Socket client){
+    public ClientHandler(Socket client, String threadId){
         clientSocket = client;
+        this.threadId = threadId;
         /* when create the cHandler, create his virtual view too */
         virtualView = new VirtualView(this);
         //attach it to the Observable, because is an Observer
         attachObserver(ObserverType.VIEW, virtualView);
+
     }
 
     @Override
@@ -55,8 +56,8 @@ public class ClientHandler extends Observable implements Runnable{
             e.printStackTrace();
         }
 
-        /* start the ping process, like in ClientSocket*/
-        startPing();
+        /* start the ping process, like in ClientSocket
+        startPing();*/
 
 
         /* now wait listening for a message (Event) */
@@ -71,7 +72,7 @@ public class ClientHandler extends Observable implements Runnable{
                     notifyAllObserver(ObserverType.CONTROLLER, msgReceived);
                 }
                 else{
-                    System.out.println(((PingMsg) received).getMsgContent()+ "from: " +IP);
+                    System.out.println(((PingMsg) received).getMsgContent()+ " from: " +threadId);
                 }
             }
 
@@ -85,12 +86,9 @@ public class ClientHandler extends Observable implements Runnable{
 
     /**
      * private method to start the Ping process, so keep the connection alive
+     * from the server to the client every 5000 mills
      */
     private void startPing(){
-        try{
-            /* In a Socket an IP Address is represented by the class InetAddress, this class is used to
-             * manage an IP Address for routing information throw the Net*/
-            InetAddress serverAddress = InetAddress.getByName(this.IP);
 
             ping = new Thread(() -> {
                 try{
@@ -103,17 +101,17 @@ public class ClientHandler extends Observable implements Runnable{
                     System.out.println("Ping disable");
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.out.println("Unable to send ping msg to server");
+                    System.out.println("Unable to send ping msg to client");
                 } finally {
                     Thread.currentThread().interrupt();
                 }
             });
             ping.start();
 
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            System.out.println("Unable to convert IP address to InetAddress");
-        }
+    }
+
+    private void stopPing(){
+        ping.interrupt();
     }
 
     /**

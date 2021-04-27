@@ -195,6 +195,24 @@ public class TurnController extends Observable implements ControllerObserver {
         ActionController controller = new ActionController(currentPlayer, currentTurnIstance, boardManager);
     }
 
+    /**
+     * handle the event in which one player decided to discard a resource from the market
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+        for (Integer key: turnSequence.keySet()) {
+            if (!turnSequence.get(key).getUsername().equals(msg.getUsername())){
+                //not the player that discarded the resource
+                turnSequence.get(key).increasePosition();
+                VNotifyAllIncreasePositionMsg notify = new VNotifyAllIncreasePositionMsg("this player increased his position because of another player", turnSequence.get(key).getUsername(), 1);
+                notifyAllObserver(ObserverType.VIEW, notify);
+            }
+        }
+
+        //check end turn (because all player has increased their position of 1
+    }
+
     /*------------------------------------------------------------------------------------------------------------------*/
 
     @Override

@@ -2,15 +2,17 @@ package it.polimi.ingsw.message.controllerMsg;
 
 import it.polimi.ingsw.message.ViewObserver;
 
+import java.net.InetAddress;
+
 /* a connection fail because the username is taken or because the room is full */
 public class CNackConnectionRequestMsg extends ControllerGameMsg{
 
     private final String username;
     private final String errorInformation;
-    private final String userIp;
+    private final InetAddress userIp;
     private final int userPort;
 
-    public CNackConnectionRequestMsg(String content, int userPort ,String userIp, String username, String errorInformation) {
+    public CNackConnectionRequestMsg(String content, int userPort ,InetAddress userIp, String username, String errorInformation) {
         super(content);
         this.userIp = userIp;
         this.userPort = userPort;
@@ -23,7 +25,7 @@ public class CNackConnectionRequestMsg extends ControllerGameMsg{
         return errorInformation;
     }
 
-    public String getUserIp() {
+    public InetAddress getUserIp() {
         return userIp;
     }
 

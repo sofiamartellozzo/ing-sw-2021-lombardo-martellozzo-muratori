@@ -1,4 +1,4 @@
-package it.polimi.ingsw.connection.client;
+package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.exception.InputInvalidException;
 import it.polimi.ingsw.view.CLI;

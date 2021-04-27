@@ -57,6 +57,10 @@ public abstract class SpecialAbility {
         this.setActive(true);
     };
 
+    public TypeAbility getTypeAbility() {
+        return typeAbility;
+    }
+
     /**
      * toString Method
      * @return
