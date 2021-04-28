@@ -19,4 +19,5 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VChooseDevelopCardRequestMsg msg);
     public void receiveMsg(VMoveResourceRequestMsg msg);
     public void receiveMsg(VBuyFromMarketRequestMsg msg);
+    public void receiveMsg(VShowEndGameResultsMsg msg);
 }

@@ -293,6 +293,16 @@ public class Lobby extends Observable implements ControllerObserver {
 
     }
 
+    @Override
+    public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+
+    }
+
 
     /*----------------------------------------------------------------------------------------------------------------*/
 

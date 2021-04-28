@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
-    private String username;
+    private final String username;
     private Map<String,Integer> choose;
-    private TurnAction action;
+    private final TurnAction action;
 
     public CActivateProductionPowerResponseMsg(String msgContent, String username, Map<String,Integer> choose){
         super(msgContent);
@@ -24,4 +24,6 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     public Map<String, Integer> getChoose() {
         return choose;
     }
+
+    public TurnAction getActionChose() { return action; }
 }

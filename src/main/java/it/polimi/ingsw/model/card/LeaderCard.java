@@ -81,6 +81,7 @@ public class LeaderCard extends Card{
 
     }
 
+
     /**
      * auxiliary method used to create the resource using the typeResource
      * @param typeResource
@@ -133,6 +134,7 @@ public class LeaderCard extends Card{
      */
     @Override
     public int getVictoryPoints() {
-        return this.state.returnPoints(victoryPoints);
+        //return this.state.returnPoints(victoryPoints);
+        return this.getState().returnPoints(victoryPoints);
     }
 }

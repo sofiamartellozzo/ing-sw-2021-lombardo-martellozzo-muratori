@@ -217,10 +217,100 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     /**
-     * method to communicate to the client that something went wrong with the connection to the game
-     * the problems could be : USER_NOT_VALID, FULL_SIZE,WAIT.
-     * @param msg
+     * auxiliary method used to check if the color inserted by the player is possible,
+     * the color can be only YELLOW,PURPLE,BLUE and GREY
+     * @return
      */
+    private boolean checkColor(String color){
+
+        return color.equals("YELLOW") || color.equals("PURPLE") || color.equals("BLUE")|| color.equals("GREY");
+    }
+
+    /**
+     * auxiliary method used to check if the integer insert by the client representing a depot is valid,
+     * it can be 1,2 or 3
+     * @return
+     */
+    private boolean checkDepotValidity(int depot){
+        return depot == 1 || depot == 2 || depot == 3;
+    }
+
+    /**
+     * because the player is asked to insert a string that represents the color of the resource he wants,
+     * this method converts the color written by the player to a real Color
+     * @param resourceColor
+     * @return
+     */
+    private Color getColorFromString(String resourceColor){
+        switch (resourceColor){
+            case "YELLOW":
+                return Color.YELLOW;
+            case "BLUE":
+                return Color.BLUE;
+            case "GREY":
+                return Color.GREY;
+            case "PURPLE":
+                return Color.PURPLE;
+        }
+
+        throw new IllegalArgumentException(" Error color not valid ");
+    }
+
+    /**
+     * private method used only as an auxiliary method to let the Client choose from four different cardId
+     * @return
+     */
+    private int chooseIdCard() {
+
+        boolean validInput = false;
+        int insert = -1;
+
+        while (!validInput) {
+            in = new Scanner(System.in);
+            in.reset();
+
+            try {
+                insert = in.nextInt();
+                validInput = true;
+
+            } catch (IllegalArgumentException e) {
+                System.out.println(" Error, input not valid, insert a valid One ");
+            }
+
+        }
+        return insert;
+    }
+
+    /**
+     * auxiliary method used only to check if the card Id selected by the Player
+     * is contained in the four card
+     * @param card1
+     * @param card2
+     * @param cardsId
+     * @return
+     */
+    private boolean checkValidity (Integer card1, Integer card2, ArrayList<Integer> cardsId)
+    {
+        boolean firstCheck = false;
+        boolean secondCheck = false;
+
+        for (Integer cardID : cardsId){
+
+            if(cardID.equals(card1))
+            {
+                firstCheck = true;     //boolean used to check if the first card is contained in the group
+            }
+            else if (cardID.equals(card2))
+            {
+                secondCheck = true;    //boolean used to check if the second card is contained in the group
+            }
+
+        }
+        return firstCheck && secondCheck;     /*this returns true only if the two cards are contained inside the Array,
+                                               but the two Id can't be the same number !! */
+    }
+
+    /*---------------------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
     public void receiveMsg(CNackConnectionRequestMsg msg) {
@@ -269,7 +359,7 @@ public class CLI extends Observable implements ViewObserver {
 
         roomSize = askRoomSize();
 
-       /* send the msg to the controller with the size room he chose */
+        /* send the msg to the controller with the size room he chose */
         CRoomSizeResponseMsg response = new CRoomSizeResponseMsg(" asking the room size ",roomSize,msg.getUsername());
         client.sendMsg(response);
     }
@@ -363,9 +453,9 @@ public class CLI extends Observable implements ViewObserver {
 
         System.out.println(" Please enter the color of resource you want : ");
         System.out.println(  "YELLOW --> COIN," +
-                             "PURPLE --> SERVANT," +
-                             "BLUE --> SHIELD," +
-                             "GREY --> STONE " );
+                "PURPLE --> SERVANT," +
+                "BLUE --> SHIELD," +
+                "GREY --> STONE " );
 
         resourceColor = in.nextLine();
 
@@ -402,47 +492,6 @@ public class CLI extends Observable implements ViewObserver {
 
     }
 
-    /**
-     * auxiliary method used to check if the color inserted by the player is possible,
-     * the color can be only YELLOW,PURPLE,BLUE and GREY
-     * @return
-     */
-    private boolean checkColor(String color){
-
-        return color.equals("YELLOW") || color.equals("PURPLE") || color.equals("BLUE")|| color.equals("GREY");
-    }
-
-    /**
-     * auxiliary method used to check if the integer insert by the client representing a depot is valid,
-     * it can be 1,2 or 3
-     * @return
-     */
-    private boolean checkDepotValidity(int depot){
-        return depot == 1 || depot == 2 || depot == 3;
-    }
-
-    /**
-     * because the player is asked to insert a string that represents the color of the resource he wants,
-     * this method converts the color written by the player to a real Color
-     * @param resourceColor
-     * @return
-     */
-    private Color getColorFromString(String resourceColor){
-        switch (resourceColor){
-            case "YELLOW":
-                return Color.YELLOW;
-            case "BLUE":
-                return Color.BLUE;
-            case "GREY":
-                return Color.GREY;
-            case "PURPLE":
-                return Color.PURPLE;
-        }
-
-        throw new IllegalArgumentException(" Error color not valid ");
-    }
-
-
     @Override
     public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
 
@@ -470,58 +519,26 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     /**
-     * private method used only as an auxiliary method to let the Client choose from four different cardId
-     * @return
+     * this method displays to the players if they won or not
+     * @param msg
      */
-    private int chooseIdCard() {
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+        clearScreen();
 
-        boolean validInput = false;
-        int insert = -1;
-
-        while (!validInput) {
-            in = new Scanner(System.in);
-            in.reset();
-
-            try {
-                insert = in.nextInt();
-                validInput = true;
-
-            } catch (IllegalArgumentException e) {
-                System.out.println(" Error, input not valid, insert a valid One ");
-            }
-
+        if(msg.getWinnerUsername().contains(username)){
+            WriteMessageDisplay.declareWinner();
+            System.out.println(" You totalize "+msg.getVictoryPoints()+ " points" );
         }
-        return insert;
+        else{
+            WriteMessageDisplay.endGame();
+            WriteMessageDisplay.declareLoser();
+        }
+
+        in.reset();
+        out.flush();
     }
 
-    /**
-     * auxiliary method used only to check if the card Id selected by the Player
-     * is contained in the four card
-     * @param card1
-     * @param card2
-     * @param cardsId
-     * @return
-     */
-    private boolean checkValidity (Integer card1, Integer card2, ArrayList<Integer> cardsId)
-    {
-        boolean firstCheck = false;
-        boolean secondCheck = false;
-
-        for (Integer cardID : cardsId){
-
-            if(cardID.equals(card1))
-            {
-                firstCheck = true;     //boolean used to check if the first card is contained in the group
-            }
-            else if (cardID.equals(card2))
-            {
-                secondCheck = true;    //boolean used to check if the second card is contained in the group
-            }
-
-        }
-        return firstCheck && secondCheck;     /*this returns true only if the two cards are contained inside the Array,
-                                               but the two Id can't be the same number !! */
-    }
 
     /**
      * method to clear the screen and remove older prints
@@ -531,6 +548,8 @@ public class CLI extends Observable implements ViewObserver {
         System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
         System.out.flush();
     }
+
+
 
 
 

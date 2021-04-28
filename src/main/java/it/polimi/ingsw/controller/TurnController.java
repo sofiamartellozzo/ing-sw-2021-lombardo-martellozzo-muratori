@@ -51,6 +51,7 @@ public class TurnController extends Observable implements ControllerObserver {
 
     /*set true when is called the last turn*/
     private boolean lastTurns;
+
     /*at the end of the game there is a last turn for each player except the one that ended it, this keep the track of it*/
     private int numberOfLastTurn;
 
@@ -162,7 +163,7 @@ public class TurnController extends Observable implements ControllerObserver {
      * when a player end his turn, this method is called to set the next player
      * and create a new turn for him
      */
-    private void nextTurn(){
+    protected void nextTurn(){
         if (this.currentTurnIndex == this.numberOfPlayer){
             this.currentTurnIndex = 1;
         }
@@ -171,6 +172,34 @@ public class TurnController extends Observable implements ControllerObserver {
         }
         Player nextPlayer = (Player) this.turnSequence.get(currentTurnIndex);
         startPlayerTurn(nextPlayer);
+    }
+
+    /**
+     * check if one or more players are arrived at the end of the game, in that case create a special controller
+     * to manage the last turn of the game
+     */
+    private void checkEndGame(){
+        //check the conditions fot the last turn of the game
+        currentPlayer.endTurn();
+        boolean checkEnd = false;
+        for (Integer key: turnSequence.keySet()) {
+            //if one player is arrived to the end of the faithTrack the checkEnd is set to true
+            if(turnSequence.get(key).checkEndGame()) {
+                checkEnd = true;
+            }
+        }
+        if (checkEnd){
+            int keyCurrentP = 0;
+            for (Integer key: turnSequence.keySet()) {
+                if(turnSequence.get(key).getUsername().equals(currentPlayer.getUsername()))
+                {
+                   keyCurrentP = key;
+                }
+
+            }
+            numberOfLastTurn = numberOfPlayer - keyCurrentP;      //it contains the number representing the total of last turn games
+            lastTurns = true;
+        }
     }
 
     /*check if someone is in the pop's favor tile...*/
@@ -190,9 +219,31 @@ public class TurnController extends Observable implements ControllerObserver {
      */
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+        if(msg.getUsername().equals(currentPlayer.getUsername())) {
+            if (!msg.getActionChose().equals(TurnAction.END_TURN)) {
+                printTurnCMesssage("New action of the game");
+                ActionController controller = new ActionController(currentPlayer, currentTurnIstance, boardManager);
+            } else {
+                if(!lastTurns) {
+                    checkEndGame();
+                    nextTurn();
+                }else{
+                    this.numberOfLastTurn--;    //decrease the number of players that have to play
+                    if(numberOfLastTurn > 0) {
+                        nextTurn();
+                    }else {                    // if the game is over EndGameController will be instantiated to count all the victory points
+                        EndGameController endGameController = new EndGameController(turnSequence,this);
+                        try {
+                            endGameController.startCounting();
+                        } catch (InvalidActionException e) {
+                            e.printStackTrace();
+                        }
+                        attachObserver(ObserverType.CONTROLLER, endGameController);
+                    }
 
-        printTurnCMesssage("New action of the game");
-        ActionController controller = new ActionController(currentPlayer, currentTurnIstance, boardManager);
+                }
+            }
+        }
     }
 
     /**
@@ -229,6 +280,11 @@ public class TurnController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
         //IN ACTIONCONTROLLER
+    }
+
+    @Override
+    public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+
     }
 
 
