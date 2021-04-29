@@ -14,6 +14,8 @@ public interface PlayerTurnInterface {
 
     public void removeAction(TurnAction actionToRemove);
 
+    public void addAction(TurnAction actionToAdd);
+
     public BoardManager getBoardManager();
 
     public Player getCurrentPlayer();

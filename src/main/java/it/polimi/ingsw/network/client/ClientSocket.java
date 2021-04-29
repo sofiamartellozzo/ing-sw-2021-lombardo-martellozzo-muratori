@@ -4,6 +4,7 @@ import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.connection.PingMsg;
+import it.polimi.ingsw.message.connection.PongMsg;
 import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 
 import java.io.BufferedInputStream;
@@ -13,6 +14,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * this class is where is readed the input from the CLIENT
@@ -60,8 +62,8 @@ public class ClientSocket extends Observable implements Runnable{
         }
 
 
-        /* start the ping process
-        startPing();*/
+        /* start the ping process */
+        startPing();
     }
 
 
@@ -78,7 +80,7 @@ public class ClientSocket extends Observable implements Runnable{
                 try{
                     while (true){
                         Thread.sleep(5000);
-                        out.writeObject(new PingMsg("Ping!"));
+                        out.writeObject(new PongMsg("Pong!"));
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -124,19 +126,22 @@ public class ClientSocket extends Observable implements Runnable{
         while (true){
             try{
                 System.out.println("Start the client");
+                TimeUnit.SECONDS.sleep(20);
                 Object received = in.readObject(); //deserialized the msg from the server
                 /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the view*/
-                if (!(received instanceof PingMsg)){
+                if ((received instanceof PingMsg)){
+                    System.out.println(((PingMsg) received).getMsgContent()+ " from the server: ");
+                    //response with a Pong msg
+                    sendMsg(new PongMsg("Pong!"));
+                }
+                else{
                     //casting the msg because it is a ViewMsg type for sure
                     ViewGameMsg msg = (ViewGameMsg) received;
                     //then notify all the observer (viewer) about the new message arrived from the Server
                     notifyAllObserver(ObserverType.VIEW, msg);
                 }
-                else{
-                    System.out.println(((PingMsg) received).getMsgContent()+ " from the server: ");
-                }
 
-            } catch (IOException | ClassNotFoundException e){
+            } catch (IOException | ClassNotFoundException | InterruptedException e){
                 System.out.println("this client disconnected from the server");
                 /* setting the attribute to false because the connection shut down */
                 connectionOpen = false;

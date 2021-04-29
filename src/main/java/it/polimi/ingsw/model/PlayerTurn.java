@@ -50,6 +50,15 @@ public class PlayerTurn implements PlayerTurnInterface {
         }
     }
 
+    /**
+     * method called to add an action
+     * @param actionToAdd
+     */
+    @Override
+    public void addAction(TurnAction actionToAdd) {
+        availableAction.add(actionToAdd);
+    }
+
     public BoardManager getBoardManager() {
         return boardManager;
     }

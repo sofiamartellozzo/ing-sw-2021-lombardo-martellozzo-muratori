@@ -324,6 +324,16 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
+    public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
         //not here
     }

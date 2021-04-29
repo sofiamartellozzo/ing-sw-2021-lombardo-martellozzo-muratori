@@ -2,7 +2,6 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ObserverType;
-import it.polimi.ingsw.message.viewMsg.VPlayerDisconnectedMsg;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
@@ -65,7 +64,7 @@ public class Room extends Observable {
         gameCanStart = false;
         turnSequence = new HashMap<>();
         cleanRoom = false;
-        printRoomMesssage("Room created");
+        printRoomMessage("Room created");
     }
 
     public boolean isSoloMode() {
@@ -102,7 +101,7 @@ public class Room extends Observable {
                 throw new LimitExceededException();
             }
 
-            printRoomMesssage("New player " +username+ " added in the room!");
+            printRoomMessage("New player " +username+ " added in the room!");
         } catch (LimitExceededException e){
             e.printStackTrace();
         }
@@ -130,28 +129,31 @@ public class Room extends Observable {
     public void initializedGame() throws InvalidActionException {
         //creating the controller for the initialization
         initializedController = new InitializedController((ArrayList<String>) playersId);
+        attachObserver(ObserverType.CONTROLLER, initializedController);
         initializedController.createGame();
         boardManager = initializedController.getBoardManager();
         turnSequence = initializedController.getTurnSequence();
-        printRoomMesssage("the game has been initialized, starting...");
+        printRoomMessage("the game has been initialized, starting...");
         startFirstTurn();
     }
 
     public void startFirstTurn() throws InvalidActionException {
         //creating the controller for the turn
-        if (!isSoloMode){
+        if(!isSoloMode){
             turnController = new TurnController(turnSequence, boardManager);
+            attachObserver(ObserverType.CONTROLLER,turnController);
         }
         else{
             singlePlayer = initializedController.getSinglePlayer();
             turnController = new TurnController(singlePlayer, boardManager);
+            attachObserver(ObserverType.CONTROLLER,turnController);
         }
         turnController.gamePlay();
     }
 
 
-    private void printRoomMesssage(String messageToPrint){
-        System.out.println("Room " +this.roomID + ": " + messageToPrint);
+    private void printRoomMessage(String messageToPrint){
+        System.out.println("[Room] " +this.roomID + " : " + messageToPrint);
     }
 
 

@@ -82,8 +82,7 @@ public class FaithTrack {
      * @param section
      */
 
-    public void doVaticanReport (int section)
-    {
+    public void doVaticanReport(int section) {
         VaticanSection vaticanSection = vaticanSections.get(section - 1);
         PopeBox popeBox = (PopeBox) vaticanSection.getBoxes().get(vaticanSection.getBoxes().size() - 1);
         popeBox.setActivated(true);

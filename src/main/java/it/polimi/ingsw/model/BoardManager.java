@@ -61,7 +61,7 @@ public class BoardManager {
     public ArrayList<Integer> getAllLeaderCard(){
         ArrayList<Integer> allCards = new ArrayList<>();
         for (LeaderCard card: leaderCardDeck.getCards()) {
-            //allCards.add(card.getId());
+            allCards.add(card.getCardID());
         }
         return allCards;
     }

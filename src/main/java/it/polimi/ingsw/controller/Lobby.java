@@ -148,6 +148,7 @@ public class Lobby extends Observable implements ControllerObserver {
             Room userRoom = null;
             try {
                 //find his room
+                System.out.println(username);
                 userRoom = findUserRoom(username);
             } catch (NotFreeRoomAvailableError e) {
                 e.printStackTrace();
@@ -219,6 +220,7 @@ public class Lobby extends Observable implements ControllerObserver {
                     room = firstFreeRoom();
                     if (room!=null && !roomFull(room)) {
                         room.addUser(msg.getUsername());
+                        System.out.println("user added: " +room.getPlayersId().get(0));
                     }
                 }catch (NotFreeRoomAvailableError | LimitExceededException e){
                     e.printStackTrace();
@@ -228,13 +230,18 @@ public class Lobby extends Observable implements ControllerObserver {
                 //all occupied room are full but one can be created, or Solo Mode
                 usersAssigned.add(msg.getUsername());
                 canCreateRoom.set(false); //now this client is creating a new room, so I set this parameter to false and not letting anyone else to do the same now
-                Room newRoom = new Room("Room:  #" +this.numberOfRooms);
+                Room newRoom = new Room("Room  #" +this.numberOfRooms);
                 if (gameMode.equals("0")){
                     //set the attribute of the Room true because the Client asked to play in Solo Mode
                     newRoom.setSoloMode(true);
                 }
                 this.notEmptyRoom.add(newRoom);
                 updateRoomCounter();  //update the actual number of the rooms occupied
+                try {
+                    newRoom.addUser(msg.getUsername());
+                } catch (LimitExceededException e) {
+                    e.printStackTrace();
+                }
             }
             else if (this.numberOfRooms == MAX_NUMBER_ROOM){
                 //all rooms are full and is not possible to create a new room
@@ -257,6 +264,8 @@ public class Lobby extends Observable implements ControllerObserver {
         CNackConnectionRequestMsg nackMsg = new CNackConnectionRequestMsg("Connection cannot be established ", msg.getPort(), msg.getIP(),msg.getUsername(),errorInformation);
         notifyAllObserver(ObserverType.VIEW, nackMsg);
     }
+
+    /*---------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
     public void receiveMsg(VConnectionRequestMsg msg) {
@@ -290,6 +299,16 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
 
     }
 

@@ -1,0 +1,78 @@
+[
+
+    {
+      "whichVaticanSection": 0,
+      "numberBox": 0,
+      "victoryPoints": 0
+    },
+    {
+      "whichVaticanSection": 0,
+      "numberBox": 1,
+      "victoryPoints": 0
+    },
+    {
+      "whichVaticanSection": 0,
+      "numberBox": 2,
+      "victoryPoints": 0
+    },
+    {
+      "whichVaticanSection": 0,
+      "numberBox": 4,
+      "victoryPoints": 1
+    },
+    {
+      "whichVaticanSection": 1,
+      "numberBox": 5,
+      "victoryPoints": 1
+    },
+    {
+      "whichVaticanSection": 1,
+      "numberBox": 7,
+      "victoryPoints": 2
+    },
+    {
+      "whichVaticanSection": 0,
+      "numberBox": 10,
+      "victoryPoints": 4
+    },
+    {
+      "whichVaticanSection": 0,
+      "numberBox": 11,
+      "victoryPoints": 4
+    },
+    {
+      "whichVaticanSection": 2,
+      "numberBox": 13,
+      "victoryPoints": 6
+    },
+    {
+      "whichVaticanSection": 2,
+      "numberBox": 14,
+      "victoryPoints": 6
+    },
+    {
+      "whichVaticanSection": 0,
+      "numberBox": 17,
+      "victoryPoints": 9
+    },
+    {
+      "whichVaticanSection": 3,
+      "numberBox": 19,
+      "victoryPoints": 12
+    },
+    {
+      "whichVaticanSection": 3,
+      "numberBox": 20,
+      "victoryPoints": 12
+    },
+    {
+      "whichVaticanSection": 3,
+      "numberBox": 22,
+      "victoryPoints": 16
+    },
+    {
+      "whichVaticanSection": 3,
+      "numberBox": 23,
+      "victoryPoints": 16
+    }
+  ]

@@ -41,7 +41,7 @@ public class GameServer {
                  * for each connection create a new Thread
                  * that execute a Client Handler*/
                 clientSocket = socket.accept(); //get the client socket
-                clientSocket.setSoTimeout(20*10000);
+                //clientSocket.setSoTimeout(20*10000); //if not ping
                 String clientIpAddress = clientSocket.getInetAddress().toString().substring(1);
                 System.out.println("New client accepted:\tIPAddress: " + clientIpAddress + "\tPort: " + clientSocket.getPort());
 

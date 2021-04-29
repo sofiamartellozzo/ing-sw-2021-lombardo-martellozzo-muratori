@@ -120,6 +120,8 @@ public class ActionController extends Observable implements ControllerObserver {
                 actionWentWrong = false;
                 //remove tre 3 action from the able ones because can be made only once
                 turn.removeAction(msg.getActionChose());
+                //add the action that allows to end the player turn
+                turn.addAction(TurnAction.END_TURN);
             } catch (InvalidActionException e) {
                 System.out.println("Cannot buy this card, sorry!");
                 e.printStackTrace();
@@ -140,7 +142,7 @@ public class ActionController extends Observable implements ControllerObserver {
                 System.out.println("the move went successfully!!");
                 actionWentWrong = false;
                 //remove tre 3 action from the able ones because can be made only once
-                turn.removeAction(msg.getActionChose());
+                //turn.removeAction(msg.getActionChose());
             } catch (InvalidActionException e) {
                 e.printStackTrace();
                 System.out.println("Not able to move the resource from " +msg.getFromDepot()+ " depot, to " +msg.getToDepot()+ " depot!");
@@ -180,6 +182,8 @@ public class ActionController extends Observable implements ControllerObserver {
                 actionWentWrong = false;
                 //remove tre 3 action from the able ones because can be made only once
                 turn.removeAction(msg.getActionChose());
+                //add the action that allows to end the player turn
+                turn.addAction(TurnAction.END_TURN);
             } catch (InvalidActionException e) {
                 e.printStackTrace();
                 System.out.println("Something went wrong in buying from the market...");
@@ -191,6 +195,10 @@ public class ActionController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
+        //remove tre 3 action from the able ones because can be made only once
+        turn.removeAction(msg.getActionChose());
+        //add the action that allows to end the player turn
+        turn.addAction(TurnAction.END_TURN);
     }
 
     /**
