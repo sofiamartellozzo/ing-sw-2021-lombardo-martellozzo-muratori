@@ -28,6 +28,11 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
     }
 
     @Override
+    public void addAction(TurnAction actionToAdd) {
+
+    }
+
+    @Override
     public BoardManager getBoardManager() {
         return this.boardManager;
     }

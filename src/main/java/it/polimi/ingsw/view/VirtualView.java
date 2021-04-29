@@ -23,8 +23,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
 
     public VirtualView(ClientHandler client) {
-        this.client = client;
-        this.lobby = Lobby.getInstance();
+        this.client = client;    //specific for this VV
+        this.lobby = Lobby.getInstance();  //create a Lobby or get one created yet
+        attachObserver(ObserverType.CONTROLLER, lobby);  //attach it as it is a controller observer
+        lobby.attachObserver(ObserverType.VIEW, this); //listening each other, the VV is like a View observer too
     }
 
     /**
@@ -82,6 +84,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
     }
 
@@ -181,6 +188,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
 
     }
 

@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.market.MarbleSpecial;
-import jdk.internal.icu.impl.Trie2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -520,6 +519,7 @@ public class Player implements PlayerInterface{
     public void increasePosition() {
         this.gameSpace.getFaithTrack().increasePosition();
     }
+
 
     @Override
     public boolean checkEndGame(){

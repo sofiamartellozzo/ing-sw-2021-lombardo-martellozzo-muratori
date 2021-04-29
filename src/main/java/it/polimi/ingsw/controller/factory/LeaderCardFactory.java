@@ -20,25 +20,19 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+/*
+SOFI
+ */
+/**
+ * this class is a Factory Pattern
+ * his purpose is to create the Leader Card Deck (one!) for a single game
+ * it uses a file json and reading it create all the 16 cards
+ */
 public class LeaderCardFactory {
-    public static void main(String[] args) throws FileNotFoundException {
 
+    public ArrayList<LeaderCard> createLeaderCardDeck() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-
-        /* from java class to Json */
-        /*
-        ArrayList<Resource> cost = new ArrayList<>();
-        cost.add(new Resource(Color.BLUE));
-        ArrayList<Object> requirements = new ArrayList<>();
-        //requirements.add(new DevelopmentCard(1, Color.GREEN, 2, cost, cost, cost ));
-        requirements.add(new SmallDevelopCard(Color.GREEN, 0));
-        requirements.add(new SmallDevelopCard(Color.BLUE, 1));
-        SmallLeaderCard leaderCard = new SmallLeaderCard(TypeResource.COIN, requirements, 1,TypeAbility.ADDITIONAL_POWER, 2);
-        String json = gson.toJson(leaderCard);
-        System.out.println(json);*/
-
-
         BufferedReader reader = new BufferedReader(new FileReader("src/main/java/it/polimi/ingsw/utility/leaderCard.json"));
         Type list = new TypeToken<ArrayList<SmallLeaderCard>>() {
         }.getType();
@@ -47,6 +41,7 @@ public class LeaderCardFactory {
         for (SmallLeaderCard smallCard: cards) {
             leaderCards.add(new LeaderCard(smallCard.getCardID(),smallCard.getVictoryPoints(),smallCard.getTypeAbility(),smallCard.getSpecialResource(), smallCard.getRequirements()));
         }
+        return leaderCards;
     }
 
 }

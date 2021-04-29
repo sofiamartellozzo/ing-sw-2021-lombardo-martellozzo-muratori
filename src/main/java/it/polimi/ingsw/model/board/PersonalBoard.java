@@ -123,6 +123,11 @@ public class PersonalBoard implements PersonalBoardInterface {
         //card.useProductionPower();
     }
 
+    @Override
+    public ArrayList<Integer> getActivatableCardSpace(Player player) {
+        return null;
+    }
+
     /**
      * method invocated to get all the victory points from the 3 card space
      * @return sum of victory points
@@ -136,7 +141,7 @@ public class PersonalBoard implements PersonalBoardInterface {
         return points;
     }
 
-    @Override
+
     public ArrayList<Integer> getActivatableCardSpace(PlayerInterface player) {
         ArrayList<Integer> activatableCardSpace = new ArrayList<>();
         //Basic Production Power

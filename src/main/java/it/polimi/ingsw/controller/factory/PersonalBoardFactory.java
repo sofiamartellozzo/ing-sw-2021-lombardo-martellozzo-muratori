@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.WarehouseStandard;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /* SOFI
@@ -17,11 +18,19 @@ import java.util.ArrayList;
 public class PersonalBoardFactory {
 
     public PersonalBoard createGame(){
+
+        //create the 3 spaces where stored the Development Card for each player
         ArrayList<CardSpace> allCardSpace = createCardSpaces();
+
+        //create the spaces where stored the Player's resources
         StrongBox strongBox = new StrongBox();
         WarehouseStandard warehouseStandard = new WarehouseStandard();
+        //create the class that manage both strongbox and warehouse, to make easier the access in "read" or "write" mode to them
         ResourceManager resourceManager = new ResourceManager(strongBox, warehouseStandard);
+
+        //create the faith trak whit all his components
         FaithTrack faithTrack = createFaithTrack();
+
         return new PersonalBoard(faithTrack, resourceManager, allCardSpace);
     }
 
@@ -37,42 +46,15 @@ public class PersonalBoardFactory {
     }
 
     public FaithTrack createFaithTrack(){
-        ArrayList<Box> boxes = new ArrayList<>();
-        //15 normal box
-        SimpleBox normalBox = new SimpleBox(0, 1);
-        boxes.add(normalBox);
-        SimpleBox normalBox2 = new SimpleBox(1, 2);
-        boxes.add(normalBox2);
-        //7 gold box
-        GoldBox goldBox = new GoldBox(2,3,1);
-        boxes.add(goldBox);
-        //3 pope box
-        PopeBox popeBox = new PopeBox(2,4);
-        boxes.add(popeBox);
+        FaithTrackFactory faithTrackFactory = new FaithTrackFactory();
+        FaithTrack faithTrack = null;
+        try {
+            faithTrack = faithTrackFactory.createFaithTrack();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return faithTrack;
 
-
-        //create and add the 3 Popes Favor Tile
-        PopesFavorTile popesFavorTile1 = new PopesFavorTile(1, 3);
-        PopesFavorTile popesFavorTile2 = new PopesFavorTile(2, 3);
-        PopesFavorTile popesFavorTile3 = new PopesFavorTile(3, 3);
-        ArrayList<PopesFavorTile> array3 = new ArrayList<>();
-        array3.add(popesFavorTile1);
-        array3.add(popesFavorTile2);
-        array3.add(popesFavorTile3);
-
-        //create the 3 vatican Section
-        VaticanSection vaticanSection1 = new VaticanSection(1, boxes, popesFavorTile1);
-        VaticanSection vaticanSection2 = new VaticanSection(2, boxes, popesFavorTile2);
-        VaticanSection vaticanSection3 = new VaticanSection(3, boxes, popesFavorTile2);
-
-        ArrayList<VaticanSection> vaticanSections = new ArrayList<>();
-        vaticanSections.add(vaticanSection1);
-        vaticanSections.add(vaticanSection2);
-        vaticanSections.add(vaticanSection3);
-
-        //create faith market
-        FaithMarker faithMarker = new FaithMarker();
-
-        return new FaithTrack(boxes, array3, faithMarker, vaticanSections);
     }
+
 }

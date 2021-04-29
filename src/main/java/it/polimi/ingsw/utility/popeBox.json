@@ -1,0 +1,24 @@
+[
+
+    {
+      "last": false,
+      "activated": false,
+      "whichVaticanSection": 1,
+      "numberBox": 8,
+      "victoryPoints": 2
+    },
+    {
+      "last": false,
+      "activated": false,
+      "whichVaticanSection": 2,
+      "numberBox": 16,
+      "victoryPoints": 9
+    },
+    {
+      "last": true,
+      "activated": false,
+      "whichVaticanSection": 3,
+      "numberBox": 24,
+      "victoryPoints": 20
+    }
+  ]

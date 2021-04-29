@@ -60,6 +60,7 @@ public class TurnController extends Observable implements ControllerObserver {
 
         this.turnSequence = new HashMap<>();
         setTurnSequence(players);
+        checkIfSoloMode();
         this.boardManager = boardManager;
         this.currentTurnIndex = 1;
         this.currentPlayer = (Player) players.get(1);
@@ -74,6 +75,7 @@ public class TurnController extends Observable implements ControllerObserver {
         this.turnSequence = null;
         this.singlePlayer = player;
         this.numberOfPlayer = 1;
+        checkIfSoloMode();
         this.boardManager = boardManager;
         this.currentTurnIndex = 1;
         setVaticanSectionUnchecked();
@@ -92,6 +94,7 @@ public class TurnController extends Observable implements ControllerObserver {
      * at the initialization of the class set all vatican section to unchecked
      */
     private void setVaticanSectionUnchecked(){
+        checkPopesFavorTile = new ArrayList<>();
         for (int i=0; i<3; i++){
             checkPopesFavorTile.add(PopesFavorTileReview.UNCHECKED);
         }
@@ -100,7 +103,7 @@ public class TurnController extends Observable implements ControllerObserver {
     /**
      * settings the boolean parameter for check if is Solo Mode or not
      * */
-    private void isSoloMode(){
+    private void checkIfSoloMode(){
         if (numberOfPlayer == 1){
             isSoloMode = true;
         }
@@ -136,7 +139,7 @@ public class TurnController extends Observable implements ControllerObserver {
         player.setPlaying(true);
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
         currentSoloTurnIstance = spt;
-        if (spt.checkEndGame()){
+        if (currentTurnIndex > 1 && spt.checkEndGame()){
             startSoloPlayerTurn(player);
         }
     }
@@ -154,7 +157,7 @@ public class TurnController extends Observable implements ControllerObserver {
         //send the msg to the client, to choose the action he want to make
         VChooseActionTurnMsg msg = new VChooseActionTurnMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
-        if (pt.checkEndTurn()){
+        if (currentTurnIndex > 1 && pt.checkEndTurn()){
             nextTurn();
         }
     }

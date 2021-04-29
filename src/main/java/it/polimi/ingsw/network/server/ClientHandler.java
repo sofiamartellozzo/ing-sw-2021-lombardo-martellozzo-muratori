@@ -4,11 +4,13 @@ import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.connection.PingMsg;
+import it.polimi.ingsw.message.connection.PongMsg;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 /**
  * class in the SERVER that rapresent the server, it manage the comunication
@@ -33,7 +35,7 @@ public class ClientHandler extends Observable implements Runnable{
         /* when create the cHandler, create his virtual view too */
         virtualView = new VirtualView(this);
         //attach it to the Observable, because is an Observer
-        attachObserver(ObserverType.VIEW, virtualView);
+        attachObserver(ObserverType.CONTROLLER, virtualView);
 
     }
 
@@ -56,31 +58,33 @@ public class ClientHandler extends Observable implements Runnable{
             e.printStackTrace();
         }
 
-        /* start the ping process, like in ClientSocket
-        startPing();*/
+        /* start the ping process */
+        startPing();
 
 
         /* now wait listening for a message (Event) */
-        GameMsg msgReceived;
-        try {
-            Object received =  in.readObject(); //deserialized
-            /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the controller*/
-            if (received!=null){
-                if (!(received instanceof PingMsg)){
-                    msgReceived = (GameMsg) received;
-                    //notify controller with the received message
-                    notifyAllObserver(ObserverType.CONTROLLER, msgReceived);
+        while (true) {
+            GameMsg msgReceived;
+            try {
+                TimeUnit.SECONDS.sleep(10);
+                Object received = in.readObject(); //deserialized
+                /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the controller*/
+                if (received != null) {
+                    if (!(received instanceof PongMsg)) {
+                        msgReceived = (GameMsg) received;
+                        //notify controller with the received message
+                        notifyAllObserver(ObserverType.CONTROLLER, msgReceived);
+                    } else {
+                        System.out.println(((PongMsg) received).getMsgContent() + " from: " + threadId);
+                    }
                 }
-                else{
-                    System.out.println(((PingMsg) received).getMsgContent()+ " from: " +threadId);
-                }
-            }
 
-        } catch (ClassNotFoundException | /*EOFException |*/ IOException  e){
-            System.err.println("Error from input client message");
-        } finally {
-            //clientSocket.close();
-            disconnect();
+            } catch (ClassNotFoundException | IOException | InterruptedException e) {
+                System.err.println("Error from input client message");
+            } finally {
+                //clientSocket.close();
+                disconnect();
+            }
         }
     }
 
@@ -94,14 +98,11 @@ public class ClientHandler extends Observable implements Runnable{
                 try{
                     while (true){
                         Thread.sleep(5000);
-                        out.writeObject(new PingMsg("Ping!"));
+                        sendMsg(new PingMsg("Ping!"));
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     System.out.println("Ping disable");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("Unable to send ping msg to client");
                 } finally {
                     Thread.currentThread().interrupt();
                 }

@@ -69,8 +69,8 @@ public class CLI extends Observable implements ViewObserver {
         clearScreen();
 
         /* set up the client info */
-        //first ask the IP for the connection
 
+        //first ask the IP for the connection
         iP = askIPAddress();
 
         /* Initialize client socket */
@@ -79,7 +79,7 @@ public class CLI extends Observable implements ViewObserver {
         /* repeat this cycle until the connection go ON and the client reaches the server */
         while (connectionOFF) {
             try {
-                client.beginConnection();            //open connection with the client
+                client.beginConnection();               //open connection with the server
                 System.out.println("Client Connected");
                 clearScreen();
 
