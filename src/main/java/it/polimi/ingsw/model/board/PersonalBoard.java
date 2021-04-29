@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.LeaderCard;
+import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.cardAbility.AdditionalPower;
 
 import java.lang.reflect.Array;
@@ -139,15 +140,17 @@ public class PersonalBoard implements PersonalBoardInterface {
     @Override
     public ArrayList<Integer> getActivatableCardSpace(PlayerInterface player) {
         ArrayList<Integer> activatableCardSpace = new ArrayList<>();
+        Warehouse warehouse = resourceManager.getWarehouse();
+        StrongBox strongBox = resourceManager.getStrongBox();
         //Basic Production Power
-        if(resourceManager.getContent().size()>=2){
+        if(warehouse.getContent().size()>=2||strongBox.getContent().size()>=2){
             activatableCardSpace.add(0);
         }
         //Normal Production Power
         for(CardSpace cardSpace:cardSpaces){
             boolean activatable = true;
-            for(TypeResource type: cardSpace.getContentTypeUpperCard()){
-                if((resourceManager.countResource(resourceManager.getWarehouse().getContent(),new Resource(type))<cardSpace.getResourceProductionPower(type))||(resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(type))<cardSpace.getResourceProductionPower(type))){
+            for(TypeResource type: cardSpace.getCostTypeUpperCard()){
+                if((resourceManager.countResource(warehouse.getContent(),new Resource(type))<cardSpace.getNumberCostPP(type))||(resourceManager.countResource(strongBox.getContent(),new Resource(type))<cardSpace.getNumberCostPP(type))){
                     activatable=false;
                 }
             }
@@ -156,16 +159,19 @@ public class PersonalBoard implements PersonalBoardInterface {
             }
         }
         //Ability Production Power
-        int count=0;
+        int countLeaderCard=0;
         for(LeaderCard leaderCard: player.getLeaderCards()){
-            if(leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility() instanceof AdditionalPower && (
-                    resourceManager.countResource(resourceManager.getWarehouse().getContent(), new Resource(leaderCard.getSpecialAbility().getResource().getColor()))>=1)||(
-                    resourceManager.countResource(resourceManager.getStrongBox().getContent(), new Resource(leaderCard.getSpecialAbility().getResource().getColor()))>=1)){
-                count++;
+            if(leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility() instanceof AdditionalPower){
+                countLeaderCard++;
             }
         }
-        for(int i=0;i<count;i++){
-            activatableCardSpace.add(4+i);
+        if(countLeaderCard==player.getSpecialCard().size()) {
+            for (int i = 0; i < player.getSpecialCard().size(); i++) {
+                SpecialCard specialCard = player.getSpecialCard().get(i);
+                if (resourceManager.countResource(warehouse.getContent(), specialCard.getCostProductionPower().get(0)) >= 1 || resourceManager.countResource(strongBox.getContent(), specialCard.getCostProductionPower().get(0)) >= 1) {
+                    activatableCardSpace.add(4 + i);
+                }
+            }
         }
         return activatableCardSpace;
     }

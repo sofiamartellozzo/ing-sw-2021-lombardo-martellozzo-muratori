@@ -42,7 +42,7 @@ public class AbilityDepot implements Depot{
      * Adds the "resource" in the depot.
      * After checking:
      * - The resource is not null;
-     * - The depot is not fulls;
+     * - The depot is not full;
      * - The resource is the same type of depot
      * @param resource -> The resource you want to put in (SHIELD, STONE, COIN, SERVANT)
      * @throws InvalidActionException -> If one of the conditions is not respected

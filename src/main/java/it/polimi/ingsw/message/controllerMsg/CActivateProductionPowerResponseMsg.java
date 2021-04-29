@@ -10,7 +10,7 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     private Map<String,Integer> choose;
     private TurnAction action;
 
-    public CActivateProductionPowerResponseMsg(String msgContent, String username, Map<String,Integer> choose){
+    public CActivateProductionPowerResponseMsg(String msgContent, String username, String where, Integer which){
         super(msgContent);
         this.username=username;
         this.choose=choose;

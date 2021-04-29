@@ -4,17 +4,18 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Resource;
 
 /**
- * GIANLUCA
- * TEST PASSED
  * Decorator Pattern
- * When the "SpecialDepot" ability activates, it creates a new Special Warehouse with the existing old depots of the WarehouseStandard,
+ * When the "SpecialDepot" ability activates,
+ * adds a new AbilityDepot in the warehouse
  * decorated by the new created Ability Depot.
  */
 public class SpecialWarehouse extends Decorator{
 
     /**
      * Constructor
-     * @param warehouse
+     * @param warehouse -> The reference to the warehouse
+     * @param resource -> The type of the new depot
+     * @throws InvalidActionException -> If one of the condition is not respected
      */
     public SpecialWarehouse(Warehouse warehouse,Resource resource) throws InvalidActionException {
         this.warehouse=warehouse;
@@ -23,13 +24,13 @@ public class SpecialWarehouse extends Decorator{
 
 
     /**
-     * Create a new AbilityDepot object with the resource parameter, which
-     * obliged the player to put just that type of resource in,
-     * and it's numerated according to the size of the depots (ArrayList).
-     * For instance, if there aren't any AbilityDepot, size is 3, creating a new AbilityDepot
-     * will be 4. The same reasoning for the 5th Depot.
-     * @param resource -> The resource you can put in the new created Depot (SHIELD, STONE, COIN, SERVANT)
-     * @throws InvalidActionException
+     * PRIVATE METHOD
+     * Create a new AbilityDepot object of type "resource" and add it to the warehouse.
+     * After checking:
+     * - The "resource" is not null.
+     * @param resource -> The type of content of the new depot.
+     * @throws InvalidActionException -> If one of the condition is not respected
+     * NOTE: supports the constructor
      */
     private void createDepot(Resource resource) throws InvalidActionException {
         if(resource==null) throw new InvalidActionException("Insert a correct resource!");

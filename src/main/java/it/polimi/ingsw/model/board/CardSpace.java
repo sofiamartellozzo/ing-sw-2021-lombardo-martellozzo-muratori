@@ -104,7 +104,7 @@ public class CardSpace {
         return TotPoints;
     }
 
-    public ArrayList<TypeResource> getContentTypeUpperCard(){
+    public ArrayList<TypeResource> getCostTypeUpperCard(){
         ArrayList<TypeResource> contentType = new ArrayList<TypeResource>();
         for(Resource resource: getUpperCard().showCostProductionPower()){
             if(!contentType.contains(resource.getType())){
@@ -114,7 +114,7 @@ public class CardSpace {
         return contentType;
     }
 
-    public int getResourceProductionPower(TypeResource type){
+    public int getNumberCostPP(TypeResource type){
         return (int) getUpperCard().showCostProductionPower().stream().filter(r -> r.getType().equals(type)).count();
     }
 }

@@ -58,7 +58,7 @@ public class CLI extends Observable implements ViewObserver {
         /* start class and visualized the Game Title */
         WriteMessageDisplay.writeTitle();
 
-        //remember to check the connection is actually working!!!!
+        //remember to check the network is actually working!!!!
         WriteMessageDisplay.writeOnlineStatus();
 
         /* ask the client to press enter button */
@@ -69,17 +69,17 @@ public class CLI extends Observable implements ViewObserver {
         clearScreen();
 
         /* set up the client info */
-        //first ask the IP for the connection
+        //first ask the IP for the network
 
         iP = askIPAddress();
 
         /* Initialize client socket */
         client = new ClientSocket(iP);
 
-        /* repeat this cycle until the connection go ON and the client reaches the server */
+        /* repeat this cycle until the network go ON and the client reaches the server */
         while (connectionOFF) {
             try {
-                client.beginConnection();            //open connection with the client
+                client.beginConnection();            //open network with the client
                 System.out.println("Client Connected");
                 clearScreen();
 
@@ -92,7 +92,7 @@ public class CLI extends Observable implements ViewObserver {
                 String gameMode = askGameMode();
                 gameSize = gameMode;
 
-                /* try to create the connection sending the username, port and ip */
+                /* try to create the network sending the username, port and ip */
                 VConnectionRequestMsg request = new VConnectionRequestMsg("Request Connection ",iP, 0, username,gameSize);
                 client.sendMsg(request);
 
@@ -217,7 +217,7 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     /**
-     * method to communicate to the client that something went wrong with the connection to the game
+     * method to communicate to the client that something went wrong with the network to the game
      * the problems could be : USER_NOT_VALID, FULL_SIZE,WAIT.
      * @param msg
      */

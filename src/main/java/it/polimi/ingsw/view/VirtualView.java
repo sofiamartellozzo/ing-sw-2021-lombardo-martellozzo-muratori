@@ -37,7 +37,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
 
     /**
-     * receiving the message of a Request of connection by the client
+     * receiving the message of a Request of network by the client
      * this has to be send to the Controller
      * @param msg
      */
@@ -48,7 +48,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         //save the mode the client choose
         gameMode = msg.getGameSize();
         //create the message to send to the controller with the username the client send
-        CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of connection by a client",client.getUserIP(), client.getUserPort(), username, gameMode);
+        CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of network by a client",client.getUserIP(), client.getUserPort(), username, gameMode);
         // "send" the message to the controller
         notifyAllObserver(ObserverType.CONTROLLER, requestToController);
 
@@ -192,7 +192,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      //METHODS PRIVATE AUXILIARY
 
     private void tryToStartGame(){
-        //check if the connection is ON and ask to the Lobby if the Game can start
+        //check if the network is ON and ask to the Lobby if the Game can start
         if (lobby.canInitializeGameFor(this.username)){
             lobby.startInitializationOfTheGame(username);
         }

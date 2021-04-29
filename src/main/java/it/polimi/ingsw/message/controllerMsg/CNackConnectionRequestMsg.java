@@ -4,7 +4,7 @@ import it.polimi.ingsw.message.ViewObserver;
 
 import java.net.InetAddress;
 
-/* a connection fail because the username is taken or because the room is full */
+/* a network fail because the username is taken or because the room is full */
 public class CNackConnectionRequestMsg extends ControllerGameMsg{
 
     private final String username;
