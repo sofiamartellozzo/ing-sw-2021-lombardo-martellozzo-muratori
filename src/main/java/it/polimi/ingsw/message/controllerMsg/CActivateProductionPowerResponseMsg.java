@@ -2,18 +2,19 @@ package it.polimi.ingsw.message.controllerMsg;
 
 import it.polimi.ingsw.model.TurnAction;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     private String username;
-    private Map<String,Integer> choose;
+    private String where;
+    private Integer which;
     private TurnAction action;
 
     public CActivateProductionPowerResponseMsg(String msgContent, String username, String where, Integer which){
         super(msgContent);
         this.username=username;
-        this.choose=choose;
+        this.where = where;
+        this.which = which;
         this.action = TurnAction.ACTIVE_PRODUCTION_POWER;
     }
 
@@ -21,7 +22,11 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
         return username;
     }
 
-    public Map<String, Integer> getChoose() {
-        return choose;
+    public String getWhere() {
+        return where;
+    }
+
+    public Integer getWhich() {
+        return which;
     }
 }

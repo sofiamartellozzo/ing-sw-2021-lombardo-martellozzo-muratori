@@ -24,4 +24,5 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CChooseResourceResponseMsg msg);
     public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg);
 
+
 }

@@ -137,6 +137,14 @@ public class PersonalBoard implements PersonalBoardInterface {
         return points;
     }
 
+    /**
+     * availableCardSpace:
+     * 0     ---> base PP
+     * 1,2,3 ---> card Space
+     *  4, 5 ---> Special
+     * @param player
+     * @return
+     */
     @Override
     public ArrayList<Integer> getActivatableCardSpace(PlayerInterface player) {
         ArrayList<Integer> activatableCardSpace = new ArrayList<>();
