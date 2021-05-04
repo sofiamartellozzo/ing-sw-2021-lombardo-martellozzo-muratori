@@ -101,4 +101,12 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
         else
             return false;
     }
+
+    /**
+     * method called at the end of each Solo Turn
+     */
+    public ActionToken activateActionToken() throws InvalidActionException {
+        ActionToken actionTokenActivated = this.currentPlayer.getGameSpace().getActionTokenDeck(this.boardManager, this.currentPlayer);
+        return actionTokenActivated;
+    }
 }

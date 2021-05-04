@@ -11,6 +11,8 @@ import it.polimi.ingsw.model.card.DevelopmentCard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ActionController extends Observable implements ControllerObserver {
 
@@ -39,6 +41,16 @@ public class ActionController extends Observable implements ControllerObserver {
         this.boardManager = boardManager;
         actionWentWrong = true;
     }
+
+
+    private List<String> getPlayerAsList(Map<Integer, PlayerInterface> players){
+        List<String> p = new ArrayList<>();
+        for (Integer i: players.keySet()) {
+            p.add(players.get(i).getUsername());
+        }
+        return p;
+    }
+    /*---------------------------------------------------------------------------------------------------------------------*/
 
     /**
      * receive the msg from the client with the Action he choose
@@ -98,9 +110,11 @@ public class ActionController extends Observable implements ControllerObserver {
                 VChooseLeaderCardRequestMsg request5 = new VChooseLeaderCardRequestMsg("Because you chose to activated a card, select which one", possibleCardToBeActive, player.getUsername());
                 notifyAllObserver(ObserverType.VIEW,request5);
                 break;
-            default:
+            case END_TURN:
                 this.player.endTurn();
                 break;
+            default:
+                //choose not available
         }
         //remove tre 3 action from the able ones because can be made only once
         //check if the action has been made!!!
@@ -164,7 +178,9 @@ public class ActionController extends Observable implements ControllerObserver {
                 for (TypeResource resource: resourcesFromMarket) {
                     if (!resource.equals(TypeResource.BLANK)){
                         if (resource.equals(TypeResource.FAITHMARKER)){
-                            VNotifyAllIncreasePositionMsg notification = new VNotifyAllIncreasePositionMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
+                            VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
+                            Map<Integer, PlayerInterface> players = boardManager.getPlayers();
+                            notification.setAllPlayerToNotify(getPlayerAsList(players));
                             notifyAllObserver(ObserverType.VIEW, notification);
                         }
                         else{
@@ -252,7 +268,7 @@ public class ActionController extends Observable implements ControllerObserver {
                 player.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
             } catch (InvalidActionException e) {
                 e.printStackTrace();
-                VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot());
+                VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());
                 notifyAllObserver(ObserverType.VIEW, msg1);
             }
         }
@@ -273,8 +289,13 @@ public class ActionController extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(VConnectionRequestMsg msg) {
+    public void receiveMsg(VVConnectionRequestMsg msg) {
 
+    }
+
+    @Override
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
+        //not here, in (Lobby)
     }
 
 

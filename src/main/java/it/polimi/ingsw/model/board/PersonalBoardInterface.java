@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
@@ -19,5 +20,5 @@ public interface PersonalBoardInterface {
     public ArrayList<DevelopmentCard> getAllCardOfOneSpace(int i);
     public ArrayList<CardSpace> getCardSpaces();
     public void invokeProductionPowerFromStrongBox(DevelopmentCard card);
-    public ArrayList<Integer> getActivatableCardSpace(Player player);
+    public ArrayList<Integer> getActivatableCardSpace(PlayerInterface player);
 }

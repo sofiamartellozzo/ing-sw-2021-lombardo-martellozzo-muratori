@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.model.Color;
 
 import java.io.IOException;
@@ -74,7 +75,7 @@ public class CLI extends Observable implements ViewObserver {
         iP = askIPAddress();
 
         /* Initialize client socket */
-        client = new ClientSocket(iP);
+        client = new ClientSocket(iP, this);
 
         /* repeat this cycle until the connection go ON and the client reaches the server */
         while (connectionOFF) {
@@ -93,7 +94,7 @@ public class CLI extends Observable implements ViewObserver {
                 gameSize = gameMode;
 
                 /* try to create the connection sending the username, port and ip */
-                VConnectionRequestMsg request = new VConnectionRequestMsg("Request Connection ",iP, 0, username,gameSize);
+                VVConnectionRequestMsg request = new VVConnectionRequestMsg("Request Connection ",iP, 0, username,gameSize);
                 client.sendMsg(request);
 
                 // start client Thread ....
@@ -341,7 +342,7 @@ public class CLI extends Observable implements ViewObserver {
         username = newUsername;
         /* the login process has to restart, so the client try again sending another request */
 
-        VConnectionRequestMsg request = new VConnectionRequestMsg("Trying to connect",iP,0,username,gameSize);
+        VVConnectionRequestMsg request = new VVConnectionRequestMsg("Trying to connect",iP,0,username,gameSize);
         this.client.sendMsg(request);
     }
 
@@ -353,6 +354,7 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VRoomSizeRequestMsg msg) {
 
+        System.out.println("setting size room in CLI");
         int roomSize = -1;
 
         System.out.println(" Please insert the number of players you want to play with [2,3 or 4]");
@@ -360,8 +362,13 @@ public class CLI extends Observable implements ViewObserver {
         roomSize = askRoomSize();
 
         /* send the msg to the controller with the size room he chose */
-        CRoomSizeResponseMsg response = new CRoomSizeResponseMsg(" asking the room size ",roomSize,msg.getUsername());
+        CRoomSizeResponseMsg response = new CRoomSizeResponseMsg(" asking the room size ",roomSize,msg.getUsername(), msg.getRoomID());
         client.sendMsg(response);
+    }
+
+    @Override
+    public void receiveMsg(VChooseActionTurnRequestMsg msg) {
+
     }
 
     /**
@@ -372,6 +379,7 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
 
+        System.out.println("in choose Leader card in cli");
         // the two card Id chosen by the player
         Integer cardId1 = -1;
         Integer cardId2 = -1;
@@ -493,7 +501,7 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
 
         System.out.println(" Player X increased his faithMarker position of one position");
     }
@@ -537,6 +545,11 @@ public class CLI extends Observable implements ViewObserver {
 
         in.reset();
         out.flush();
+    }
+
+    @Override
+    public void receiveMsg(VActionTokenActivateMsg msg) {
+        //this have to be implemented
     }
 
 

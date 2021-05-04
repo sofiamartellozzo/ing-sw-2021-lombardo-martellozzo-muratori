@@ -37,6 +37,8 @@ public class BuyDiscountTest extends TestCase {
 
     @Test
     public void testGetResourceWithDiscount() {
+        Resource resource = new Resource(Color.BLUE);
+        buyDiscount.addResourceWithDiscount(resource);
         ArrayList<Resource> discounted = new ArrayList<>();
         discounted = buyDiscount.getResourceWithDiscount();
 
@@ -46,6 +48,9 @@ public class BuyDiscountTest extends TestCase {
 
     @Test
     public void testBuyCard() {
+        Resource resource = new Resource(Color.BLUE);
+        buyDiscount.addResourceWithDiscount(resource);
+
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
         Player player1 = new Player("sofia");
         PersonalBoard personalBoard1 = personalBoardFactory.createGame();
@@ -62,6 +67,7 @@ public class BuyDiscountTest extends TestCase {
         cost.add(new Resource(Color.BLUE));
         cost.add(new Resource(Color.PURPLE));
         player1.getGameSpace().getResourceManager().addResourcesToStrongBox(cost);
+        player1.setBuyCard(buyDiscount);
         try{
             buyDiscount.buyCard(1,1,boardManager,player1,1);
         }catch (InvalidActionException e){

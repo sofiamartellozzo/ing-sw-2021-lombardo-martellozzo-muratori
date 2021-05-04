@@ -3,19 +3,21 @@ package it.polimi.ingsw.message.viewMsg;
 import it.polimi.ingsw.message.ControllerObserver;
 
 /**
+ *  CLI ----> Virtual View
+ *
  * message send by the client to the server
  * the Virtual view receive it with the info:
  * IP, Port, username and the type of the Game the client choose
  */
 
-public class VConnectionRequestMsg extends ViewGameMsg{
+public class VVConnectionRequestMsg extends ViewGameMsg{
 
     private String IP;
     private int Port;
     private String username;
     private String gameSize;
 
-    public VConnectionRequestMsg(String content, String IP, int port, String username, String gameSize) {
+    public VVConnectionRequestMsg(String content, String IP, int port, String username, String gameSize) {
         super(content);
         this.IP = IP;
         Port = port;

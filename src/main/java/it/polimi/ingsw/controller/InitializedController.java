@@ -6,10 +6,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
-import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VChooseResourceAndDepotMsg;
-import it.polimi.ingsw.message.viewMsg.VConnectionRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VNotValidDepotMsg;
+import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.controller.factory.PersonalSoloBoardFactory;
@@ -203,12 +200,17 @@ public class InitializedController extends Observable implements ControllerObser
             //the second player receive one resources that he choose
             VChooseResourceAndDepotMsg msg1 = new VChooseResourceAndDepotMsg("You are the second player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(2).getUsername());
             notifyAllObserver(ObserverType.VIEW, msg1);
+
             if (this.turnSequence.get(3) != null) {
                 //the third player receive one resource and a faith marker(so increase of one his position)
                 VChooseResourceAndDepotMsg msg2 = new VChooseResourceAndDepotMsg("You are the third player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(3).getUsername());
                 notifyAllObserver(ObserverType.VIEW, msg2);
+
                 this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
                 /* notify all palyers that this one increase his position */
+                VNotifyPositionIncreasedByMsg notify1 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(3).getUsername(),1 );
+                notify1.setAllPlayerToNotify(getPlayersAsList());
+                notifyAllObserver(ObserverType.VIEW, notify1);
 
                 if (this.turnSequence.get(4) != null) {
                     //the fourth player receives two resources and a faith marker(so thi increase of one his position)
@@ -216,9 +218,12 @@ public class InitializedController extends Observable implements ControllerObser
                     notifyAllObserver(ObserverType.VIEW, msg3);
                     VChooseResourceAndDepotMsg msg4 = new VChooseResourceAndDepotMsg("You are the fourth player, please select another resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(4).getUsername());
                     notifyAllObserver(ObserverType.VIEW, msg4);
+
                     this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
                     /* notify all palyers that this one increase his position */
-
+                    VNotifyPositionIncreasedByMsg notify2 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(4).getUsername(),1 );
+                    notify2.setAllPlayerToNotify(getPlayersAsList());
+                    notifyAllObserver(ObserverType.VIEW, notify2);
                 }
             }
         }
@@ -239,6 +244,17 @@ public class InitializedController extends Observable implements ControllerObser
             }
         }
         throw new NoSuchElementException("Player not found in the sequence!");
+    }
+
+    /**
+     * get an array list by the turn sequence
+     */
+    private List<String> getPlayersAsList(){
+        List<String> players = new ArrayList<>();
+        for (Integer i: turnSequence.keySet()) {
+            players.add(turnSequence.get(i).getUsername());
+        }
+        return players;
     }
 
     /*--------------------------------------------------------------------------------------------------------------------*/
@@ -298,7 +314,7 @@ public class InitializedController extends Observable implements ControllerObser
         } catch (InvalidActionException e) {
             e.printStackTrace();
             //create msg to send to client that he made an invalid action, so change the depot
-            VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot());
+            VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());
             notifyAllObserver(ObserverType.VIEW, msg1);
         }
     }
@@ -339,8 +355,13 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
-    public void receiveMsg(VConnectionRequestMsg msg) {
+    public void receiveMsg(VVConnectionRequestMsg msg) {
         //not here
+    }
+
+    @Override
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
+        //not here (Lobby)
     }
 
 

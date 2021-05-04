@@ -10,14 +10,30 @@ import it.polimi.ingsw.message.viewMsg.*;
  */
 public interface ViewObserver extends Observer{
 
-    public void receiveMsg(CNackConnectionRequestMsg msg);
+    /* first msg, only multiple players*/
     public void receiveMsg(VRoomSizeRequestMsg msg);
-    public void receiveMsg(VChooseLeaderCardRequestMsg msg);
+
+    /* multiple player, from initialized C...*/
     public void receiveMsg(VChooseResourceAndDepotMsg msg);
-    public void receiveMsg(VNotifyAllIncreasePositionMsg msg);
+    /* if error in chose depot*/
     public void receiveMsg(VNotValidDepotMsg msg);
+
+    /* send to all player to notify this action of one*/
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg);
+
+
+    public void receiveMsg(CNackConnectionRequestMsg msg);
+
+    public void receiveMsg(VChooseActionTurnRequestMsg msg);
+    public void receiveMsg(VChooseLeaderCardRequestMsg msg);
+
+
+
     public void receiveMsg(VChooseDevelopCardRequestMsg msg);
     public void receiveMsg(VMoveResourceRequestMsg msg);
     public void receiveMsg(VBuyFromMarketRequestMsg msg);
     public void receiveMsg(VShowEndGameResultsMsg msg);
+
+    /* only SOLO mode */
+    public void receiveMsg(VActionTokenActivateMsg msg);
 }

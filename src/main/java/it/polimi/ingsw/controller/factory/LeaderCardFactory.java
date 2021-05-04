@@ -33,7 +33,7 @@ public class LeaderCardFactory {
     public ArrayList<LeaderCard> createLeaderCardDeck() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/java/it/polimi/ingsw/utility/leaderCard.json"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/leaderCard.json"));
         Type list = new TypeToken<ArrayList<SmallLeaderCard>>() {
         }.getType();
         ArrayList<SmallLeaderCard> cards = gson.fromJson(reader, list);

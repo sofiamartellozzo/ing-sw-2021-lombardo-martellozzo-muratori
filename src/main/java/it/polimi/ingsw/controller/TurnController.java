@@ -1,7 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.factory.BoardManagerFactory;
-import it.polimi.ingsw.controller.factory.ResourcesSupplyFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
@@ -9,16 +7,9 @@ import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.board.PersonalBoard;
-import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
-import it.polimi.ingsw.controller.factory.PersonalSoloBoardFactory;
-import it.polimi.ingsw.model.board.SoloPersonalBoard;
-import it.polimi.ingsw.model.card.DevelopmentCard;
-import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 /*
 * SOFI*/
@@ -139,7 +130,10 @@ public class TurnController extends Observable implements ControllerObserver {
         player.setPlaying(true);
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
         currentSoloTurnIstance = spt;
-        if (currentTurnIndex > 1 && spt.checkEndGame()){
+        if (currentTurnIndex > 1 && spt.checkEndTurn()){
+            ActionToken actionTokenActivated = spt.activateActionToken();
+            VActionTokenActivateMsg msg = new VActionTokenActivateMsg("an Action Token has been activated", player.getUsername(), actionTokenActivated.getCardID());
+            notifyAllObserver(ObserverType.VIEW, msg);
             startSoloPlayerTurn(player);
         }
     }
@@ -155,7 +149,7 @@ public class TurnController extends Observable implements ControllerObserver {
         PlayerTurn pt = new PlayerTurn(player, this.boardManager);
         currentTurnIstance = pt;
         //send the msg to the client, to choose the action he want to make
-        VChooseActionTurnMsg msg = new VChooseActionTurnMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
+        VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
         if (currentTurnIndex > 1 && pt.checkEndTurn()){
             nextTurn();
@@ -259,7 +253,8 @@ public class TurnController extends Observable implements ControllerObserver {
             if (!turnSequence.get(key).getUsername().equals(msg.getUsername())){
                 //not the player that discarded the resource
                 turnSequence.get(key).increasePosition();
-                VNotifyAllIncreasePositionMsg notify = new VNotifyAllIncreasePositionMsg("this player increased his position because of another player", turnSequence.get(key).getUsername(), 1);
+                VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("this player increased his position because of another player", turnSequence.get(key).getUsername(), 1);
+                //remember to set all the other players!!!!
                 notifyAllObserver(ObserverType.VIEW, notify);
             }
         }
@@ -297,8 +292,13 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(VConnectionRequestMsg msg) {
+    public void receiveMsg(VVConnectionRequestMsg msg) {
         //not here
+    }
+
+    @Override
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
+        //not here (Lobby)
     }
 
     @Override
