@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map;
 
 public class ActionController extends Observable implements ControllerObserver {
 
@@ -82,14 +83,14 @@ public class ActionController extends Observable implements ControllerObserver {
                 notifyAllObserver(ObserverType.VIEW, request2);
                 break;
             case ACTIVE_PRODUCTION_POWER:
-                //ask the model where can be activated the production power (int)
-                //then create the msg to send to the client with the possibility he can make
-                //player.personalBoard
-                ArrayList<DevelopmentCard> ppCard = new ArrayList<>();
-                ArrayList<Resource> cost = new ArrayList<>();
-                cost.add(new Resource(Color.YELLOW));
-                ppCard.add(new DevelopmentCard(1,Color.GREEN, 2,cost,cost,cost));
-                //this.currentPlayer.invokesProductionPower(ppCard);
+                ProductionPowerController productionPowerController = null;
+                if(player instanceof Player){
+                    productionPowerController = new ProductionPowerController((Player) player);
+                }else if(player instanceof SoloPlayer){
+                    productionPowerController = new ProductionPowerController((SoloPlayer) player);
+                }
+                attachObserver(ObserverType.CONTROLLER,productionPowerController);
+                productionPowerController.start();
                 break;
             case REMOVE_LEADER_CARD:
                 //ask the player which card he want to remove, before see if there are any that
@@ -276,6 +277,16 @@ public class ActionController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseResourceResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
 
     }
 

@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * SINGLETON
- * this class handle the connection, create the rooms and manage the organization of the rooms
+ * this class handle the network, create the rooms and manage the organization of the rooms
  */
 public class Lobby extends Observable implements ControllerObserver {
 
@@ -160,7 +160,7 @@ public class Lobby extends Observable implements ControllerObserver {
     /**
      * check if this username can start the game, so is in a full room and the Controller
      * can start to inizialized the game
-     * @param username the player ask a connection
+     * @param username the player ask a network
      * @return true if the controller can start, false otherwise
      */
     public boolean canInitializeGameFor(String username){
@@ -213,7 +213,7 @@ public class Lobby extends Observable implements ControllerObserver {
 
 
     /**
-     * this method respond at a message from the client that ask for a connection
+     * this method respond at a message from the client that ask for a network
      * here is needed a check of the username given:
      * it has to be unique
      * then assign to this client the room where to play

@@ -7,8 +7,7 @@ import it.polimi.ingsw.model.Resource;
 import java.util.ArrayList;
 
 /**
- * GIANLUCA
- * Indicates the composition of the Warehouse and the Strongbox.
+ * Indicates the composition of the Warehouse and the Strongbox in the PersonalBoard
  */
 public class ResourceManager {
 
@@ -17,8 +16,8 @@ public class ResourceManager {
 
     /**
      * Constructor
-     * @param strongBox -> The Strongbox where the Player puts in resources produced by the Production Power of Development Cards
-     * @param warehouse -> The Warehouse where the Player puts in all the rest of resources
+     * @param strongBox -> The Strongbox where the Player puts in resources produced by the Production Power of Development Cards.
+     * @param warehouse -> The Warehouse where the Player puts in all the rest of resources.
      */
     public ResourceManager(StrongBox strongBox, Warehouse warehouse) {
         this.strongBox = strongBox;
@@ -53,8 +52,8 @@ public class ResourceManager {
 
 
     /**
-     * In case of draw, returns the number of all resources from both the Warehouse and the StrongBox.
-     * @return
+     * In case of draw.
+     * @return -> the number of all resources from both the Warehouse and the StrongBox.
      */
     public int numberAllResources(){
         return getResources().size();
@@ -71,11 +70,13 @@ public class ResourceManager {
     }
 
     /**
-     * //CHANGE NAME -> removeResourcesFromBoth
-     * Removes a list of resources from both warehouse and strongbox.
-     * @param resources
+     * Removes all "resources" from both Warehouse and StrongBox.
+     * After checking:
+     * - Both must contain all "resources"
+     * @param resources -> All resources to remove
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public void removeResources(ArrayList<Resource> resources) throws InvalidActionException {
+    public void removeResourcesFromBoth(ArrayList<Resource> resources) throws InvalidActionException {
         if(!resources.isEmpty()){
 
             if(!checkEnoughResources(resources)) throw new InvalidActionException("The warehouse or the strongbox don't contain some resources!");
@@ -96,52 +97,80 @@ public class ResourceManager {
     }
 
     /**
-     * Adds resources to the StrongBox.
-     * @param resources
+     * Add all "resources" in the strongbox.
+     * @param resources -> The resources you want to put in
      */
     public void addResourcesToStrongBox(ArrayList<Resource> resources){
         strongBox.addResources(resources);
     }
 
     /**
-     * Change Name -> removeResourcesFromStrongBox
-     * Remove a list of resources from the strongbox.
-     * @param resources
+     * Remove all "resources" from the strongbox.
+     * @param resources -> All resources you want to remove
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public void removeFromStrongBox(ArrayList<Resource> resources) throws InvalidActionException {
+    public void removeResourcesFromStrongbox(ArrayList<Resource> resources) throws InvalidActionException {
         strongBox.removeResources(resources);
     }
 
 
     /**
-     * Change name -> removeResourcesFromWarehouse
-     * Remove a list of resources from the warehouse.
-     * @param resources
-     * @throws InvalidActionException
+     * Remove all "resources" from the Warehouse.
+     * @param resources -> All the resources you want to remove
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public void removeFromWarehouse(ArrayList<Resource> resources) throws InvalidActionException {
+    public void removeResourcesFromWarehouse(ArrayList<Resource> resources) throws InvalidActionException {
         warehouse.removeResources(resources);
     }
 
-
+    /**
+     * Remove a resource from the "depot" of the warehouse
+     * @param depot -> The depot where you want to remove a resource.
+     * @throws InvalidActionException -> If one of the condition is not respected
+     */
     public void removeResourceFromWarehouse(int depot) throws InvalidActionException {
         warehouse.removeResource(depot);
     }
 
+    /**
+     * Add a "resource" in the "depot" of the warehouse.
+     * @param resource -> The resource you want to put
+     * @param depot -> The depot where you want to put the resource.
+     * @throws InvalidActionException -> If one of the conditions is not respected
+     */
     public void addResourceToWarehouse(Resource resource,int depot) throws InvalidActionException {
         warehouse.addResource(resource,depot);
     }
 
-    public void moveResourceToAbilityDepot(int fromDepot,int toDepot) throws InvalidActionException {
+    /**
+     * Move a resource from "fromDepot" to "toDepot".
+     * It can be used just in case there are AbilityDepot in the warehouse
+     * and you want to move a resource from one of them or to one of them or both.
+     * @param fromDepot -> The depot where you want to move from
+     * @param toDepot -> The depot where you want to move to
+     * @throws InvalidActionException -> If one of the conditions is not respected
+     */
+    public void moveResourceFromToAbilityDepot(int fromDepot, int toDepot) throws InvalidActionException {
         warehouse.moveResource(fromDepot,toDepot);
     }
 
+    /**
+     * Move all resources contained by "fromDepot" to "toDepot".
+     * @param fromDepot -> The depot where you want to move from
+     * @param toDepot -> The depot where you want to move to
+     * @throws InvalidActionException -> If one of the conditions is not respected
+     */
     public void moveResources (int fromDepot,int toDepot) throws InvalidActionException {
         warehouse.moveResources(fromDepot,toDepot);
     }
 
-
-
+    /**
+     * PRIVATE METHOD
+     * Checks if both the warehouse and the strongbox contain all "resources".
+     * @param resources -> The resources you want to check
+     * @return -> True if contains all "resources", else false.
+     * NOTE: Supports the "removeResourcesFromBoth" method.
+     */
     private boolean checkEnoughResources(ArrayList<Resource> resources){
         ArrayList<Resource> typeResources = new ArrayList<>();
         typeResources.add(new Resource(Color.YELLOW));
@@ -155,16 +184,19 @@ public class ResourceManager {
     }
 
     /**
-     * Counts from "resources" the resource you want to count
-     * @param resources
-     * @param resource
-     * @return
+     * Counts how many resources of type "resource" there are in "content"
+     * @param content -> The content where to count
+     * @param resource -> The resource to count
+     * @return -> How many resources of type "resource" are in "content"
      */
-    public int countResource(ArrayList<Resource> resources, Resource resource){
-        int count = (int) resources.stream().filter(r -> r.getType().equals(resource.getType())).count();
+    public int countResource(ArrayList<Resource> content, Resource resource){
+        int count = (int) content.stream().filter(r -> r.getType().equals(resource.getType())).count();
         return count;
     }
 
+    /**
+     * @return -> The content of both the warehouse and the strongbox as an ArrayList<Resource>
+     */
     public ArrayList<Resource> getContent(){
         ArrayList<Resource> content= new ArrayList<>();
         for(Depot depot:getWarehouse().getDepots()){

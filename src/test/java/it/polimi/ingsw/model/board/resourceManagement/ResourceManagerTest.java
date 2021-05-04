@@ -125,7 +125,7 @@ public class ResourceManagerTest {
         resources.add(coin);
         resources.add(shield);
 
-        resourceManager.removeResources(resources);
+        resourceManager.removeResourcesFromBoth(resources);
 
         ArrayList<Resource> expected = new ArrayList<>();
 
@@ -168,7 +168,7 @@ public class ResourceManagerTest {
         resources.add(shield);
         resources.add(shield);
 
-        resourceManager.removeResources(resources);
+        resourceManager.removeResourcesFromBoth(resources);
     }
 
 

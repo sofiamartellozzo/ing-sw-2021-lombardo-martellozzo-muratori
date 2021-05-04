@@ -37,6 +37,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
 
+
     /**
      * receiving the message of a Request of connection by the client
      * this has to be send to the Controller

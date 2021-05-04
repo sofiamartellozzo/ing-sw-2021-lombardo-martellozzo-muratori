@@ -34,7 +34,7 @@ public class Room extends Observable {
     /* boolean to notify if the player want to play in Solo Mode, so the room has to be of size 1!*/
     private boolean isSoloMode;
 
-    /* board manager of this room (to simplify the connection between Model and Controller) */
+    /* board manager of this room (to simplify the network between Model and Controller) */
     private BoardManager boardManager;
 
     /* map to connect every player to his virtual view */
@@ -165,7 +165,7 @@ public class Room extends Observable {
 
 
     /**
-     * method used to manage the disconnection of a single player from a game, and delete his connection
+     * method used to manage the disconnection of a single player from a game, and delete his network
      * with the virtual view
      * @param username
      */

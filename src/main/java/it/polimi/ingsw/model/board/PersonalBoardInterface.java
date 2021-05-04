@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
