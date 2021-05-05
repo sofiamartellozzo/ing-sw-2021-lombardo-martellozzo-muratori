@@ -27,7 +27,7 @@ public class Player implements PlayerInterface{
 
     private MarbleSpecial whiteSpecialMarble;
 
-    private BuyCard buyCard;//this class pecify how the player can buy the card
+    private BuyCard buyCard;//this class specify how the player can buy the card
     private ArrayList<SpecialCard> specialCard;//addictional card created from an Leader Card ability
 
 

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
+import javax.lang.model.element.TypeElement;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,7 +171,7 @@ public abstract class Warehouse {
         return count;
     }
 
-    private boolean checkEnoughResources(ArrayList<Resource> resources){
+    public boolean checkEnoughResources(ArrayList<Resource> resources){
         ArrayList<Resource> typeResources = new ArrayList<>();
         typeResources.add(new Resource(Color.YELLOW));
         typeResources.add(new Resource(Color.BLUE));
@@ -191,10 +192,15 @@ public abstract class Warehouse {
         return -1;
     }
 
-    public HashMap<Integer,TypeResource> getInstanceContent(){
-        HashMap<Integer,TypeResource> content = new HashMap<Integer,TypeResource>();
+    public HashMap<Integer,ArrayList<TypeResource>> getInstanceContent(){
+        HashMap<Integer,ArrayList<TypeResource>> content = new HashMap<Integer,ArrayList<TypeResource>>();
         for(Depot depot:depots){
-            content.put(depot.getFloor(),depot.getType());
+            TypeResource type = depot.getType();
+            ArrayList<TypeResource> resources = new ArrayList<>();
+            for (int i = 0; i < depot.getResources().size(); i++) {
+                resources.add(type);
+            }
+            content.put(depot.getFloor(),resources);
         }
         return content;
     }

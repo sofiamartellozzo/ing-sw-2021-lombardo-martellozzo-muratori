@@ -28,13 +28,13 @@ public class Room extends Observable {
     /* the solo player if is only one */
     private SoloPlayer singlePlayer;
 
-    /* inizialized a size for the room (set by the first player acceded)*/
-    //private final int SIZE;
+    /* initialized a size for the room (set by the first player acceded)*/
+    private int SIZE;
 
     /* boolean to notify if the player want to play in Solo Mode, so the room has to be of size 1!*/
     private boolean isSoloMode;
 
-    /* board manager of this room (to simplify the connection between Model and Controller) */
+    /* board manager of this room (to simplify the network between Model and Controller) */
     private BoardManager boardManager;
 
     /* map to connect every player to his virtual view */
@@ -79,6 +79,13 @@ public class Room extends Observable {
         return playersId;
     }
 
+    public String getRoomID() {
+        return roomID;
+    }
+
+    public void setSIZE(int SIZE) {
+        this.SIZE = SIZE;
+    }
 
     /*----------------------------------------------------------------------------------------------------------------*/
 
@@ -101,7 +108,7 @@ public class Room extends Observable {
                 throw new LimitExceededException();
             }
 
-            printRoomMessage("New player " +username+ " added in the room!");
+            printRoomMessage("New player \"" +username+ "\" added in the room!");
         } catch (LimitExceededException e){
             e.printStackTrace();
         }
@@ -158,7 +165,7 @@ public class Room extends Observable {
 
 
     /**
-     * method used to manage the disconnection of a single player from a game, and delete his connection
+     * method used to manage the disconnection of a single player from a game, and delete his network
      * with the virtual view
      * @param username
      */

@@ -3,34 +3,27 @@ package it.polimi.ingsw.message.viewMsg;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.ViewObserver;
 
+/**
+ *
+ * Lobby ----> VV ----> CLI
+ * msg send by the controller (Lobby) to the client for ask the size of the room
+ */
 public class VRoomSizeRequestMsg extends ViewGameMsg {
-    private String IP;
-    private int Port;
-    private String username;
-    private int actualNumberOfPlayersInRoom;
+    private final String username;
+    private String roomID;
 
-    public VRoomSizeRequestMsg(String content,String IP, int port, String username, int actualNumberOfPlayersInRoom) {
+    public VRoomSizeRequestMsg(String content, String username, String roomID) {
         super(content);
-        this.IP = IP;
-        Port = port;
         this.username = username;
-        this.actualNumberOfPlayersInRoom = actualNumberOfPlayersInRoom;
-    }
-
-    public String getIP() {
-        return IP;
-    }
-
-    public int getPort() {
-        return Port;
+        this.roomID = roomID;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public int getActualNumberOfPlayersInRoom() {
-        return actualNumberOfPlayersInRoom;
+    public String getRoomID() {
+        return roomID;
     }
 
     @Override

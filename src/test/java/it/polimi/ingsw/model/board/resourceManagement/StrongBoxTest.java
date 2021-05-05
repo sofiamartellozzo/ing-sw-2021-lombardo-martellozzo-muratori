@@ -3,11 +3,14 @@ package it.polimi.ingsw.model.board.resourceManagement;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -83,7 +86,7 @@ public class StrongBoxTest {
     }
 
     @Test
-    public void addResources() {
+    public void addResources() throws InvalidActionException {
         ArrayList<Resource> expected = new ArrayList<>();
         assertEquals(expected,strongBox.getContent());
         ArrayList<Resource> resources = new ArrayList<>();
@@ -157,6 +160,55 @@ public class StrongBoxTest {
         assertEquals(expected,strongBox.getContent());
     }
 
+    @Test
+    public void getInstanceStrongbox() throws InvalidActionException {
+        ArrayList<TypeResource> expected = new ArrayList<>();
+        ArrayList<Resource> resourcesToAdd = new ArrayList<>();
+        ArrayList<Resource> resourcesToRemove = new ArrayList<>();
+        Random randomNumber = new Random();
+        int add = randomNumber.nextInt();
+        for(int i=0;i<add;i++){
+            int r = randomNumber.nextInt(4);
+            if(r==0){
+                resourcesToAdd.add(new Resource(TypeResource.SHIELD));
+                expected.add(TypeResource.SHIELD);
+            }else if(r==1){
+                resourcesToAdd.add(new Resource(TypeResource.COIN));
+                expected.add(TypeResource.COIN);
+            }else if(r==2){
+                resourcesToAdd.add(new Resource(TypeResource.SERVANT));
+                expected.add(TypeResource.SERVANT);
+            }else if(r==3){
+                resourcesToAdd.add(new Resource(TypeResource.STONE));
+                expected.add(TypeResource.STONE);
+            }
+        }
+        strongBox.addResources(resourcesToAdd);
+        assertEquals(expected,strongBox.getInstanceStrongbox());
+        int remove = randomNumber.nextInt();
+        for(int i=0;i<remove;i++){
+            int r = randomNumber.nextInt(4);
+            Resource resource = null;
+            if(r==0){
+                 resource = new Resource(TypeResource.SHIELD);
+            }else if(r==1){
+                 resource = new Resource(TypeResource.COIN);
+            }else if(r==2){
+                 resource = new Resource(TypeResource.SERVANT);
+            }if(r==3){
+                 resource = new Resource(TypeResource.STONE);
+            }
+            resourcesToRemove.add(resource);
+            try{
+                strongBox.removeResources(resourcesToRemove);
+                expected.remove(resource.getType());
+                resourcesToRemove.clear();
+            }catch(InvalidActionException e){
+                resourcesToRemove.clear();
+            }
+        }
+        assertEquals(expected,strongBox.getInstanceStrongbox());
+    }
 
 
 

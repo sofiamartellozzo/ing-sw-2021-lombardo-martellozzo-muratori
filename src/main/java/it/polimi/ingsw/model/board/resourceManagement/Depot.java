@@ -7,63 +7,65 @@ import it.polimi.ingsw.model.TypeResource;
 import java.util.ArrayList;
 
 /**
- * GIANLUCA
- * TEST PASSED
  * Interface
- * It represents all type of depots
+ * It represents all type of depots.
  * */
 public interface Depot {
 
     /**
-     * Gets the content of the Depot as an ArrayList of resources.
-     * @return
+     * Getter Method
+     * @return -> The resources contained by the Depot
      */
     public ArrayList<Resource> getResources();
 
     /**
-     * Adds resources in the depot
-     * @param  -> The resources you want to put in the depot
+     * Adds "n" resources of "resource".
+     * @param n -> The number of resource you want to put in
+     * @param resource -> The resource you want to put in
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public void addResources(int num,Resource resource) throws InvalidActionException;
+    public void addResources(int n,Resource resource) throws InvalidActionException;
 
     /**
-     * Removes resources from the depot
-     * @param num -> The number of resources you want to remove from the depot
+     * Removes "n" resources from the depot.
+     * @param n -> The number of resources you want to remove
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public void removeResources(int num) throws InvalidActionException;
+    public void removeResources(int n) throws InvalidActionException;
 
     /**
-     * Puts the resource parameter in the depot
-     * Resources must be of the same type
-     * @param resource -> The resource you want to put in the depot
-     * @throws InvalidActionException
+     * Adds the "resource" in the depot.
+     * @param resource -> The resource you want to put in (SHIELD, STONE, COIN, SERVANT)
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
     public void addResource(Resource resource) throws InvalidActionException;
 
     /**
-     * Removes a resource from the depot
-     * @throws InvalidActionException
+     * Removes a resource from the depot.
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
     public void removeResource() throws InvalidActionException;
 
     /**
-     * Checks if the depot is full.
-     * @return
+     * @return -> True if the depot is full, else false.
      */
     public boolean isFull();
 
     /**
-     * Get the type of resources contained in the depot.
-     * @return
+     * Getter Method
+     * @return -> The content type of the depot.
      */
     public TypeResource getType();
 
     /**
-     * Get how many resources can contain the depot.
-     * @return
+     * @return -> How many resource the depot can contain.
      */
     public int getSize();
 
+    /**
+     * Getter Method
+     * @return -> The number of the "floor"/"depot"
+     */
     public int getFloor();
 
 

@@ -17,7 +17,7 @@ public class ActionTokenTest extends TestCase {
 
     @Before
     public void setUp() throws Exception {
-        actionToken = new ActionToken(new PlusTwoBlackCrossActionAbility());
+        actionToken = new ActionToken(new PlusTwoBlackCrossActionAbility(), 1);
     }
 
     @After

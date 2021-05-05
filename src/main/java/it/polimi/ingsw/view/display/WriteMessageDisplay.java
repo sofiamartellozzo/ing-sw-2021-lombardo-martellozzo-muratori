@@ -28,7 +28,7 @@ public class WriteMessageDisplay {
     }
 
     /**
-     * if the connection is working print the phrase CONNECTED, YOU'RE ONLINE
+     * if the network is working print the phrase CONNECTED, YOU'RE ONLINE
      */
     public static void writeOnlineStatus(){
 

@@ -32,7 +32,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * send a message to the client throw his Client Handler
      */
-    private void sendToClient(GameMsg msg){
+    private void sendToClient(GameMsg msg) {
         client.sendMsg(msg);
     }
 
@@ -41,20 +41,27 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * receiving the message of a Request of connection by the client
      * this has to be send to the Controller
+     *
      * @param msg
      */
-    public void receiveMsg(VConnectionRequestMsg msg){
+    public void receiveMsg(VVConnectionRequestMsg msg) {
 
         //save the username of the client associated to this virtual view
         username = msg.getUsername();
         //save the mode the client choose
         gameMode = msg.getGameSize();
         //create the message to send to the controller with the username the client send
-        CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of connection by a client",client.getUserIP(), client.getUserPort(), username, gameMode);
+        CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of connection by a client", client.getUserIP(), client.getUserPort(), username, gameMode);
         // "send" the message to the controller
         notifyAllObserver(ObserverType.CONTROLLER, requestToController);
 
         tryToStartGame();
+    }
+
+    @Override
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
+        System.out.println("setting size room in VV");
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
@@ -106,6 +113,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      * this msg is received from the controller when the username is not valid
      * or there are not a room available
      * then forward the event to the client (as a notify)
+     *
      * @param msg
      */
     @Override
@@ -120,22 +128,40 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * msg recived from the controller (Lobby) asking to the client the size of the room
      * he want to play in
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(VRoomSizeRequestMsg msg) {
-        sendToClient(msg);
+        if (msg.getUsername().equals(this.username)) {
+            sendToClient(msg);
+        }
+    }
+
+    /**
+     * when the game and a turn started, the server need to ask a client which action
+     * wants to make, so here the VV will forward the msg to the client
+     * (CLI or GUI) will print out the request to make the client choose the Action
+     * @param msg {VChooseActionTurnRequest}
+     */
+    @Override
+    public void receiveMsg(VChooseActionTurnRequestMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
     }
 
     /**
      * msg from the controller (Initialized) when the client has to chose 2 leader card
      * from a 4 cards deck
+     *
      * @param msg
      */
     @Override
-    public void receiveMsg(VChooseLeaderCardRequestMsg msg){
+    public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
         //check if the username is mine
-        if (msg.getUsername().equals(this.username)){
+        System.out.println("choose l c request in VV");
+        if (msg.getUsername().equals(this.username)) {
             /* send this message (notify) to the client */
             sendToClient(msg);
         }
@@ -144,40 +170,55 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * msg received when is asked to the client to chose a Resource
      * and the depots where to store it
-     * @param msg
+     *
+     * @param msg sended to client
      */
     @Override
     public void receiveMsg(VChooseResourceAndDepotMsg msg) {
         //check if the username is mine
-        if (msg.getUsername().equals(this.username)){
+        if (msg.getUsername().equals(this.username)) {
             /* send this message (notify) to the client */
             sendToClient(msg);
         }
     }
 
-    @Override
-    public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
-        //ce pensiamo doamni
-    }
+
 
     /**
      * receive this msg from controller when the player chose an invalid depots
      * because he cannot store the resource he chose (Like at first when the resource are
      * given to the players in multiple Mode, not the first player!)
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(VNotValidDepotMsg msg) {
-        sendToClient(msg);
+        if (msg.getUsername().equals(this.username)) {
+
+            sendToClient(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
+        //send to ALL players, in CLI check the username--> if not same "him increased"
+        if (msg.getUsernameIncreased().equals(this.username) || msg.getAllPlayerToNotify().contains(this.username)) {
+            sendToClient(msg);
+        }
     }
 
     /**
      * send to the client this msg to ask wich development card wants to buy
+     *
      * @param msg-> contains all the available position of the table where to buy
      */
     @Override
     public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
-        sendToClient(msg);
+        if (msg.getUsername().equals(this.username)) {
+
+
+            sendToClient(msg);
+        }
 
     }
 
@@ -196,16 +237,31 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     }
 
+    /**
+     * this msg contains the info of the Action Token activated at the end of the turn
+     * check if is Solo Mode in addiction of the right username
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VActionTokenActivateMsg msg) {
+        if (msg.getUsername().equals(this.username) && gameMode.equals(0)){
+            sendToClient(msg);
+        }
+    }
+
 
 
 
     /*---------------------------------------------------------------------------------------------------------------------*/
 
-     //METHODS PRIVATE AUXILIARY
+    //METHODS PRIVATE AUXILIARY
 
-    private void tryToStartGame(){
+    /**
+     * called by VV after recived a Msg of a Connection Request by the client
+     */
+    private void tryToStartGame() {
         //check if the connection is ON and ask to the Lobby if the Game can start
-        if (lobby.canInitializeGameFor(this.username)){
+        if (lobby.canInitializeGameFor(this.username)) {
             lobby.startInitializationOfTheGame(username);
         }
     }

@@ -67,13 +67,13 @@ public class DevelopmentCard extends Card {
 
         if (where.equals("Warehouse"))
         {
-            player.getGameSpace().getResourceManager().removeFromWarehouse(costProductionPower);
+            player.getGameSpace().getResourceManager().removeResourcesFromWarehouse(costProductionPower);
         }
 
         if (where.equals(player.getGameSpace().getResourceManager().getStrongBox().toString()))
         {
 
-            player.getGameSpace().getResourceManager().removeFromStrongBox(costProductionPower);
+            player.getGameSpace().getResourceManager().removeResourcesFromStrongbox(costProductionPower);
         }
 
         /*
