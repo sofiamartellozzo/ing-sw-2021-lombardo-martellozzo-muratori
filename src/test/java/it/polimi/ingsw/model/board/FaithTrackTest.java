@@ -73,6 +73,7 @@ public class FaithTrackTest extends TestCase {
 
         ArrayList<PopesFavorTile> p = new ArrayList<>();
         p = faithTrack.getPopesFavorTiles();
+        assertEquals(p.size(),3);
     }
 
     @Test
@@ -106,6 +107,7 @@ public class FaithTrackTest extends TestCase {
 
         faithTrack.setFaithMarker();
         faithTrack.doVaticanReport(1);
+
 
     }
 }

@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TurnAction;
+import it.polimi.ingsw.model.board.FaithTrack;
 import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ViewObserver;
@@ -15,6 +19,9 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
+import it.polimi.ingsw.view.display.CardSpaceDisplay;
+import it.polimi.ingsw.view.display.FaithTrackDisplay;
+import it.polimi.ingsw.view.display.MarketDisplay;
 import it.polimi.ingsw.view.display.WriteMessageDisplay;
 
 /**
@@ -310,6 +317,42 @@ public class CLI extends Observable implements ViewObserver {
                                                but the two Id can't be the same number !! */
     }
 
+    /**
+     * auxiliary method that creates the TurnAction from the string inserted by the client
+     * @param action
+     */
+    private TurnAction returnActionFromString(String action){
+
+        switch (action) {
+            case "end_turn": {
+                return TurnAction.END_TURN;
+            }
+            case "buy_card": {
+                return TurnAction.BUY_CARD;
+            }
+            case "buy_from_market": {
+                return TurnAction.BUY_FROM_MARKET;
+            }
+            case "active_production_power": {
+                return TurnAction.ACTIVE_PRODUCTION_POWER;
+            }
+            case "active_leader_cards": {
+                return TurnAction.ACTIVE_LEADER_CARD;
+            }
+            case "get_action_token": {
+                return TurnAction.GET_ACTION_TOKEN;
+            }
+            case "move_resource": {
+                return TurnAction.MOVE_RESOURCE;
+            }
+            case "remove_leader_card": {
+                return TurnAction.REMOVE_LEADER_CARD;
+            }
+            default:
+                throw new IllegalArgumentException(" Error this action is not valid! ");
+        }
+    }
+
     /*---------------------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
@@ -362,6 +405,33 @@ public class CLI extends Observable implements ViewObserver {
         /* send the msg to the controller with the size room he chose */
         CRoomSizeResponseMsg response = new CRoomSizeResponseMsg(" asking the room size ",roomSize,msg.getUsername());
         client.sendMsg(response);
+    }
+
+    /**
+     * this msg ask to the client which action he wants to play from the actions that he can do!!
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VChooseActionTurnRequestMsg msg) {
+
+        System.out.println(msg.getMsgContent());
+        System.out.println(" The action that you are allowed to do are: " +msg.getAvailableActions());
+        boolean correct = false;
+
+        in = new Scanner(System.in);
+        in.reset();
+
+        String action = in.nextLine();
+        TurnAction turnAction = returnActionFromString(action);
+
+        while (!correct) {
+            if (msg.getAvailableActions().contains(turnAction)) {
+
+                CChooseActionTurnResponseMsg response = new CChooseActionTurnResponseMsg(" I made my choice, I decided the action I want to do",username,turnAction);
+                client.sendMsg(response);
+                correct = true;
+            }
+        }
     }
 
     /**
@@ -492,30 +562,134 @@ public class CLI extends Observable implements ViewObserver {
 
     }
 
-    @Override
-    public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
 
-        System.out.println(" Player X increased his faithMarker position of one position");
+    @Override
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
+
+        System.out.println(msg.getMsgContent());
+        if(msg.getUsernameIncreased().equals(username)){
+            System.out.println("Congratulations, your faith Marker increased his position "+ msg.getNumberOfPositionIncreased());
+        }
+        else if(msg.getAllPlayerToNotify().contains(username)){
+            System.out.println(msg.getUsernameIncreased()+"Increased his position of: "+msg.getNumberOfPositionIncreased());
+        }
+
     }
 
+    /**
+     * message received from the client when the controller has to warn him that before he had inserted a wrong
+     * or unavailable depot, so the client has to insert a new one and send it to the controller
+     * @param msg
+     */
     @Override
     public void receiveMsg(VNotValidDepotMsg msg) {
 
+        System.out.println(msg.getMsgContent());
+        System.out.println("You can't put in Depot "+msg.getUnableDepot()+" the resource: ");
+        //System.out.print(new Resource(msg.getResource()).toString());
+        System.out.println(" Please insert a new depot for this resource [number from 1 to 5] ");
+        in = new Scanner(System.in);
+        in.reset();
+
+        int newDepot = in.nextInt();
+        CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!",msg.getReource(),newDepot,username);
+        client.sendMsg(response);
+
     }
 
+    /**
+     * msg used to ask to the client which development card he wants to chose from the table and in
+     * which space he wants to put the card,the table indicates the available cards that he can buy
+     * @param msg
+     */
     @Override
     public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
 
+        boolean correct = false;
+        if(msg.getUsername().equals(username)) {
+
+            System.out.println(msg.getMsgContent());
+
+            in = new Scanner(System.in);
+            in.reset();
+
+            System.out.println(" Insert a row [from 0 to 2] and a column [from 0 to 3] in the table from where you want to take the card ");
+            int row = in.nextInt();
+            int column = in.nextInt();
+
+            System.out.println(" Insert in which card Space you want to insert it ");
+            int cardSpace = in.nextInt();
+
+            while(!correct) {
+
+                if (msg.getCardAvailable()[row][column] && (cardSpace== 1 || cardSpace == 2 || cardSpace == 3)) {
+
+                    CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
+                    client.sendMsg(response);
+                    correct = true;
+                }
+            }
+
+        }
     }
 
+    /**
+     * msg sent from the client to indicate the depot from where he wants to take the resource
+     * and the depot in which he wants to put it
+     * @param msg
+     */
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
 
+        boolean correct = false;
+        while(!correct) {
+            if (msg.getUsername().equals(username)) {
+
+                System.out.println(msg.getMsgContent());
+                in = new Scanner(System.in);
+                in.reset();
+
+                int fromDepot = in.nextInt();
+                int toDepot = in.nextInt();
+
+                if (msg.getDepotsActualSituation().containsKey(fromDepot) && msg.getDepotsActualSituation().containsKey(toDepot)) {
+                    CMoveResourceInfoMsg response = new CMoveResourceInfoMsg(" I choose from where and to where I want to put my resource ", username, fromDepot, toDepot);
+                    client.sendMsg(response);
+                    correct = true;
+
+                }
+
+            }
+        }
     }
+
+    /**
+     * with that message the player has to choose if he wants to take from a row or a column (choice) and from which one (number)
+     * @param msg
+     */
 
     @Override
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
 
+        System.out.println(msg.getMsgContent());
+
+        in = new Scanner(System.in);
+        in.reset();
+
+        boolean correct = false;
+
+        String choice = in.nextLine();
+        int number = in.nextInt();
+
+        while (!correct) {
+
+            if ((choice.equals("row") && number < 4) || (choice.equals("column") && number < 5)) {
+
+                CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ",username,choice,number);
+                client.sendMsg(response);
+                correct = true;
+            }
+        }
     }
 
     /**
@@ -549,8 +723,12 @@ public class CLI extends Observable implements ViewObserver {
         System.out.flush();
     }
 
+    /*--------------------------------------------------------------------------------------------------------------------------------*/
 
-
+    private void showFaithTrack(FaithTrack faithTrack){
+        FaithTrackDisplay faithT = new FaithTrackDisplay();
+        //faithT.showFaithTrack();
+    }
 
 
 

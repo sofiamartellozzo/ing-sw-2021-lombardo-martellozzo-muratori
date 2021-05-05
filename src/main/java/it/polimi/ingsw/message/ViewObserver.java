@@ -12,6 +12,7 @@ public interface ViewObserver extends Observer{
 
     public void receiveMsg(CNackConnectionRequestMsg msg);
     public void receiveMsg(VRoomSizeRequestMsg msg);
+    public void receiveMsg(VChooseActionTurnRequestMsg msg);
     public void receiveMsg(VChooseLeaderCardRequestMsg msg);
     public void receiveMsg(VChooseResourceAndDepotMsg msg);
     public void receiveMsg(VNotifyAllIncreasePositionMsg msg);
@@ -20,4 +21,5 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VMoveResourceRequestMsg msg);
     public void receiveMsg(VBuyFromMarketRequestMsg msg);
     public void receiveMsg(VShowEndGameResultsMsg msg);
+
 }

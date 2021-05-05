@@ -14,5 +14,6 @@ public abstract class Card {
     public Card(int victoryPoints){
         this.victoryPoints=victoryPoints;
     }
-    public abstract int getVictoryPoints();
-}
+    public abstract int getVictoryPoints();}
+
+

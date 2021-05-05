@@ -43,9 +43,9 @@ public class DevelopmentCardDeckTest extends TestCase {
 
         developmentCardDeck = new DevelopmentCardDeck(cards);
 
-        cards.remove(developmentCard);
+        /*cards.remove(developmentCard);
         cards.remove(developmentCard1);
-        cards.remove(developmentCard2);
+        cards.remove(developmentCard2);*/
 
     }
 
@@ -59,7 +59,7 @@ public class DevelopmentCardDeckTest extends TestCase {
 
         //ArrayList<DevelopmentCard> dev = new ArrayList<>();
         //dev = developmentCardDeck.getDevelopDeck();
-        assertTrue(developmentCardDeck.getDevelopDeck().isEmpty());
+        assertEquals(developmentCardDeck.getDevelopDeck().size(),3);
     }
 
     @Test

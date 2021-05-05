@@ -48,6 +48,7 @@ public class ResourcesSupplyTest extends TestCase {
         cells.add(cell4);
 
         resourcesSupply.getContent(cell1);
+        assertEquals(resourcesSupply.getContent(cell1).get(1).getType(),TypeResource.SERVANT);
 
     }
 
