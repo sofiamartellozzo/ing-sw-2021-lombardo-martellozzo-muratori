@@ -17,9 +17,12 @@ public class ActionToken {
     /* the card have an ability that is activated when draw this card */
     private ActionAbility ability;
 
+    private int cardID;
+
     /* constructor */
-    public ActionToken(ActionAbility ability) {
+    public ActionToken(ActionAbility ability, int cardID) {
         this.ability = ability;
+        this.cardID = cardID;
     }
 
     /**
@@ -32,10 +35,15 @@ public class ActionToken {
         this.ability.activeAbility(boardManager, player);
     }
 
+    public int getCardID() {
+        return cardID;
+    }
+
     @Override
     public String toString() {
         return "ActionToken{" +
                 "ability=" + ability +
+                "id: " +cardID+
                 '}';
     }
 }

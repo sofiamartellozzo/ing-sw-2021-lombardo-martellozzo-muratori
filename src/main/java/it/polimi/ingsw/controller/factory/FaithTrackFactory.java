@@ -19,21 +19,21 @@ public class FaithTrackFactory {
 
         ArrayList<Box> boxes = new ArrayList<>();
         //15 normal box
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/java/it/polimi/ingsw/utility/simpleBox.json"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/simpleBox.json"));
         Type list = new TypeToken<ArrayList<SimpleBox>>() {
         }.getType();
         ArrayList<SimpleBox> simpleBoxes = gson.fromJson(reader, list);
         boxes.addAll(simpleBoxes);
 
         //7 gold box
-        BufferedReader reader1 = new BufferedReader(new FileReader("src/main/java/it/polimi/ingsw/utility/goldBox.json"));
+        BufferedReader reader1 = new BufferedReader(new FileReader("src/main/resources/goldBox.json"));
         Type list1 = new TypeToken<ArrayList<GoldBox>>() {
         }.getType();
         ArrayList<GoldBox> goldBoxes = gson.fromJson(reader1, list1);
         boxes.addAll(goldBoxes);
 
         //3 pope box
-        BufferedReader reader2 = new BufferedReader(new FileReader("src/main/java/it/polimi/ingsw/utility/popeBox.json"));
+        BufferedReader reader2 = new BufferedReader(new FileReader("src/main/resources/popeBox.json"));
         Type list2 = new TypeToken<ArrayList<PopeBox>>() {
         }.getType();
         ArrayList<PopeBox> popeBoxes = gson.fromJson(reader2, list2);

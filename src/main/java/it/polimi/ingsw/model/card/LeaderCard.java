@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.card;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
@@ -10,6 +11,8 @@ import it.polimi.ingsw.model.board.Active;
 import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.board.State;
 import it.polimi.ingsw.model.cardAbility.*;
+
+import javax.print.DocFlavor;
 
 /* ILA */
 
@@ -136,5 +139,56 @@ public class LeaderCard extends Card{
     public int getVictoryPoints() {
         //return this.state.returnPoints(victoryPoints);
         return this.getState().returnPoints(victoryPoints);
+    }
+
+
+    public String getRequirementsForCli(){
+
+        String req = "" ;
+        for ( Object obj :requirements) {
+
+            if(obj.equals(TypeResource.COIN))
+            {
+                req += "\uD83D\uDFE1 ";
+            }
+            else if(obj.equals(TypeResource.SHIELD))
+            {
+                req += "\uD83D\uDD35";
+            }
+            else if(obj.equals(TypeResource.STONE))
+            {
+                req += "\u2B1C";
+            }
+            else if(obj.equals(TypeResource.SERVANT))
+            {
+                req += "\uD83D\uDFE3";
+            }
+            else if(obj.equals(Color.YELLOW)){
+                //quadrato giallo
+            }
+        }
+        return req;
+
+    }
+
+    @Override
+    public String toString() {
+        return
+                " LEADER CARD: "+ "\n"+
+                " specialAbility: " + specialAbility + "\n"+
+                " specialResource: " + specialResource + "\n"+
+                " requirements: " + requirements + "\n"+
+                " state: " + state + "\n"+
+                " cardID: " + cardID + "\n"+
+                " victoryPoints: " + victoryPoints ;
+    }
+
+    public static void main(String[] args) {
+
+        ArrayList<Object> req = new ArrayList<>();
+        req.add(new Resource(Color.PURPLE));
+        LeaderCard leaderCard = new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
+
+        System.out.println(leaderCard.toString());
     }
 }

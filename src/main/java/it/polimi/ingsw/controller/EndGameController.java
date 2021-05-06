@@ -5,7 +5,7 @@ import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
-import it.polimi.ingsw.message.viewMsg.VConnectionRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VShowEndGameResultsMsg;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
@@ -98,9 +98,14 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
-    public void receiveMsg(VConnectionRequestMsg msg) {
+    public void receiveMsg(VVConnectionRequestMsg msg) {
 
         //NOT IMPLEMENTED HERE
+    }
+
+    @Override
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
+        //not here (Lobby)
     }
 
     @Override

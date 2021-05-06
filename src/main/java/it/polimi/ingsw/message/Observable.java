@@ -27,11 +27,13 @@ public abstract class Observable {
             case VIEW:
                 for (ViewObserver observerV :viewObserver) {
                     msg.notifyHandler(observerV);
+                    System.out.println("notify a view " +observerV);
                 }
                 break;
             case CONTROLLER:
                 for (ControllerObserver observerC :controllerObserver) {
                     msg.notifyHandler(observerC);
+                    System.out.println("notify a controller " +observerC);
                 }
                 break;
         }
@@ -46,9 +48,13 @@ public abstract class Observable {
 
             case VIEW:
                 viewObserver.add((ViewObserver) observer);
+                //debugging
+                System.out.println("attach a view " +observer.toString());
                 break;
             case CONTROLLER:
                 controllerObserver.add((ControllerObserver) observer);
+                //debugging
+                System.out.println("attach a controller " +observer.toString());
                 break;
         }
     }

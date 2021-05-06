@@ -5,6 +5,14 @@ import it.polimi.ingsw.message.ViewObserver;
 
 import java.net.InetAddress;
 
+/**
+ *
+ *  Virtual View -----> Lobby
+ *
+ *  msg send by the VV to the lobby after a request of a connection
+ *  so the lobby will handle the request checking the username and
+ *  assigning the client to a new room
+ */
 public class CConnectionRequestMsg extends ControllerGameMsg {
 
     private InetAddress IP;

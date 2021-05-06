@@ -130,7 +130,10 @@ public class TurnController extends Observable implements ControllerObserver {
         player.setPlaying(true);
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
         currentSoloTurnIstance = spt;
-        if (currentTurnIndex > 1 && spt.checkEndGame()){
+        if (currentTurnIndex > 1 && spt.checkEndTurn()){
+            ActionToken actionTokenActivated = spt.activateActionToken();
+            VActionTokenActivateMsg msg = new VActionTokenActivateMsg("an Action Token has been activated", player.getUsername(), actionTokenActivated.getCardID());
+            notifyAllObserver(ObserverType.VIEW, msg);
             startSoloPlayerTurn(player);
         }
     }
@@ -250,7 +253,8 @@ public class TurnController extends Observable implements ControllerObserver {
             if (!turnSequence.get(key).getUsername().equals(msg.getUsername())){
                 //not the player that discarded the resource
                 turnSequence.get(key).increasePosition();
-                VNotifyAllIncreasePositionMsg notify = new VNotifyAllIncreasePositionMsg("this player increased his position because of another player", turnSequence.get(key).getUsername(), 1);
+                VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("this player increased his position because of another player", turnSequence.get(key).getUsername(), 1);
+                //remember to set all the other players!!!!
                 notifyAllObserver(ObserverType.VIEW, notify);
             }
         }
@@ -298,8 +302,13 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(VConnectionRequestMsg msg) {
+    public void receiveMsg(VVConnectionRequestMsg msg) {
         //not here
+    }
+
+    @Override
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
+        //not here (Lobby)
     }
 
     @Override

@@ -5,6 +5,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
@@ -53,5 +54,9 @@ public class SpecialCardTest extends TestCase {
         Resource res = new Resource(Color.YELLOW);
 
         specialCard.useProductionPower(player,res,where);
+
+        assertEquals(player.getGameSpace().getResourceManager().getStrongBox().getContent().get(0).getType(), TypeResource.SHIELD);
+        assertEquals(player.getGameSpace().getResourceManager().getStrongBox().getContent().get(1).getType(), TypeResource.COIN);
+        assertTrue( player.getGameSpace().getResourceManager().getWarehouse().getContent().isEmpty());
     }
 }

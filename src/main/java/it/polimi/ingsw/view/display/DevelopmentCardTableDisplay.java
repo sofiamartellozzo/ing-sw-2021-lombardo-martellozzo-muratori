@@ -1,22 +1,38 @@
-package it.polimi.ingsw.model.card;
+package it.polimi.ingsw.view.display;
 
-import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
-import junit.framework.TestCase;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.card.DevelopmentCardDeck;
+import it.polimi.ingsw.model.card.DevelopmentCardTable;
+import it.polimi.ingsw.utility.AnsiColors;
 
 import java.util.ArrayList;
 
-public class DevelopmentCardTableTest extends TestCase {
+/**
+ * this class show to the player the development card table, in particular every last card of a Development Card Deck
+ * available in the table
+ */
 
-    DevelopmentCardTable developmentCardTable = null;
+public class DevelopmentCardTableDisplay {
 
-    @Before
-    public void setUp() throws Exception {
+    public static void displayCard1() {
+        
 
+        /*System.out.println("" +
+                " ______________ \n" +
+                "|   level:1    |\n" +
+                "|   cost:2     |\n" +
+                "|              |\n" +
+                "|              |\n" +
+                "|    pay:1     |\n" +
+                "|    earn:1    |\n" +
+                "|   vPoints:1  |\n" +
+                "|______________|");*/
+
+
+    }
+    public static void main(String[] args){
 
         DevelopmentCardDeck[][] squareCards = new DevelopmentCardDeck[3][4];
 
@@ -35,7 +51,7 @@ public class DevelopmentCardTableTest extends TestCase {
         DevelopmentCard card1 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
         DevelopmentCard card2 = new DevelopmentCard(2,Color.GREEN,1,array,proceeds,cost);
         DevelopmentCard card3 = new DevelopmentCard(6,Color.GREEN,1,array,proceeds,cost);
-        DevelopmentCard card4 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card4 = new DevelopmentCard(4,Color.GREEN,1,array,proceeds,cost);
 
         ArrayList<DevelopmentCard> list = new ArrayList<>();
         list.add(card1);
@@ -47,7 +63,7 @@ public class DevelopmentCardTableTest extends TestCase {
         DevelopmentCard card91 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
         DevelopmentCard card92 = new DevelopmentCard(2,Color.GREEN,1,array,proceeds,cost);
         DevelopmentCard card93 = new DevelopmentCard(6,Color.GREEN,1,array,proceeds,cost);
-        DevelopmentCard card94 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card94 = new DevelopmentCard(5,Color.GREEN,1,array,proceeds,cost);
 
         ArrayList<DevelopmentCard> list12 = new ArrayList<>();
         list12.add(card91);
@@ -59,7 +75,7 @@ public class DevelopmentCardTableTest extends TestCase {
         DevelopmentCard card81 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
         DevelopmentCard card82 = new DevelopmentCard(2,Color.GREEN,1,array,proceeds,cost);
         DevelopmentCard card83 = new DevelopmentCard(6,Color.GREEN,1,array,proceeds,cost);
-        DevelopmentCard card84 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card84 = new DevelopmentCard(6,Color.GREEN,1,array,proceeds,cost);
 
         ArrayList<DevelopmentCard> list13 = new ArrayList<>();
         list13.add(card91);
@@ -73,17 +89,17 @@ public class DevelopmentCardTableTest extends TestCase {
         DevelopmentCard card5 = new DevelopmentCard(3,Color.BLUE,1,array,proceeds,cost);
         DevelopmentCard card6 = new DevelopmentCard(2,Color.BLUE,1,array,proceeds,cost);
         DevelopmentCard card7 = new DevelopmentCard(6,Color.BLUE,1,array,proceeds,cost);
-        DevelopmentCard card8 = new DevelopmentCard(3,Color.BLUE,1,array,proceeds,cost);
+        DevelopmentCard card8 = new DevelopmentCard(7,Color.BLUE,1,array,proceeds,cost);
 
         DevelopmentCard card55 = new DevelopmentCard(3,Color.BLUE,1,array,proceeds,cost);
         DevelopmentCard card66 = new DevelopmentCard(2,Color.BLUE,1,array,proceeds,cost);
         DevelopmentCard card77 = new DevelopmentCard(6,Color.BLUE,1,array,proceeds,cost);
-        DevelopmentCard card88 = new DevelopmentCard(3,Color.BLUE,1,array,proceeds,cost);
+        DevelopmentCard card88 = new DevelopmentCard(8,Color.BLUE,1,array,proceeds,cost);
 
         DevelopmentCard card555 = new DevelopmentCard(3,Color.BLUE,1,array,proceeds,cost);
         DevelopmentCard card666 = new DevelopmentCard(2,Color.BLUE,1,array,proceeds,cost);
         DevelopmentCard card777 = new DevelopmentCard(6,Color.BLUE,1,array,proceeds,cost);
-        DevelopmentCard card888 = new DevelopmentCard(3,Color.BLUE,1,array,proceeds,cost);
+        DevelopmentCard card888 = new DevelopmentCard(9,Color.BLUE,1,array,proceeds,cost);
 
         ArrayList<DevelopmentCard> list1 = new ArrayList<>();
         list1.add(card5);
@@ -109,7 +125,7 @@ public class DevelopmentCardTableTest extends TestCase {
         DevelopmentCard card9 = new DevelopmentCard(3,Color.YELLOW,1,array,proceeds,cost);
         DevelopmentCard card10 = new DevelopmentCard(2,Color.YELLOW,1,array,proceeds,cost);
         DevelopmentCard card11 = new DevelopmentCard(6,Color.YELLOW,1,array,proceeds,cost);
-        DevelopmentCard card12 = new DevelopmentCard(3,Color.YELLOW,1,array,proceeds,cost);
+        DevelopmentCard card12 = new DevelopmentCard(10,Color.YELLOW,1,array,proceeds,cost);
 
         ArrayList<DevelopmentCard> list2 = new ArrayList<>();
         list2.add(card9);
@@ -121,7 +137,7 @@ public class DevelopmentCardTableTest extends TestCase {
         DevelopmentCard card13 = new DevelopmentCard(3,Color.PURPLE,1,array,proceeds,cost);
         DevelopmentCard card14 = new DevelopmentCard(2,Color.PURPLE,1,array,proceeds,cost);
         DevelopmentCard card15 = new DevelopmentCard(6,Color.PURPLE,1,array,proceeds,cost);
-        DevelopmentCard card16 = new DevelopmentCard(3,Color.PURPLE,1,array,proceeds,cost);
+        DevelopmentCard card16 = new DevelopmentCard(11,Color.PURPLE,1,array,proceeds,cost);
 
         ArrayList<DevelopmentCard> list3 = new ArrayList<>();
         list3.add(card13);
@@ -149,88 +165,26 @@ public class DevelopmentCardTableTest extends TestCase {
         squareCards[2][3]= smallDeck4;
 
 
-        developmentCardTable = DevelopmentCardTable.getInstance(squareCards);
+        DevelopmentCardTable developmentCardTable = DevelopmentCardTable.getInstance(squareCards);
 
+        System.out.println(AnsiColors.RED_BOLD+"HERE IS THE DEVELOPMENT CARD TABLE"+AnsiColors.RESET);
+        String row1 = "";
+        String row2 = "";
+        String row3 = "";
+        //for(int i = 2; i >= 0; i--){
 
+            for(int j = 0; j < 4; j++){
+
+                row3+=developmentCardTable.getTable()[2][j].takeCard().toString();
+                row2+=developmentCardTable.getTable()[1][j].takeCard().toString();
+                row1+=developmentCardTable.getTable()[0][j].takeCard().toString();
+                //System.out.print(developmentCardTable.getTable()[i][j].takeCard().toString());
+            }
+            System.out.println(row1);
+            System.out.println(row2);
+            System.out.println(row3);
+            System.out.print("\n");
+        //}
     }
 
-    @After
-    public void tearDown() throws Exception {
-        developmentCardTable = null;
-    }
-
-    @Test
-    public void testTakeCard() {
-
-
-       developmentCardTable.takeCard(1,0);
-       developmentCardTable.takeCard(1,0);
-       developmentCardTable.takeCard(1,0);
-       developmentCardTable.takeCard(1,0);
-
-
-        //DevelopmentCard card4 = developmentCardTable.takeCard(2,0);
-        assertEquals(developmentCardTable.getTable()[1][0].getDevelopDeck().size(),0);
-    }
-
-    @Test
-    public void testGetSquare() throws InvalidActionException {
-
-        boolean thrown = false;
-           try {
-
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-
-           }catch (InvalidActionException e){
-               thrown = true;
-           }
-           assertTrue(thrown);
-
-    }
-
-    @Test
-    public void testCheckIfEmpty() throws InvalidActionException {
-
-        developmentCardTable.getTable()[0][0].takeCard();
-        developmentCardTable.getTable()[0][0].takeCard();
-        developmentCardTable.getTable()[0][0].takeCard();
-        developmentCardTable.getTable()[0][0].takeCard();
-
-        developmentCardTable.getTable()[1][0].takeCard();
-        developmentCardTable.getTable()[1][0].takeCard();
-        developmentCardTable.getTable()[1][0].takeCard();
-        developmentCardTable.getTable()[1][0].takeCard();
-
-        developmentCardTable.getTable()[2][0].takeCard();
-        developmentCardTable.getTable()[2][0].takeCard();
-        developmentCardTable.getTable()[2][0].takeCard();
-        developmentCardTable.getTable()[2][0].takeCard();
-
-        assertTrue(developmentCardTable.checkIfEmpty());
-    }
 }

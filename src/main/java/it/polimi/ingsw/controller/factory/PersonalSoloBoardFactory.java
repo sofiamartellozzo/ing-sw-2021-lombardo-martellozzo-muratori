@@ -31,13 +31,13 @@ public class PersonalSoloBoardFactory extends PersonalBoardFactory {
 
     private ArrayList<ActionToken> createActionToken(){
         //where I have to take all these cards an create the dek to put in the Solo Board
-        ActionToken actionToken1 = new ActionToken(new CardActionAbility(Color.PURPLE));
-        ActionToken actionToken2 = new ActionToken(new CardActionAbility(Color.YELLOW));
-        ActionToken actionToken3 = new ActionToken(new CardActionAbility(Color.GREEN));
-        ActionToken actionToken4 = new ActionToken(new CardActionAbility(Color.BLUE));
-        ActionToken actionToken5 = new ActionToken(new PlusTwoBlackCrossActionAbility());
-        ActionToken actionToken6 = new ActionToken(new PlusTwoBlackCrossActionAbility());
-        ActionToken actionToken7 = new ActionToken(new PlusUneAndShuffleActionAbility());
+        ActionToken actionToken1 = new ActionToken(new CardActionAbility(Color.PURPLE), 1);
+        ActionToken actionToken2 = new ActionToken(new CardActionAbility(Color.YELLOW), 2);
+        ActionToken actionToken3 = new ActionToken(new CardActionAbility(Color.GREEN), 3);
+        ActionToken actionToken4 = new ActionToken(new CardActionAbility(Color.BLUE), 4);
+        ActionToken actionToken5 = new ActionToken(new PlusTwoBlackCrossActionAbility(), 5);
+        ActionToken actionToken6 = new ActionToken(new PlusTwoBlackCrossActionAbility(), 6);
+        ActionToken actionToken7 = new ActionToken(new PlusUneAndShuffleActionAbility(), 7);
         ArrayList<ActionToken> list = new ArrayList<>();
         list.add(actionToken1);
         list.add(actionToken2);

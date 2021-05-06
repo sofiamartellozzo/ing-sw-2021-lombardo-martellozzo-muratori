@@ -3,12 +3,16 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 public class MarketStructureTest extends TestCase {
 
@@ -48,18 +52,37 @@ public class MarketStructureTest extends TestCase {
         Player player = new Player("pippo");
         PersonalBoard personalBoard = personalBoardFactory.createGame();
         player.setGameSpace(personalBoard);
-        marketStructure.rowMoveMarble(0, player);
+        ArrayList<TypeResource> resources = marketStructure.rowMoveMarble(0, player);
         /* check if the resources the marble shoud have generate in the Wharehouse of the player */
         assertEquals(Color.RED, marketStructure.getStructure()[0][0].getColor());
-        assertEquals(Color.YELLOW, marketStructure.getStructure()[0][0].getColor());
-        assertEquals(Color.WHITE, marketStructure.getStructure()[0][0].getColor());
-        assertEquals(Color.WHITE, marketStructure.getStructure()[0][0].getColor());
+        assertEquals(Color.YELLOW, marketStructure.getStructure()[0][1].getColor());
+        assertEquals(Color.WHITE, marketStructure.getStructure()[0][2].getColor());
+        assertEquals(Color.WHITE, marketStructure.getStructure()[0][3].getColor());
         /* check now the color*/
         assertEquals(Color.YELLOW, marketStructure.getSlide().getColor());
+
+        //check the returned resources
+        assertEquals(TypeResource.COIN, resources.get(0));
+        assertEquals(TypeResource.FAITHMARKER, resources.get(1));
+        assertEquals(TypeResource.COIN, resources.get(2));
 
     }
 
     @Test
-    public void testColumnMoveMarble() {
+    public void testColumnMoveMarble() throws InvalidActionException {
+        PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
+        Player player = new Player("pippo");
+        PersonalBoard personalBoard = personalBoardFactory.createGame();
+        player.setGameSpace(personalBoard);
+        ArrayList<TypeResource> resources = marketStructure.columnMoveMarble(0, player);
+        assertEquals(Color.PURPLE, marketStructure.getStructure()[0][0].getColor());
+        assertEquals(Color.RED, marketStructure.getStructure()[1][0].getColor());
+        assertEquals(Color.WHITE, marketStructure.getStructure()[2][0].getColor());
+        assertEquals(Color.YELLOW, marketStructure.getSlide().getColor());
+
+        //check the returned resources
+        assertEquals(TypeResource.COIN, resources.get(0));
+        assertEquals(TypeResource.SERVANT, resources.get(1));
+        assertEquals(TypeResource.FAITHMARKER, resources.get(2));
     }
 }

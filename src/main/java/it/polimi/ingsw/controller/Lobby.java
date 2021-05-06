@@ -10,12 +10,14 @@ import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
 import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VConnectionRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VRoomSizeRequestMsg;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * SINGLETON
@@ -77,6 +79,11 @@ public class Lobby extends Observable implements ControllerObserver {
      */
     private final AtomicBoolean canCreateRoom;
 
+    /**
+     * Lock the creation of the Room and the access to canCreateNewRoom.
+     */
+    private final ReentrantLock creatingRoomLock = new ReentrantLock();
+
 
     /*-------------------------------------------------------------------------------------------*/
 
@@ -132,6 +139,20 @@ public class Lobby extends Observable implements ControllerObserver {
         this.numberOfRooms = this.notEmptyRoom.size();
     }
 
+    /**
+     * private method to find a Room in the not empty List by its ID
+     * @param roomId
+     * @return
+     */
+    private Room findRoomByID(String roomId){
+        for (Room room: this.notEmptyRoom){
+            if (room.getRoomID().equals(roomId)){
+                return room;
+            }
+        }
+        return null;
+    }
+
     /*-------------------------------------------------------------------------------------------*/
 
     //METHODS FOR THE INITIALIZATION
@@ -148,7 +169,6 @@ public class Lobby extends Observable implements ControllerObserver {
             Room userRoom = null;
             try {
                 //find his room
-                System.out.println(username);
                 userRoom = findUserRoom(username);
             } catch (NotFreeRoomAvailableError e) {
                 e.printStackTrace();
@@ -176,6 +196,10 @@ public class Lobby extends Observable implements ControllerObserver {
         throw  new NotFreeRoomAvailableError("Username not found in the list of the Rooms in the Lobby!");
     }
 
+    /**
+     * called by Lobby after check whit this class method (can Initialized Game for..)
+     * @param username
+     */
     public void startInitializationOfTheGame(String username){
         try {
             findUserRoom(username).initializedGame();
@@ -200,7 +224,7 @@ public class Lobby extends Observable implements ControllerObserver {
     public void receiveMsg(CConnectionRequestMsg msg) {
         String gameMode = msg.getGameSize();
         String convertedGameMode = convertStringForMode(gameMode);
-        System.out.println("[Lobby] request of a network from: " +msg.getIP()+ " on @" +msg.getPort()+ " given " +msg.getUsername()+ " as username " +
+        System.out.println("[Lobby] request of a connection from: " +msg.getIP()+ " on @" +msg.getPort()+ " given  \"" +msg.getUsername()+ "\" as username " +
                 "asking for playing in " +convertedGameMode+ " Game!");
 
         //check if the username is not used yet
@@ -231,14 +255,21 @@ public class Lobby extends Observable implements ControllerObserver {
                 usersAssigned.add(msg.getUsername());
                 canCreateRoom.set(false); //now this client is creating a new room, so I set this parameter to false and not letting anyone else to do the same now
                 Room newRoom = new Room("Room  #" +this.numberOfRooms);
-                if (gameMode.equals("0")){
-                    //set the attribute of the Room true because the Client asked to play in Solo Mode
-                    newRoom.setSoloMode(true);
-                }
                 this.notEmptyRoom.add(newRoom);
                 updateRoomCounter();  //update the actual number of the rooms occupied
                 try {
                     newRoom.addUser(msg.getUsername());
+                    if (gameMode.equals("0")){
+                        //set the attribute of the Room true because the Client asked to play in Solo Mode
+                        newRoom.setSoloMode(true);
+                        //and the size of the room to 1
+                        newRoom.setSIZE(1);
+                    }
+                    else{
+                        //setting the room size asking that to the client
+                        VRoomSizeRequestMsg requestMsg = new VRoomSizeRequestMsg("Ask the client the size of the room where he wants to play", msg.getUsername(), newRoom.getRoomID());
+                        notifyAllObserver(ObserverType.VIEW, requestMsg);
+                    }
                 } catch (LimitExceededException e) {
                     e.printStackTrace();
                 }
@@ -257,6 +288,21 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     /**
+     * msg from the client with the size of the room where he (the first) wants to play
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
+        System.out.println("setting size room in Lobby");
+        String roomId = msg.getRoomID();
+        Room room = findRoomByID(roomId);
+        if (room != null){
+            room.setSIZE(msg.getRoomSize());
+        }
+
+    }
+
+    /**
      * creating the Error message to send to the client, after notify the view
      * @param msg
      */
@@ -268,9 +314,10 @@ public class Lobby extends Observable implements ControllerObserver {
     /*---------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
-    public void receiveMsg(VConnectionRequestMsg msg) {
+    public void receiveMsg(VVConnectionRequestMsg msg) {
         //not implemented here (in Virtual View)
     }
+
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {

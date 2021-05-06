@@ -4,6 +4,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import junit.framework.TestCase;
@@ -33,16 +34,18 @@ public class MarbleSpecialTest extends TestCase {
 
     @Test
     public void testChoose() throws InvalidActionException{
+        ms.setAbility(new Ability(new Resource(Color.YELLOW)));
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
         Player player = new Player("sofia");
         PersonalBoard personalBoard = personalBoardFactory.createGame();
         player.setGameSpace(personalBoard);
+        TypeResource typeResource = null;
         try {
-            ms.choose(player); //The method called by player that he have to choose the type of resource to give is the YELLOW
+           typeResource = ms.choose(player); //The method called by player that he have to choose the type of resource to give is the YELLOW
         } catch (InvalidActionException e) {
             e.printStackTrace();
         }
         Resource r = new Resource(Color.YELLOW); //create the resource that this Marble shoult add to the Player Wharehouse
-        assertEquals(r.getColor(), player.getGameSpace().getResourceManager().getResources().get(0).getColor()); //check if the resource is in the Wharehouse
+        assertEquals(r.getType(), typeResource); //check if the resource is in the Wharehouse
     }
 }

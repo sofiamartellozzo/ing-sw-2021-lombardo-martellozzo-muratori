@@ -5,11 +5,13 @@ import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.connection.PingMsg;
 import it.polimi.ingsw.message.connection.PongMsg;
+import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -18,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * Client that ask a connection in the specific Socket assigned
  * Whith this I can manage multiple Client contemporally
  */
-public class ClientHandler extends Observable implements Runnable{
+public class ClientHandler extends Observable implements Runnable {
 
     private Socket clientSocket;
 
@@ -29,32 +31,35 @@ public class ClientHandler extends Observable implements Runnable{
     private Thread ping;  //to keep alive the connection
     private String threadId; //the id for this thread that handle one specific client
 
-    public ClientHandler(Socket client, String threadId){
+    /* create a queue to contains all the msg received from the server */
+    private ArrayList<GameMsg> queue;
+
+    public ClientHandler(Socket client, String threadId) {
         clientSocket = client;
         this.threadId = threadId;
         /* when create the cHandler, create his virtual view too */
         virtualView = new VirtualView(this);
         //attach it to the Observable, because is an Observer
         attachObserver(ObserverType.CONTROLLER, virtualView);
-
+        queue = new ArrayList<>();
     }
 
     @Override
     public void run() {
-        try{
+        try {
             handleConnection();
-        } catch (IOException /*| ClassNotFoundException*/ e){
+        } catch (IOException /*| ClassNotFoundException*/ e) {
             /* disconnect */
             e.getStackTrace();
         }
     }
 
-    private void handleConnection() throws IOException{
+    private void handleConnection() throws IOException {
         /* open an in/out to comunicate */
-        try{
+        try {
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -63,28 +68,59 @@ public class ClientHandler extends Observable implements Runnable{
 
 
         /* now wait listening for a message (Event) */
-        while (true) {
-            GameMsg msgReceived;
-            try {
-                TimeUnit.SECONDS.sleep(10);
+        try {
+
+            while (true) {
+                //handleMsg();
+                if (!queue.isEmpty()) {
+                    GameMsg msg = queue.remove(0);
+                    //notify controller with the received message
+                    notifyAllObserver(ObserverType.CONTROLLER, msg);
+                    System.out.println("send msg to controller : " +msg.getMsgContent());
+                }
+                GameMsg msgReceived;
+                //TimeUnit.SECONDS.sleep(10);
                 Object received = in.readObject(); //deserialized
                 /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the controller*/
                 if (received != null) {
-                    if (!(received instanceof PongMsg)) {
-                        msgReceived = (GameMsg) received;
-                        //notify controller with the received message
-                        notifyAllObserver(ObserverType.CONTROLLER, msgReceived);
-                    } else {
+                    if ((received instanceof PongMsg)) {
                         System.out.println(((PongMsg) received).getMsgContent() + " from: " + threadId);
+                    } else {
+                        msgReceived = (GameMsg) received;
+                        //add msg in the queue
+                        addMsgInQueue(msgReceived);
                     }
                 }
-
-            } catch (ClassNotFoundException | IOException | InterruptedException e) {
-                System.err.println("Error from input client message");
-            } finally {
-                //clientSocket.close();
-                disconnect();
             }
+
+        } catch (ClassNotFoundException | IOException /*| InterruptedException */ e) {
+            System.err.println("Error from input client message");
+        } finally {
+            //clientSocket.close();
+            disconnect();
+        }
+    }
+
+
+
+    /**
+     * adding the new message in the queue to handle one msg at time
+     *
+     * @param msgReceived
+     */
+    private void addMsgInQueue(GameMsg msgReceived) {
+        System.out.println("adding in the queue");
+        queue.add(msgReceived);
+    }
+
+    /**
+     * notify the view with the messages received from the net
+     */
+    private void handleMsg() {
+        if (!queue.isEmpty()) {
+            GameMsg msg = queue.remove(0);
+            //notify controller with the received message
+            notifyAllObserver(ObserverType.CONTROLLER, msg);
         }
     }
 
@@ -92,47 +128,49 @@ public class ClientHandler extends Observable implements Runnable{
      * private method to start the Ping process, so keep the connection alive
      * from the server to the client every 5000 mills
      */
-    private void startPing(){
+    private void startPing() {
 
-            ping = new Thread(() -> {
-                try{
-                    while (true){
-                        Thread.sleep(5000);
-                        sendMsg(new PingMsg("Ping!"));
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    System.out.println("Ping disable");
-                } finally {
-                    Thread.currentThread().interrupt();
+        ping = new Thread(() -> {
+            try {
+                while (true) {
+                    Thread.sleep(5000);
+                    sendMsg(new PingMsg("Ping!"));
                 }
-            });
-            ping.start();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                System.out.println("Ping disable");
+            } finally {
+                Thread.currentThread().interrupt();
+            }
+        });
+        ping.start();
 
     }
 
-    private void stopPing(){
+    private void stopPing() {
         ping.interrupt();
     }
 
     /**
      * method called to send a msg from the server to the client
+     *
      * @param msg
      */
-    public void sendMsg(GameMsg msg){
+    public void sendMsg(GameMsg msg) {
         try {
+            out.reset();
             out.writeObject(msg);
             out.flush();
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("unable to send msg to client");
         }
     }
 
     //at the end always disconnect so close the socket
-    public void disconnect(){
+    public void disconnect() {
         try {
             clientSocket.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error closing socket");
         }
@@ -141,7 +179,8 @@ public class ClientHandler extends Observable implements Runnable{
     public InetAddress getUserIP() {
         return clientSocket.getInetAddress();
     }
-    public int getUserPort(){
+
+    public int getUserPort() {
         return clientSocket.getPort();
     }
 }

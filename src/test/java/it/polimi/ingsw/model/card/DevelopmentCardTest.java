@@ -5,6 +5,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
@@ -30,7 +31,7 @@ public class DevelopmentCardTest extends TestCase {
        cost.add(res);
        cost.add(r1);
 
-        Resource r2 = new Resource(Color.BLUE);
+        Resource r2 = new Resource(Color.PURPLE);
         ArrayList<Resource> earn = new ArrayList<>();
         earn.add(r2);
 
@@ -60,7 +61,7 @@ public class DevelopmentCardTest extends TestCase {
         PersonalBoard personalBoard = personalBoardFactory.createGame();
         player.setGameSpace(personalBoard);
         ArrayList<Resource> array = new ArrayList<>();
-        array.add(new Resource(Color.BLUE));
+        array.add(new Resource(Color.YELLOW));
 
         player.getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.PURPLE),1);
         player.getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.BLUE),2);
@@ -68,6 +69,8 @@ public class DevelopmentCardTest extends TestCase {
 
         String where = "Warehouse";
         developmentCard.useProductionPower(player,where);
+
+        assertEquals(player.getGameSpace().getResourceManager().getStrongBox().getContent().get(1).getType(), TypeResource.SERVANT);
 
     }
 }

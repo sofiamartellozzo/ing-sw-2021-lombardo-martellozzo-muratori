@@ -3,6 +3,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.utility.AnsiColors;
 
 import java.util.ArrayList;
 
@@ -97,5 +98,133 @@ public class DevelopmentCard extends Card {
 
     }
 
+    /**
+     * method used to represent the Development card
+     * @return
+     */
 
+    @Override
+    public String toString() {
+        return  /*"  ______________ \n" +
+                "|   level:"+level+"    |\n" +
+                "|   cost:"+getCostForCli()+"   |\n" +
+                "|              |\n" +
+                "|              |\n" +
+                "|    pay:1     |\n" +
+                "|    earn:1    |\n" +
+                "|   vPoints:1  |\n" +
+                "|______________| ";*/
+        /*"DEVELOPMENT CARD: "+"      "+
+        "color: "+color+"      "+
+        "level: " +level+"     "+
+        "cost: " +getCostForCli()+"    "+
+        "pay: "+getPayForCli()+ "    "+
+        "earn:"+ getEarnForCli()+ "     "+
+        "vPoints: "+getVictoryPoints();*/
+
+        "["+color+",Level:"+level+",Cost:" +getCostForCli()+",Pay:"+getPayForCli()+",Earn:"+ getEarnForCli()+",vPoints:"+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"]";
+
+    }
+
+    /*public Color getColorForCli(){
+        if(color == Color.GREEN)
+        {
+            System.out.print(AnsiColors.GREEN_BOLD+"GREEN"+AnsiColors.RESET+",Level:"+AnsiColors.GREEN_BOLD+level+AnsiColors.RESET);
+            return Color.GREEN;
+        }
+        throw new IllegalArgumentException("error");
+    }*/
+    public String getCostForCli()
+    {
+        String cost = "" ;
+        for (Resource res:costToBuy) {
+
+            switch (res.getType()){
+                case SHIELD:
+                    cost += AnsiColors.BLUE_BOLD+"\uD83D\uDD35"+AnsiColors.RESET;
+                    break;
+                case STONE:
+                    cost += AnsiColors.BLACK_BOLD+"\u26AB"+AnsiColors.RESET;
+                    break;
+                case COIN:
+                    cost += AnsiColors.YELLOW_BOLD+"\uD83D\uDFE1"+AnsiColors.RESET;
+                    break;
+                case SERVANT:
+                    cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
+                    break;
+
+            }
+        }
+        return cost;
+    }
+
+    public String getPayForCli()
+    {
+        String cost = "" ;
+        for (Resource res:costProductionPower) {
+
+            switch (res.getType()){
+                case SHIELD:
+                    cost += AnsiColors.BLUE_BOLD+"\uD83D\uDD35"+AnsiColors.RESET;
+                    break;
+                case STONE:
+                    cost += AnsiColors.BLACK_BOLD+"\u26AB"+AnsiColors.RESET;
+                    break;
+                case COIN:
+                    cost += AnsiColors.YELLOW_BOLD+"\uD83D\uDFE1"+AnsiColors.RESET;
+                    break;
+                case SERVANT:
+                    cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
+                    break;
+
+            }
+        }
+        return cost;
+    }
+
+    public String getEarnForCli()
+    {
+        String cost = "" ;
+        for (Resource res:earnProductionPower) {
+
+            switch (res.getType()){
+                case SHIELD:
+                    cost += AnsiColors.BLUE_BOLD+"\uD83D\uDD35"+AnsiColors.RESET;
+                    break;
+                case STONE:
+                    cost += AnsiColors.BLACK_BOLD+"\u26AB"+AnsiColors.RESET;
+                    break;
+                case COIN:
+                    cost += AnsiColors.YELLOW_BOLD+"\uD83D\uDFE1"+AnsiColors.RESET;
+                    break;
+                case SERVANT:
+                    cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
+                    break;
+
+            }
+        }
+        return cost;
+    }
+
+    public static void main(String [] args){
+
+        ArrayList<Resource> array = new ArrayList<>();
+        array.add(0,new Resource(Color.BLUE));
+        array.add(1,new Resource(Color.PURPLE));
+
+        ArrayList<Resource> proceeds = new ArrayList<>();
+        proceeds.add(0,new Resource(Color.GREY));
+        proceeds.add(1,new Resource(Color.YELLOW));
+
+        ArrayList<Resource> cost = new ArrayList<>();
+        cost.add(0,new Resource(Color.BLUE));
+
+        DevelopmentCard card1 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+
+        System.out.println(card1.toString());
+
+    }
 }
+
+
+
