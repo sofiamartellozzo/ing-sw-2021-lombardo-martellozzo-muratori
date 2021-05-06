@@ -58,18 +58,6 @@ public class GameServer {
                 System.out.println("connection dropped");
             }
         }
-
-
-        /*
-        //per lettura bufferizzata
-        BufferedReader in = null;
-        try{
-            in = new LineNumberReader(
-                    new InputStreamReader(clientSocket.getInputStream())
-            );
-        } catch (IOException e3){
-            //gestisci
-        }*/
     }
 }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.message.controllerMsg;
 
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.net.InetAddress;
 
@@ -19,6 +20,7 @@ public class CConnectionRequestMsg extends ControllerGameMsg {
     private int Port;
     private String username;
     private String gameSize;
+    private VirtualView VV;
 
     public CConnectionRequestMsg(String content, InetAddress IP, int port, String username, String gameSize) {
         super(content);
@@ -42,6 +44,14 @@ public class CConnectionRequestMsg extends ControllerGameMsg {
 
     public String getGameSize() {
         return gameSize;
+    }
+
+    public void setVirtualView(VirtualView virtualView){
+        VV = virtualView;
+    }
+
+    public VirtualView getVV() {
+        return VV;
     }
 
     @Override

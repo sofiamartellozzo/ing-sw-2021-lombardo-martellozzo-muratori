@@ -1,9 +1,13 @@
 package it.polimi.ingsw.message.viewMsg;
 
+import it.polimi.ingsw.message.ViewObserver;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * InitializedC ---> VV ---> CLI
+ *
  * this class represent the msg send by the controller to the view in the initialization of the game
  * so is the Initialized Controller that create it and notify the view
  * it will send it to the client, waiting for the respond
@@ -26,5 +30,10 @@ public class VChooseLeaderCardRequestMsg extends ViewGameMsg {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public void notifyHandler(ViewObserver viewObserver) {
+        viewObserver.receiveMsg(this);
     }
 }

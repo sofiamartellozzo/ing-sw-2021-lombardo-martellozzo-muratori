@@ -129,6 +129,7 @@ public class Player implements PlayerInterface{
     @Override
     public void setNumber(int number) {
         this.number = number;
+        setInkpot();
     }
 
     /**

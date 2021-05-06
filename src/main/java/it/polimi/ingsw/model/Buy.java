@@ -18,7 +18,7 @@ public class Buy implements BuyCard {
         ArrayList<Resource> cost = cardBought.getCost();
         PersonalBoard playerBoard = player.getGameSpace();
         if (checkBeforeBuy(cardBought, player)){
-            playerBoard.getResourceManager().removeResources(cost);
+            playerBoard.getResourceManager().removeResourcesFromBoth(cost);
             //playerBoard.removeResource(cost.get(1), new RealDepot(1,1));
             playerBoard.getCardSpaces().get(selectedCardSpace).addCard(cardBought);
         }

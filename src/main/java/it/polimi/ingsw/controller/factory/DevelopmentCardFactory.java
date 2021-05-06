@@ -26,7 +26,7 @@ public class DevelopmentCardFactory {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/java/it/polimi/ingsw/utility/developmentCard.json"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/developmentCard.json"));
         Type list = new TypeToken<ArrayList<DevelopmentCard>>() {
         }.getType();
         ArrayList<DevelopmentCard> cards = gson.fromJson(reader, list);

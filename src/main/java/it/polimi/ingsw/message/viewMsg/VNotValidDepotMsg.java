@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.TypeResource;
 
 /**
  * InitializedC ---> VV ---> CLI
+ *
  * this msg is send by the controller to the view to notify the client that
  * the depot he choose cannot store the
  * resource so he have to change his choice

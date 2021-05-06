@@ -79,6 +79,7 @@ public class TurnController extends Observable implements ControllerObserver {
     private void setTurnSequence(HashMap<Integer, PlayerInterface> players){
         turnSequence = players;
         numberOfPlayer = players.keySet().size();
+        System.out.println("number of players " +numberOfPlayer+ " index " +players.keySet());
     }
 
     /**
@@ -262,6 +263,16 @@ public class TurnController extends Observable implements ControllerObserver {
         //check end turn (because all player has increased their position of 1
     }
 
+    @Override
+    public void receiveMsg(CChooseResourceResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
+
+    }
+
     /*------------------------------------------------------------------------------------------------------------------*/
 
     @Override
@@ -299,6 +310,11 @@ public class TurnController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
         //not here (Lobby)
+    }
+
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+
     }
 
     @Override

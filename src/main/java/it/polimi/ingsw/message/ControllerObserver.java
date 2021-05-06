@@ -20,10 +20,14 @@ public interface ControllerObserver extends Observer{
     /* from cli, then VV and finally to Lobby---> set room size*/
     public void receiveMsg(CRoomSizeResponseMsg msg);
 
+    /* notification by VV of a starting initialization*/
+    public void receiveMsg(CVStartInitializationMsg msg);
+
     /* from CLI to InitializedC*/
     public void receiveMsg(CChooseResourceAndDepotMsg msg);
-
     public void receiveMsg(CChooseLeaderCardResponseMsg msg);
+
+
 
     public void receiveMsg(CChooseActionTurnResponseMsg msg);
     public void receiveMsg(CBuyDevelopCardResponseMsg msg);
@@ -33,6 +37,7 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CChooseDiscardResourceMsg msg);
     public void receiveMsg(CChooseResourceResponseMsg msg);
     public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg);
+
 
 
 }

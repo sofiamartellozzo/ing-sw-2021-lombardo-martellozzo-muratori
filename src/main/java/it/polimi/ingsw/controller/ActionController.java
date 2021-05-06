@@ -309,5 +309,10 @@ public class ActionController extends Observable implements ControllerObserver {
         //not here, in (Lobby)
     }
 
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+
+    }
+
 
 }

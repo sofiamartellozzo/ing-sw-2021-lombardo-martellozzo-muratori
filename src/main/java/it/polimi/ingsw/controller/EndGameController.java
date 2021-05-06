@@ -109,6 +109,11 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
 
         //NOT IMPLEMENTED HERE
@@ -154,6 +159,16 @@ public class EndGameController extends Observable implements ControllerObserver 
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
 
         //NOT IMPLEMENTED HERE
+    }
+
+    @Override
+    public void receiveMsg(CChooseResourceResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
+
     }
 
 

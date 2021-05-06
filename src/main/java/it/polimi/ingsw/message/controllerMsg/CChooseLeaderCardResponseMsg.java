@@ -1,7 +1,12 @@
 package it.polimi.ingsw.message.controllerMsg;
 
+import it.polimi.ingsw.message.ControllerObserver;
+
 import java.util.ArrayList;
 
+/**
+ * CLI ---> VV ---> InitializedController
+ */
 public class CChooseLeaderCardResponseMsg extends ControllerGameMsg {
 
     private ArrayList<Integer> chosenLeaderCard;
@@ -41,5 +46,10 @@ public class CChooseLeaderCardResponseMsg extends ControllerGameMsg {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public void notifyHandler(ControllerObserver controllerObserver) {
+        controllerObserver.receiveMsg(this);
     }
 }

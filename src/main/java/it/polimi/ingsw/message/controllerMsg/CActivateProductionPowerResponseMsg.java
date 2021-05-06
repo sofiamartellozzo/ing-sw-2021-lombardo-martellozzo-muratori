@@ -29,4 +29,8 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     public Integer getWhich() {
         return which;
     }
+
+    public TurnAction getActionChose() {
+        return action;
+    }
 }
