@@ -8,8 +8,8 @@ SOFIA
 
 public class Resource{
 
-    private Color color;
-    private TypeResource typeResource;
+    protected Color color;
+    protected TypeResource typeResource;
 
     /* constructor */
     public Resource(Color color){

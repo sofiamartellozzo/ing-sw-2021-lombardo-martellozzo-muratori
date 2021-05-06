@@ -3,11 +3,13 @@ package it.polimi.ingsw.model.board.resourceManagement;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.*;
 
@@ -136,7 +138,7 @@ public class WarehouseTest {
         this.addResource();
         SpecialWarehouse specialWarehouse = new SpecialWarehouse(warehouse,servant);
         //Depot 5
-        warehouse.moveResource(2,5);
+        warehouse.moveResourceToAbilityDepot(2,5);
         depot2.remove(servant);
         depot5.add(servant);
         warehouse.addResource(servant,2);
@@ -161,12 +163,12 @@ public class WarehouseTest {
 
     @Test (expected = InvalidActionException.class)
     public void moveResourceToAbilityDepot_sameDepots_InvalidActionException() throws InvalidActionException {
-        warehouse.moveResource(3,3);
+        warehouse.moveResourceToAbilityDepot(3,3);
     }
 
     @Test (expected = InvalidActionException.class)
     public void moveResourceToAbilityDepot_NoAbilityDepot_InvalidActionException() throws InvalidActionException {
-        warehouse.moveResource(1,4);
+        warehouse.moveResourceToAbilityDepot(1,4);
     }
 
     @Test (expected = InvalidActionException.class)
@@ -176,7 +178,7 @@ public class WarehouseTest {
         //Depot 3 -> 2 STONES
         //Depot 4 -> 2 SHIELDS
         this.addResource();
-        warehouse.moveResource(1,3);
+        warehouse.moveResourceToAbilityDepot(1,3);
     }
 
     @Test
@@ -231,10 +233,7 @@ public class WarehouseTest {
 
     @Test
     public void getDepots() throws InvalidActionException {
-        ArrayList<Depot> depots = new ArrayList<>();
-        for(Depot depot: warehouse.getDepots()){
-            depots.add(depot);
-        }
+        ArrayList<Depot> depots = new ArrayList<>(warehouse.getDepots());
         assertSame(depots.size(),warehouse.getDepots().size());
         for(int i=0;i< warehouse.getDepots().size();i++) {
             assertEquals(depots.get(i),warehouse.getDepots().get(i));
@@ -243,9 +242,7 @@ public class WarehouseTest {
         SpecialWarehouse specialWarehouse = new SpecialWarehouse(warehouse,stone);
         specialWarehouse = new SpecialWarehouse(warehouse,coin);
         depots.clear();
-        for(Depot depot: warehouse.getDepots()){
-            depots.add(depot);
-        }
+        depots.addAll(warehouse.getDepots());
         assertSame(depots.size(),warehouse.getDepots().size());
         for(int i=0;i< warehouse.getDepots().size();i++) {
             assertEquals(depots.get(i),warehouse.getDepots().get(i));
@@ -358,5 +355,87 @@ public class WarehouseTest {
         assertSame(2,warehouse.searchResource(servant));
         assertSame(3,warehouse.searchResource(stone));
         assertSame(-1,warehouse.searchResource(coin));
+    }
+
+    @Test
+    public void countResource() throws InvalidActionException {
+        warehouse.addResource(new Resource(TypeResource.COIN),1);
+        assertSame(1,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.COIN)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.STONE)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SHIELD)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SERVANT)));
+        warehouse.addResource(new Resource(TypeResource.SHIELD),2);
+        assertSame(1,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.COIN)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.STONE)));
+        assertSame(1,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SHIELD)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SERVANT)));
+        warehouse.addResource(new Resource(TypeResource.SHIELD),2);
+        assertSame(1,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.COIN)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.STONE)));
+        assertSame(2,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SHIELD)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SERVANT)));
+        warehouse.addResource(new Resource(TypeResource.STONE),3);
+        assertSame(1,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.COIN)));
+        assertSame(1,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.STONE)));
+        assertSame(2,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SHIELD)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SERVANT)));
+        SpecialWarehouse specialWarehouse = new SpecialWarehouse(warehouse,new Resource(TypeResource.STONE));
+        warehouse.addResource(new Resource(TypeResource.STONE),4);
+        assertSame(1,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.COIN)));
+        assertSame(2,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.STONE)));
+        assertSame(2,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SHIELD)));
+        assertSame(0,warehouse.countResource(warehouse.getContent(), new Resource(TypeResource.SERVANT)));
+    }
+
+    @Test
+    public void checkEnoughResources() throws InvalidActionException {
+        countResource();
+        /*
+        * 1 COIN
+        * 2 SHIELD
+        * 1 STONE
+        * 1 STONE
+        * */
+        ArrayList<Resource> resourcesToCheck = new ArrayList<>();
+        resourcesToCheck.add(new Resource(TypeResource.COIN));
+        assertTrue(warehouse.checkEnoughResources(resourcesToCheck));
+        resourcesToCheck.add(new Resource(TypeResource.SHIELD));
+        assertTrue(warehouse.checkEnoughResources(resourcesToCheck));
+        resourcesToCheck.add(new Resource(TypeResource.STONE));
+        assertTrue(warehouse.checkEnoughResources(resourcesToCheck));
+        resourcesToCheck.add(new Resource(TypeResource.STONE));
+        assertTrue(warehouse.checkEnoughResources(resourcesToCheck));
+        resourcesToCheck.add(new Resource(TypeResource.SERVANT));
+        assertFalse(warehouse.checkEnoughResources(resourcesToCheck));
+        resourcesToCheck.remove(resourcesToCheck.size()-1);
+        assertTrue(warehouse.checkEnoughResources(resourcesToCheck));
+        resourcesToCheck.add(new Resource(TypeResource.STONE));
+        assertFalse(warehouse.checkEnoughResources(resourcesToCheck));
+    }
+
+    @Test
+    public void getInstanceContent() throws InvalidActionException {
+        countResource();
+        /*
+         * 1 COIN
+         * 2 SHIELD
+         * 1 STONE
+         * 1 STONE
+         * */
+        HashMap<Integer,ArrayList<TypeResource>> expected = new HashMap<>();
+        ArrayList<TypeResource> type1 = new ArrayList<>();
+        type1.add(TypeResource.COIN);
+        expected.put(1,type1);
+        ArrayList<TypeResource> type2 = new ArrayList<>();
+        type2.add(TypeResource.SHIELD);
+        type2.add(TypeResource.SHIELD);
+        expected.put(2,type2);
+        ArrayList<TypeResource> type3 = new ArrayList<>();
+        type3.add(TypeResource.STONE);
+        expected.put(3,type3);
+        ArrayList<TypeResource> type4 = new ArrayList<>();
+        type4.add(TypeResource.STONE);
+        expected.put(4,type4);
+        assertEquals(expected,warehouse.getInstanceContent());
     }
 }

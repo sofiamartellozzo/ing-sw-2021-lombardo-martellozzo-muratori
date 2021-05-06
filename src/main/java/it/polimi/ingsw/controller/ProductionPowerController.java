@@ -41,7 +41,11 @@ public class ProductionPowerController extends Observable implements ControllerO
             VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, please choose which production power want to activate: ",player.getUsername());
             notifyAllObserver(ObserverType.VIEW,requestMsg);
         }
-        player.getGameSpace().getStrongbox().addResources(receivedResources);
+        try {
+            player.getGameSpace().getStrongbox().addResources(receivedResources);
+        }catch(InvalidActionException e){
+            e.printStackTrace();
+        }
     }
 
     @Override

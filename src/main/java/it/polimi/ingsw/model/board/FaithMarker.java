@@ -3,38 +3,45 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 
-/*
- * SOFIA
- * */
-
 /**
- * this class rapresent the faith Marker, this is a "type of resource" because have the color (red)
- * and the type, but is only one for each player and track the position of the player himself in
- * his own faith track
+ * Represents the Faith Marker within the FaithTrack
+ * The "position" attribute indicates in which box of the FaithTrack the player is.
+ * The "color" is Red because it is a type of resource.
  */
 public class FaithMarker extends Resource {
 
-    private int position;   //the position on the faith track
-    private Color color;    //it has to be RED
+    private int position;
 
-    /* constructor */
+    /**
+     * Constructor
+     * Set the "color" to red and the "position" to 0.
+     */
     public FaithMarker() {
         super(Color.RED);
         this.position = 0;
     }
 
+    /**
+     * Getter method
+     * @return -> The position
+     */
     public int getPosition() {
         return this.position;
     }
 
+    /**
+     * Setter Method
+     * @param position -> The position you want to set
+     */
     public void setPosition(int position) {
         this.position = position;
     }
 
     /**
-     * moving the marker of +1 in the faith track
+     * Increase the position by one, so the player can go ahead in the FaithTrack.
      */
     public void increasePosition() {
         this.position++;
     }
+
 }

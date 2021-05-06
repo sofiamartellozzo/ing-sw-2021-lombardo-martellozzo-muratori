@@ -1,18 +1,15 @@
 package it.polimi.ingsw.model.board;
 
-/**
-* GIANLUCA
- * TEST PASSED
-* One of the type of the boxes.
-* It has the same attribute of Box class.
-* */
 
+/**
+ * One of the three type of boxes.
+ */
 public class GoldBox extends Box{
 
     /**
      * Constructor
-     * @param whichSection
-     * @param numberBox
+     * @param whichSection -> In which section is
+     * @param numberBox -> The numeration
      * @param victoryPoints -> The value of Victory Points, to calculate the final score.
      */
     public GoldBox(int whichSection, int numberBox, int victoryPoints) {
@@ -22,9 +19,9 @@ public class GoldBox extends Box{
 
     /**
      * Constructor
-     * In case the Gold Boxes are not in a vatican section
-     * @param numberBox
-     * @param victoryPoints
+     * In case the Gold Box is not in a vatican section
+     * @param numberBox -> The numeration
+     * @param victoryPoints -> The value of Victory Points, to calculate the final score.
      */
     public GoldBox(int numberBox, int victoryPoints) {
         super(numberBox);
@@ -33,7 +30,7 @@ public class GoldBox extends Box{
 
     /**
      * Getter Method
-     * @return
+     * @return -> The victory points
      */
     @Override
     public int getVictoryPoints() {
@@ -42,7 +39,7 @@ public class GoldBox extends Box{
 
     /**
      * Getter Method
-     * @return
+     * @return -> The section where the box is
      */
     @Override
     public int getWhichSection() {
@@ -51,7 +48,7 @@ public class GoldBox extends Box{
 
     /**
      * Getter Method
-     * @return
+     * @return -> The numeration
      */
     @Override
     public int getNumberBox() {
@@ -60,7 +57,7 @@ public class GoldBox extends Box{
 
     /**
      * toString Method
-     * @return
+     * @return -> "GoldBox"
      */
     @Override
     public String toString() {

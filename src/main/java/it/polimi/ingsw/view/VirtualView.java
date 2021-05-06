@@ -98,6 +98,16 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
+    public void receiveMsg(CChooseResourceResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
         //not implemented here (in Lobby)
     }

@@ -489,7 +489,7 @@ public class Player implements PlayerInterface{
 
     @Override
     public void moveResource(int depot1, int depot2) throws InvalidActionException{
-        this.getGameSpace().getResourceManager().getWarehouse().moveResource(depot1,depot2
+        this.getGameSpace().getResourceManager().getWarehouse().moveResourceToAbilityDepot(depot1,depot2
         );
     }
 

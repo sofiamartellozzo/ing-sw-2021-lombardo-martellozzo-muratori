@@ -1,12 +1,11 @@
 package it.polimi.ingsw.model.board;
 
 /**
- * GIANLUCA
- * TEST PASSED
  * One of the type of the boxes.
  * It has the same attribute of Box class.
+ * The "last" attribute indicates if it is the last box of the FaithTrack.
+ * The "activated" attribute indicates if it was already activated.
  * */
-
 public class PopeBox extends Box{
 
     private boolean last;
@@ -14,28 +13,42 @@ public class PopeBox extends Box{
 
     /**
      * Constructor
-     * Last is set to false, then it can be set to true when it's necessary.
-     * @param whichSection
-     * @param numberBox
+     * Last and activated are set to false, then it can be set to true when it's necessary.
+     * @param whichSection -> In which section the box is owned
+     * @param numberBox -> The numeration
      */
     public PopeBox(int whichSection, int numberBox) {
         super(whichSection, numberBox);
         this.last = false;
+        this.activated=false;
+    }
+
+    /**
+     * Constructor
+     * For the last PopeBox of the FaithTrack.
+     * @param whichSection -> In which section the box is owned
+     * @param numberBox -> The numeration
+     * @param victoryPoints -> The victory points
+     */
+    public PopeBox(int whichSection,int numberBox, int victoryPoints){
+        super(whichSection,numberBox);
+        this.last=true;
+        this.activated=false;
+        this.victoryPoints=victoryPoints;
     }
 
     /**
      * Getter Method
-     * @return
+     * @return -> "last"
      */
     public boolean isLast() {
         return last;
     }
 
-
-
     /**
      * Setter Method
-     * @param last
+     * In case it was activated.
+     * @param last -> The new state
      */
     public void setLast(boolean last) {
         this.last = last;
@@ -43,7 +56,8 @@ public class PopeBox extends Box{
 
     /**
      * Setter Method
-     * @return
+     * In case the victory points depends on the last gold box.
+     * @param lastGoldBox -> The reference to the last gold box
      */
     public void setVictoryPoints(GoldBox lastGoldBox) {
         if(lastGoldBox!=null) this.victoryPoints=lastGoldBox.getVictoryPoints();
@@ -52,7 +66,7 @@ public class PopeBox extends Box{
 
     /**
      * Getter Method
-     * @return
+     * @return -> The Victory Points
      */
     @Override
     public int getVictoryPoints(){
@@ -61,7 +75,7 @@ public class PopeBox extends Box{
 
     /**
      * Getter Method
-     * @return
+     * @return -> The Vatican Section
      */
     @Override
     public int getWhichSection() {
@@ -70,7 +84,7 @@ public class PopeBox extends Box{
 
     /**
      * Getter Method
-     * @return
+     * @return -> The numeration
      */
     @Override
     public int getNumberBox() {
@@ -78,17 +92,18 @@ public class PopeBox extends Box{
     }
 
     /**
-     * After checking.
+     * To use only after checking the player.
      * It activates the power of the PopeBox.
      * Players in the VaticanSection call this method to activate Pope's Favor Tile.
+     * If the player is in the vatican section set the relative pope's favor tile to active.
      * */
     public void vaticanReport(VaticanSection vaticanSection){
         vaticanSection.getPopesFavorTile().setState(new Active());
-    };
+    }
 
     /**
      * toString Method
-     * @return
+     * @return -> "PopeBox"
      */
     @Override
     public String toString() {
@@ -97,7 +112,7 @@ public class PopeBox extends Box{
 
     /**
      * Getter Method
-     * @return
+     * @return -> If it is activated or not.
      */
     public boolean isActivated() {
         return activated;
@@ -105,7 +120,7 @@ public class PopeBox extends Box{
 
     /**
      * Setter Method
-     * @param activated
+     * @param activated -> The new state of activated
      */
     public void setActivated(boolean activated) {
         this.activated = activated;

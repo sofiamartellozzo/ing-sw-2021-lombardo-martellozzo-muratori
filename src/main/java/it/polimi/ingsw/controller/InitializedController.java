@@ -334,6 +334,16 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
+    public void receiveMsg(CChooseResourceResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
         //not here
     }

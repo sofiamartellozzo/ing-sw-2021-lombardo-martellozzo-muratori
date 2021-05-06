@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="601.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane layoutX="-1.0" prefHeight="376.0" prefWidth="601.0">
+         <right>
+            <Pane prefHeight="376.0" prefWidth="274.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="390.0" fitWidth="282.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/MasterOfRenaissance.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </right>
+         <left>
+            <SplitPane dividerPositions="0.5, 0.5, 0.5, 0.5, 0.5, 0.5" maxHeight="-Infinity" maxWidth="-Infinity" orientation="VERTICAL" prefHeight="376.0" prefWidth="329.0" BorderPane.alignment="CENTER">
+               <items>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="133.0" prefWidth="328.0">
+                     <children>
+                        <BorderPane prefHeight="117.0" prefWidth="328.0">
+                           <center>
+                              <Text fill="#002f66" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to" textAlignment="CENTER" wrappingWidth="256.3640878200531" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Noto Sans Bold" size="24.0" />
+                                 </font>
+                              </Text>
+                           </center>
+                           <bottom>
+                              <Text fill="#002f66" strokeType="OUTSIDE" strokeWidth="0.0" text="Masters of Renaissance" wrappingWidth="291.234375" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font name="Vivaldi Italic" size="36.0" />
+                                 </font>
+                              </Text>
+                           </bottom>
+                        </BorderPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="53.0" prefWidth="171.0">
+                     <children>
+                        <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="201.0" rowValignment="BOTTOM">
+                           <children>
+                              <RadioButton mnemonicParsing="false" text="Localhost">
+                                 <font>
+                                    <Font name="Noto Sans" size="12.0" />
+                                 </font></RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Online Server" />
+                              <RadioButton mnemonicParsing="false" text="Custom IP" />
+                           </children>
+                        </FlowPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="18.0" prefWidth="352.0">
+                     <children>
+                        <FlowPane alignment="CENTER" columnHalignment="CENTER">
+                           <children>
+                              <RadioButton mnemonicParsing="false" text="SinglePlayer" />
+                              <RadioButton mnemonicParsing="false" text="MultiPlayer" />
+                           </children>
+                        </FlowPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="53.0" prefWidth="298.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IP" textAlignment="CENTER" wrappingWidth="297.9140577316284" />
+                        <TextField alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="298.0" promptText="Insert IP..." text="127.0.0.1" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="43.0" prefWidth="297.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username" textAlignment="CENTER" wrappingWidth="298.0909957885742" />
+                        <TextField alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="299.0" promptText="Insert a username..." />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="69.0" prefWidth="154.0">
+                     <children>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" text="Play" textAlignment="CENTER">
+                           <font>
+                              <Font name="Noto Sans" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="49.0" prefWidth="328.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lombardo - Martellozzo - Muratori" textAlignment="CENTER" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Politecnico di Milano, 2021" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
+               </items>
+            </SplitPane>
+         </left>
+      </BorderPane>
+      <VBox prefHeight="200.0" prefWidth="100.0" />
+   </children>
+</AnchorPane>

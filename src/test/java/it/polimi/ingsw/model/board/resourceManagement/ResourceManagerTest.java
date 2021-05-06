@@ -3,13 +3,19 @@ package it.polimi.ingsw.model.board.resourceManagement;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.TypeResource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static org.junit.Assert.*;
+
+
+//Methods "FromWarehouse/StrongBox" and "ToWarehouse/StrongBox"
+//not tested because they've been tested in the appropriate tests.
 
 public class ResourceManagerTest {
     ResourceManager resourceManager;
@@ -101,7 +107,7 @@ public class ResourceManagerTest {
     }
 
     @Test
-    public void removeResources() throws InvalidActionException {
+    public void removeResourcesFromBoth() throws InvalidActionException {
         // Depot 1 -> 1 Shield
         // Depot 2 -> 2 Servants
         // Depot 3 -> EMPTY
@@ -157,10 +163,7 @@ public class ResourceManagerTest {
         // StrongBox -> 8 Coins, 8 Stones
         this.getResources();
 
-        Resource coin = new Resource(Color.YELLOW);
         Resource shield = new Resource(Color.BLUE);
-        Resource stone = new Resource(Color.GREY);
-        Resource servant = new Resource(Color.PURPLE);
 
         ArrayList<Resource> resources = new ArrayList<>();
 
@@ -181,11 +184,44 @@ public class ResourceManagerTest {
         // StrongBox -> 8 Coins, 8 Stones
         this.getResources();
 
-        int victoryPoints = (1+2+0+1+8+8)/5;
+        int victoryPoints = (1 + 2 + 1 + 8 + 8)/5;
         assertSame(victoryPoints,resourceManager.getVictoryPoints());
     }
 
-    //Methods "FromWarehouse/StrongBox" and "ToWarehouse/StrongBox"
-    //not tested because they've been tested in the appropriate tests.
+    @Test
+    public void countResource() throws InvalidActionException {
+        Random randomNumber = new Random();
+        ArrayList<Resource> resourcesToAdd = new ArrayList<>();
+        int shield=0;
+        int stone=0;
+        int servant=0;
+        int coin=0;
+        int n = randomNumber.nextInt(100);
+        for(int i=0;i<n;i++){
+            int r = randomNumber.nextInt(4);
+            if(r==0){
+                resourcesToAdd.add(new Resource(TypeResource.STONE));
+                stone++;
+            }else if(r==1){
+                resourcesToAdd.add(new Resource(TypeResource.SHIELD));
+                shield++;
+            }else if(r==2){
+                resourcesToAdd.add(new Resource(TypeResource.SERVANT));
+                servant++;
+            }else if(r==3){
+                resourcesToAdd.add(new Resource(TypeResource.COIN));
+                coin++;
+            }
+        }
+        try {
+            resourceManager.getStrongBox().addResources(resourcesToAdd);
+        }catch(InvalidActionException e){
+            e.printStackTrace();
+        }
+        assertSame(stone,resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(TypeResource.STONE)));
+        assertSame(shield,resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(TypeResource.SHIELD)));
+        assertSame(coin,resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(TypeResource.COIN)));
+        assertSame(servant,resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(TypeResource.SERVANT)));
+    }
 
 }

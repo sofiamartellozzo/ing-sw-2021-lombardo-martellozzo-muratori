@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ResourceManager {
 
     private final StrongBox strongBox;
-    private Warehouse warehouse;
+    private final Warehouse warehouse;
 
     /**
      * Constructor
@@ -100,7 +100,7 @@ public class ResourceManager {
      * Add all "resources" in the strongbox.
      * @param resources -> The resources you want to put in
      */
-    public void addResourcesToStrongBox(ArrayList<Resource> resources){
+    public void addResourcesToStrongBox(ArrayList<Resource> resources) throws InvalidActionException {
         strongBox.addResources(resources);
     }
 
@@ -151,7 +151,7 @@ public class ResourceManager {
      * @throws InvalidActionException -> If one of the conditions is not respected
      */
     public void moveResourceFromToAbilityDepot(int fromDepot, int toDepot) throws InvalidActionException {
-        warehouse.moveResource(fromDepot,toDepot);
+        warehouse.moveResourceToAbilityDepot(fromDepot,toDepot);
     }
 
     /**
@@ -190,8 +190,7 @@ public class ResourceManager {
      * @return -> How many resources of type "resource" are in "content"
      */
     public int countResource(ArrayList<Resource> content, Resource resource){
-        int count = (int) content.stream().filter(r -> r.getType().equals(resource.getType())).count();
-        return count;
+        return (int) content.stream().filter(r -> r.getType().equals(resource.getType())).count();
     }
 
     /**

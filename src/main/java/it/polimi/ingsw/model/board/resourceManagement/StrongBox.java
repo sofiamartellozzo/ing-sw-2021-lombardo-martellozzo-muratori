@@ -9,12 +9,11 @@ import java.util.ArrayList;
 
 /**
  * It represents the StrongBox in the PersonalBoard, it can contain infinite resources.
- * The "numberResources" attribute indicates how many resources are in.
  * The "content" attribute is an ArrayList<Resource> contained by the strongbox.
  * */
 
 public class StrongBox{
-    private ArrayList<Resource> content;
+    private final ArrayList<Resource> content;
 
     /**
      * Constructor
@@ -61,12 +60,11 @@ public class StrongBox{
      * @throws InvalidActionException -> If one of the conditions is not respected
      */
     public void removeResources(ArrayList<Resource> resources) throws InvalidActionException {
-        if(resources!=null){
-            if(content.isEmpty() && !resources.isEmpty()) throw new InvalidActionException("The strongbox is empty");
-            if(!checkEnoughResources(resources)) throw new InvalidActionException("The strongbox doesn't contain some resources you want to remove!");
-            for(Resource resource:resources) {
-                removeResource(resource);
-            }
+        if(resources==null || resources.isEmpty()) throw new InvalidActionException("Incorrect input");
+        if(content.isEmpty()) throw new InvalidActionException("The strongbox is empty");
+        if(!checkEnoughResources(resources)) throw new InvalidActionException("The strongbox doesn't contain some resources you want to remove!");
+        for(Resource resource:resources) {
+            removeResource(resource);
         }
     }
 
@@ -93,14 +91,13 @@ public class StrongBox{
      * @return -> How many resources of type "resource" are in "content"
      */
     public int countResource(ArrayList<Resource> content, Resource resource){
-        int count = (int) content.stream().filter(r -> r.getType().equals(resource.getType())).count();
-        return count;
+        return (int) content.stream().filter(r -> r.getType().equals(resource.getType())).count();
     }
 
     /**
      * Checks if all "resources" are contained by the strongbox
-     * @param resources
-     * @return
+     * @param resources -> Resources to check
+     * @return -> True if all "resources" are contained by the strongbox, else false.
      */
 
     public boolean checkEnoughResources(ArrayList<Resource> resources){

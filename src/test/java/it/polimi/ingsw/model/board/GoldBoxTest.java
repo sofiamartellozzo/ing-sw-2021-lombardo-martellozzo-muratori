@@ -11,13 +11,11 @@ public class GoldBoxTest {
     @Before
     public void setUp() throws Exception {
         goldBox = new GoldBox(1,1,1);
-        assertNotNull(goldBox);
     }
 
     @After
     public void tearDown() throws Exception {
         goldBox =null;
-        assertNull(goldBox);
     }
 
     @Test

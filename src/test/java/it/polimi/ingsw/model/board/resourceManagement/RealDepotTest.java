@@ -79,8 +79,6 @@ public class RealDepotTest {
         realDepot.addResources(2,shield);
         expectedReal.add(shield);
         expectedReal.add(shield);
-        //Adding 1 coin to abilityDepot with "addResources" method
-        Resource coin = new Resource(Color.YELLOW);
         //Verifying if expected and effective depots are empty and not null
         assertNotNull(realDepot.getResources());
         assertEquals(expectedReal,realDepot.getResources());
@@ -89,7 +87,7 @@ public class RealDepotTest {
 
 
     @Test (expected = InvalidActionException.class)
-    public void addResources_IncorrectInput_NoException() throws InvalidActionException {
+    public void addResources_IncorrectInput_InvalidActionException() throws InvalidActionException {
         realDepot.addResources(1,null);
     }
 
@@ -97,8 +95,6 @@ public class RealDepotTest {
     public void addResources_DifferentType_InvalidActionException() throws InvalidActionException {
         //Expected Result for RealDepot
         ArrayList<Resource> expectedReal = new ArrayList<>();
-        //Expected Result for AbilityDepot
-        ArrayList<Resource> expectedSpecial = new ArrayList<>();
         //Verifying if expected and effective depots are empty and not null
         assertNotNull(realDepot.getResources());
         assertEquals(expectedReal,realDepot.getResources());
@@ -224,7 +220,7 @@ public class RealDepotTest {
     }
 
     @Test (expected = InvalidActionException.class)
-    public void addResource_IncorrectInput_NoException() throws InvalidActionException {
+    public void addResource_IncorrectInput_InvalidActionException() throws InvalidActionException {
         realDepot.addResource(null);
     }
 
@@ -360,5 +356,10 @@ public class RealDepotTest {
             realDepot=new RealDepot(i,i);
             assertSame(i,realDepot.getSize());
         }
+    }
+
+    @Test
+    public void getFloor(){
+        assertSame(3,realDepot.getFloor());
     }
 }

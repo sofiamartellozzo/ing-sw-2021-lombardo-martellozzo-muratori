@@ -76,7 +76,7 @@ public class AbilityDepotTest {
 
 
     @Test (expected = InvalidActionException.class)
-    public void addResources_IncorrectInput_NoException() throws InvalidActionException {
+    public void addResources_IncorrectInput_InvalidActionException() throws InvalidActionException {
         abilityDepot.addResources(1,null);
     }
 
@@ -194,7 +194,7 @@ public class AbilityDepotTest {
     }
 
     @Test (expected = InvalidActionException.class)
-    public void addResource_IncorrectInput_NoException() throws InvalidActionException {
+    public void addResource_IncorrectInput_InvalidActionException() throws InvalidActionException {
         abilityDepot.addResource(null);
     }
 
@@ -314,4 +314,7 @@ public class AbilityDepotTest {
     public void getSize() {
         assertSame(2,abilityDepot.getSize());
     }
+
+    @Test
+    public void getFloor(){assertSame(4,abilityDepot.getFloor());}
 }

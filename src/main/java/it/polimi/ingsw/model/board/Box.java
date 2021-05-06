@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model.board;
 
 /**
-* GIANLUCA
- * TEST PASSED
-* It's composing the FaithTrack with its extensions: SimpleBox, GoldBox and PopeBox.
-* */
-
+ * It's composing the FaithTrack with its extensions: SimpleBox, GoldBox and PopeBox.
+ * The "whichVaticanSection" attribute indicates which Vatican Section contains it (0 if it's not contained by no vatican section)
+ * The "numberBox" attribute refers to the numeration.
+ * The "victoryPoints" attribute indicates how many victory points gives the box.
+ * */
 public abstract class Box {
 
     protected final int whichVaticanSection;
@@ -15,7 +15,6 @@ public abstract class Box {
     /**
      * Constructor
      * Victory Points are set to 0, then if it's necessary, it can be set.
-     * Same for the Vatican Section which is null and then it can be set.
      * @param whichSection -> Indicates in which Vatican Section it's situated (1st, 2nd, 3rd)
      * @param numberBox -> The numeration of the boxes
      */
@@ -28,8 +27,8 @@ public abstract class Box {
 
     /**
      * Constructor
-     * In case the boxes are not in a Vatican Section
-     * @param numberBox
+     * In case the box is not in a Vatican Section.
+     * @param numberBox ->The numeration of the boxes
      */
     public Box(int numberBox) {
         this.whichVaticanSection=0;
@@ -39,7 +38,7 @@ public abstract class Box {
 
     /**
      * Getter Method
-     * @return
+     * @return -> "whichVaticanSection" attribute
      */
     public int getWhichSection() {
         return whichVaticanSection;
@@ -47,7 +46,7 @@ public abstract class Box {
 
     /**
      * Getter Method
-     * @return
+     * @return -> "numberBox" attribute
      */
     public int getNumberBox() {
         return numberBox;
@@ -55,13 +54,13 @@ public abstract class Box {
 
     /**
      * Getter Method
-     * @return
+     * @return -> "victoryPoints" attribute
      */
     public int getVictoryPoints(){return victoryPoints;}
 
     /**
      * toString Method
-     * @return
+     * @return -> "Box"
      */
     @Override
     public String toString() {

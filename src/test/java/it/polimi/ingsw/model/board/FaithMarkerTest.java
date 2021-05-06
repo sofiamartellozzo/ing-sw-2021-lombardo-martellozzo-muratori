@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.model.Color;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -46,4 +47,5 @@ public class FaithMarkerTest extends TestCase {
         int i = faithMarker.getPosition();
         assertEquals(4,i);
     }
+
 }

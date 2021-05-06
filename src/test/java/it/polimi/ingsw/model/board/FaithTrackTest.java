@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class FaithTrackTest extends TestCase {
 
     FaithTrack faithTrack = null;
-
+    ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();
     @Before
     public void setUp() throws Exception {
 
@@ -40,7 +40,6 @@ public class FaithTrackTest extends TestCase {
         PopesFavorTile popesFavorTile3 = new PopesFavorTile(3,6);
         popesFavorTile3.setState(new Inactive());
 
-        ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();
         popesFavorTiles.add(0,popesFavorTile1);
         popesFavorTiles.add(1,popesFavorTile2);
         popesFavorTiles.add(2,popesFavorTile3);
@@ -70,15 +69,13 @@ public class FaithTrackTest extends TestCase {
 
     @Test
     public void testGetPopesFavorTiles() {
-
-        ArrayList<PopesFavorTile> p = new ArrayList<>();
-        p = faithTrack.getPopesFavorTiles();
+        assertEquals(popesFavorTiles,faithTrack.getPopesFavorTiles());
     }
 
     @Test
     public void testGetAllVictoryPoints() {
 
-        faithTrack.setFaithMarker();
+        faithTrack.getFaithMarker().setPosition(4);
         int j = faithTrack.getAllVictoryPoints();
 
         assertEquals(j,10);
@@ -95,7 +92,7 @@ public class FaithTrackTest extends TestCase {
     @Test
     public void testCheckInvokeVaticanReport() {
 
-        faithTrack.setFaithMarker();
+        faithTrack.getFaithMarker().setPosition(4);
         int num = faithTrack.checkInvokeVaticanReport();
         assertEquals(num,1);
 
@@ -104,8 +101,7 @@ public class FaithTrackTest extends TestCase {
     @Test
     public void testDoVaticanReport(){
 
-        faithTrack.setFaithMarker();
+        faithTrack.getFaithMarker().setPosition(4);
         faithTrack.doVaticanReport(1);
-
     }
 }

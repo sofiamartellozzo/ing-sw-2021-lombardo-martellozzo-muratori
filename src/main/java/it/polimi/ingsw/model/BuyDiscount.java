@@ -45,7 +45,7 @@ public class BuyDiscount implements BuyCard{
             }
         }
         if (checkBeforeBuy(cardBought, player, cost)){
-            playerBoard.getResourceManager().removeResources(cost);
+            playerBoard.getResourceManager().removeResourcesFromBoth(cost);
             //playerBoard.removeResource(cost.get(1), new RealDepot(1,1));
             playerBoard.getCardSpaces().get(selectedCardSpace).addCard(cardBought);
         }

@@ -123,7 +123,7 @@ public class DepotTest {
     }
 
     @Test (expected = InvalidActionException.class)
-    public void addResources_IncorrectInput_NoException() throws InvalidActionException {
+    public void addResources_IncorrectInput_InvalidActionException() throws InvalidActionException {
         realDepot.addResources(1,null);
     }
 
@@ -323,7 +323,7 @@ public class DepotTest {
 
 
     @Test (expected = InvalidActionException.class)
-    public void addResource_IncorrectInput_NoException() throws InvalidActionException {
+    public void addResource_IncorrectInput_InvalidActionException() throws InvalidActionException {
         realDepot.addResource(null);
     }
 
@@ -510,5 +510,11 @@ public class DepotTest {
             realDepot=new RealDepot(i,i);
             assertSame(i,realDepot.getSize());
         }
+    }
+
+    @Test
+    public void getFloor(){
+        assertSame(3,realDepot.getFloor());
+        assertSame(4,abilityDepot.getFloor());
     }
 }

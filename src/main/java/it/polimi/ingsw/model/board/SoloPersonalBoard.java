@@ -53,7 +53,7 @@ import java.util.*;
 
     public int checkInvokeVaticanReport(){
         for (PopeBox popeBox: getFaithTrack().getPopeBoxes()){
-            if ((!popeBox.isActivated())&&(getFaithTrack().getFaithMarker().getPosition()== popeBox.getNumberBox())||(lorenzoIlMagnifico.getPosition()==popeBox.getNumberBox())){
+            if ((popeBox.isActivated())&&(getFaithTrack().getFaithMarker().getPosition()== popeBox.getNumberBox())||(lorenzoIlMagnifico.getPosition()==popeBox.getNumberBox())){
                 return popeBox.getWhichSection();
             }
         }

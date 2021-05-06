@@ -8,7 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -102,6 +101,28 @@ public class StrongBoxTest {
     }
 
     @Test (expected = InvalidActionException.class)
+    public void addResources_IncorrectInput_InvalidActionException() throws InvalidActionException {
+        Random random = new Random();
+        boolean r = random.nextBoolean();
+        if(r) {
+            strongBox.addResources(null);
+        }else{
+            strongBox.addResources(new ArrayList<>());
+        }
+    }
+
+    @Test (expected = InvalidActionException.class)
+    public void removeResources_IncorrectInput_InvalidActionException() throws InvalidActionException {
+        Random random = new Random();
+        boolean r = random.nextBoolean();
+        if(r){
+            strongBox.removeResources(null);
+        }else{
+            strongBox.removeResources(new ArrayList<>());
+        }
+    }
+
+    @Test (expected = InvalidActionException.class)
     public void removeResources_StrongBoxEmpty_InvalidActionException() throws InvalidActionException {
         ArrayList<Resource> resources = new ArrayList<>();
         resources.add(new Resource(Color.GREY));
@@ -166,7 +187,7 @@ public class StrongBoxTest {
         ArrayList<Resource> resourcesToAdd = new ArrayList<>();
         ArrayList<Resource> resourcesToRemove = new ArrayList<>();
         Random randomNumber = new Random();
-        int add = randomNumber.nextInt();
+        int add = randomNumber.nextInt(100);
         for(int i=0;i<add;i++){
             int r = randomNumber.nextInt(4);
             if(r==0){
@@ -185,7 +206,7 @@ public class StrongBoxTest {
         }
         strongBox.addResources(resourcesToAdd);
         assertEquals(expected,strongBox.getInstanceStrongbox());
-        int remove = randomNumber.nextInt();
+        int remove = randomNumber.nextInt(100);
         for(int i=0;i<remove;i++){
             int r = randomNumber.nextInt(4);
             Resource resource = null;
@@ -210,7 +231,67 @@ public class StrongBoxTest {
         assertEquals(expected,strongBox.getInstanceStrongbox());
     }
 
+    @Test
+    public void countResource() throws InvalidActionException {
+        Random random = new Random();
+        int n = random.nextInt(100);
+        int shield =0;
+        int servant=0;
+        int stone=0;
+        int coin=0;
+        ArrayList<Resource> resourcesToAdd = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            int r = random.nextInt(4);
+            if(r==0){
+                resourcesToAdd.add(new Resource(TypeResource.COIN));
+                coin++;
+            }else if(r==1){
+                resourcesToAdd.add(new Resource(TypeResource.SHIELD));
+                shield++;
+            }else if(r==2){
+                resourcesToAdd.add(new Resource(TypeResource.STONE));
+                stone++;
+            }else if(r==3){
+                resourcesToAdd.add(new Resource(TypeResource.SERVANT));
+                servant++;
+            }
+        }
+        strongBox.addResources(resourcesToAdd);
+        assertSame(coin,strongBox.countResource(strongBox.getContent(),new Resource(TypeResource.COIN)));
 
+        assertSame(shield,strongBox.countResource(strongBox.getContent(),new Resource(TypeResource.SHIELD)));
 
+        assertSame(stone,strongBox.countResource(strongBox.getContent(),new Resource(TypeResource.STONE)));
+
+        assertSame(servant,strongBox.countResource(strongBox.getContent(),new Resource(TypeResource.SERVANT)));
+    }
+
+    @Test
+    public void checkEnoughResources() throws InvalidActionException {
+        ArrayList<Resource> resourcesToCheck = new ArrayList<>();
+        ArrayList<Resource> resourcesToAdd = new ArrayList<>();
+        resourcesToCheck.add(new Resource(TypeResource.COIN));
+        resourcesToCheck.add(new Resource(TypeResource.SHIELD));
+        resourcesToAdd.add(new Resource(TypeResource.SHIELD));
+        strongBox.addResources(resourcesToAdd);
+        resourcesToAdd.clear();
+        assertFalse(strongBox.checkEnoughResources(resourcesToCheck));
+        resourcesToAdd.add(new Resource(TypeResource.SHIELD));
+        strongBox.addResources(resourcesToAdd);
+        resourcesToAdd.clear();
+        assertFalse(strongBox.checkEnoughResources(resourcesToCheck));
+        resourcesToAdd.add(new Resource(TypeResource.COIN));
+        strongBox.addResources(resourcesToAdd);
+        resourcesToAdd.clear();
+        assertTrue(strongBox.checkEnoughResources(resourcesToCheck));
+        resourcesToAdd.add(new Resource(TypeResource.STONE));
+        strongBox.addResources(resourcesToAdd);
+        resourcesToAdd.clear();
+        assertTrue(strongBox.checkEnoughResources(resourcesToCheck));
+        resourcesToAdd.add(new Resource(TypeResource.STONE));
+        strongBox.addResources(resourcesToAdd);
+        resourcesToAdd.clear();
+        assertTrue(strongBox.checkEnoughResources(resourcesToCheck));
+    }
 
 }

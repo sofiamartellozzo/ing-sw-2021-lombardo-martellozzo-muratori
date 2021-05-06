@@ -8,17 +8,18 @@ import static org.junit.Assert.*;
 
 public class PopeBoxTest {
     PopeBox popeBox;
+    PopeBox lastBox;
 
     @Before
     public void setUp() throws Exception {
         popeBox=new PopeBox(1,1);
+        lastBox=new PopeBox(1,1,1);
         assertNotNull(popeBox);
     }
 
     @After
     public void tearDown() throws Exception {
         popeBox=null;
-        assertNull(popeBox);
     }
 
     @Test
@@ -27,6 +28,7 @@ public class PopeBoxTest {
         assertFalse(popeBox.isLast());
         popeBox.setLast(true);
         assertTrue(popeBox.isLast());
+        assertTrue(lastBox.isLast());
     }
 
     @Test
@@ -49,6 +51,7 @@ public class PopeBoxTest {
     public void getVictoryPoints() {
         popeBox= new PopeBox(1,1);
         assertSame(0,popeBox.getVictoryPoints());
+        assertSame(1,lastBox.getVictoryPoints());
     }
 
     @Test

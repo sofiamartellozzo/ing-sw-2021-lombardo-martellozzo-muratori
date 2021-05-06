@@ -3,11 +3,14 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-/* ILA */
-
+/**
+ * Refers to the card space in the personal board.
+ * The "whichSpace" attribute indicates if it is the 1st, the 2nd or the 3rd.
+ * The "numberOfCards" attribute indicates how many cards are in.
+ * The "cards" attribute contains the reference to the DevelopmentCard contained by the card space.
+ */
 public class CardSpace {
 
     private final int whichSpace;
@@ -15,60 +18,75 @@ public class CardSpace {
     private ArrayList<DevelopmentCard>cards;
 
     /**
-     * constructor
-     * @param whichSpace
+     * Constructor
+     * Initialize "cards", set "numberOfCards" to 0
+     * @param whichSpace -> If it is the 1st, the 2nd or the 3rd card space.
      */
-
     public CardSpace(int whichSpace)
     {
         this.whichSpace = whichSpace;
-        this.numberOfCards = 0;
         this.cards= new ArrayList<>();
     }
 
-    // Getter methods
     /**
-     * this method returns the size of the List and so the number of cards
-     * @return
+     * Getter Method
+     * @return -> How many cards are in the card space
      */
     public int getNumberOfCards() {
         return cards.size();
     }
+
+    /**
+     * Getter Method
+     * @return -> The cards as an ArrayList<DevelopmentCard>
+     */
     public ArrayList<DevelopmentCard> getCards() {
         return cards;
     }
+
+    /**
+     * Getter method
+     * @return -> "whichSpace"
+     */
     public int getWhichSpace(){
         return whichSpace;
     }
 
-    // Setter methods
+    /**
+     * Setter Method
+     * @param numberOfCards -> The new value of how many cards are in
+     */
     private void setNumberOfCards(int numberOfCards) {
         this.numberOfCards = numberOfCards;
     }
+
+    /**
+     * Setter Method
+     * @param cards -> The new cards that the card space must contain
+     */
     public void setCards(ArrayList<DevelopmentCard> cards) { this.cards = cards; }
 
     /**
-     * Method used to take the upper card of the Card space,
-     * because the player can use the production power only of the upper card.
-     * @return
-     * @throws IllegalArgumentException
+     * After checking:
+     * - The card space contains at least one card.
+     * @return -> The card on the top of the card space
+     * @throws IllegalArgumentException -> If one of the conditions is not respected
      */
-
     public DevelopmentCard getUpperCard() throws IllegalArgumentException{
-        /* take the card in the last position (array lenght - 1 because the first index is 0)*/
+        /* take the card in the last position (array length - 1 because the first index is 0)*/
         if(cards.size()==0) throw new IllegalArgumentException("Error you don't have any card in this space!");
         else return cards.get(getNumberOfCards()-1);
     }
 
     /**
-     * method used to add a development card to a card space and after increase the size of it,
-     * if it is empty you don't have to do any control, but if you already have a card on it,
-     * you have to check that the level of the new card is 1 bigger than the previous one ...
-     * you don't care about the color!
-     * @param newCard
-     * @throws IllegalArgumentException
+     * Add a DevelopmentCard in the card space, increasing the "numberOfCards".
+     * After checking:
+     * - The "newCard" is not null
+     * - The "newCard" must be of the next level if there is already one in the card space
+     * - If the card space is empty, the "newCard" level must 1.
+     * @param newCard -> The new card which you want to insert
+     * @throws IllegalArgumentException -> If one of the conditions is not respected
      */
-
     public void addCard(DevelopmentCard newCard) throws IllegalArgumentException {
         if(newCard==null) throw new IllegalArgumentException("Error, card not valid!");
 
@@ -86,9 +104,7 @@ public class CardSpace {
     }
 
     /**
-     * this method is used to calculate the sum of the Victory points in a CardSpace,
-     * you do a sum of the victory points of each card in a card space (considering also the covered cards)
-     * @return
+     * @return -> All the victory points of each card contained by the card space.
      */
     public int getTotVictoryPoints ()
     {
@@ -104,8 +120,14 @@ public class CardSpace {
         return TotPoints;
     }
 
-    public ArrayList<TypeResource> getCostTypeUpperCard(){
-        ArrayList<TypeResource> contentType = new ArrayList<TypeResource>();
+    /**
+     * Which type of resource needs to pay without repeating it.
+     * Example: COST -> SHIELD, SHIELD, COIN, SERVANT, SERVANT
+     *          RETURN -> SHIELD, COIN, SERVANT
+     * @return -> The result is returned as an ArrayList<TypeResource>
+     */
+    public ArrayList<TypeResource> getCostPPTypeUpperCard(){
+        ArrayList<TypeResource> contentType = new ArrayList<>();
         for(Resource resource: getUpperCard().showCostProductionPower()){
             if(!contentType.contains(resource.getType())){
                 contentType.add(resource.getType());
@@ -114,6 +136,10 @@ public class CardSpace {
         return contentType;
     }
 
+    /**
+     * @param type -> Which resource to count
+     * @return -> How many resource of "type" the player needs to pay
+     */
     public int getNumberCostPP(TypeResource type){
         return (int) getUpperCard().showCostProductionPower().stream().filter(r -> r.getType().equals(type)).count();
     }

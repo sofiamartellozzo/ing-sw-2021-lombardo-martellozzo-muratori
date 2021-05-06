@@ -312,6 +312,16 @@ public class Lobby extends Observable implements ControllerObserver {
 
     }
 
+    @Override
+    public void receiveMsg(CChooseResourceResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
+
+    }
+
 
     /*----------------------------------------------------------------------------------------------------------------*/
 

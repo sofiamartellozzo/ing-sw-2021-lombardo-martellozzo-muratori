@@ -33,7 +33,6 @@ public class SpecialWarehouseTest {
         assertSame(4,warehouse.getDepots().size());
         Resource coin;
         Resource shield;
-        Resource stone;
         Resource servant;
         ArrayList<Resource> expectedDepot1 = new ArrayList<>();
         ArrayList<Resource> expectedDepot2 = new ArrayList<>();

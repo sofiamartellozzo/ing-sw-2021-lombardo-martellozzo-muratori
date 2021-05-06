@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.board;
 
 
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
@@ -13,47 +12,60 @@ import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.cardAbility.AdditionalPower;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-/*
-* SOFI*/
-
 /**
- * This class contains all the components of the Board of a single player
- * so each player has his own
+ * Represents to player's personal board.
+ * It is composed by the "faithTrack" and the Strongbox and the Warehouse in the "resourceManager".
+ * The "cardSpaces" attribute refers to the 3 card spaces of the board.
  */
-
 public class PersonalBoard implements PersonalBoardInterface {
-    /* These attributes refers to the components of the Personal Board */
-    private FaithTrack faithTrack;
-    private ResourceManager resourceManager;  //contains both SrongBox and Wharehouse
-    private ArrayList<CardSpace> cardSpaces;  //3 for each Board
+    private final FaithTrack faithTrack;
+    private final ResourceManager resourceManager;
+    private final ArrayList<CardSpace> cardSpaces;
 
+    /**
+     * Constructor
+     * @param faithTrack -> The reference to the FaithTrack
+     * @param resourceManager -> The reference to the StrongBox and the Warehouse
+     * @param cardSpaces -> The reference to the 3 card spaces
+     */
     public PersonalBoard(FaithTrack faithTrack, ResourceManager resourceManager, ArrayList<CardSpace> cardSpaces) {
         this.faithTrack = faithTrack;
         this.resourceManager = resourceManager;
         this.cardSpaces = cardSpaces;
     }
 
+    /**
+     * Getter Method
+     * @return -> The "faithTrack"
+     */
     @Override
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }
 
+    /**
+     * Getter Method
+     * @return -> The "Warehouse" of the "resourceManger"
+     */
     @Override
     public Warehouse getWarehouse() {
         return resourceManager.getWarehouse();
     }
 
+    /**
+     * Getter Method
+     * @return -> The "StrongBox" of the "resourceManager"
+     */
     @Override
     public StrongBox getStrongbox() {
         return resourceManager.getStrongBox();
     }
 
     /**
-     *  class wich has all the resources, so both the Strong Box and the warehouse
-     *  ad used to manage moving the resources inside them
+     * Getter Method
+     * @return -> The "resourceManager"
      */
     @Override
     public ResourceManager getResourceManager() {
@@ -62,8 +74,8 @@ public class PersonalBoard implements PersonalBoardInterface {
 
 
     /**
-     * method used to get all the (3) card space
-     * @return
+     * Getter Method
+     * @return -> The 3 "cardSpaces"
      */
     @Override
     public ArrayList<CardSpace> getCardSpaces() {
@@ -72,11 +84,9 @@ public class PersonalBoard implements PersonalBoardInterface {
 
 
     /**
-     * this method is used to get a particular Card Space
-     * the number i
-     * @param i
-     * @return card Space in position i :[0, 1, 2]
-     * @throws IndexOutOfBoundsException if input is not valid
+     * @param i -> Which card space
+     * @return -> The card space you want
+     * @throws IndexOutOfBoundsException -> If the player requests a not-existing card space
      */
     @Override
     public CardSpace getCardSpace(int i) throws IndexOutOfBoundsException{
@@ -89,8 +99,7 @@ public class PersonalBoard implements PersonalBoardInterface {
     }
 
     /**
-     * this one gets all Cards contained in the 3 card spaces of the personal board
-     * @return all Development Card in this specific Personal Bord
+     * @return -> All the development card of the 3 card spaces as an ArrayList<DevelopmentCard>
      */
     @Override
     public ArrayList<DevelopmentCard> getAllCards(){
@@ -102,18 +111,12 @@ public class PersonalBoard implements PersonalBoardInterface {
     }
 
     /**
-     * this one gets all Development Card in a specific Space Card (one of the 3)
-     * @param i
-     * @return all cards of the space(i)
+     * @param i -> Which space
+     * @return -> All the DevelopmentCards of the space given.
      */
     @Override
     public ArrayList<DevelopmentCard> getAllCardOfOneSpace(int i){
-        CardSpace cardSpaceSpecific = getCardSpace(i);
-        ArrayList<DevelopmentCard> allCards = new ArrayList<>();
-        for (DevelopmentCard card: cardSpaceSpecific.getCards()){
-            allCards.add(card);
-        }
-        return allCards;
+        return new ArrayList<>(getCardSpace(i).getCards());
     }
 
 
@@ -124,14 +127,8 @@ public class PersonalBoard implements PersonalBoardInterface {
         //card.useProductionPower();
     }
 
-    @Override
-    public ArrayList<Integer> getActivatableCardSpace(Player player) {
-        return null;
-    }
-
     /**
-     * method invocated to get all the victory points from the 3 card space
-     * @return sum of victory points
+     * @return -> All the victory points of the 3 card spaces.
      */
     @Override
     public int getVictoryPointsFromCardSpaces(){
@@ -143,12 +140,8 @@ public class PersonalBoard implements PersonalBoardInterface {
     }
 
     /**
-     * availableCardSpace:
-     * 0     ---> base PP
-     * 1,2,3 ---> card Space
-     *  4, 5 ---> Special
-     * @param player
-     * @return
+     * @param player -> The reference to the player
+     * @return -> All activatable card spaces based on the resources of the resource manager as an ArrayList<Integer>
      */
     @Override
     public ArrayList<Integer> getActivatableCardSpace(PlayerInterface player) {
@@ -161,28 +154,33 @@ public class PersonalBoard implements PersonalBoardInterface {
         }
         //Normal Production Power
         for(CardSpace cardSpace:cardSpaces){
-            boolean activatable = true;
-            for(TypeResource type: cardSpace.getCostTypeUpperCard()){
-                if((resourceManager.countResource(warehouse.getContent(),new Resource(type))<cardSpace.getNumberCostPP(type))||(resourceManager.countResource(strongBox.getContent(),new Resource(type))<cardSpace.getNumberCostPP(type))){
-                    activatable=false;
+            if(!cardSpace.getCards().isEmpty()) {
+                boolean activatable = true;
+                for (TypeResource type : cardSpace.getCostPPTypeUpperCard()) {
+                    if ((resourceManager.countResource(warehouse.getContent(), new Resource(type)) < cardSpace.getNumberCostPP(type)) && (resourceManager.countResource(strongBox.getContent(), new Resource(type)) < cardSpace.getNumberCostPP(type))) {
+                        activatable = false;
+                    }
                 }
-            }
-            if(activatable){
-               activatableCardSpace.add(cardSpace.getWhichSpace());
+                if (activatable) {
+                    activatableCardSpace.add(cardSpace.getWhichSpace());
+                }
             }
         }
         //Ability Production Power
         int countLeaderCard=0;
-        for(LeaderCard leaderCard: player.getLeaderCards()){
-            if(leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility() instanceof AdditionalPower){
-                countLeaderCard++;
+        if(player.getLeaderCards()!=null) {
+            for (LeaderCard leaderCard : player.getLeaderCards()) {
+                if (leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility() instanceof AdditionalPower) {
+                    countLeaderCard++;
+                }
             }
-        }
-        if(countLeaderCard==player.getSpecialCard().size()) {
-            for (int i = 0; i < player.getSpecialCard().size(); i++) {
-                SpecialCard specialCard = player.getSpecialCard().get(i);
-                if (resourceManager.countResource(warehouse.getContent(), specialCard.getCostProductionPower().get(0)) >= 1 || resourceManager.countResource(strongBox.getContent(), specialCard.getCostProductionPower().get(0)) >= 1) {
-                    activatableCardSpace.add(4 + i);
+
+            if (countLeaderCard == player.getSpecialCard().size()) {
+                for (int i = 0; i < player.getSpecialCard().size(); i++) {
+                    SpecialCard specialCard = player.getSpecialCard().get(i);
+                    if (resourceManager.countResource(warehouse.getContent(), specialCard.getCostProductionPower().get(0)) >= 1 || resourceManager.countResource(strongBox.getContent(), specialCard.getCostProductionPower().get(0)) >= 1) {
+                        activatableCardSpace.add(4 + i);
+                    }
                 }
             }
         }

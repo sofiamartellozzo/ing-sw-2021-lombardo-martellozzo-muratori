@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * GIANLUCA
- * It contains the Depots of the Warehouse.
+ * Represents the Warehouse.
+ * The "depots" attribute contains the depots which compose the warehouse.
  */
 
 public abstract class Warehouse {
@@ -20,7 +20,7 @@ public abstract class Warehouse {
 
     /**
      * Constructor
-     * Creates three depots with increasing floor and size (ex. 1st floor, one size)
+     * Initialize "depots", adding three RealDepot of increasing size and floor
      */
     public Warehouse() {
         depots = new ArrayList<>();
@@ -30,13 +30,13 @@ public abstract class Warehouse {
     }
 
     /**
-     * Adds a resource in the depot chosen, after:
-     * - Checking if the depot chosen is correct or exists;
-     * - Checking if the resource you want to put in is not null.
-     *
-     * @param resource -> The resource you want to put in
-     * @param depot    -> Which depot (the floor)
-     * @throws InvalidActionException -> The thrown exception if it doesn't respect the checks.
+     * Add "resource" in "depot".
+     * After checking:
+     * - "depot" must be one of those contained by the warehouse
+     * - exists a depot where the resource can be put
+     * @param resource -> The resource you want to add
+     * @param depot -> The depot where to add the resource
+     * @throws InvalidActionException -> If one of the conditions is not respected.
      */
     public void addResource(Resource resource, int depot) throws InvalidActionException {
         if ((depot < 1) || (depot > depots.size())) throw new InvalidActionException("Choose a depot!");
@@ -46,13 +46,11 @@ public abstract class Warehouse {
     }
 
     /**
-     * Removes a resource from the depot chosen, after:
-     * - Checking if the depot chosen is correct or exists;
-     * - Checking if the resource you want to remove is not null and exists
-     *
-     * @param resource
-     * @param depot
-     * @throws InvalidActionException -> The thrown exception if it doesn't respect the checks
+     * Remove a resource from "depot".
+     * After checking:
+     * - "depot" must be one of those contained by the warehouse.
+     * @param depot -> The depot where to remove the resource
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
     public void removeResource(int depot) throws InvalidActionException {
         if (depot <= 0 || depot > depots.size()) throw new InvalidActionException("Choose a depot!");
@@ -60,28 +58,35 @@ public abstract class Warehouse {
     }
 
     /**
-     * CHANGE NAME -> moveResourceToAbilityDepot
-     * Moves 1 resource to another depot (made only for moving a resource in an AbilityDepot)
-     * @param fromDepot
-     * @param toDepot
+     * Usable just in case exists at least an AbilityDepot object in the warehouse.
+     * Move one resource from "fromDepot" to "toDepot".
+     * After checking:
+     * - "fromDepot" and "toDepot" must be different.
+     * - If there are more than 3 depots in the warehouse, this means exists at least an AbilityDepot.
+     * - The "fromDepot" and/or "toDepot" parameters must refer to an AbilityDepot.
+     * @param fromDepot -> The depot where move the resource from
+     * @param toDepot -> The depot where move the resource to
+     * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public void moveResource(int fromDepot,int toDepot) throws InvalidActionException {
+    public void moveResourceToAbilityDepot(int fromDepot, int toDepot) throws InvalidActionException {
         if(fromDepot==toDepot) throw new InvalidActionException("You're moving in the same depot!");
         if (depots.size()==3) throw new InvalidActionException("There's no depot you can move it in!");
-        if (toDepot!=4 && toDepot!=5) throw new InvalidActionException("Choose a second ability depot!");
+        if (fromDepot <= 0 || fromDepot > depots.size()) throw new InvalidActionException("Choose the first depot!");
+        if (toDepot <= 0 || toDepot > depots.size()) throw new InvalidActionException("Choose the second depot!");
+        if ((fromDepot!=4 && fromDepot!=5)&&(toDepot!=4 && toDepot!=5)) throw new InvalidActionException("Choose an ability depot!");
         Resource resourceToMove = depots.get(fromDepot-1).getResources().get(0);
         addResource(resourceToMove,toDepot);
         removeResource(fromDepot);
     }
 
     /**
-     * Moves all resources from depot1 to depot2, after:
-     * - Checking if the resource is not null and exists in the depot1;
-     * - The depots are correct and exist;
-     * -
-     * @param depot1
-     * @param depot2
-     * @throws InvalidActionException
+     * Moves all resources from "fromDepot" to "toDepot".
+     * After checking:
+     * - "fromDepot" and "toDepot" must be different.
+     * - "fromDepot" and "toDepot" must refers to one of the depot of the warehouse.
+     * @param fromDepot -> The depot where move the resources from
+     * @param toDepot -> The depot where move the resources to
+     * @throws InvalidActionException -> If one of the condition is not respected
      */
     public void moveResources(int fromDepot, int toDepot) throws InvalidActionException {
         if (fromDepot==toDepot) throw new InvalidActionException("You're moving in the same depot!");
@@ -97,19 +102,16 @@ public abstract class Warehouse {
 
     /**
      * Getter Method
-     *
-     * @return -> The list of Depots
+     * @return -> The "depots" attribute as an ArrayList<Depot>
      */
     public ArrayList<Depot> getDepots() {
         return depots;
     }
 
     /**
-     * Checks if there's some depot where the player can put the resource in input.
-     * First, checks in the normal depot of the warehouse,
-     * then, if there are, checks in the special depots created by the Special Depot ability.
-     * @param resource
-     * @return
+     * Check if a resource can be put in at least one depot.
+     * @param resource -> The resource you would put.
+     * @return -> True if the resource can be put, else false.
      */
     public boolean checkAvailableDepot(Resource resource) {
        for(int i=0;i<3;i++){
@@ -131,10 +133,10 @@ public abstract class Warehouse {
     }
 
     /**
-     * Checks if the resource is contained by other NORMAL depots different from the chosen depot.
-     * @param resource
-     * @param depot
-     * @return
+     * Checks if one resource can be put "depot".
+     * @param resource -> The resource you want to check
+     * @param depot -> The depot where you would put in the resource
+     * @return -> True if the "resource" can be put in "depot", else false.
      */
     private boolean checkResourceInSomeDepot(Resource resource, int depot){
         for(int i=0;i<3;i++){
@@ -146,8 +148,7 @@ public abstract class Warehouse {
     }
 
     /**
-     * Gets the content of ALL depots (normal and special) in an ArrayList of Resources.
-     * @return
+     * @return -> The content of the warehouse as an ArrayList<Resource>
      */
     public ArrayList<Resource> getContent(){
         ArrayList<Resource> content = new ArrayList<>();
@@ -157,20 +158,38 @@ public abstract class Warehouse {
         return content;
     }
 
+    /**
+     * Remove all "resources" from the warehouse.
+     * After checking:
+     * - "resources" is not null and not empty
+     * - All "resources" must be contained by the warehouse.
+     * @param resources -> The resources you want to remove
+     * @throws InvalidActionException -> If one of the conditions is not respected
+     */
     public void removeResources(ArrayList<Resource> resources) throws InvalidActionException {
-        if(!resources.isEmpty()){
-            if(!checkEnoughResources(resources)) throw new InvalidActionException("The Warehouse doesn't contain some resources you want to remove!");
-            for(Resource resource:resources){
-                depots.get(searchResource(resource)-1).removeResource();
-            }
+        if(resources==null || resources.isEmpty()) throw new InvalidActionException("There's no resource to remove");
+        if(!checkEnoughResources(resources)) throw new InvalidActionException("The Warehouse doesn't contain some resources you want to remove!");
+        for(Resource resource:resources){
+            depots.get(searchResource(resource)-1).removeResource();
         }
     }
 
-    public int countResource(ArrayList<Resource> resources, Resource resource){
-        int count = (int) resources.stream().filter(r -> r.getType().equals(resource.getType())).count();
+    /**
+     * Count how many resources of type "resource" there are in the "content".
+     * @param content -> The content where to count
+     * @param resource -> The resource to count
+     * @return -> The number of resources
+     */
+    public int countResource(ArrayList<Resource> content, Resource resource){
+        int count = (int) content.stream().filter(r -> r.getType().equals(resource.getType())).count();
         return count;
     }
 
+    /**
+     * Checks if all "resources" are contained in the warehouse
+     * @param resources -> The resources to check
+     * @return -> True if all "resources" are contained, else false.
+     */
     public boolean checkEnoughResources(ArrayList<Resource> resources){
         ArrayList<Resource> typeResources = new ArrayList<>();
         typeResources.add(new Resource(Color.YELLOW));
@@ -183,6 +202,11 @@ public abstract class Warehouse {
         return true;
     }
 
+    /**
+     * Search the "resource" in the warehouse.
+     * @param resource -> The resource to search
+     * @return -> The depot floor where the resource was found, else -1
+     */
     public int searchResource(Resource resource){
         for(int i=0; i< depots.size(); i++){
             if(depots.get(i).getType()!=null && depots.get(i).getType().equals(resource.getType())){
@@ -192,6 +216,9 @@ public abstract class Warehouse {
         return -1;
     }
 
+    /**
+     * @return -> A photographic situation of the warehouse
+     */
     public HashMap<Integer,ArrayList<TypeResource>> getInstanceContent(){
         HashMap<Integer,ArrayList<TypeResource>> content = new HashMap<Integer,ArrayList<TypeResource>>();
         for(Depot depot:depots){

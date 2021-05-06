@@ -1,22 +1,24 @@
 package it.polimi.ingsw.model.board;
 import java.util.ArrayList;
 
-/*
-* ILARIA
-* */
-
+/**
+ * Indicates the path that the player must run across to win.
+ * The "faithMarker" attribute indicates the position of the player.
+ * The "popesFavorTiles", "pathBox", "vaticanSections" compose the FaithTrack
+ */
 public class FaithTrack {
 
-    private FaithMarker faithMarker;
+    private final FaithMarker faithMarker;
     private final ArrayList<PopesFavorTile> popesFavorTiles;
     private final ArrayList<Box> pathBox;
-    private ArrayList<VaticanSection> vaticanSections;
+    private final ArrayList<VaticanSection> vaticanSections;
 
     /**
-     * Constructor of the class
-     * @param pathBox
-     * @param popesFavorTiles
-     * @param faithMarker
+     * Constructor
+     * @param pathBox -> The structure of the boxes path
+     * @param popesFavorTiles -> The three Pope's Favor Tile
+     * @param faithMarker -> The faith marker of the player
+     * @param vaticanSections -> The references to the vatican sections
      */
     public FaithTrack(ArrayList<Box> pathBox,ArrayList<PopesFavorTile> popesFavorTiles ,FaithMarker faithMarker,ArrayList<VaticanSection> vaticanSections){
         this.faithMarker = faithMarker;
@@ -25,28 +27,39 @@ public class FaithTrack {
         this.vaticanSections = vaticanSections;
     }
 
-    // Getter methods
+    /**
+     * Getter method
+     * @return -> The "vaticanSections"
+     */
     public ArrayList<VaticanSection> getVaticanSections() { return vaticanSections; }
+
+    /**
+     * Getter Method
+     * @return -> The "faithMarker"
+     */
     public FaithMarker getFaithMarker() { return faithMarker;}
+
+    /**
+     * Getter Method
+     * @return -> The "popesFavorTiles"
+     */
     public ArrayList<PopesFavorTile> getPopesFavorTiles(){return popesFavorTiles;}
+
+    /**
+     * Getter Method
+     * @return -> The "pathBox"
+     */
     public ArrayList<Box> getPathBox() { return pathBox;}
 
     /**
-     * this method returns the position of the faithMarker in the FaithTrack, at the beginning it is set in
-     * the first box and during the game the player move it
-     * @return
+     * @return -> The position of the player's faith marker
      */
     public int getPositionFaithMarker() {
         return faithMarker.getPosition();
     }
 
-    // Setter method for testing
-    public void setFaithMarker() {faithMarker.setPosition(4);}
-
-
     /**
-     * returns an array of only the popeBoxes from the faithTrack
-     * @return
+     * @return -> All the boxes of type "PopeBox" as an ArrayList<PopeBox>
      */
     public ArrayList<PopeBox> getPopeBoxes() {
         ArrayList<PopeBox> popeBoxes = new ArrayList<>();
@@ -60,15 +73,13 @@ public class FaithTrack {
     }
 
     /**
-     * method used to check if the position of the FaithMarker is in a PopeBox that hasn't been activated yet,
-     * in that case it returns the section of the PopeBox in which we have to do the control
-     * @return vaticanSection
+     * Check if the player is in a Pope Box not activated yet.
+     * @return -> If yes, return Which Vatican Section, else 0.
      */
-
     public int checkInvokeVaticanReport() {
         for (PopeBox popebox: getPopeBoxes())
         {
-            if (faithMarker.getPosition() == popebox.getNumberBox() && !popebox.isActivated())
+            if (faithMarker.getPosition() == popebox.getNumberBox() && popebox.isActivated())
             {
                 return popebox.getWhichSection();
             }
@@ -76,12 +87,12 @@ public class FaithTrack {
         return 0;
     }
 
-    /**
-     * method used to do the vatican report and control if the FaithMarker is up to a vatican section or not, if it is in
-     * the vatican section the player will take the points of the relative popesFavorTiles, otherwise not.
-     * @param section
-     */
 
+    /**
+     * After obtaining the section and the relative pope box,
+     * set to activates the box and call its vaticanReport method.
+     * @param section -> In which Vatican Section activate the Vatican Report
+     */
     public void doVaticanReport(int section) {
         VaticanSection vaticanSection = vaticanSections.get(section - 1);
         PopeBox popeBox = (PopeBox) vaticanSection.getBoxes().get(vaticanSection.getBoxes().size() - 1);
@@ -97,11 +108,9 @@ public class FaithTrack {
     }
 
     /**
-     * Take the Victory points of the box in which the faithMarker is plus the points of the popesFavorTiles
-     * that during the game the player activated with the vatican Reports, so you have all the points of the FaithTrack
-     * @return TotPoints + BoxPoints
+     * @return -> All victory points which refer to the box where the position of the FaithMarker is and to the activated
+     * Pope's Favor Tiles
      */
-
     public int getAllVictoryPoints(){
 
         int BoxPoints;
@@ -120,9 +129,8 @@ public class FaithTrack {
     }
 
     /**
-     * with this method the player increase the position of his faithMarker in the faithTrack
+     * Increase the position of the player's FaithMarker.
      */
-
     public void increasePosition() {
         this.faithMarker.increasePosition();
     }

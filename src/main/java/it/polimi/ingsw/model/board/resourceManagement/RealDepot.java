@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * The "floor" indicates if it is the 1st, 2nd, 3rd.
  * */
 public class RealDepot implements Depot{
-    private ArrayList<Resource> resources;
+    private final ArrayList<Resource> resources;
     private final int floor;
     private final int size;
 
@@ -66,7 +66,7 @@ public class RealDepot implements Depot{
      */
     @Override
     public void addResource(Resource resource) throws InvalidActionException {
-        if(resource==null) throw new InvalidActionException("Uncorrect reosurce");
+        if(resource==null) throw new InvalidActionException("Incorrect resource");
         if(isFull()) throw new InvalidActionException("The depot is full!");
         if(!resources.isEmpty() && !getType().equals(resource.getType())) throw new InvalidActionException("The resource you want to put in isn't the same type of the content!");
         resources.add(resource);
@@ -89,11 +89,7 @@ public class RealDepot implements Depot{
      */
     @Override
     public boolean isFull() {
-        if(resources.size()==size){
-            return true;
-        }else{
-            return false;
-        }
+        return resources.size() == size;
     }
 
     /**
@@ -121,7 +117,7 @@ public class RealDepot implements Depot{
      */
     @Override
     public void addResources(int n,Resource resource) throws InvalidActionException {
-        if (resource==null) throw new InvalidActionException("Uncorrect resources!");
+        if (resource==null) throw new InvalidActionException("Incorrect resources!");
         if(!resources.isEmpty() && !getType().equals(resource.getType())) throw new InvalidActionException("The resources you want to put in isn't the same type of the content!");
         if(n>getSize()-this.resources.size()) throw new InvalidActionException("There's no space!");
         for(int i=0;i<n;i++){
