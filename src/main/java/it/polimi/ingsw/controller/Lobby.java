@@ -9,9 +9,10 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
-import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VRoomSizeRequestMsg;
+import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
@@ -86,6 +87,39 @@ public class Lobby extends Observable implements ControllerObserver {
 
 
     /*-------------------------------------------------------------------------------------------*/
+            //      Getter methods
+            //       (for testing)
+
+    public static Lobby getLobby() {
+        return lobby;
+    }
+
+    public List<Room> getNotEmptyRoom() {
+        return notEmptyRoom;
+    }
+
+    public List<String> getUsersAssigned() {
+        return usersAssigned;
+    }
+
+    public int getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public int getMAX_NUMBER_ROOM() {
+        return MAX_NUMBER_ROOM;
+    }
+
+    public AtomicBoolean getCanCreateRoom() {
+        return canCreateRoom;
+    }
+
+    public ReentrantLock getCreatingRoomLock() {
+        return creatingRoomLock;
+    }
+
+
+    /*-------------------------------------------------------------------------------------------*/
 
      //METHODS FOR MANAGE THE ROOMS
 
@@ -151,6 +185,47 @@ public class Lobby extends Observable implements ControllerObserver {
             }
         }
         return null;
+    }
+
+    /**
+     * method used to create a new Room by one user
+     * using lock to stop a possible player that wants to inizialized a new
+     * room in the same moment---> he have to wait
+     * @param username
+     * @param gameMode
+     */
+    private void createNewRoom(String username, String gameMode, VirtualView userVV){
+        creatingRoomLock.lock();
+        try{
+            usersAssigned.add(username);
+            Room newRoom = new Room("Room  #" +this.numberOfRooms);
+            this.notEmptyRoom.add(newRoom);
+            updateRoomCounter();  //update the actual number of the rooms occupied
+
+            newRoom.addUser(username, userVV);
+            if (gameMode.equals("0")){
+                //set the attribute of the Room true because the Client asked to play in Solo Mode
+                newRoom.setSoloMode(true);
+                //and the size of the room to 1
+                newRoom.setSIZE(1);
+                //add the VV of the player
+                newRoom.addVV(username, userVV);
+            }
+            else{
+                //setting the room size asking that to the client
+                canCreateRoom.set(false); //now this client is creating a new room, so I set this parameter to false and not letting anyone else to do the same now
+                newRoom.setSoloMode(false);
+                VRoomSizeRequestMsg requestMsg = new VRoomSizeRequestMsg("Ask the client the size of the room where he wants to play", username, newRoom.getRoomID());
+                notifyAllObserver(ObserverType.VIEW, requestMsg);
+            }
+
+        } catch (LimitExceededException e) {
+            e.printStackTrace();
+        }
+        finally {
+            creatingRoomLock.unlock();
+        }
+
     }
 
     /*-------------------------------------------------------------------------------------------*/
@@ -243,35 +318,17 @@ public class Lobby extends Observable implements ControllerObserver {
                 try{
                     room = firstFreeRoom();
                     if (room!=null && !roomFull(room)) {
-                        room.addUser(msg.getUsername());
-                        System.out.println("user added: " +room.getPlayersId().get(0));
+                        room.addUser(msg.getUsername(), msg.getVV());
+                        //System.out.println("user added: " +room.getPlayersId().get(1));
                     }
                 }catch (NotFreeRoomAvailableError | LimitExceededException e){
                     e.printStackTrace();
                 }
             }
-            else if (canCreateRoom.get()){
+            else if (!creatingRoomLock.isLocked()){
                 //all occupied room are full but one can be created, or Solo Mode
-                usersAssigned.add(msg.getUsername());
-                canCreateRoom.set(false); //now this client is creating a new room, so I set this parameter to false and not letting anyone else to do the same now
-                Room newRoom = new Room("Room  #" +this.numberOfRooms);
-                this.notEmptyRoom.add(newRoom);
-                updateRoomCounter();  //update the actual number of the rooms occupied
-                try {
-                    newRoom.addUser(msg.getUsername());
-                    if (gameMode.equals("0")){
-                        //set the attribute of the Room true because the Client asked to play in Solo Mode
-                        newRoom.setSoloMode(true);
-                        //and the size of the room to 1
-                        newRoom.setSIZE(1);
-                    }
-                    else{
-                        //setting the room size asking that to the client
-                        VRoomSizeRequestMsg requestMsg = new VRoomSizeRequestMsg("Ask the client the size of the room where he wants to play", msg.getUsername(), newRoom.getRoomID());
-                        notifyAllObserver(ObserverType.VIEW, requestMsg);
-                    }
-                } catch (LimitExceededException e) {
-                    e.printStackTrace();
+                if (gameMode.equals(0) || canCreateRoom.get()){
+                    createNewRoom(msg.getUsername(), gameMode, msg.getVV());
                 }
             }
             else if (this.numberOfRooms == MAX_NUMBER_ROOM){
@@ -303,11 +360,32 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     /**
+     * notification from VV that a room is full so the initialization has started
+     * so the attribute is setted to true because a new room now can be initialized
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+        creatingRoomLock.lock();
+        try {
+            if (!findUserRoom(msg.getPlayers()).isSoloMode()){
+                canCreateRoom.set(true);
+            }
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }finally {
+            creatingRoomLock.unlock();
+        }
+
+    }
+
+
+    /**
      * creating the Error message to send to the client, after notify the view
      * @param msg
      */
     private void sendNackConnectionRequest(CConnectionRequestMsg msg, String errorInformation){
-        CNackConnectionRequestMsg nackMsg = new CNackConnectionRequestMsg("Connection cannot be established ", msg.getPort(), msg.getIP(),msg.getUsername(),errorInformation);
+        VNackConnectionRequestMsg nackMsg = new VNackConnectionRequestMsg("Connection cannot be established ", msg.getPort(), msg.getIP(),msg.getUsername(),errorInformation);
         notifyAllObserver(ObserverType.VIEW, nackMsg);
     }
 

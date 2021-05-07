@@ -1,18 +1,25 @@
-package it.polimi.ingsw.message.controllerMsg;
+package it.polimi.ingsw.message.viewMsg;
 
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.message.controllerMsg.ControllerGameMsg;
 
 import java.net.InetAddress;
 
-/* a network fail because the username is taken or because the room is full */
-public class CNackConnectionRequestMsg extends ControllerGameMsg{
+/**
+ * Lobby ---> VV ---> CLI
+ *
+ * a network fail because the username is taken
+ * or because the room is full
+ * or because someone else is creating a room
+ */
+public class VNackConnectionRequestMsg extends ViewGameMsg {
 
     private final String username;
     private final String errorInformation;
     private final InetAddress userIp;
     private final int userPort;
 
-    public CNackConnectionRequestMsg(String content, int userPort ,InetAddress userIp, String username, String errorInformation) {
+    public VNackConnectionRequestMsg(String content, int userPort , InetAddress userIp, String username, String errorInformation) {
         super(content);
         this.userIp = userIp;
         this.userPort = userPort;

@@ -43,7 +43,8 @@ public class ProductionPowerController extends Observable implements ControllerO
         }
         try {
             player.getGameSpace().getStrongbox().addResources(receivedResources);
-        }catch(InvalidActionException e){
+        } catch (InvalidActionException e) {
+            //create a msg to notify the error
             e.printStackTrace();
         }
     }
@@ -103,7 +104,8 @@ public class ProductionPowerController extends Observable implements ControllerO
                 }
                 VChooseSingleResourceToPutInStrongBoxRequestMsg requestMsg = new VChooseSingleResourceToPutInStrongBoxRequestMsg("Please choose the resource you want",player.getUsername());
                 notifyAllObserver(ObserverType.VIEW,requestMsg);
-                VNotifyAllIncreasePositionMsg requestMsg1= new VNotifyAllIncreasePositionMsg("The player's faithmarker is increased by one", player.getUsername(),1);
+                VNotifyPositionIncreasedByMsg requestMsg1= new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(),1);
+                //put the player in the msg
                 notifyAllObserver(ObserverType.VIEW,requestMsg1);
             }
         }
@@ -147,14 +149,26 @@ public class ProductionPowerController extends Observable implements ControllerO
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
+    public void receiveMsg(VVConnectionRequestMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
 
     }
 
     @Override
-    public void receiveMsg(VConnectionRequestMsg msg) {
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
 
     }
+
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+
+
+    }
+
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {

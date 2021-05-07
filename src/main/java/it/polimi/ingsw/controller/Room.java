@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
@@ -21,7 +22,7 @@ public class Room extends Observable {
     private final String roomID;
 
     /* list of the players in this room */
-    private List<String> playersId;
+    private ArrayList<String> playersId;
     /* number of players */
     private int numberOfPlayer;
 
@@ -38,7 +39,7 @@ public class Room extends Observable {
     private BoardManager boardManager;
 
     /* map to connect every player to his virtual view */
-    private Map<String,VirtualView> listOfVirtualView;
+    private Map<String, VirtualView> listOfVirtualView;
 
     /* the controller for setting the game */
     private InitializedController initializedController;
@@ -59,7 +60,7 @@ public class Room extends Observable {
         this.roomID = roomID;
         playersId = new ArrayList<>();
         numberOfPlayer = 0;
-        //SIZE = size;
+        listOfVirtualView = new HashMap<>();
         isSoloMode = false;
         gameCanStart = false;
         turnSequence = new HashMap<>();
@@ -75,7 +76,7 @@ public class Room extends Observable {
         isSoloMode = soloMode;
     }
 
-    public List<String> getPlayersId() {
+    public ArrayList<String> getPlayersId() {
         return playersId;
     }
 
@@ -87,47 +88,70 @@ public class Room extends Observable {
         this.SIZE = SIZE;
     }
 
+    public int getSIZE() {
+        return SIZE;
+    }
+
+    public TurnController getTurnController() {
+        return turnController;
+    }
+
+    public HashMap<Integer, PlayerInterface> getTurnSequence() {
+        return turnSequence;
+    }
+
+    public boolean isGameCanStart() {
+        return gameCanStart;
+    }
+
+    public void addVV(String userVV, VirtualView vV){
+        listOfVirtualView.put(userVV, vV);
+    }
     /*----------------------------------------------------------------------------------------------------------------*/
 
     /**
      * adding all the users logged in, in the room to start the game
      * the maximum of the player for room (game) is 4
+     *
      * @param username
      * @throws LimitExceededException
      */
-    public void addUser(String username) throws LimitExceededException{
-        try{
+    public void addUser(String username, VirtualView VV) throws LimitExceededException {
+        try {
             // in a room can be maximum 4 player
-            if (numberOfPlayer<4){
+            if (numberOfPlayer < 4) {
                 Player player = new Player(username);
                 playersId.add(username);
-                turnSequence.put(numberOfPlayer+1, player);
                 numberOfPlayer = playersId.size();
-            }
-            else{
+
+                turnSequence.put(numberOfPlayer, player);
+
+                addVV(username, VV);
+                //System.out.println("in add user " +turnSequence);     DEBUGGING
+
+            } else {
                 throw new LimitExceededException();
             }
 
-            printRoomMessage("New player \"" +username+ "\" added in the room!");
-        } catch (LimitExceededException e){
+            printRoomMessage("New player \"" + username + "\" added in the room!");
+        } catch (LimitExceededException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * method to check if the room is full (4 player maximum) or not
+     *
      * @param
      */
-    public boolean isFull(){
-        if (isSoloMode && numberOfPlayer==1){
+    public boolean isFull() {
+        if ((isSoloMode && numberOfPlayer == 1) || (numberOfPlayer == SIZE)) {
             //this room is occupied by a player in Solo Mode
+            //or is full, so the size equals yhe number of players inside
             return true;
+        } else {
+            return false;
         }
-        else if (numberOfPlayer == 4){
-            //this room is Full
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -135,7 +159,8 @@ public class Room extends Observable {
      */
     public void initializedGame() throws InvalidActionException {
         //creating the controller for the initialization
-        initializedController = new InitializedController((ArrayList<String>) playersId);
+        //System.out.println(playersId.size());     DEBUGGING
+        initializedController = new InitializedController(playersId, listOfVirtualView);
         attachObserver(ObserverType.CONTROLLER, initializedController);
         initializedController.createGame();
         boardManager = initializedController.getBoardManager();
@@ -146,36 +171,40 @@ public class Room extends Observable {
 
     public void startFirstTurn() throws InvalidActionException {
         //creating the controller for the turn
-        if(!isSoloMode){
+        //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
+        if (!isSoloMode) {
+            //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
+            System.out.println(turnSequence);
             turnController = new TurnController(turnSequence, boardManager);
-            attachObserver(ObserverType.CONTROLLER,turnController);
-        }
-        else{
+            attachObserver(ObserverType.CONTROLLER, turnController);
+        } else {
+            //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
             singlePlayer = initializedController.getSinglePlayer();
             turnController = new TurnController(singlePlayer, boardManager);
-            attachObserver(ObserverType.CONTROLLER,turnController);
+            attachObserver(ObserverType.CONTROLLER, turnController);
         }
         turnController.gamePlay();
     }
 
 
-    private void printRoomMessage(String messageToPrint){
-        System.out.println("[Room] " +this.roomID + " : " + messageToPrint);
+    private void printRoomMessage(String messageToPrint) {
+        System.out.println("[Room] " + this.roomID + " : " + messageToPrint);
     }
 
 
     /**
      * method used to manage the disconnection of a single player from a game, and delete his network
      * with the virtual view
+     *
      * @param username
      */
-    private void disconnectPlayer(String username){
+    private void disconnectPlayer(String username) {
 
         playersId.remove(username);       //remove the name of the player disconnected from the list
 
         VirtualView playerVirtualView = listOfVirtualView.get(username);     //get the virtual view of the player disconnected
-        playerVirtualView.detachObserver(ObserverType.CONTROLLER,turnController);
-        turnController.detachObserver(ObserverType.VIEW,playerVirtualView);
+        playerVirtualView.detachObserver(ObserverType.CONTROLLER, turnController);
+        turnController.detachObserver(ObserverType.VIEW, playerVirtualView);
         listOfVirtualView.remove(username); //remove the username from the map in which every player is associated to his virtual view
     }
 }

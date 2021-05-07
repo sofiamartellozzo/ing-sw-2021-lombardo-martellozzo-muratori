@@ -17,8 +17,8 @@ public class ResourcesSupplyTest extends TestCase {
 
        Cell cell1 = new Cell(TypeResource.COIN);
        Cell cell2 = new Cell(TypeResource.SERVANT);
-       Cell cell3 = new Cell(TypeResource.SHIELD);
-       Cell cell4 = new Cell(TypeResource.STONE);
+       Cell cell3 = new Cell(TypeResource.STONE);
+       Cell cell4 = new Cell(TypeResource.SHIELD);
 
        ArrayList<Cell> cells = new ArrayList<>();
        cells.add(cell1);
@@ -38,8 +38,8 @@ public class ResourcesSupplyTest extends TestCase {
     public void testGetContent() {
         Cell cell1 = new Cell(TypeResource.COIN);
         Cell cell2 = new Cell(TypeResource.SERVANT);
-        Cell cell3 = new Cell(TypeResource.SHIELD);
-        Cell cell4 = new Cell(TypeResource.STONE);
+        Cell cell3 = new Cell(TypeResource.STONE);
+        Cell cell4 = new Cell(TypeResource.SHIELD);
 
         ArrayList<Cell> cells = new ArrayList<>();
         cells.add(cell1);
@@ -47,8 +47,8 @@ public class ResourcesSupplyTest extends TestCase {
         cells.add(cell3);
         cells.add(cell4);
 
-        resourcesSupply.getContent(cell1);
-        assertEquals(resourcesSupply.getContent(cell1).get(1).getType(),TypeResource.SERVANT);
+        assertEquals(4, resourcesSupply.getContent().size());
+        //assertEquals(resourcesSupply.getContent(cell1).get(1).getType(),TypeResource.SERVANT);
 
     }
 
@@ -56,6 +56,6 @@ public class ResourcesSupplyTest extends TestCase {
     public void testReturnResourceAsked() throws IllegalAccessException {
 
         Resource res = new Resource(Color.BLUE);
-        assertEquals(resourcesSupply.returnResourceAsked(res).getType(),TypeResource.SHIELD);
+        assertEquals(resourcesSupply.returnResourceAsked(res.getType()).getType(),TypeResource.SHIELD);
     }
 }

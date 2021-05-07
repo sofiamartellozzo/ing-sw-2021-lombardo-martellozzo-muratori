@@ -1,6 +1,7 @@
 package it.polimi.ingsw.message;
 
-import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
+import it.polimi.ingsw.message.controllerMsg.CVStartInitializationMsg;
+import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 
 /**
@@ -21,13 +22,14 @@ public interface ViewObserver extends Observer{
     /* send to all player to notify this action of one*/
     public void receiveMsg(VNotifyPositionIncreasedByMsg msg);
 
+    /* send to the player after try to initialized the game*/
+    public void receiveMsg(VNackConnectionRequestMsg msg);
 
-    public void receiveMsg(CNackConnectionRequestMsg msg);
-
-    public void receiveMsg(VChooseActionTurnRequestMsg msg);
+    /* from InitC to each player to select the 2 L_Card*/
     public void receiveMsg(VChooseLeaderCardRequestMsg msg);
 
 
+    public void receiveMsg(VChooseActionTurnRequestMsg msg);
 
     public void receiveMsg(VChooseDevelopCardRequestMsg msg);
     public void receiveMsg(VMoveResourceRequestMsg msg);
@@ -36,4 +38,6 @@ public interface ViewObserver extends Observer{
 
     /* only SOLO mode */
     public void receiveMsg(VActionTokenActivateMsg msg);
+
+    void receiveMsg(CVStartInitializationMsg msg);
 }

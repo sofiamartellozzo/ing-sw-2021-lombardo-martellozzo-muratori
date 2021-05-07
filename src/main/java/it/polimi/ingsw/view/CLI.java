@@ -357,7 +357,7 @@ public class CLI extends Observable implements ViewObserver {
     /*---------------------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
-    public void receiveMsg(CNackConnectionRequestMsg msg) {
+    public void receiveMsg(VNackConnectionRequestMsg msg) {
 
         String newUsername = null;
         switch (msg.getErrorInformation()){
@@ -595,7 +595,7 @@ public class CLI extends Observable implements ViewObserver {
         in.reset();
 
         int newDepot = in.nextInt();
-        CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!",msg.getReource(),newDepot,username);
+        CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!",msg.getResourceChooseBefore(),newDepot,username);
         client.sendMsg(response);
 
     }
@@ -719,6 +719,16 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VActionTokenActivateMsg msg) {
         //this have to be implemented
+    }
+
+    /**
+     * notification of starting the initialization
+     * @param msg from VV
+     */
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+        System.out.println("The initialization has started...");
+
     }
 
 

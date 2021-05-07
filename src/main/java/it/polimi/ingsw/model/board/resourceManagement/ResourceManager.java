@@ -100,8 +100,13 @@ public class ResourceManager {
      * Add all "resources" in the strongbox.
      * @param resources -> The resources you want to put in
      */
-    public void addResourcesToStrongBox(ArrayList<Resource> resources) throws InvalidActionException {
-        strongBox.addResources(resources);
+    public void addResourcesToStrongBox(ArrayList<Resource> resources){
+        try {
+            strongBox.addResources(resources);
+        } catch (InvalidActionException e) {
+            //create a msg to notify the error
+            e.printStackTrace();
+        }
     }
 
     /**

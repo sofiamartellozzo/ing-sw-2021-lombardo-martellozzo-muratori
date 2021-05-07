@@ -79,6 +79,7 @@ public class TurnController extends Observable implements ControllerObserver {
     private void setTurnSequence(HashMap<Integer, PlayerInterface> players){
         turnSequence = players;
         numberOfPlayer = players.keySet().size();
+        System.out.println("number of players " +numberOfPlayer+ " index " +players.keySet());
     }
 
     /**
@@ -309,6 +310,11 @@ public class TurnController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
         //not here (Lobby)
+    }
+
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+
     }
 
     @Override

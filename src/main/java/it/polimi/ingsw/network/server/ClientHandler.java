@@ -64,20 +64,14 @@ public class ClientHandler extends Observable implements Runnable {
         }
 
         /* start the ping process */
-        startPing();
+        //startPing();
 
 
         /* now wait listening for a message (Event) */
         try {
 
             while (true) {
-                //handleMsg();
-                if (!queue.isEmpty()) {
-                    GameMsg msg = queue.remove(0);
-                    //notify controller with the received message
-                    notifyAllObserver(ObserverType.CONTROLLER, msg);
-                    System.out.println("send msg to controller : " +msg.getMsgContent());
-                }
+                handleMsg();
                 GameMsg msgReceived;
                 //TimeUnit.SECONDS.sleep(10);
                 Object received = in.readObject(); //deserialized
@@ -109,7 +103,7 @@ public class ClientHandler extends Observable implements Runnable {
      * @param msgReceived
      */
     private void addMsgInQueue(GameMsg msgReceived) {
-        System.out.println("adding in the queue");
+        //System.out.println("adding in the queue");        DEBUGGING
         queue.add(msgReceived);
     }
 
@@ -121,6 +115,7 @@ public class ClientHandler extends Observable implements Runnable {
             GameMsg msg = queue.remove(0);
             //notify controller with the received message
             notifyAllObserver(ObserverType.CONTROLLER, msg);
+            //System.out.println("send msg to controller : " +msg.getMsgContent());     DEBUGGING
         }
     }
 

@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.factory.ResourcesSupplyFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
@@ -14,6 +15,7 @@ import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.model.board.SoloPersonalBoard;
 import it.polimi.ingsw.model.card.LeaderCard;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.*;
 
@@ -37,12 +39,18 @@ public class InitializedController extends Observable implements ControllerObser
     /* setting true if the game can start */
     private boolean canStart;
 
+    private Map<String, VirtualView> virtualView;
+
     /* Constructor of the class */
-    public InitializedController(ArrayList<String> players) {
+    public InitializedController(ArrayList<String> players, Map<String, VirtualView> virtualView) {
 
         this.canStart = false;
         this.numberOfPlayer = players.size();
+        System.out.println(players.size());
         this.turnSequence = new HashMap<>();
+        this.virtualView = new HashMap<>();
+        this.virtualView = virtualView;
+        attachAllVV();
         /* shuffle the player to make the choise of the fist random */
         Collections.shuffle(players);
         /* creating a ordered sequence of the players */
@@ -70,6 +78,10 @@ public class InitializedController extends Observable implements ControllerObser
         return singlePlayer;
     }
 
+    public boolean canStart() {
+        return canStart;
+    }
+
     /**
      * this method create a organized sequence of the players as a Map
      * (if only one initialized his as Solo Player class)
@@ -81,10 +93,16 @@ public class InitializedController extends Observable implements ControllerObser
             SoloPlayer p = new SoloPlayer(players.get(0));
             singlePlayer = p;
         } else {
-            for (int i = 0; i < numberOfPlayer; i++) {
-                Player p = new Player(players.remove(i));
+            for (int i = 0; i < numberOfPlayer ; i++) {
+                Player p = new Player(players.get(i));
                 turnSequence.put(i + 1, p);
             }
+        }
+    }
+
+    private void attachAllVV(){
+        for (String username: virtualView.keySet()) {
+            attachObserver(ObserverType.VIEW, virtualView.get(username));
         }
     }
 
@@ -125,15 +143,19 @@ public class InitializedController extends Observable implements ControllerObser
                 PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
                 PersonalBoard personalBoard = personalBoardFactory.createGame();
                 this.turnSequence.get(i).setGameSpace(personalBoard);
+                this.turnSequence.get(i).setNumber(i);
+            }
 
-                //call the msg to choose the leader card
-                chooseLeaderCard(false);
                 //then giving the resources initial to the players
                 giveStartResources();
 
+                //call the msg to choose the leader card
+                chooseLeaderCard(false);
+
+
                 //now the came can start... Create the turn controller
                 canStart= true;
-            }
+
 
         }
     }
@@ -196,12 +218,15 @@ public class InitializedController extends Observable implements ControllerObser
      * @throws InvalidActionException
      */
     private void giveStartResources() throws InvalidActionException {
+        //System.out.println("giving the resources to the second player outside");      DEBUGGING
         if (this.turnSequence.get(2) != null) {
             //the second player receive one resources that he choose
+            //System.out.println("giving the resources to the second player inside");       DEBUGGING
             VChooseResourceAndDepotMsg msg1 = new VChooseResourceAndDepotMsg("You are the second player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(2).getUsername());
             notifyAllObserver(ObserverType.VIEW, msg1);
 
             if (this.turnSequence.get(3) != null) {
+                //System.out.println("giving the resources to the 3 player inside");        DEBUGGING
                 //the third player receive one resource and a faith marker(so increase of one his position)
                 VChooseResourceAndDepotMsg msg2 = new VChooseResourceAndDepotMsg("You are the third player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(3).getUsername());
                 notifyAllObserver(ObserverType.VIEW, msg2);
@@ -319,6 +344,9 @@ public class InitializedController extends Observable implements ControllerObser
         }
     }
 
+    /*---------------------------------------------------------------------------------------------------------------------*/
+                    //      not implemented here!!
+
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
 
@@ -372,6 +400,11 @@ public class InitializedController extends Observable implements ControllerObser
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
         //not here (Lobby)
+    }
+
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+        //not here (VV-->Lobby and CLI)
     }
 
 

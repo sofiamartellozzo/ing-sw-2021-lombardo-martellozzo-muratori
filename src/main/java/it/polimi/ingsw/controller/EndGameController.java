@@ -109,6 +109,11 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
 
         //NOT IMPLEMENTED HERE

@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * this class is where is readed the input from the CLIENT
  * and send the output for the server
  */
-public class ClientSocket extends Observable implements Runnable{
+public class ClientSocket extends Observable implements Runnable {
 
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -40,7 +40,7 @@ public class ClientSocket extends Observable implements Runnable{
     /* create a queue to contains all the msg received from the server */
     private ArrayList<ViewGameMsg> queue;
 
-    public ClientSocket(String IPAddress, ViewObserver view){
+    public ClientSocket(String IPAddress, ViewObserver view) {
         this.IP = IPAddress;
         queue = new ArrayList<>();
         this.clientView = view;
@@ -50,13 +50,13 @@ public class ClientSocket extends Observable implements Runnable{
     /**
      * try to open the connection
      */
-    public void beginConnection() throws IOException{
+    public void beginConnection() throws IOException {
         serverSocket = null;
         //open a connection with the server
-        try{
+        try {
             serverSocket = new Socket(IP, SERVER_PORT);
             connectionOpen = true;
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("Client unable to open the connection");
             e.printStackTrace();
         }
@@ -66,29 +66,29 @@ public class ClientSocket extends Observable implements Runnable{
         try {
             out = new ObjectOutputStream(serverSocket.getOutputStream());
             in = new ObjectInputStream(new BufferedInputStream(serverSocket.getInputStream()));
-        } catch (IOException e1){
+        } catch (IOException e1) {
             e1.printStackTrace();
             System.out.println("The Socket cannot open the connection!");
         }
 
 
         /* start the ping process */
-        startPing();
+        // startPing();
     }
 
 
     /**
      * private method to start the Ping process, so keep the connection alive
      */
-    private void startPing(){
-        try{
+    private void startPing() {
+        try {
             /* In a Socket an IP Address is represented by the class InetAddress, this class is used to
-            * manage an IP Address for routing information throw the Net*/
+             * manage an IP Address for routing information throw the Net*/
             InetAddress serverAddress = InetAddress.getByName(this.IP);
 
             ping = new Thread(() -> {
-                try{
-                    while (true){
+                try {
+                    while (true) {
                         Thread.sleep(5000);
                         out.writeObject(new PongMsg("Pong!"));
                     }
@@ -113,20 +113,20 @@ public class ClientSocket extends Observable implements Runnable{
     /**
      * interrupting the sending of Pinging msg
      */
-    private void stopPing(){
+    private void stopPing() {
         ping.interrupt();
     }
 
     /**
      * send message to the server
      */
-    public void sendMsg(GameMsg msg){
-        if (connectionOpen){
-            try{
+    public void sendMsg(GameMsg msg) {
+        if (connectionOpen) {
+            try {
                 out.reset();
                 out.writeObject(msg);    //serialized the msg (event)
                 out.flush();             //create a buffer of the object and send in the net
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("unable to send msg to server");
             }
         }
@@ -134,70 +134,65 @@ public class ClientSocket extends Observable implements Runnable{
 
     /**
      * adding the new message in the queue to handle one msg at time
+     *
      * @param msgReceived
      */
-    private void addMsgInQueue(ViewGameMsg msgReceived){
-        System.out.println("adding in the queue");
+    private void addMsgInQueue(ViewGameMsg msgReceived) {
+        //System.out.println("adding in the queue");        DEBUGGING
         queue.add(msgReceived);
     }
 
     /**
      * notify the view with the messages received from the net
      */
-    private void handleMsg(){
-        if (!queue.isEmpty()){
+    private void handleMsg() {
+        if (!queue.isEmpty()) {
             ViewGameMsg msg = queue.remove(0);
             //then notify all the observer (viewer) about the new message arrived from the Server
             notifyAllObserver(ObserverType.VIEW, msg);
+            //System.out.println("send msg to view : " +msg.getMsgContent()+ "for ");       DEBUGGING
         }
     }
 
     @Override
-    public void run(){
-        while (connectionOpen){
+    public void run() {
+        while (connectionOpen) {
 
             try {
                 handleMsg();
-                /*
-                if (!queue.isEmpty()){
-                    ViewGameMsg msg = queue.remove(0);
-                    //then notify all the observer (viewer) about the new message arrived from the Server
-                    notifyAllObserver(ObserverType.VIEW, msg);
-                }*/
-                    System.out.println("Start the client");
-                    //TimeUnit.SECONDS.sleep(20);
-                    Object received = in.readObject(); //deserialized the msg from the server
-                    /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the view*/
-                    if ((received instanceof PingMsg)) {
-                        System.out.println(((PingMsg) received).getMsgContent() + " from the server: ");
-                        //response with a Pong msg
-                        sendMsg(new PongMsg("Pong!"));
-                    } else {
-                        //casting the msg because it is a ViewMsg type for sure
-                        ViewGameMsg msg = (ViewGameMsg) received;
-                        //adding the msg in the queue
-                        addMsgInQueue(msg);
-                    }
-
-                } catch(IOException | ClassNotFoundException /*| InterruptedException*/ e){
-                    System.out.println("this client disconnected from the server");
-                    /* setting the attribute to false because the connection shut down */
-                    connectionOpen = false;
-                    closeConnection();
+                //TimeUnit.SECONDS.sleep(20);
+                Object received = in.readObject(); //deserialized the msg from the server
+                /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the view*/
+                if ((received instanceof PingMsg)) {
+                    System.out.println(((PingMsg) received).getMsgContent() + " from the server: ");
+                    //response with a Pong msg
+                    sendMsg(new PongMsg("Pong!"));
+                } else {
+                    //casting the msg because it is a ViewMsg type for sure
+                    ViewGameMsg msg = (ViewGameMsg) received;
+                    //adding the msg in the queue
+                    addMsgInQueue(msg);
                 }
 
+            } catch (IOException | ClassNotFoundException /*| InterruptedException*/ e) {
+                System.out.println("this client disconnected from the server");
+                /* setting the attribute to false because the connection shut down */
+                connectionOpen = false;
+                closeConnection();
             }
 
         }
 
+    }
 
-    public void closeConnection(){
-        if(ping.isAlive()){
+
+    public void closeConnection() {
+        if (ping.isAlive()) {
             stopPing();
         }
-        try{
+        try {
             serverSocket.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             System.err.println("error closing the connection");
         }
     }

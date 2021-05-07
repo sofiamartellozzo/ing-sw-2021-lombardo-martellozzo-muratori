@@ -47,14 +47,16 @@ public abstract class Observable {
         switch (observerType){
 
             case VIEW:
+                if (!viewObserver.contains((ViewObserver) observer)){
                 viewObserver.add((ViewObserver) observer);
                 //debugging
-                System.out.println("attach a view " +observer.toString());
+                System.out.println("attach a view " +observer.toString());}
                 break;
             case CONTROLLER:
+                if (!controllerObserver.contains((ControllerObserver) observer)){
                 controllerObserver.add((ControllerObserver) observer);
                 //debugging
-                System.out.println("attach a controller " +observer.toString());
+                System.out.println("attach a controller " +observer.toString());}
                 break;
         }
     }

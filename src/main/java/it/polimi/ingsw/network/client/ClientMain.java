@@ -14,6 +14,9 @@ public class ClientMain {
 
     public static void main(String[] args) throws InputInvalidException {
 
+        //REMINDER: launch the server with the type of view with args,
+        //          if null use the actual command that able the client to choose manually
+
         int viewModeChoice = 0;
 
         Scanner scanner = new Scanner(System.in);
