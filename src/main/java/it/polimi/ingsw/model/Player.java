@@ -43,6 +43,7 @@ public class Player implements PlayerInterface{
         this.inkpot = false;
         this.buyCard = new Buy();
         this.playing = false;
+        this.leaderCards = new ArrayList<>();
     }
 
     @Override

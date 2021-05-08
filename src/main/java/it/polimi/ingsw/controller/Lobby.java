@@ -389,6 +389,28 @@ public class Lobby extends Observable implements ControllerObserver {
         notifyAllObserver(ObserverType.VIEW, nackMsg);
     }
 
+    @Override
+    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
+        //send to Initialized Controller, so find the room
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+        //send to TurnController by Room
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
+    }
+
     /*---------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
@@ -397,24 +419,24 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
 
-    @Override
-    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-        //not implemented here (Initialized Controller)
-    }
+
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //not implemented here (Initialized Controller)
     }
 
-    @Override
-    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
 
-    }
 
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
-
+        //send to TurnController by Room and then to ActionController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
     @Override

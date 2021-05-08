@@ -27,10 +27,13 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CChooseResourceAndDepotMsg msg);
     public void receiveMsg(CChooseLeaderCardResponseMsg msg);
 
-
-
+    /* from CLI to TurnController*/
     public void receiveMsg(CChooseActionTurnResponseMsg msg);
+
+    /* from CLI to Action Controller, to buy a Develop Card*/
     public void receiveMsg(CBuyDevelopCardResponseMsg msg);
+
+
     public void receiveMsg(CMoveResourceInfoMsg msg);
     public void receiveMsg(CBuyFromMarketInfoMsg msg);
     public void receiveMsg(CActivateProductionPowerResponseMsg msg);

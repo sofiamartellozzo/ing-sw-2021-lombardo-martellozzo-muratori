@@ -8,6 +8,7 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,18 +30,25 @@ public class ActionController extends Observable implements ControllerObserver {
 
     private boolean actionWentWrong;
 
-    public ActionController(Player player, PlayerTurn turn, BoardManager boardManager){
+    /* list of VV of the players*/
+    private Map<String, VirtualView> virtualView;
+
+    public ActionController(Player player, PlayerTurn turn, BoardManager boardManager, Map<String, VirtualView> virtualView){
         this.player = (Player) player;
         this.turn = turn;
         this.boardManager = boardManager;
         actionWentWrong = true;
+        this.virtualView = virtualView;
+        attachAllVV();
     }
 
-    public ActionController(SoloPlayer player, SoloPlayerTurn turn, BoardManager boardManager){
+    public ActionController(SoloPlayer player, SoloPlayerTurn turn, BoardManager boardManager, Map<String, VirtualView> virtualView){
         this.player = (SoloPlayer) player;
         this.soloPlayerTurn = turn;
         this.boardManager = boardManager;
         actionWentWrong = true;
+        this.virtualView = virtualView;
+        attachAllVV();
     }
 
 
@@ -50,6 +58,15 @@ public class ActionController extends Observable implements ControllerObserver {
             p.add(players.get(i).getUsername());
         }
         return p;
+    }
+
+    /**
+     * attach all VV of the players so this class can notify them
+     */
+    private void attachAllVV(){
+        for (String username: virtualView.keySet()) {
+            attachObserver(ObserverType.VIEW, virtualView.get(username));
+        }
     }
     /*---------------------------------------------------------------------------------------------------------------------*/
 
@@ -62,6 +79,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
         switch (msg.getActionChose()){
             case BUY_CARD:
+                System.out.println("enter in buy card of action controller");
                 //I need the input from the real player (person)
                 boolean[][] matrix = new boolean[4][3]; //this will be 3x4
                 matrix[1][1] = true; //only to not have errors right now

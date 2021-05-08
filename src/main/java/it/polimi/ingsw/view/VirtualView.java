@@ -105,7 +105,14 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-        //not implemented here (in Initialized Controller)
+        //send to Initialized Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+        //send to Turn Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
@@ -113,13 +120,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         //not implemented here (in Initialized Controller)
     }
 
-    @Override
-    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
-        //not here
-    }
 
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
+        //send to Action Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
 
     }
 
@@ -270,15 +275,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     /**
-     * send to the client this msg to ask wich development card wants to buy
+     * send to the client this msg to ask which development card wants to buy
      *
      * @param msg-> contains all the available position of the table where to buy
      */
     @Override
     public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
         if (msg.getUsername().equals(this.username)) {
-
-
             sendToClient(msg);
         }
 

@@ -172,17 +172,21 @@ public class Room extends Observable {
     public void startFirstTurn() throws InvalidActionException {
         //creating the controller for the turn
         //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
+
         if (!isSoloMode) {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
-            System.out.println(turnSequence);
-            turnController = new TurnController(turnSequence, boardManager);
+            //System.out.println(turnSequence);
+            turnController = new TurnController(turnSequence, boardManager, listOfVirtualView);
             attachObserver(ObserverType.CONTROLLER, turnController);
         } else {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
             singlePlayer = initializedController.getSinglePlayer();
-            turnController = new TurnController(singlePlayer, boardManager);
+            turnController = new TurnController(singlePlayer, boardManager, listOfVirtualView);
             attachObserver(ObserverType.CONTROLLER, turnController);
         }
+
+        /* the initialization has finished so detach the observer*/
+        detachObserver(ObserverType.CONTROLLER, initializedController);
         turnController.gamePlay();
     }
 

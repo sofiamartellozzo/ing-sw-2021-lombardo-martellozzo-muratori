@@ -28,10 +28,14 @@ public interface ViewObserver extends Observer{
     /* from InitC to each player to select the 2 L_Card*/
     public void receiveMsg(VChooseLeaderCardRequestMsg msg);
 
-
+    /* from Turn Controller to the client */
     public void receiveMsg(VChooseActionTurnRequestMsg msg);
 
+    /* fist (only in code order) of action chosen in ActionController, so send this msg to client for asking which card to buy */
     public void receiveMsg(VChooseDevelopCardRequestMsg msg);
+
+
+
     public void receiveMsg(VMoveResourceRequestMsg msg);
     public void receiveMsg(VBuyFromMarketRequestMsg msg);
     public void receiveMsg(VShowEndGameResultsMsg msg);

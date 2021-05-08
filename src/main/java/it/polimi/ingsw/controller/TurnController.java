@@ -7,9 +7,11 @@ import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /*
 * SOFI*/
@@ -46,8 +48,11 @@ public class TurnController extends Observable implements ControllerObserver {
     /*at the end of the game there is a last turn for each player except the one that ended it, this keep the track of it*/
     private int numberOfLastTurn;
 
+    /* list of VV of the players*/
+    private Map<String, VirtualView> virtualView;
+
     /* Constructor of the class */
-    public TurnController(HashMap<Integer, PlayerInterface> players, BoardManager boardManager) {
+    public TurnController(HashMap<Integer, PlayerInterface> players, BoardManager boardManager, Map<String, VirtualView> virtualView) {
 
         this.turnSequence = new HashMap<>();
         setTurnSequence(players);
@@ -58,10 +63,12 @@ public class TurnController extends Observable implements ControllerObserver {
         setVaticanSectionUnchecked();
         lastTurns = false;
         numberOfLastTurn = numberOfPlayer-1;
+        this.virtualView = virtualView;
+        attachAllVV();
     }
 
     /* override of the constructor, for the Solo Mode */
-    public TurnController(SoloPlayer player, BoardManager boardManager) {
+    public TurnController(SoloPlayer player, BoardManager boardManager, Map<String, VirtualView> virtualView) {
 
         this.turnSequence = null;
         this.singlePlayer = player;
@@ -70,6 +77,8 @@ public class TurnController extends Observable implements ControllerObserver {
         this.boardManager = boardManager;
         this.currentTurnIndex = 1;
         setVaticanSectionUnchecked();
+        this.virtualView = virtualView;
+        attachAllVV();
     }
 
     /**
@@ -105,6 +114,15 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     /**
+     * attach all VV of the players so this class can notify them
+     */
+    private void attachAllVV(){
+        for (String username: virtualView.keySet()) {
+            attachObserver(ObserverType.VIEW, virtualView.get(username));
+        }
+    }
+
+    /**
      * method to initialized the game, creating the spaces and setting everithing
      * exept the Board Manager the rest is setted differently if the number of player
      * are one or more : so solo mode or multiple mode
@@ -127,7 +145,7 @@ public class TurnController extends Observable implements ControllerObserver {
      * @param player
      */
     private void startSoloPlayerTurn(SoloPlayer player) throws InvalidActionException {
-        printTurnCMesssage("You choose to play in Solo Mode, ready to fight against Lorenzo il Magnifico?");
+        printTurnCMesssage("The client \"" +player.getUsername()+ "\" choose to play in Solo Mode, starting his turn");
         player.setPlaying(true);
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
         currentSoloTurnIstance = spt;
@@ -145,13 +163,14 @@ public class TurnController extends Observable implements ControllerObserver {
      * @param player
      */
     private void startPlayerTurn(Player player){
-        printTurnCMesssage("New Turn is ready to start, and you?...");
+        printTurnCMesssage("New Turn for \"" +player.getUsername()+ "\" is ready to start");
         player.setPlaying(true);
         PlayerTurn pt = new PlayerTurn(player, this.boardManager);
         currentTurnIstance = pt;
         //send the msg to the client, to choose the action he want to make
         VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
+        //System.out.println(msg.getMsgContent());      DEBUGGING
         if (currentTurnIndex > 1 && pt.checkEndTurn()){
             nextTurn();
         }
@@ -220,7 +239,13 @@ public class TurnController extends Observable implements ControllerObserver {
         if(msg.getUsername().equals(currentPlayer.getUsername())) {
             if (!msg.getActionChose().equals(TurnAction.END_TURN)) {
                 printTurnCMesssage("New action of the game");
-                ActionController controller = new ActionController(currentPlayer, currentTurnIstance, boardManager);
+
+                /* create the controller to handle the specific action of the turn */
+                ActionController controller = new ActionController(currentPlayer, currentTurnIstance, boardManager, virtualView);
+                //attach it as an observer
+                attachObserver(ObserverType.CONTROLLER, controller);
+                //send him the msg with the info
+                notifyAllObserver(ObserverType.CONTROLLER, msg);
             } else {
                 if(!lastTurns) {
                     checkEndGame();
@@ -277,7 +302,8 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
-        //IN ACTIONCONTROLLER
+        //to ACTION_CONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
 
@@ -327,5 +353,55 @@ public class TurnController extends Observable implements ControllerObserver {
         //not here
     }
 
+    /*------------------------------------------------------*/
+            //GETTER FOR TESTING
 
+
+    public HashMap<Integer, PlayerInterface> getTurnSequence() {
+        return turnSequence;
+    }
+
+    public int getNumberOfPlayer() {
+        return numberOfPlayer;
+    }
+
+    public int getCurrentTurnIndex() {
+        return currentTurnIndex;
+    }
+
+    public PlayerTurn getCurrentTurnIstance() {
+        return currentTurnIstance;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public ArrayList<PopesFavorTileReview> getCheckPopesFavorTile() {
+        return checkPopesFavorTile;
+    }
+
+    public SoloPlayer getSinglePlayer() {
+        return singlePlayer;
+    }
+
+    public boolean isSoloMode() {
+        return isSoloMode;
+    }
+
+    public SoloPlayerTurn getCurrentSoloTurnIstance() {
+        return currentSoloTurnIstance;
+    }
+
+    public BoardManager getBoardManager() {
+        return boardManager;
+    }
+
+    public boolean isLastTurns() {
+        return lastTurns;
+    }
+
+    public int getNumberOfLastTurn() {
+        return numberOfLastTurn;
+    }
 }
