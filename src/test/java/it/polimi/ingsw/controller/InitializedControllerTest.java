@@ -1,13 +1,19 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
+import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.view.VirtualView;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Array;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InitializedControllerTest extends TestCase {
 
@@ -20,7 +26,9 @@ public class InitializedControllerTest extends TestCase {
         players.add(0,"pippo");
         players.add(1,"pluto");
         players.add(2,"paperino");
-        //initializedController = new InitializedController(players);
+        Map<String, VirtualView> virtualView = new HashMap<>();
+        virtualView.put("pippo", new VirtualView(new ClientHandler(new Socket(),"lalal")));
+        initializedController = new InitializedController(players,virtualView);
 
         ArrayList<String> player = new ArrayList<>();
         players.add("philip");
@@ -68,7 +76,19 @@ public class InitializedControllerTest extends TestCase {
 
     }
 
-    public void testReceiveMsg() {
+    @Test
+    public void testReceiveMsg() throws InvalidActionException {
+        initializedController.createGame();
+        ArrayList<Integer> card = new ArrayList<>();
+        card.add(1);
+        card.add(2);
+        ArrayList<Integer> card2 = new ArrayList<>();
+        card2.add(3);
+        card2.add(4);
+        CChooseLeaderCardResponseMsg m = new CChooseLeaderCardResponseMsg("boo", card, card2, "pippo", "firstChoose");
+        initializedController.receiveMsg(m);
+
+        //
     }
 
     public void testTestReceiveMsg() {

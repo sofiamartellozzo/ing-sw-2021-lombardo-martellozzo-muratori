@@ -1,8 +1,11 @@
 package it.polimi.ingsw.message.controllerMsg;
 
+import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.model.TurnAction;
 
 /**
+ * CLI ---> VV ---> Lobby(Room) ---> TurnController ---> ActionController
+ *
  * msg send by the client with his selection in the market
  */
 public class CBuyFromMarketInfoMsg extends ControllerGameMsg{
@@ -16,7 +19,7 @@ public class CBuyFromMarketInfoMsg extends ControllerGameMsg{
         this.username = username;
         this.rowOrColumn = rowOrColumn;
         this.whichRorC = whichRorC;
-        action = TurnAction.BUY_FROM_MARKET;
+        this.action = TurnAction.BUY_FROM_MARKET;
     }
 
     public TurnAction getActionChose(){
@@ -33,5 +36,11 @@ public class CBuyFromMarketInfoMsg extends ControllerGameMsg{
 
     public int getWhichRorC() {
         return whichRorC;
+    }
+
+
+    @Override
+    public void notifyHandler(ControllerObserver controllerObserver) {
+        controllerObserver.receiveMsg(this);
     }
 }

@@ -25,7 +25,7 @@ public interface ControllerObserver extends Observer{
 
     /* from CLI to InitializedC*/
     public void receiveMsg(CChooseResourceAndDepotMsg msg);
-    public void receiveMsg(CChooseLeaderCardResponseMsg msg);
+    public void receiveMsg(CChooseLeaderCardResponseMsg msg); //this also to ActionController
 
     /* from CLI to TurnController*/
     public void receiveMsg(CChooseActionTurnResponseMsg msg);
@@ -33,13 +33,22 @@ public interface ControllerObserver extends Observer{
     /* from CLI to Action Controller, to buy a Develop Card*/
     public void receiveMsg(CBuyDevelopCardResponseMsg msg);
 
-
+    /*from client (CLI) to the ActionController */
     public void receiveMsg(CMoveResourceInfoMsg msg);
+
+    /*from client (CLI) to the ActionController, to buy from the market */
     public void receiveMsg(CBuyFromMarketInfoMsg msg);
-    public void receiveMsg(CActivateProductionPowerResponseMsg msg);
+    /*if the player discard a resources from the market*/
     public void receiveMsg(CChooseDiscardResourceMsg msg);
-    public void receiveMsg(CChooseResourceResponseMsg msg);
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg);
+
+    /*from client (CLI) to the PPController, to activate it*/
+    public void receiveMsg(CActivateProductionPowerResponseMsg msg);
+
+
+
+
+
+    public void receiveMsg(CStandardPPResponseMsg msg);
 
 
 

@@ -1,11 +1,14 @@
 package it.polimi.ingsw.message.viewMsg;
 
+import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.model.TypeResource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * ActionController ---> VV ---> CLI
+ *
  * request from the server (turn controller) to the client to choose which resource and where to move it
  * in this msg is stored the actual situation
  * in the map the integer (key) represents the depots and the TypeResource (value) what inside
@@ -26,5 +29,10 @@ public class VMoveResourceRequestMsg extends ViewGameMsg{
 
     public HashMap<Integer, ArrayList<TypeResource>> getDepotsActualSituation() {
         return depotsActualSituation;
+    }
+
+    @Override
+    public void notifyHandler(ViewObserver viewObserver) {
+        viewObserver.receiveMsg(this);
     }
 }

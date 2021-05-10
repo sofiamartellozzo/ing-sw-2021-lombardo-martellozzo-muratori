@@ -130,33 +130,36 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
+        //send to Action Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
 
     }
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
-
+        //send to Action Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
+
+
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
-
+        //send to Production Power Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
-
+        //send to Lobby(Room) and Action Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
-    public void receiveMsg(CChooseResourceResponseMsg msg) {
+    public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
-
-    }
 
 
 
@@ -226,7 +229,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
         //check if the username is mine
-        System.out.println("choose l c request in VV");
+
         if (msg.getUsername().equals(this.username)) {
             /* send this message (notify) to the client */
             sendToClient(msg);
@@ -287,15 +290,77 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     }
 
+    /**
+     * in this msg (specific of one client) is a request of the player to
+     * move the resources from one depots to another
+     * @param msg
+     */
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
-
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
     }
 
+    /**
+     * in this msg (specific of one client) is a request of the player to
+     * buy from the market in the turn
+     * @param msg
+     */
     @Override
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
-
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
     }
+
+    /**
+     * in this msg (specific of one client) is after a request of the player to
+     * buy from the market in the turn, so the server now need to know
+     * in which depot store it
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VChooseDepotMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
+    /**
+     * in this msg (specific of one client) is after a request of the player to
+     * activate a Production Power, so ask his which one activate
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
+    /**
+     * after the choice of the player to activate PP 0
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VStandardPPRequestMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
+    /**
+     * after the choice of the player to activate special PP
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {

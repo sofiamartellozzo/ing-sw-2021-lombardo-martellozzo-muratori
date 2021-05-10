@@ -51,6 +51,9 @@ public class TurnController extends Observable implements ControllerObserver {
     /* list of VV of the players*/
     private Map<String, VirtualView> virtualView;
 
+    /*refereces to Action Controller if is on*/
+    private ActionController actionController;
+
     /* Constructor of the class */
     public TurnController(HashMap<Integer, PlayerInterface> players, BoardManager boardManager, Map<String, VirtualView> virtualView) {
 
@@ -219,6 +222,13 @@ public class TurnController extends Observable implements ControllerObserver {
         }
     }
 
+    private void checkIfFirstAction(){
+        if (actionController != null && actionController.endAction()){
+            detachObserver(ObserverType.CONTROLLER, actionController);
+            actionController = null;
+        }
+    }
+
     /*check if someone is in the pop's favor tile...*/
 
     private void printTurnCMesssage(String messageToPrint){
@@ -237,15 +247,22 @@ public class TurnController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
         if(msg.getUsername().equals(currentPlayer.getUsername())) {
+
+            //check if is not the first one and detach Action Turn if there is
+            checkIfFirstAction();
+
             if (!msg.getActionChose().equals(TurnAction.END_TURN)) {
                 printTurnCMesssage("New action of the game");
 
                 /* create the controller to handle the specific action of the turn */
                 ActionController controller = new ActionController(currentPlayer, currentTurnIstance, boardManager, virtualView);
+                this.actionController = controller;
+
                 //attach it as an observer
                 attachObserver(ObserverType.CONTROLLER, controller);
                 //send him the msg with the info
                 notifyAllObserver(ObserverType.CONTROLLER, msg);
+
             } else {
                 if(!lastTurns) {
                     checkEndGame();
@@ -279,24 +296,22 @@ public class TurnController extends Observable implements ControllerObserver {
             if (!turnSequence.get(key).getUsername().equals(msg.getUsername())){
                 //not the player that discarded the resource
                 turnSequence.get(key).increasePosition();
-                VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("this player increased his position because of another player", turnSequence.get(key).getUsername(), 1);
+                VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" "+turnSequence.get(key).getUsername()+ "\" increased his position because \"" +msg.getUsername()+ "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
                 //remember to set all the other players!!!!
                 notifyAllObserver(ObserverType.VIEW, notify);
             }
         }
 
-        //check end turn (because all player has increased their position of 1
+        //check end game (because all player has increased their position of 1
+        checkEndGame();
     }
 
     @Override
-    public void receiveMsg(CChooseResourceResponseMsg msg) {
+    public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
 
-    }
 
     /*------------------------------------------------------------------------------------------------------------------*/
 
@@ -309,17 +324,26 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
-        //IN ACTIONCONTROLLER
+        //to ACTIONCONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
-        //IN ACTIONCONTROLLER
+        //to ACTIONCONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+        //to ACTIONCONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
 
+    @Override
+    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
+        //to ACTIONCONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
 
@@ -343,10 +367,7 @@ public class TurnController extends Observable implements ControllerObserver {
 
     }
 
-    @Override
-    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-        //not here
-    }
+
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {

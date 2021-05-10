@@ -1,6 +1,10 @@
 package it.polimi.ingsw.message.controllerMsg;
 
+import it.polimi.ingsw.message.ControllerObserver;
+
 /**
+ * CLI/GUI ---> VV ---> Lobby(Room) ---> Action Controller
+ *
  * msg from client to discard a resource from the market
  */
 public class CChooseDiscardResourceMsg extends ControllerGameMsg{
@@ -14,5 +18,10 @@ public class CChooseDiscardResourceMsg extends ControllerGameMsg{
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public void notifyHandler(ControllerObserver controllerObserver) {
+        controllerObserver.receiveMsg(this);
     }
 }

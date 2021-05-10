@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.factory.ResourcesSupplyFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
-import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
@@ -176,7 +175,7 @@ public class InitializedController extends Observable implements ControllerObser
 
             fourLeaderCard = selectOnlyFour(allLeaderCard);
             //now create the msg to the client
-            VChooseLeaderCardRequestMsg msg = new VChooseLeaderCardRequestMsg("Ask the client to choose 2 from 4 Leader Cards", fourLeaderCard, singlePlayer.getUsername());
+            VChooseLeaderCardRequestMsg msg = new VChooseLeaderCardRequestMsg("Ask the client to choose 2 from 4 Leader Cards", fourLeaderCard, singlePlayer.getUsername(), "initialization");
             notifyAllObserver(ObserverType.VIEW, msg); //send to the view that will send it to the client
         } else {
             //the players are at least two
@@ -186,7 +185,7 @@ public class InitializedController extends Observable implements ControllerObser
                 /* remove the 4 card chosen for the player from all (cannot be send to another player) */
                 allLeaderCard.removeAll(fourLeaderCard);
                 //create the msg for the client (player number #j)
-                VChooseLeaderCardRequestMsg msg = new VChooseLeaderCardRequestMsg("Ask the client to choose 2 from 4 Leader Cards", fourLeaderCard, turnSequence.get(j).getUsername());
+                VChooseLeaderCardRequestMsg msg = new VChooseLeaderCardRequestMsg("Ask the client to choose 2 from 4 Leader Cards", fourLeaderCard, turnSequence.get(j).getUsername(), "initialization");
                 notifyAllObserver(ObserverType.VIEW, msg); //send to the view that will send it to the client
             }
         }
@@ -294,29 +293,32 @@ public class InitializedController extends Observable implements ControllerObser
      */
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-        //take all the Integer for Leader Card
-        ArrayList<Integer> twoChosen = new ArrayList<>();
-        twoChosen = msg.getChosenLeaderCard();
-        ArrayList<Integer> twoDiscarded = new ArrayList<>();
-        twoDiscarded = msg.getDiscardedLeaderCard();
-        ArrayList<LeaderCard> chosenCards = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            if (boardManager.getAllLeaderCard().contains(twoChosen.get(i))) {
-                /* the player choose this card so I have to put it in his and remove from the Deck */
-                LeaderCard chosen = boardManager.getLeaderCardDeck().getLeaderCardById(twoChosen.get(i));
-                chosenCards.add(chosen);
+        if (msg.getAction().equals("firstChoose")) {
+            //take all the Integer for Leader Card
+            ArrayList<Integer> twoChosen = new ArrayList<>();
+            twoChosen = msg.getChosenLeaderCard();
+            System.out.println(twoChosen);
+            ArrayList<Integer> twoDiscarded = new ArrayList<>();
+            twoDiscarded = msg.getDiscardedLeaderCard();
+            ArrayList<LeaderCard> chosenCards = new ArrayList<>();
+            for (int i = 0; i < 2; i++) {
+                if (boardManager.getAllLeaderCard().contains(twoChosen.get(i))) {
+                    /* the player choose this card so I have to put it in his and remove from the Deck */
+                    LeaderCard chosen = boardManager.getLeaderCardDeck().getLeaderCardById(twoChosen.get(i));
+                    chosenCards.add(chosen);
+                }
             }
+            //take the player that choose the cards
+            PlayerInterface player = null;
+            try {
+                player = findByUsername(msg.getUsername());
+            } catch (NoSuchElementException e) {
+                e.printStackTrace();
+            }
+            player.setLeaderCards(chosenCards);
+            //now remove the card from the deck
+            boardManager.getLeaderCardDeck().remove(chosenCards);
         }
-        //take the player that choose the cards
-        PlayerInterface player = null;
-        try {
-            player = findByUsername(msg.getUsername());
-        } catch (NoSuchElementException e) {
-            e.printStackTrace();
-        }
-        player.setLeaderCards(chosenCards);
-        //now remove the card from the deck
-        boardManager.getLeaderCardDeck().remove(chosenCards);
     }
 
     /**
@@ -378,14 +380,11 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
-    public void receiveMsg(CChooseResourceResponseMsg msg) {
+    public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
 
-    }
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {

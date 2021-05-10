@@ -158,10 +158,9 @@ public class Player implements PlayerInterface{
      */
     @Override
     public void setLeaderCards(ArrayList<LeaderCard> card){
-        for (int i=0; i<card.size(); i++){
-            this.leaderCards.add(card.remove(i));
+        for (LeaderCard c: card){
+            this.leaderCards.add(c);
         }
-
     }
 
     /**

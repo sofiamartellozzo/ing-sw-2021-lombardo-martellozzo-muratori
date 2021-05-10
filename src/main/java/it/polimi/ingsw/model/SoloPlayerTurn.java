@@ -8,33 +8,13 @@ import java.util.ArrayList;
 /*
  * SOFI*/
 
-public class SoloPlayerTurn implements PlayerTurnInterface {
+public class SoloPlayerTurn extends PlayerTurn {
     private SoloPlayer currentPlayer;
-    private BoardManager boardManager;
 
     public SoloPlayerTurn(SoloPlayer currentPlayer, BoardManager boardManager) {
+        super(currentPlayer, boardManager);
         this.currentPlayer = currentPlayer;
-        this.boardManager = boardManager;
-    }
-
-    @Override
-    public ArrayList<TurnAction> getAvailableAction() {
-        return null;
-    }
-
-    @Override
-    public void removeAction(TurnAction actionToRemove) {
-
-    }
-
-    @Override
-    public void addAction(TurnAction actionToAdd) {
-
-    }
-
-    @Override
-    public BoardManager getBoardManager() {
-        return this.boardManager;
+        addAction(TurnAction.GET_ACTION_TOKEN);
     }
 
     @Override
@@ -42,14 +22,12 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
         return currentPlayer;
     }
 
-
-
     public void choosePlay(TurnAction action) throws InvalidActionException {
         //case to end the turn, and then invocate the getActionToken turnaction, only in the solo game
 
         switch (action){
             case BUY_CARD:
-                this.currentPlayer.buyCard(1,1, this.boardManager, 1);
+                this.currentPlayer.buyCard(1,1, this.getBoardManager(), 1);
             case BUY_FROM_MARKET:
                 //this.currentPlayer.buyFromMarket();
             case ACTIVE_PRODUCTION_POWER:
@@ -57,7 +35,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
             case GET_ACTION_TOKEN:
                 //the player take the action token at the end of the turn
                 //get action token random
-                this.currentPlayer.getGameSpace().getActionTokenDeck(this.boardManager, this.currentPlayer);
+                this.currentPlayer.getGameSpace().getActionTokenDeck(this.getBoardManager(), this.currentPlayer);
             default:
                 this.currentPlayer.endTurn();
         }
@@ -79,19 +57,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
 
     }
 
-    @Override
-    public boolean checkEndGame() throws InvalidActionException{
-        if (currentPlayer.checkIfWin().equals("Check DevelopTable!")){
-            if(boardManager.getDevelopmentCardTable().checkIfEmpty()){
-                currentPlayer.setResult(Result.LOOSER);
-                return true;
-            }
-            else
-                return false;
-        }
-        else
-            return true;
-    }
+
 
 
     @Override
@@ -106,7 +72,7 @@ public class SoloPlayerTurn implements PlayerTurnInterface {
      * method called at the end of each Solo Turn
      */
     public ActionToken activateActionToken() throws InvalidActionException {
-        ActionToken actionTokenActivated = this.currentPlayer.getGameSpace().getActionTokenDeck(this.boardManager, this.currentPlayer);
+        ActionToken actionTokenActivated = this.currentPlayer.getGameSpace().getActionTokenDeck(this.getBoardManager(), this.currentPlayer);
         return actionTokenActivated;
     }
 }
