@@ -5,8 +5,6 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
-import javax.lang.model.element.TypeElement;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -231,4 +229,25 @@ public abstract class Warehouse {
         }
         return content;
     }
+
+    /**
+     * After checking:
+     * - The "resource" is not null
+     * @param resource -> The resource you want to put in the warehouse
+     * @return -> An ArrayList<Integer> which contains which floor of the depot are available to put the "reosurce"
+     * @throws InvalidActionException -> If one of the conditions is not respected
+     */
+    public ArrayList<Integer> inWhichDepot(Resource resource) throws InvalidActionException {
+        ArrayList<Integer> whichDepot = new ArrayList<>();
+        if(resource==null) throw new InvalidActionException("Resource not valid");
+        for(Depot depot:depots){
+            if(depot.getResources().isEmpty() && depot instanceof RealDepot && searchResource(resource)==-1){
+                whichDepot.add(depot.getFloor());
+            }else if(!depot.isFull() && depot.getType().equals(resource.getType())){
+                whichDepot.add(depot.getFloor());
+            }
+        }
+        return whichDepot;
+    }
+
 }

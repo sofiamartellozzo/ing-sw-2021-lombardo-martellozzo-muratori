@@ -32,9 +32,9 @@ public class DevelopmentCardDeckTest extends TestCase {
         ArrayList<Resource> pay = new ArrayList<>();
         pay.add(r3);
 
-        DevelopmentCard developmentCard = new DevelopmentCard(4,Color.GREEN,1,cost,earn,pay);
-        DevelopmentCard developmentCard1 = new DevelopmentCard(2,Color.GREEN,2,cost,earn,pay);
-        DevelopmentCard developmentCard2 = new DevelopmentCard(5,Color.GREEN,3,cost,earn,pay);
+        DevelopmentCard developmentCard = new DevelopmentCard(4,4,Color.GREEN,1,cost,earn,pay);
+        DevelopmentCard developmentCard1 = new DevelopmentCard(2,2,Color.GREEN,2,cost,earn,pay);
+        DevelopmentCard developmentCard2 = new DevelopmentCard(5,5,Color.GREEN,3,cost,earn,pay);
 
         ArrayList<DevelopmentCard> cards = new ArrayList<>();
         cards.add(developmentCard);

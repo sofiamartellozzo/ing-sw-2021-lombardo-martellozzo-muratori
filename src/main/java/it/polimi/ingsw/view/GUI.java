@@ -2,10 +2,10 @@ package it.polimi.ingsw.view;
 
 
 import it.polimi.ingsw.message.ViewObserver;
-import it.polimi.ingsw.message.controllerMsg.CNackConnectionRequestMsg;
+import it.polimi.ingsw.message.controllerMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.network.client.ClientSocket;
-import it.polimi.ingsw.view.controller.IntroSceneController;
+import it.polimi.ingsw.view.controller.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -14,14 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/*
-* INTROSCENE
-* LOBBYSCENE
-* ROOMSIZESCENE
-* BOARDSCENE
-* PREGAMESCENE
-* OUTCOMESCENE*/
-
 public class GUI extends Application implements ViewObserver {
 
     private Stage stage;
@@ -29,8 +21,21 @@ public class GUI extends Application implements ViewObserver {
     private Scene introScene;
     private IntroSceneController introSceneController;
 
+    private Scene lobbyScene;
+    private LobbySceneController lobbySceneController;
+
+    private Scene roomScene;
+    private Stage roomStage;
+    private RoomSceneController roomSceneController;
+
+    private Scene preGameScene;
+    private PreGameSceneController preGameSceneController;
+
     private Scene gameScene;
-    //gameSceneController;
+    private GameSceneController gameSceneController;
+
+    private Scene endGameScene;
+    private EndGameSceneController endGameSceneController;
 
     private ClientSocket client;
     private String username;
@@ -43,14 +48,10 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void start(Stage stage) throws Exception {
-        /* Check Ping */
-
         this.stage = stage;
         stage.setResizable(false);
 
         setNewIntroScene();
-
-        //LOBBY
 
         stage.setTitle("Masters of Renaissance");
         stage.setScene(introScene);
@@ -77,6 +78,49 @@ public class GUI extends Application implements ViewObserver {
         changeScene(introScene);
     }
 
+    public void setLobbyScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/LobbyScene.fxml"));
+        lobbyScene = new Scene(loader.load());
+        lobbySceneController=loader.getController();
+    }
+
+    @Override
+    public void receiveMsg(VRoomSizeRequestMsg msg) {
+        try {
+            roomSizeRequest();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void roomSizeRequest() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/RoomScene.fxml"));
+        roomScene = new Scene(loader.load());
+        roomStage = new Stage();
+        roomStage.setScene(roomScene);
+        roomSceneController=loader.getController();
+        roomStage.show();
+        roomSceneController.setGui(this);
+    }
+
+    public void setPreGameScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/PreGameScene.fxml"));
+        preGameScene = new Scene(loader.load());
+        preGameSceneController=loader.getController();
+    }
+
+    public void setGameScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/GameScene.fxml"));
+        gameScene = new Scene(loader.load());
+        gameSceneController=loader.getController();
+    }
+
+    public void setEndGameScene() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/EndGameScene.fxml"));
+        endGameScene = new Scene(loader.load());
+        endGameSceneController=loader.getController();
+    }
+
     public void changeScene(Scene scene){
         stage.setTitle("Masters of Renaissance");
         stage.setScene(scene);
@@ -93,13 +137,87 @@ public class GUI extends Application implements ViewObserver {
     }
 
     public void setClient(ClientSocket client){this.client=client;}
-    @Override
-    public void receiveMsg(CNackConnectionRequestMsg msg) {
 
+    public void setUsername(String username){this.username=username;}
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Scene getIntroScene() {
+        return introScene;
+    }
+
+    public IntroSceneController getIntroSceneController() {
+        return introSceneController;
+    }
+
+    public Scene getLobbyScene() {
+        return lobbyScene;
+    }
+
+    public LobbySceneController getLobbySceneController() {
+        return lobbySceneController;
+    }
+
+    public Scene getRoomScene() {
+        return roomScene;
+    }
+
+    public Stage getRoomStage() {
+        return roomStage;
+    }
+
+    public RoomSceneController getRoomSceneController() {
+        return roomSceneController;
+    }
+
+    public Scene getPreGameScene() {
+        return preGameScene;
+    }
+
+    public PreGameSceneController getPreGameSceneController() {
+        return preGameSceneController;
+    }
+
+    public Scene getGameScene() {
+        return gameScene;
+    }
+
+    public GameSceneController getGameSceneController() {
+        return gameSceneController;
+    }
+
+    public Scene getEndGameScene() {
+        return endGameScene;
+    }
+
+    public EndGameSceneController getEndGameSceneController() {
+        return endGameSceneController;
+    }
+
+    public ClientSocket getClient() {
+        return client;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getIP() {
+        return iP;
+    }
+
+    public String getGameSize() {
+        return gameSize;
+    }
+
+    public String[] getArgs() {
+        return args;
     }
 
     @Override
-    public void receiveMsg(VRoomSizeRequestMsg msg) {
+    public void receiveMsg(VChooseActionTurnRequestMsg msg) {
 
     }
 
@@ -113,13 +231,19 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
+
     @Override
-    public void receiveMsg(VNotifyAllIncreasePositionMsg msg) {
+    public void receiveMsg(VNotValidDepotMsg msg) {
 
     }
 
     @Override
-    public void receiveMsg(VNotValidDepotMsg msg) {
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VNackConnectionRequestMsg msg) {
 
     }
 
@@ -140,6 +264,16 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VActionTokenActivateMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
 
     }
 }

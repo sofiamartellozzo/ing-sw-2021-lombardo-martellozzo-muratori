@@ -176,7 +176,7 @@ public class ResourceManager {
      * @return -> True if contains all "resources", else false.
      * NOTE: Supports the "removeResourcesFromBoth" method.
      */
-    private boolean checkEnoughResources(ArrayList<Resource> resources){
+    public boolean checkEnoughResources(ArrayList<Resource> resources){
         ArrayList<Resource> typeResources = new ArrayList<>();
         typeResources.add(new Resource(Color.YELLOW));
         typeResources.add(new Resource(Color.BLUE));

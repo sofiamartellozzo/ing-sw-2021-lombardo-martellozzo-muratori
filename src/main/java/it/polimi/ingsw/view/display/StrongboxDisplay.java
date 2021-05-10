@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.display;
 
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class StrongboxDisplay {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidActionException {
 
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
         Player player = new Player("bob");

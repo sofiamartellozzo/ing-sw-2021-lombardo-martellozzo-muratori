@@ -33,8 +33,8 @@ public class CardSpaceDisplay {
         ArrayList<Resource> cost = new ArrayList<>();
         cost.add(0,new Resource(Color.BLUE));
 
-        DevelopmentCard card1 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
-        DevelopmentCard card2 = new DevelopmentCard(2,Color.YELLOW,1,array,proceeds,cost);
+        DevelopmentCard card1 = new DevelopmentCard(1,3,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card2 = new DevelopmentCard(2,2,Color.YELLOW,1,array,proceeds,cost);
 
         player.getGameSpace().getCardSpace(1).addCard(card1);
         player.getGameSpace().getCardSpace(2).addCard(card2);

@@ -34,8 +34,8 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CMoveResourceInfoMsg msg);
     public void receiveMsg(CBuyFromMarketInfoMsg msg);
     public void receiveMsg(CActivateProductionPowerResponseMsg msg);
-    public void receiveMsg(CChooseDiscardResourceMsg msg);
-    public void receiveMsg(CChooseResourceResponseMsg msg);
+    public void receiveMsg(CChooseDiscardResponseMsg msg);
+    public void receiveMsg(CStandardPPResponseMsg msg);
     public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg);
 
 

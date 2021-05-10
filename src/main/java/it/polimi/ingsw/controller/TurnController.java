@@ -249,7 +249,7 @@ public class TurnController extends Observable implements ControllerObserver {
      * @param msg
      */
     @Override
-    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
         for (Integer key: turnSequence.keySet()) {
             if (!turnSequence.get(key).getUsername().equals(msg.getUsername())){
                 //not the player that discarded the resource
@@ -264,7 +264,7 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(CChooseResourceResponseMsg msg) {
+    public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 

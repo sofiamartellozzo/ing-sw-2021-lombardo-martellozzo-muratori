@@ -39,7 +39,7 @@ public class DevelopmentCardTest extends TestCase {
         ArrayList<Resource> pay = new ArrayList<>();
         pay.add(r3);
 
-       developmentCard = new DevelopmentCard(3, Color.BLUE,1,cost,earn,pay);
+       developmentCard = new DevelopmentCard(3,3, Color.BLUE,1,cost,earn,pay);
     }
 
     @After

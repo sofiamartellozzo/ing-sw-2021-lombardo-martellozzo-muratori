@@ -96,7 +96,7 @@ public class CardSpace {
             setNumberOfCards(this.cards.size());
         }
         /*you can add the card in the card space only if its level is one bigger than the previous one*/
-        else if(newCard.getlevel()==(cards.get(getNumberOfCards()-1).getlevel())+1) {
+        else if(cards.size()>0 && newCard.getlevel()==(cards.get(getNumberOfCards()-1).getlevel())+1) {
             this.cards.add(newCard);
             setNumberOfCards(this.cards.size());
         }

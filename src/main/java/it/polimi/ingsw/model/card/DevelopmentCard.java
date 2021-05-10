@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class DevelopmentCard extends Card {
 
+    private final int id;
     private final Color color;
     private final int level;
     private final ArrayList<Resource> costToBuy;
@@ -27,9 +28,10 @@ public class DevelopmentCard extends Card {
      * @param costProductionPower
      */
 
-    public DevelopmentCard(int victoryPoints, Color color, int level, ArrayList<Resource> costToBuy, ArrayList<Resource> earnProductionPower, ArrayList<Resource> costProductionPower)
+    public DevelopmentCard(int id,int victoryPoints, Color color, int level, ArrayList<Resource> costToBuy, ArrayList<Resource> earnProductionPower, ArrayList<Resource> costProductionPower)
     {
         super(victoryPoints);
+        this.id=id;
         this.color = color;
         this.level = level;
         this.costToBuy = costToBuy;
@@ -38,6 +40,7 @@ public class DevelopmentCard extends Card {
     }
 
     // Getter methods
+    public int getId(){return id;}
     public Color getColor(){ return color; }
     public int getlevel(){ return level; }
     public ArrayList<Resource> getCost(){ return costToBuy;}
@@ -219,7 +222,7 @@ public class DevelopmentCard extends Card {
         ArrayList<Resource> cost = new ArrayList<>();
         cost.add(0,new Resource(Color.BLUE));
 
-        DevelopmentCard card1 = new DevelopmentCard(3,Color.GREEN,1,array,proceeds,cost);
+        DevelopmentCard card1 = new DevelopmentCard(1,3,Color.GREEN,1,array,proceeds,cost);
 
         System.out.println(card1.toString());
 

@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.card;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.PlayerInterface;
+import it.polimi.ingsw.model.board.CardSpace;
 
 /* ILA */
 
@@ -55,8 +57,7 @@ public class DevelopmentCardTable {
      * @throws IllegalArgumentException
      */
 
-    public DevelopmentCard takeCard (int rowPosition, int columnPosition) throws IllegalArgumentException
-    {
+    public DevelopmentCard takeCard (int rowPosition, int columnPosition) throws IllegalArgumentException {
         if ((rowPosition < 0 || rowPosition > 2) || (columnPosition < 0 || columnPosition > 3))
         {
             throw new IllegalArgumentException("Error, parameters not valid!");
@@ -136,19 +137,21 @@ public class DevelopmentCardTable {
     }
 
     /**
-     * Scans all the decks of the table and check if some of them are completely empty.
-     * If yes the boolean matrix with the position of the deck [row][column] is set to false,
-     * else true.
+     * Scans all the decks upper card of the table and check if is not empty,
+     * if the player has enough resources to buy it and a card space which can contain the new card.
+     * If yes, set in the matrix[row][column] true, else false.
      * @return
      */
-    public boolean[][] getAvailable(){
+    public boolean[][] getAvailable(PlayerInterface player){
         boolean[][] availableDecks = new boolean[3][4];
         for(int i=0;i<3;i++){
             for(int j=0;j<4;j++){
-                if(table[i][j].getDevelopDeck().isEmpty()){
-                    availableDecks[i][j]=false;
-                }else{
-                    availableDecks[i][j]=true;
+                if(!table[i][j].getDevelopDeck().isEmpty() && player.getGameSpace().getResourceManager().checkEnoughResources(table[i][j].getUpperCard().getCost())){
+                    for(CardSpace cardSpace: player.getGameSpace().getCardSpaces()){
+                        if((cardSpace.getCards().size()==0 && table[i][j].getUpperCard().getlevel()==1) ||(cardSpace.getCards().size()!=0 && cardSpace.getUpperCard().getlevel()==table[i][j].getUpperCard().getlevel()-1)){
+                            availableDecks[i][j]=true;
+                        }
+                    }
                 }
             }
         }

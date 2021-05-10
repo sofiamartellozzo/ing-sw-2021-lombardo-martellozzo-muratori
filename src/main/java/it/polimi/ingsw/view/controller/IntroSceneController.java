@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.controller;
 
-import it.polimi.ingsw.message.viewMsg.VConnectionRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.view.GUI;
 import javafx.fxml.FXML;
@@ -35,6 +35,19 @@ public class IntroSceneController {
 
     private String selectedIP;
     private boolean customIP;
+    private boolean singleGameMode;
+
+    public String getSelectedIP() {
+        return selectedIP;
+    }
+
+    public boolean isCustomIP() {
+        return customIP;
+    }
+
+    public boolean getSingleGameMode() {
+        return singleGameMode;
+    }
 
     public void start(){
         selectedIP ="127.0.0.1";
@@ -73,8 +86,7 @@ public class IntroSceneController {
     }
 
     private void connection(String username) throws IOException {
-        //Forse bisogna aggiungere la gui al costruttore del client
-        ClientSocket client = new ClientSocket(selectedIP);
+        ClientSocket client = new ClientSocket(selectedIP,gui);
         client.beginConnection();
         System.out.println("Client connected");
         gui.setClient(client);
@@ -85,10 +97,32 @@ public class IntroSceneController {
         }else if(multiPlayerModeButton.selectedProperty().getValue()){
             gameMode="1";
         }
-        VConnectionRequestMsg requestMsg = new VConnectionRequestMsg("Request connection",selectedIP,0,username,gameMode);
+        VVConnectionRequestMsg requestMsg = new VVConnectionRequestMsg("Request connection",selectedIP,0,username,gameMode);
         client.sendMsg(requestMsg);
         new Thread(client).start();
     }
 
+    public void clickLocalHostButton(){
+
+    }
+
+    public void clickOnlineServerButton(){
+
+    }
+
+    public void clickCustomIPButton(){
+
+    }
+
+    public void clickSinglePlayerModeButton(){
+        singleGameMode=true;
+
+        multiPlayerModeButton.selectedProperty().setValue(false);
+    }
+
+    public void clickMultiPlayerModeButton(){
+        singleGameMode=false;
+        singlePlayerModeButton.selectedProperty().setValue(false);
+    }
 
 }

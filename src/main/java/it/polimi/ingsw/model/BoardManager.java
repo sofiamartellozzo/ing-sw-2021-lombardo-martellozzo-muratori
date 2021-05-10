@@ -72,7 +72,8 @@ public class BoardManager {
      * else true.
      * @return
      */
-    public boolean[][] getAvailable(){
-        return developmentCardTable.getAvailable();
+    public boolean[][] getAvailable(PlayerInterface player){
+        return developmentCardTable.getAvailable(player);
     }
+
 }

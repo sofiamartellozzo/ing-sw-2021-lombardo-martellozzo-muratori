@@ -5,7 +5,6 @@ import it.polimi.ingsw.controller.factory.ResourcesSupplyFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
-import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
@@ -373,12 +372,12 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
-    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
     }
 
     @Override
-    public void receiveMsg(CChooseResourceResponseMsg msg) {
+    public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 

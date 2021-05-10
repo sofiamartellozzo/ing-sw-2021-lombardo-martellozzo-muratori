@@ -156,13 +156,13 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
-    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
         //NOT IMPLEMENTED HERE
     }
 
     @Override
-    public void receiveMsg(CChooseResourceResponseMsg msg) {
+    public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 

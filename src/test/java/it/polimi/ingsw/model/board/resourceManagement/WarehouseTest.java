@@ -438,4 +438,26 @@ public class WarehouseTest {
         expected.put(4,type4);
         assertEquals(expected,warehouse.getInstanceContent());
     }
+
+    @Test
+    public void inWhichDepot() throws InvalidActionException {
+        countResource();
+        /*
+         * 1 COIN
+         * 2 SHIELD
+         * 1 STONE
+         * 1 STONE
+         * */
+        ArrayList<Integer> expected = new ArrayList<>();
+        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.COIN)));
+        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.SHIELD)));
+        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.SERVANT)));
+        expected.add(3);
+        expected.add(4);
+        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.STONE)));
+        expected.clear();
+        warehouse.removeResource(2);
+        expected.add(2);
+        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.SHIELD)));
+    }
 }

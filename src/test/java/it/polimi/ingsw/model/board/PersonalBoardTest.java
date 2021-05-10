@@ -94,7 +94,7 @@ public class PersonalBoardTest extends TestCase {
         ArrayList<Resource> cost = new ArrayList<>();
         cost.add(new Resource((TypeResource.SHIELD)));
         cost.add(new Resource(TypeResource.SHIELD));
-        DevelopmentCard developmentCard = new DevelopmentCard(0, Color.GREEN,1,null,null,cost);
+        DevelopmentCard developmentCard = new DevelopmentCard(1,0, Color.GREEN,1,null,null,cost);
         personalBoard.getCardSpace(0).addCard(developmentCard);
         expected.add(1);
         assertEquals(expected,personalBoard.getActivatableCardSpace(player));

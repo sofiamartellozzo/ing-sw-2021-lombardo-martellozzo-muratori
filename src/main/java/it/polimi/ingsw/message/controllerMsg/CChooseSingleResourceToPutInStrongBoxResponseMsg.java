@@ -2,14 +2,12 @@ package it.polimi.ingsw.message.controllerMsg;
 
 import it.polimi.ingsw.model.TypeResource;
 
-import java.lang.reflect.Type;
-
-public class CChooseSingleResourceToPutInStrongBoxResponseMsg extends ControllerGameMsg{
+public class CChooseSingleResourceToPutInStrongBoxResponseMsg extends ControllerGameMsg {
     private String username;
     private TypeResource resource;
 
-    public CChooseSingleResourceToPutInStrongBoxResponseMsg(String msgContent, String username, TypeResource resource){
-        super(msgContent);
+    public CChooseSingleResourceToPutInStrongBoxResponseMsg(String content,String username,TypeResource resource){
+        super(content);
         this.username=username;
         this.resource=resource;
     }

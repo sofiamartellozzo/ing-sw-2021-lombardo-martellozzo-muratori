@@ -36,4 +36,9 @@ public class DevelopmentCardDeck {
             throw new IndexOutOfBoundsException("Error, the deck is empty,so you can't take a card!!");
         else return developDeck.remove(developDeck.size()-1);
     }
+
+    public DevelopmentCard getUpperCard(){
+        return developDeck.get(developDeck.size()-1);
+    }
+
 }

@@ -7,12 +7,10 @@ import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.card.DevelopmentCard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map;
 
 public class ActionController extends Observable implements ControllerObserver {
@@ -64,7 +62,7 @@ public class ActionController extends Observable implements ControllerObserver {
             case BUY_CARD:
                 //I need the input from the real player (person)
                 boolean[][] matrix = new boolean[4][3]; //this will be 3x4
-                matrix[1][1] = true; //only to not have errors right now
+                matrix=boardManager.getAvailable(player); //only to not have errors right now
                 //from boardManager.getAvailable
                 VChooseDevelopCardRequestMsg request = new VChooseDevelopCardRequestMsg("You chose to buy a Development Card, select which one: ", player.getUsername(), matrix);
                 notifyAllObserver(ObserverType.VIEW, request);
@@ -276,12 +274,12 @@ public class ActionController extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
     }
 
     @Override
-    public void receiveMsg(CChooseResourceResponseMsg msg) {
+    public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 
@@ -289,6 +287,7 @@ public class ActionController extends Observable implements ControllerObserver {
     public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
 
     }
+
 
 
     /*---------------------------------------------------------------------------------------------------------------------*/
