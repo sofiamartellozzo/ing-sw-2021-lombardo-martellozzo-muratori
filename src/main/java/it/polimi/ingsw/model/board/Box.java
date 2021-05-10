@@ -1,12 +1,14 @@
 package it.polimi.ingsw.model.board;
 
+import java.io.Serializable;
+
 /**
 * GIANLUCA
  * TEST PASSED
 * It's composing the FaithTrack with its extensions: SimpleBox, GoldBox and PopeBox.
 * */
 
-public abstract class Box {
+public abstract class Box implements Serializable {
 
     protected final int whichVaticanSection;
     protected final int numberBox;

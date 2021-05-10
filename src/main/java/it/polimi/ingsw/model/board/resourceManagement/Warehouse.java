@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
 import javax.lang.model.element.TypeElement;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import java.util.HashMap;
  * It contains the Depots of the Warehouse.
  */
 
-public abstract class Warehouse {
+public abstract class Warehouse implements Serializable {
     protected ArrayList<Depot> depots;
 
     /**
@@ -50,7 +51,7 @@ public abstract class Warehouse {
      * - Checking if the depot chosen is correct or exists;
      * - Checking if the resource you want to remove is not null and exists
      *
-     * @param resource
+     * @param
      * @param depot
      * @throws InvalidActionException -> The thrown exception if it doesn't respect the checks
      */
@@ -79,8 +80,8 @@ public abstract class Warehouse {
      * - Checking if the resource is not null and exists in the depot1;
      * - The depots are correct and exist;
      * -
-     * @param depot1
-     * @param depot2
+     * @param
+     * @param
      * @throws InvalidActionException
      */
     public void moveResources(int fromDepot, int toDepot) throws InvalidActionException {

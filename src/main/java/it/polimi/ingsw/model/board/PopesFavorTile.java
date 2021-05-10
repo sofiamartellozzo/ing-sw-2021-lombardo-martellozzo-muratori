@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.board;
 
+import java.io.Serializable;
+
 /**
  * GIANLUCA
  * TEST PASSED
  * It represents the Pope's Favor Tile.
  */
-public class PopesFavorTile {
+public class PopesFavorTile implements Serializable {
     private final int whichVaticanSection;
     private final int victoryPoints;
     private State state;

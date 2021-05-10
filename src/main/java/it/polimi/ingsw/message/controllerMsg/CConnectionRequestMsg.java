@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message.controllerMsg;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.view.VirtualView;
@@ -55,7 +56,7 @@ public class CConnectionRequestMsg extends ControllerGameMsg {
     }
 
     @Override
-    public void notifyHandler(ControllerObserver controllerObserver) {
+    public void notifyHandler(ControllerObserver controllerObserver) throws InvalidActionException {
         controllerObserver.receiveMsg(this);
     }
 

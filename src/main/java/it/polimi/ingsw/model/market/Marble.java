@@ -5,10 +5,12 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TypeResource;
 
+import java.io.Serializable;
+
 /*
  * SOFIA
  * */
-public abstract class Marble {
+public abstract class Marble implements Serializable {
     protected Color color;
 
     public Color getColor() {

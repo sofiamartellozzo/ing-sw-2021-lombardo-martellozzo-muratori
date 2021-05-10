@@ -7,17 +7,24 @@ import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarketStructure;
 import it.polimi.ingsw.model.market.RedMarble;
 import it.polimi.ingsw.utility.AnsiColors;
+import it.polimi.ingsw.utility.MarketStructureCopy;
 
 /**
  * this class shows the market updated situation during the Game
  */
 public class MarketDisplay {
 
-    public static void displayMarket(Marble[][] marbles ,Marble slide) {
+    private MarketStructure marketStructure;
+
+    public MarketDisplay(MarketStructure marketStructure){
+        this.marketStructure = marketStructure;
+    }
+
+    public void displayMarket() {
 
         System.out.println(AnsiColors.RED_BOLD+"HERE IS THE MARKET: \n"+AnsiColors.WHITE_BOLD);
         System.out.print(" Slide Marble: ");
-        createMarbleForCli(slide);
+        createMarbleForCli(marketStructure.getSlide());
         System.out.print("\n\n");
 
         System.out.println("  1   2   3   4");
@@ -25,7 +32,7 @@ public class MarketDisplay {
             System.out.print(i+1);
           for(int j = 0; j < 4; j++)
           {
-              createMarbleForCli(marbles[i][j]);
+              createMarbleForCli(marketStructure.getMarble(i,j));
           }
           System.out.print("\n");
 
@@ -56,27 +63,5 @@ public class MarketDisplay {
         }
     }
 
-    public static void main(String[] args) {
-
-        Marble m = new ColoredMarble(Color.YELLOW);
-        Marble m1 = new RedMarble();
-        Marble m2 = new ColoredMarble(Color.YELLOW);
-        Marble m3 = new ColoredMarble(Color.WHITE);
-        Marble m4 = new ColoredMarble(Color.PURPLE);
-        Marble m5 = new RedMarble();
-        Marble m6 = new ColoredMarble(Color.BLUE);
-        Marble m7 = new ColoredMarble(Color.BLUE);
-        Marble m8 = new RedMarble();
-        Marble m9 = new RedMarble();
-        Marble m10 = new ColoredMarble(Color.PURPLE);
-        Marble m11 = new ColoredMarble(Color.YELLOW);
-        Marble m12 = new ColoredMarble(Color.WHITE);
-        Marble[][] structure = {{m,m1,m2,m3},{m4,m5,m6,m7},{m8,m9,m10,m11}};
-        MarketStructure marketStructure = MarketStructure.getInstance(structure, m12);
-
-        displayMarket(marketStructure.getStructure(), m12);
-
-
-    }
 
 }

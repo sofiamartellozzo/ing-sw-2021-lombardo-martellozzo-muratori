@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.display;
 
+import it.polimi.ingsw.model.board.FaithTrack;
 import it.polimi.ingsw.utility.AnsiColors;
 
 import java.awt.*;
@@ -10,8 +11,16 @@ import java.awt.*;
 
 public class FaithTrackDisplay {
 
-    //public void showFaithTrack(){
-    public static void main(String[] args) {
+    private FaithTrack faithTrack;
+    private int position;
+
+    public FaithTrackDisplay(FaithTrack faithTrack, int position){
+        this.faithTrack = faithTrack;
+        this.position = position;
+    }
+
+    public void showFaithTrack(){
+    //public static void main(String[] args) {
         int pop1= 2;
         int pop2= 3;
         int pop3= 4;
@@ -28,32 +37,67 @@ public class FaithTrackDisplay {
 
         for (int i = 0; i < 25; i++) {
             if (i == 3) {
-                System.out.print(AnsiColors.YELLOW_BOLD + "[VP:1] " + AnsiColors.RESET);
+                if(position == 3){
+                    System.out.print(AnsiColors.YELLOW_BOLD + "["+AnsiColors.ANSI_RED+"✞"+ AnsiColors.YELLOW_BOLD+"]"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.YELLOW_BOLD + "[VP:1] " + AnsiColors.RESET);
             }else if(i == 6){
-                System.out.print(AnsiColors.YELLOW_BOLD + "[VP:2] " +AnsiColors.RESET);
+                if(position == 6){
+                    System.out.print(AnsiColors.YELLOW_BOLD + "["+AnsiColors.ANSI_RED+"✞"+ AnsiColors.YELLOW_BOLD+"]"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.YELLOW_BOLD + "[VP:2] " +AnsiColors.RESET);
             }else if(i == 8) {
-                System.out.print(AnsiColors.PURPLE_BACKGROUND +AnsiColors.BLACK_BOLD + "[ \u271D ]" + AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                if(position == 8){
+                    System.out.print("["+AnsiColors.ANSI_RED+"✞"+AnsiColors.WHITE_BOLD+"]"+AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.PURPLE_BACKGROUND +AnsiColors.BLACK_BOLD + "[ \u271D ]" + AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
             }else if(i == 9){
-                System.out.print(AnsiColors.YELLOW_BOLD + "[VP:4] " +AnsiColors.RESET);
+                if(position == 9){
+                    System.out.print(AnsiColors.YELLOW_BOLD + "["+AnsiColors.ANSI_RED+"✞"+ AnsiColors.YELLOW_BOLD+"]"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.YELLOW_BOLD + "[VP:4] " +AnsiColors.RESET);
             }else if(i == 12){
-                System.out.print(AnsiColors.YELLOW_BOLD + "[VP:6] " +AnsiColors.RESET);
+                if(position == 12){
+                    System.out.print(AnsiColors.YELLOW_BOLD + "["+AnsiColors.ANSI_RED+"✞"+ AnsiColors.YELLOW_BOLD+"]"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.YELLOW_BOLD + "[VP:6] " +AnsiColors.RESET);
             }else if(i == 15){
-                System.out.print(AnsiColors.YELLOW_BOLD + "[VP:9] " +AnsiColors.RESET);
+                if(position == 15){
+                    System.out.print(AnsiColors.YELLOW_BOLD + "["+AnsiColors.ANSI_RED+"✞"+ AnsiColors.YELLOW_BOLD+"]"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.YELLOW_BOLD + "[VP:9] " +AnsiColors.RESET);
             }else if(i == 16) {
-                System.out.print(AnsiColors.PURPLE_BACKGROUND +AnsiColors.BLACK_BOLD + "[ \u271D ]" + AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                if(position == 16){
+                    System.out.print("["+AnsiColors.ANSI_RED+"✞"+AnsiColors.WHITE_BOLD+"]"+AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.PURPLE_BACKGROUND +AnsiColors.BLACK_BOLD + "[ \u271D ]" + AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
             }else if(i == 18){
-                System.out.print(AnsiColors.YELLOW_BOLD + "[VP:12] " +AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                if(position == 18){
+                    System.out.print(AnsiColors.YELLOW_BOLD + "["+AnsiColors.ANSI_RED+"✞"+ AnsiColors.YELLOW_BOLD+"]"+AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.YELLOW_BOLD + "[VP:12] " +AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
             }else if(i == 21){
-                System.out.print(AnsiColors.YELLOW_BOLD + "[VP:16] " +AnsiColors.RESET);
+                if(position == 21){
+                    System.out.print(AnsiColors.YELLOW_BOLD + "["+AnsiColors.ANSI_RED+"✞"+ AnsiColors.YELLOW_BOLD+"]"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.YELLOW_BOLD + "[VP:16] " +AnsiColors.RESET);
             }else if(i == 24){
-                System.out.print(AnsiColors.RED_BACKGROUND +AnsiColors.BLACK_BOLD + "[ \u271D ]" +AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                if(position == 24){
+                    System.out.print(AnsiColors.YELLOW_BOLD + "["+AnsiColors.ANSI_RED+"✞"+ AnsiColors.YELLOW_BOLD+"]"+AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                }
+                else System.out.print(AnsiColors.RED_BACKGROUND +AnsiColors.BLACK_BOLD + "[ \u271D ]" +AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
             }
             else {
-                if(i == 4 || i== 11) {
-                    System.out.print("[" + i + "] " + AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                if(i == 4 || i == 11) {
+                    if(position == 4 || position == 11){
+                        System.out.print("["+AnsiColors.ANSI_RED+"✞"+AnsiColors.WHITE_BOLD+"]"+AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
+                    }else System.out.print("[" + i + "] " + AnsiColors.RESET+AnsiColors.RED_BOLD+ "|"+AnsiColors.RESET);
                 }
                 else{
-                    System.out.print("[" + i + "] ");
+                    if(position == i){
+                        System.out.print("["+AnsiColors.ANSI_RED+"✞"+AnsiColors.WHITE_BOLD+"]"+AnsiColors.RESET);
+                    }
+                    else System.out.print("[" + i + "] ");
                 }
             }
 

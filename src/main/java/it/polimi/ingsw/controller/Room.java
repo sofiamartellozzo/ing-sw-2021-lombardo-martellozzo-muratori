@@ -3,11 +3,14 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.message.viewMsg.VSendPlayerDataMsg;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.model.SoloPlayer;
+import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.board.PersonalBoardInterface;
 import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
@@ -166,6 +169,11 @@ public class Room extends Observable {
         boardManager = initializedController.getBoardManager();
         turnSequence = initializedController.getTurnSequence();
         printRoomMessage("the game has been initialized, starting...");
+
+        for (PlayerInterface player:turnSequence.values()) {
+            VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your",player,boardManager);
+            notifyAllObserver(ObserverType.VIEW, msg);
+        }
         startFirstTurn();
     }
 
@@ -184,6 +192,20 @@ public class Room extends Observable {
             attachObserver(ObserverType.CONTROLLER, turnController);
         }
         turnController.gamePlay();
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    public PersonalBoardInterface getPlayerBoard(String username){
+        for (PlayerInterface player: turnSequence.values()) {
+            if(player.getUsername().equals(username)) {
+                return player.getGameSpace();
+            }
+        }
+        throw new IllegalArgumentException(" Error, not found any player with that username!");
     }
 
 
@@ -207,4 +229,5 @@ public class Room extends Observable {
         turnController.detachObserver(ObserverType.VIEW, playerVirtualView);
         listOfVirtualView.remove(username); //remove the username from the map in which every player is associated to his virtual view
     }
+
 }

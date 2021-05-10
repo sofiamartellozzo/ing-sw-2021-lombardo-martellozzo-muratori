@@ -3,12 +3,13 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /* ILA */
 
-public class CardSpace {
+public class CardSpace implements Serializable {
 
     private final int whichSpace;
     private int numberOfCards;

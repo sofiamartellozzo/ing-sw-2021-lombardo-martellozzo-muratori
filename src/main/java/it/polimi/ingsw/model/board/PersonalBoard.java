@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.cardAbility.AdditionalPower;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  * so each player has his own
  */
 
-public class PersonalBoard implements PersonalBoardInterface {
+public class PersonalBoard implements PersonalBoardInterface, Serializable {
     /* These attributes refers to the components of the Personal Board */
     private FaithTrack faithTrack;
     private ResourceManager resourceManager;  //contains both SrongBox and Wharehouse

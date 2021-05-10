@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  * TEST PASSED
  * It represents the Vatican Section.
  */
-public class VaticanSection {
+public class VaticanSection implements Serializable {
     private final int whichVaticanSection;
     private final ArrayList<Box> boxes;
     private final PopesFavorTile popesFavorTile;

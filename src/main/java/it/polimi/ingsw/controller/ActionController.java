@@ -8,7 +8,12 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.model.card.DevelopmentCardTable;
+import it.polimi.ingsw.model.market.MarketStructure;
+import it.polimi.ingsw.utility.MarketStructureCopy;
+import it.polimi.ingsw.utility.TableCardCopy;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,15 +63,20 @@ public class ActionController extends Observable implements ControllerObserver {
      * @param msg
      */
     @Override
-    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) throws InvalidActionException {
 
         switch (msg.getActionChose()){
             case BUY_CARD:
                 //I need the input from the real player (person)
+                //from boardManager.getAvailable
+
+                //send the Development Card Table to the client inside the msg
+                DevelopmentCardTable currentDevTable = null;
+                currentDevTable = boardManager.getDevelopmentCardTable();
                 boolean[][] matrix = new boolean[4][3]; //this will be 3x4
                 matrix[1][1] = true; //only to not have errors right now
-                //from boardManager.getAvailable
-                VChooseDevelopCardRequestMsg request = new VChooseDevelopCardRequestMsg("You chose to buy a Development Card, select which one: ", player.getUsername(), matrix);
+
+                VChooseDevelopCardRequestMsg request = new VChooseDevelopCardRequestMsg("You chose to buy a Development Card, select which one: ", player.getUsername(),currentDevTable,matrix);
                 notifyAllObserver(ObserverType.VIEW, request);
                 break;
             case MOVE_RESOURCE:
@@ -79,7 +89,11 @@ public class ActionController extends Observable implements ControllerObserver {
                 notifyAllObserver(ObserverType.VIEW, request1);
                 break;
             case BUY_FROM_MARKET:
-                VBuyFromMarketRequestMsg request2 = new VBuyFromMarketRequestMsg("You ask to buy from the Market at this Turn, please choose column or row and which one: ", player.getUsername());
+                //send the Market structure to the Client, sending it throw the net will serialize the object
+                MarketStructure currentMarket = null;
+                currentMarket = boardManager.getMarketStructure();
+
+                VBuyFromMarketRequestMsg request2 = new VBuyFromMarketRequestMsg("You ask to buy from the Market at this Turn, please choose column or row and which one: ", player.getUsername(),currentMarket);
                 notifyAllObserver(ObserverType.VIEW, request2);
                 break;
             case ACTIVE_PRODUCTION_POWER:
@@ -262,7 +276,7 @@ public class ActionController extends Observable implements ControllerObserver {
      * @param msg
      */
     @Override
-    public void receiveMsg(CChooseResourceAndDepotMsg msg) {
+    public void receiveMsg(CChooseResourceAndDepotMsg msg) throws InvalidActionException {
         if (msg.getUsername().equals(player.getUsername())){
             Resource r = new Resource(msg.getResource());
             try {

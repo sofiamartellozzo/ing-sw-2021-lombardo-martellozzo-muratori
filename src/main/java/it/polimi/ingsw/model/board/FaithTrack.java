@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.board;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
 * ILARIA
 * */
 
-public class FaithTrack {
+public class FaithTrack implements Serializable {
 
     private FaithMarker faithMarker;
     private final ArrayList<PopesFavorTile> popesFavorTiles;

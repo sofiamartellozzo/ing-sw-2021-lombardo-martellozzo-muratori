@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
+
 /*
  * SOFIA
  * */
@@ -12,7 +14,7 @@ import it.polimi.ingsw.model.Resource;
  * and the type, but is only one for each player and track the position of the player himself in
  * his own faith track
  */
-public class FaithMarker extends Resource {
+public class FaithMarker extends Resource implements Serializable {
 
     private int position;   //the position on the faith track
     private Color color;    //it has to be RED

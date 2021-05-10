@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.controllerMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.*;
@@ -14,8 +15,11 @@ public interface ViewObserver extends Observer{
     /* first msg, only multiple players*/
     public void receiveMsg(VRoomSizeRequestMsg msg);
 
+    /* from Room after initialization, containing Player's data*/
+    public void receiveMsg(VSendPlayerDataMsg msg);
+
     /* multiple player, from initialized C...*/
-    public void receiveMsg(VChooseResourceAndDepotMsg msg);
+    public void receiveMsg(VChooseResourceAndDepotMsg msg) throws InvalidActionException;
     /* if error in chose depot*/
     public void receiveMsg(VNotValidDepotMsg msg);
 
@@ -31,9 +35,9 @@ public interface ViewObserver extends Observer{
 
     public void receiveMsg(VChooseActionTurnRequestMsg msg);
 
-    public void receiveMsg(VChooseDevelopCardRequestMsg msg);
-    public void receiveMsg(VMoveResourceRequestMsg msg);
-    public void receiveMsg(VBuyFromMarketRequestMsg msg);
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg) throws InvalidActionException;
+    public void receiveMsg(VMoveResourceRequestMsg msg) throws InvalidActionException;
+    public void receiveMsg(VBuyFromMarketRequestMsg msg) throws InvalidActionException;
     public void receiveMsg(VShowEndGameResultsMsg msg);
 
     /* only SOLO mode */

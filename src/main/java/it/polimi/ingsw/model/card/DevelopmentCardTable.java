@@ -1,7 +1,12 @@
 package it.polimi.ingsw.model.card;
 
+import it.polimi.ingsw.controller.factory.DevelopmentCardFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.utility.TableCardCopy;
+
+import java.io.FileNotFoundException;
+import java.io.Serializable;
 
 /* ILA */
 
@@ -10,11 +15,9 @@ import it.polimi.ingsw.model.Color;
  and the next time
  he has to give me back the same class */
 
-public class DevelopmentCardTable {
+public class DevelopmentCardTable implements Serializable {
 
     private DevelopmentCardDeck[][] table;     /* Matrix made of ArrayLists of DevelopmentCard */
-    private int columnPosition;
-    private int rowPosition;
     private static DevelopmentCardTable developmentCardTable = null;
 
     /**
@@ -37,15 +40,11 @@ public class DevelopmentCardTable {
 
     // Getter methods
 
-    public int getColumnPosition() { return columnPosition; }
-    public int getRowPosition() { return rowPosition; }
     public DevelopmentCardDeck[][] getTable() { return table; }
 
     //Setter methods
 
     public void setSquare(DevelopmentCardDeck[][] table) { this.table = table; }
-    public void setRowPosition(int rowPosition){this.rowPosition=rowPosition;}
-    public void setColumnPosition(int columnPosition) { this.columnPosition = columnPosition; }
 
     /**
      * method used to let the player take the last card available in a specific deck ( identified by row and column )
@@ -153,6 +152,19 @@ public class DevelopmentCardTable {
             }
         }
         return availableDecks;
+    }
+
+    /**
+     * create a copy of the card Table Card
+     * @return
+     * @throws FileNotFoundException
+     */
+    public TableCardCopy copyOFTheTable() throws FileNotFoundException {
+
+        TableCardCopy tableCardCopy = new TableCardCopy();
+        tableCardCopy.storeTable(developmentCardTable.getTable());
+
+        return tableCardCopy;
     }
 
 }
