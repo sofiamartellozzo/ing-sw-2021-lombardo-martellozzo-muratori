@@ -1,25 +1,23 @@
 package it.polimi.ingsw.message.viewMsg;
 
 import it.polimi.ingsw.message.ViewObserver;
-import it.polimi.ingsw.model.TypeResource;
 
-import javax.swing.text.View;
-
-/**
- * PPController ---> VV ---> CLI/GUI
- *
- * msg send if the player choose the PP of the special card
- */
-public class VChooseSingleResourceToPutInStrongBoxRequestMsg extends ViewGameMsg {
+public class VStandardPPRequestMsg extends ViewGameMsg{
     private String username;
+    private String where;
 
-    public VChooseSingleResourceToPutInStrongBoxRequestMsg(String msgContent,String username){
+    public VStandardPPRequestMsg(String msgContent, String username, String where){
         super(msgContent);
         this.username=username;
+        this.where = where;
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public String getWhere() {
+        return where;
     }
 
     @Override

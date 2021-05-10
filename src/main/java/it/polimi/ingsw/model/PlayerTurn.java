@@ -26,6 +26,7 @@ public class PlayerTurn implements PlayerTurnInterface {
         }
         //at first he cannot pass, he have to choose at least one action, than can pass ending the turn
         availableAction.remove(TurnAction.END_TURN);
+        availableAction.remove(TurnAction.GET_ACTION_TOKEN);
     }
 
 

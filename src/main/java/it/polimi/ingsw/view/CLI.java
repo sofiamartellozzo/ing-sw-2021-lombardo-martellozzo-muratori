@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Color;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.board.CardSpace;
 import it.polimi.ingsw.model.board.FaithTrack;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
@@ -25,12 +27,13 @@ import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
 import it.polimi.ingsw.view.display.*;
+import it.polimi.ingsw.view.display.FaithTrackDisplay;
+import it.polimi.ingsw.view.display.WriteMessageDisplay;
 
 /**
  * CLI version of the View
  */
 public class CLI extends Observable implements ViewObserver {
-
 
     private Scanner in;             //for input data from console
     private PrintStream out;        //for output data for console
@@ -525,67 +528,88 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
 
-        if (msg.getUsername().equals(username)) {
-            System.out.println("in choose Leader card in cli");
-            // the two card Id chosen by the player
-            Integer cardId1 = -1;
-            Integer cardId2 = -1;
-            in = new Scanner(System.in);
-            in.reset();
 
-            boolean valid = false;  //boolean variable used to check if two card Id insert by the player are the same
+        // the two card Id chosen by the player
+        Integer cardId1 = -1;
+        Integer cardId2 = -1;
+        in = new Scanner(System.in);
 
-            ArrayList<Integer> chosenCards = new ArrayList<>();
-            ArrayList<Integer> deniedCards = new ArrayList<>();
 
-            clearScreen();
+            if (msg.getWhatFor().equals("initialization")) {
 
-            // show the four cards from which the player has to choose
-            System.out.println(" There are the four Leader cards from which you have to choose : \n");
-            for (Integer id : msg.getMiniDeckLeaderCardFour()) {
-                System.out.println(" Card number : " + id);
-            }
 
-            System.out.println(" Please, Choose the two Cards \n");
-            System.out.println(" Press the Id numbers ");
+                boolean valid = false;  //boolean variable used to check if two card Id insert by the player are the same
 
-            cardId1 = chooseIdCard();
-            cardId2 = chooseIdCard();
+                ArrayList<Integer> chosenCards = new ArrayList<>();
+                ArrayList<Integer> deniedCards = new ArrayList<>();
 
-        /* before checking if the Id are valid numbers (from 1 to 16), we have to be sure that
-           the two cardId are different and represent two different cards ! Otherwise the player has to
-           insert again the second Card Id
-         */
-            while (!valid) {
+                clearScreen();
 
-                if (cardId1.equals(cardId2)) {
-                    System.out.println(" Error, you can't choose two cards with the same Id number");
-                    System.out.println(" Please insert again the second card Id ! ");
-                    cardId2 = in.nextInt();
-                } else valid = true;
-            }
-
-            while (!checkValidity(cardId1, cardId2, msg.getMiniDeckLeaderCardFour())) {
-
-                System.out.println(" Error, Id card not valid !! ");
-                cardId1 = in.nextInt();
-                cardId2 = in.nextInt();
-            }
-
-            System.out.println("Good, you chose your cards ! ");
-
-            chosenCards.add(cardId1);
-            chosenCards.add(cardId2);
-
-            /* put the remaining cards not chosen by the player in another ArrayList*/
-            for (Integer card : msg.getMiniDeckLeaderCardFour()) {
-                if (!card.equals(cardId1) && card != cardId2) {
-                    deniedCards.add(card);
+                // show the four cards from which the player has to choose
+                System.out.println(" There are the four Leader cards from which you have to choose : \n");
+                for (Integer id : msg.getMiniDeckLeaderCardFour()) {
+                    System.out.println(" Card number : " + id);
                 }
-            }
 
-            CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ", chosenCards, deniedCards, msg.getUsername(), "firstChoose");
-            this.client.sendMsg(response);
+                System.out.println(" Please, Choose the two Cards \n");
+                System.out.println(" Press the Id numbers ");
+
+                cardId1 = chooseIdCard();
+                cardId2 = chooseIdCard();
+
+                /* before checking if the Id are valid numbers (from 1 to 16), we have to be sure that
+                the two cardId are different and represent two different cards ! Otherwise the player has to
+                insert again the second Card Id
+                */
+                while (!valid) {
+
+                    if (cardId1.equals(cardId2)) {
+                        System.out.println(" Error, you can't choose two cards with the same Id number");
+                        System.out.println(" Please insert again the second card Id ! ");
+
+                        cardId2 = in.nextInt();
+                    }
+                    else
+                        valid = true;
+                }
+
+                while (!checkValidity(cardId1, cardId2, msg.getMiniDeckLeaderCardFour())) {
+
+                    System.out.println(" Error, Id card not valid !! ");
+
+                    cardId1 = in.nextInt();
+                    cardId2 = in.nextInt();
+                }
+
+                System.out.println("Good, you chose your cards ! ");
+
+                chosenCards.add(cardId1);
+                chosenCards.add(cardId2);
+
+                /* put the remaining cards not chosen by the player in another ArrayList*/
+                for (Integer card : msg.getMiniDeckLeaderCardFour()) {
+                    if (!card.equals(cardId1) && card != cardId2) {
+                        deniedCards.add(card);
+                    }
+                }
+
+                CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ", chosenCards, deniedCards, msg.getUsername(), "firstChoose");
+                this.client.sendMsg(response);
+            }
+            else {
+                //discard or activate
+                if (!msg.getMiniDeckLeaderCardFour().isEmpty()){
+                    System.out.println("Choose which card you want to \"" +msg.getWhatFor()+ "\"  from:");
+                    for (Integer i: msg.getMiniDeckLeaderCardFour()) {
+                        System.out.println(i);
+                    }
+                    int cardToRemoveOrActivate = in.nextInt();
+                    CChooseLeaderCardResponseMsg response2 = new CChooseLeaderCardResponseMsg(" chosen cards ", cardToRemoveOrActivate, msg.getUsername(), msg.getWhatFor());
+                    this.client.sendMsg(response2);
+                }
+                else{
+                    System.out.println("Sorry you cannot discard any Leader Card!");
+                }
         }
     }
 
@@ -693,7 +717,6 @@ public class CLI extends Observable implements ViewObserver {
             }
             client.sendMsg(response);
 
-        }
     }
 
     /**
@@ -893,6 +916,27 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(VChooseDepotMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VStandardPPRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg) {
+
+    }
+
+
     /**
      * this method displays to the players if they won or not
      * @param msg
@@ -930,9 +974,6 @@ public class CLI extends Observable implements ViewObserver {
     }
 
 
-
-
-
     /**
      * method to clear the screen and remove older prints
      */
@@ -952,6 +993,12 @@ public class CLI extends Observable implements ViewObserver {
         FaithTrackDisplay faithT = new FaithTrackDisplay(faithTrack,faithTrack.getPositionFaithMarker());
         faithT.showFaithTrack();
     }
+
+
+
+
+
+
 
     /**
      * this method shows the updated Development card table
@@ -1000,6 +1047,5 @@ public class CLI extends Observable implements ViewObserver {
         CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces,player);
         cardSpaceDisplay.showCardSpaces();
     }
-
 
 }

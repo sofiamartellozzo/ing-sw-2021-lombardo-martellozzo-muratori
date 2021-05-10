@@ -32,12 +32,29 @@ public interface ViewObserver extends Observer{
     /* from InitC to each player to select the 2 L_Card*/
     public void receiveMsg(VChooseLeaderCardRequestMsg msg);
 
-
+    /* from Turn Controller to the client */
     public void receiveMsg(VChooseActionTurnRequestMsg msg);
 
-    public void receiveMsg(VChooseDevelopCardRequestMsg msg) throws InvalidActionException;
-    public void receiveMsg(VMoveResourceRequestMsg msg) throws InvalidActionException;
-    public void receiveMsg(VBuyFromMarketRequestMsg msg) throws InvalidActionException;
+    /* fist (only in code order) of action chosen in ActionController, so send this msg to client for asking which card to buy */
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg);
+
+    /* from ActionC to the client */
+    public void receiveMsg(VMoveResourceRequestMsg msg);
+
+    /* from ActionC to the client, so send to the client asking which choice in market */
+    public void receiveMsg(VBuyFromMarketRequestMsg msg);
+
+    /* from ActionC to the client, so send to the client asking which depot to store a resource */
+    public void receiveMsg(VChooseDepotMsg msg);
+
+    /*from PPController to client*/
+    public void receiveMsg(VActivateProductionPowerRequestMsg msg);
+    /* PP activated  0  (standard PP)*/
+    public void receiveMsg(VStandardPPRequestMsg msg);
+    /* for special PP*/
+    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg);
+
+
     public void receiveMsg(VShowEndGameResultsMsg msg);
 
     /* only SOLO mode */

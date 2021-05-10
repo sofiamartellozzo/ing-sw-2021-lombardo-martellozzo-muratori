@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
 import it.polimi.ingsw.utility.TableCardCopy;
 
+import it.polimi.ingsw.message.ViewObserver;
+
 /**
  * ActionController --> VV --> CLI
  * this msg is send by the Turn controller when the client want to
@@ -42,7 +44,7 @@ public class VChooseDevelopCardRequestMsg extends ViewGameMsg {
     }
 
     @Override
-    public void notifyHandler(ViewObserver viewObserver) throws InvalidActionException {
+    public void notifyHandler(ViewObserver viewObserver) {
         viewObserver.receiveMsg(this);
     }
 }

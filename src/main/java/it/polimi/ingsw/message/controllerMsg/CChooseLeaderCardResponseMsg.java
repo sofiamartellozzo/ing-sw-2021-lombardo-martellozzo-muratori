@@ -5,12 +5,13 @@ import it.polimi.ingsw.message.ControllerObserver;
 import java.util.ArrayList;
 
 /**
- * CLI ---> VV ---> InitializedController
+ * CLI ---> VV ---> InitializedController or ActionController
  */
 public class CChooseLeaderCardResponseMsg extends ControllerGameMsg {
 
     private ArrayList<Integer> chosenLeaderCard;
     private ArrayList<Integer> discardedLeaderCard;
+    private int discardOrActiveCard;
     private String username;
     private String action;
 
@@ -24,9 +25,9 @@ public class CChooseLeaderCardResponseMsg extends ControllerGameMsg {
     }
 
     //override if the response is about the single card that have to be activated or removed
-    public CChooseLeaderCardResponseMsg(String msgContent, ArrayList<Integer> chosenLeaderCard, String username, String action){
+    public CChooseLeaderCardResponseMsg(String msgContent, int chosenLeaderCard, String username, String action){
         super(msgContent);
-        this.chosenLeaderCard = chosenLeaderCard;
+        this.discardOrActiveCard = chosenLeaderCard;
         this.discardedLeaderCard = null;
         this.username = username;
         this.action = action;
@@ -42,6 +43,10 @@ public class CChooseLeaderCardResponseMsg extends ControllerGameMsg {
 
     public ArrayList<Integer> getDiscardedLeaderCard() {
         return discardedLeaderCard;
+    }
+
+    public int getDiscardOrActiveCard() {
+        return discardOrActiveCard;
     }
 
     public String getUsername() {

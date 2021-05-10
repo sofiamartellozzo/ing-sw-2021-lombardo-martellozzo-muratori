@@ -124,6 +124,11 @@ public class DevelopmentCardFactory {
         return table;
     }
 
+    public static void main(String[] args) throws FileNotFoundException {
+        DevelopmentCardFactory developmentCardFactory = new DevelopmentCardFactory()    ;
+        developmentCardFactory.createTable();
+    }
+
 }
 
 

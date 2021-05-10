@@ -5,14 +5,16 @@ import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.model.market.MarketStructure;
 import it.polimi.ingsw.utility.MarketStructureCopy;
 
+import it.polimi.ingsw.message.ViewObserver;
+
 /**
  * ActionController --> VV --> CLI
  * msg send by the server to the client after he asked to buy from the market
  * to ask the row or column and which one he choose
  */
 public class VBuyFromMarketRequestMsg extends ViewGameMsg{
-    private String username;
     private MarketStructure market;
+    private final String username;
 
     public VBuyFromMarketRequestMsg(String msgContent, String username, MarketStructure marketStructure) {
         super(msgContent);

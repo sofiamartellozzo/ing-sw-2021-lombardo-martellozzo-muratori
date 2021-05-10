@@ -4,6 +4,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.viewMsg.VSendPlayerDataMsg;
+import it.polimi.ingsw.message.viewMsg.VNotifyPositionIncreasedByMsg;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
@@ -182,15 +183,18 @@ public class Room extends Observable {
         //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
         if (!isSoloMode) {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
-            System.out.println(turnSequence);
-            turnController = new TurnController(turnSequence, boardManager);
+            //System.out.println(turnSequence);
+            turnController = new TurnController(turnSequence, boardManager, listOfVirtualView);
             attachObserver(ObserverType.CONTROLLER, turnController);
         } else {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
             singlePlayer = initializedController.getSinglePlayer();
-            turnController = new TurnController(singlePlayer, boardManager);
+            turnController = new TurnController(singlePlayer, boardManager, listOfVirtualView);
             attachObserver(ObserverType.CONTROLLER, turnController);
         }
+
+        /* the initialization has finished so detach the observer*/
+        detachObserver(ObserverType.CONTROLLER, initializedController);
         turnController.gamePlay();
     }
 
@@ -229,5 +233,4 @@ public class Room extends Observable {
         turnController.detachObserver(ObserverType.VIEW, playerVirtualView);
         listOfVirtualView.remove(username); //remove the username from the map in which every player is associated to his virtual view
     }
-
 }
