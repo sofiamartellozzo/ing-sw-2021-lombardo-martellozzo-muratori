@@ -51,7 +51,7 @@ public class BuyTest extends TestCase {
     }
 
     @Test
-    public void testBuyCard_Success(){
+    public void testBuyCard_Success() throws InvalidActionException {
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
         Player player1 = new Player("sofia");
         PersonalBoard personalBoard1 = personalBoardFactory.createGame();

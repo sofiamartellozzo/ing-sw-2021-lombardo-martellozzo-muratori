@@ -86,7 +86,7 @@ public class ActionController extends Observable implements ControllerObserver {
      * @param msg
      */
     @Override
-    public void receiveMsg(CChooseActionTurnResponseMsg msg) throws InvalidActionException {
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
 
         switch (msg.getActionChose()){
             case BUY_CARD:

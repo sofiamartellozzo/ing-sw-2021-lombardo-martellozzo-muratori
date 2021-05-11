@@ -224,8 +224,7 @@ public class Lobby extends Observable implements ControllerObserver {
 
         } catch (LimitExceededException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             creatingRoomLock.unlock();
         }
 
@@ -286,6 +285,8 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+
+
     /*-----------------------------------------------------------------------------------------------------------------*/
             //HANDLE EVENTS
 
@@ -299,7 +300,7 @@ public class Lobby extends Observable implements ControllerObserver {
      * @param msg
      */
     @Override
-    public void receiveMsg(CConnectionRequestMsg msg) {
+    public void receiveMsg(CConnectionRequestMsg msg){
         String gameMode = msg.getGameSize();
         String convertedGameMode = convertStringForMode(gameMode);
         System.out.println("[Lobby] request of a connection from: " +msg.getIP()+ " on @" +msg.getPort()+ " given  \"" +msg.getUsername()+ "\" as username " +
@@ -381,7 +382,6 @@ public class Lobby extends Observable implements ControllerObserver {
         }
 
     }
-
 
     /**
      * creating the Error message to send to the client, after notify the view

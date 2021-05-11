@@ -75,4 +75,6 @@ public class BoardManager {
     public boolean[][] getAvailable(){
         return developmentCardTable.getAvailable();
     }
+
+
 }

@@ -29,7 +29,7 @@ public class VBuyFromMarketRequestMsg extends ViewGameMsg{
     public MarketStructure getMarket() { return market; }
 
     @Override
-    public void notifyHandler(ViewObserver viewObserver) throws InvalidActionException {
+    public void notifyHandler(ViewObserver viewObserver){
         viewObserver.receiveMsg(this);
     }
 }

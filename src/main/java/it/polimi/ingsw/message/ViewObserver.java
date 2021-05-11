@@ -19,7 +19,7 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VSendPlayerDataMsg msg);
 
     /* multiple player, from initialized C...*/
-    public void receiveMsg(VChooseResourceAndDepotMsg msg) throws InvalidActionException;
+    public void receiveMsg(VChooseResourceAndDepotMsg msg);
     /* if error in chose depot*/
     public void receiveMsg(VNotValidDepotMsg msg);
 

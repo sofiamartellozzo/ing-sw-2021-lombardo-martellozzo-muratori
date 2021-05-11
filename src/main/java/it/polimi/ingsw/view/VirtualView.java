@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.controller.Lobby;
 import it.polimi.ingsw.message.*;
@@ -58,7 +59,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      *
      * @param msg
      */
-    public void receiveMsg(VVConnectionRequestMsg msg) {
+    public void receiveMsg(VVConnectionRequestMsg msg){
 
         //save the username of the client associated to this virtual view
         username = msg.getUsername();
@@ -81,7 +82,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
-    public void receiveMsg(CRoomSizeResponseMsg msg) {
+    public void receiveMsg(CRoomSizeResponseMsg msg){
         System.out.println("setting size room in VV");
 
         connectionLock.lock();
@@ -207,6 +208,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+    @Override
+    public void receiveMsg(VSendPlayerDataMsg msg) {
+
+    }
+
     /**
      * when the game and a turn started, the server need to ask a client which action
      * wants to make, so here the VV will forward the msg to the client
@@ -219,6 +225,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             sendToClient(msg);
         }
     }
+
 
     /**
      * msg from the controller (Initialized) when the client has to chose 2 leader card
@@ -398,7 +405,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
                 notifyAllObserver(ObserverType.CONTROLLER, msg);
                 lobby.startInitializationOfTheGame(username);
             }
-        }finally {
+        } finally {
             connectionLock.unlock();
         }
 

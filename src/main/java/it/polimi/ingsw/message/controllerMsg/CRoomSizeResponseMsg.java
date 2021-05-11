@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message.controllerMsg;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ControllerObserver;
 
 /**
@@ -34,7 +35,7 @@ public class CRoomSizeResponseMsg extends ControllerGameMsg{
     }
 
     @Override
-    public void notifyHandler(ControllerObserver controllerObserver) {
+    public void notifyHandler(ControllerObserver controllerObserver){
         controllerObserver.receiveMsg(this);
     }
 }

@@ -49,4 +49,5 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     public void notifyHandler(ControllerObserver controllerObserver) {
         controllerObserver.receiveMsg(this);
     }
+
 }

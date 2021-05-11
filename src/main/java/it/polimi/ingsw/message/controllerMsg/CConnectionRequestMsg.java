@@ -56,7 +56,7 @@ public class CConnectionRequestMsg extends ControllerGameMsg {
     }
 
     @Override
-    public void notifyHandler(ControllerObserver controllerObserver) throws InvalidActionException {
+    public void notifyHandler(ControllerObserver controllerObserver){
         controllerObserver.receiveMsg(this);
     }
 

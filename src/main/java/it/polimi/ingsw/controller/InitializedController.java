@@ -165,7 +165,7 @@ public class InitializedController extends Observable implements ControllerObser
      *
      * @param solo
      */
-    private void chooseLeaderCard(boolean solo) {
+    private void chooseLeaderCard(boolean solo) throws InvalidActionException {
         //take the 4 leader card from all (stored in Board Manager)
         ArrayList<Integer> allLeaderCard = boardManager.getAllLeaderCard();  //all leader cards
         //select 4 randomly
@@ -327,7 +327,7 @@ public class InitializedController extends Observable implements ControllerObser
      * @param msg
      */
     @Override
-    public void receiveMsg(CChooseResourceAndDepotMsg msg) {
+    public void receiveMsg(CChooseResourceAndDepotMsg msg){
         //find the player by username
         Player player = null;
         try {
@@ -383,6 +383,7 @@ public class InitializedController extends Observable implements ControllerObser
     public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
+
 
 
 
