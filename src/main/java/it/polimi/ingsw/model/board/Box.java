@@ -1,12 +1,14 @@
 package it.polimi.ingsw.model.board;
 
+import java.io.Serializable;
+
 /**
  * It's composing the FaithTrack with its extensions: SimpleBox, GoldBox and PopeBox.
  * The "whichVaticanSection" attribute indicates which Vatican Section contains it (0 if it's not contained by no vatican section)
  * The "numberBox" attribute refers to the numeration.
  * The "victoryPoints" attribute indicates how many victory points gives the box.
  * */
-public abstract class Box {
+public abstract class Box implements Serializable {
 
     protected final int whichVaticanSection;
     protected final int numberBox;

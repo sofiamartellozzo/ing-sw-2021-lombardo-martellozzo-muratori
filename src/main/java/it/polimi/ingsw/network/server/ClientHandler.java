@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
@@ -87,7 +88,7 @@ public class ClientHandler extends Observable implements Runnable {
                 }
             }
 
-        } catch (ClassNotFoundException | IOException /*| InterruptedException */ e) {
+        } catch (ClassNotFoundException | IOException | InvalidActionException /*| InterruptedException */ e) {
             System.err.println("Error from input client message");
         } finally {
             //clientSocket.close();
@@ -110,7 +111,7 @@ public class ClientHandler extends Observable implements Runnable {
     /**
      * notify the view with the messages received from the net
      */
-    private void handleMsg() {
+    private void handleMsg() throws InvalidActionException {
         if (!queue.isEmpty()) {
             GameMsg msg = queue.remove(0);
             //notify controller with the received message

@@ -10,13 +10,16 @@ import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VNotifyPositionIncreasedByMsg;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VRoomSizeRequestMsg;
+import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -221,8 +224,7 @@ public class Lobby extends Observable implements ControllerObserver {
 
         } catch (LimitExceededException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             creatingRoomLock.unlock();
         }
 
@@ -283,6 +285,8 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+
+
     /*-----------------------------------------------------------------------------------------------------------------*/
             //HANDLE EVENTS
 
@@ -296,7 +300,7 @@ public class Lobby extends Observable implements ControllerObserver {
      * @param msg
      */
     @Override
-    public void receiveMsg(CConnectionRequestMsg msg) {
+    public void receiveMsg(CConnectionRequestMsg msg){
         String gameMode = msg.getGameSize();
         String convertedGameMode = convertStringForMode(gameMode);
         System.out.println("[Lobby] request of a connection from: " +msg.getIP()+ " on @" +msg.getPort()+ " given  \"" +msg.getUsername()+ "\" as username " +
@@ -350,7 +354,7 @@ public class Lobby extends Observable implements ControllerObserver {
      */
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
-        System.out.println("setting size room in Lobby");
+        //System.out.println("setting size room in Lobby");         DEBUGGING
         String roomId = msg.getRoomID();
         Room room = findRoomByID(roomId);
         if (room != null){
@@ -379,7 +383,6 @@ public class Lobby extends Observable implements ControllerObserver {
 
     }
 
-
     /**
      * creating the Error message to send to the client, after notify the view
      * @param msg
@@ -387,6 +390,28 @@ public class Lobby extends Observable implements ControllerObserver {
     private void sendNackConnectionRequest(CConnectionRequestMsg msg, String errorInformation){
         VNackConnectionRequestMsg nackMsg = new VNackConnectionRequestMsg("Connection cannot be established ", msg.getPort(), msg.getIP(),msg.getUsername(),errorInformation);
         notifyAllObserver(ObserverType.VIEW, nackMsg);
+    }
+
+    @Override
+    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
+        //send to Initialized Controller, so find the room
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+        //send to TurnController by Room
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
     /*---------------------------------------------------------------------------------------------------------------------------*/
@@ -397,44 +422,69 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
 
-    @Override
-    public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-        //not implemented here (Initialized Controller)
-    }
+
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //not implemented here (Initialized Controller)
     }
 
-    @Override
-    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
 
-    }
 
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
-
+        //send to TurnController by Room and then to ActionController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
     @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
+        //send to TurnController by Room and then to ActionController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
 
     }
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
-
+        //send to TurnController by Room and then to ActionController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
-
+        //send to TurnController by Room and then to ActionController and PPController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
     @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
-
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+        //send to TurnController by Room and then to ActionController and PPController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
     @Override
@@ -442,10 +492,8 @@ public class Lobby extends Observable implements ControllerObserver {
 
     }
 
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
 
-    }
+
 
 
     /*----------------------------------------------------------------------------------------------------------------*/

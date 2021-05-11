@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.board;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -6,7 +7,7 @@ import java.util.ArrayList;
  * The "faithMarker" attribute indicates the position of the player.
  * The "popesFavorTiles", "pathBox", "vaticanSections" compose the FaithTrack
  */
-public class FaithTrack {
+public class FaithTrack implements Serializable{
 
     private final FaithMarker faithMarker;
     private final ArrayList<PopesFavorTile> popesFavorTiles;

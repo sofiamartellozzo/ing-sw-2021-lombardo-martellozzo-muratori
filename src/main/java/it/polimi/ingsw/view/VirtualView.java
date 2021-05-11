@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.controller.Lobby;
 import it.polimi.ingsw.message.*;
@@ -58,7 +59,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      *
      * @param msg
      */
-    public void receiveMsg(VVConnectionRequestMsg msg) {
+    public void receiveMsg(VVConnectionRequestMsg msg){
 
         //save the username of the client associated to this virtual view
         username = msg.getUsername();
@@ -81,7 +82,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
-    public void receiveMsg(CRoomSizeResponseMsg msg) {
+    public void receiveMsg(CRoomSizeResponseMsg msg){
         System.out.println("setting size room in VV");
 
         connectionLock.lock();
@@ -105,7 +106,14 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-        //not implemented here (in Initialized Controller)
+        //send to Initialized Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
+    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
+        //send to Turn Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
@@ -113,34 +121,39 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         //not implemented here (in Initialized Controller)
     }
 
-    @Override
-    public void receiveMsg(CChooseActionTurnResponseMsg msg) {
-        //not here
-    }
 
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
+        //send to Action Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
 
     }
 
     @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
+        //send to Action Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
 
     }
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
-
+        //send to Action Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
+
+
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
-
+        //send to Production Power Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
-
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+        //send to Lobby(Room) and Action Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
@@ -148,10 +161,6 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     }
 
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
-
-    }
 
 
 
@@ -199,6 +208,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+    @Override
+    public void receiveMsg(VSendPlayerDataMsg msg) {
+
+    }
+
     /**
      * when the game and a turn started, the server need to ask a client which action
      * wants to make, so here the VV will forward the msg to the client
@@ -212,6 +226,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+
     /**
      * msg from the controller (Initialized) when the client has to chose 2 leader card
      * from a 4 cards deck
@@ -221,7 +236,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
         //check if the username is mine
-        System.out.println("choose l c request in VV");
+
         if (msg.getUsername().equals(this.username)) {
             /* send this message (notify) to the client */
             sendToClient(msg);
@@ -270,29 +285,89 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     /**
-     * send to the client this msg to ask wich development card wants to buy
+     * send to the client this msg to ask which development card wants to buy
      *
      * @param msg-> contains all the available position of the table where to buy
      */
     @Override
     public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
         if (msg.getUsername().equals(this.username)) {
-
-
             sendToClient(msg);
         }
 
     }
 
+    /**
+     * in this msg (specific of one client) is a request of the player to
+     * move the resources from one depots to another
+     * @param msg
+     */
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
-
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
     }
 
+    /**
+     * in this msg (specific of one client) is a request of the player to
+     * buy from the market in the turn
+     * @param msg
+     */
     @Override
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
-
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
     }
+
+    /**
+     * in this msg (specific of one client) is after a request of the player to
+     * buy from the market in the turn, so the server now need to know
+     * in which depot store it
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VChooseDepotMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
+    /**
+     * in this msg (specific of one client) is after a request of the player to
+     * activate a Production Power, so ask his which one activate
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
+    /**
+     * after the choice of the player to activate PP 0
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VStandardPPRequestMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
+    /**
+     * after the choice of the player to activate special PP
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg) {
+        if (msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
@@ -330,7 +405,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
                 notifyAllObserver(ObserverType.CONTROLLER, msg);
                 lobby.startInitializationOfTheGame(username);
             }
-        }finally {
+        } finally {
             connectionLock.unlock();
         }
 

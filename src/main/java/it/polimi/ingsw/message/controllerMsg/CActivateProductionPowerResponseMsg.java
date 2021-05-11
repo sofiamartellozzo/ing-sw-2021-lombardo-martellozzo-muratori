@@ -1,9 +1,20 @@
 package it.polimi.ingsw.message.controllerMsg;
 
+import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.model.TurnAction;
 
 import java.util.Map;
 
+/**
+ * CLI ---> VV ---> Lobby(Room) ---> TurnController ---> ActionController ---> PPController
+ *
+ * response from the client with the number corresponding the space with the card to activate
+ *
+ *  availableCardSpace:
+ *      - 0     ---> base PP
+ *      - 1,2,3 ---> card Space
+ *      - 4,5   ---> Special
+ */
 public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     private String username;
     private String where;
@@ -33,4 +44,10 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     public TurnAction getActionChose(){
         return action;
     }
+
+    @Override
+    public void notifyHandler(ControllerObserver controllerObserver) {
+        controllerObserver.receiveMsg(this);
+    }
+
 }

@@ -3,7 +3,9 @@ package it.polimi.ingsw.view.display;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.model.Resource;
+import it.polimi.ingsw.model.board.CardSpace;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.utility.AnsiColors;
@@ -16,7 +18,16 @@ import java.util.ArrayList;
  */
 public class CardSpaceDisplay {
 
-    public static void main(String[] args) {
+    private ArrayList<CardSpace> cardSpaces;
+    private PlayerInterface player;
+
+    public CardSpaceDisplay(ArrayList<CardSpace> cardSpaces, PlayerInterface player){
+        this.cardSpaces = cardSpaces;
+        this.player = player;
+    }
+
+    public void showCardSpaces(){
+    /*public static void main(String[] args) {
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
         Player player = new Player("bob");
         PersonalBoard personalBoard = personalBoardFactory.createGame();
@@ -37,16 +48,24 @@ public class CardSpaceDisplay {
         DevelopmentCard card2 = new DevelopmentCard(2,2,Color.YELLOW,1,array,proceeds,cost);
 
         player.getGameSpace().getCardSpace(1).addCard(card1);
-        player.getGameSpace().getCardSpace(2).addCard(card2);
+        player.getGameSpace().getCardSpace(2).addCard(card2);*/
 
-        System.out.println(AnsiColors.YELLOW_BOLD+"HERE ARE YOUR THREE CARD SPACES:"+AnsiColors.RESET);
+        System.out.println(AnsiColors.YELLOW_BOLD+"HERE ARE YOUR THREE CARD SPACES:\n"+AnsiColors.RESET);
         for(int i = 0; i < 3; i++) {
             if(player.getGameSpace().getCardSpace(i).getCards().isEmpty()){
-                System.out.print("Card Space"+i+": "+AnsiColors.RED_BOLD+"EMPTY CARD SPACE\n"+AnsiColors.RESET);
+                System.out.print("Card Space"+(i+1)+": "+AnsiColors.RED_BOLD+"EMPTY CARD SPACE\n"+AnsiColors.RESET);
             }
             else {
-                System.out.print("Card Space"+i+": "+player.getGameSpace().getCardSpace(i).getUpperCard().toString()+"\n");
+                System.out.println("CARD Space"+(i+1)+": ");
+                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getColor()+"\n");
+                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getleveltostring()+"\n");
+                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getcosttostring()+"\n");
+                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getpaytostring()+"\n");
+                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getearntostring()+"\n");
+                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getvictorytostring()+"\n");
+
             }
+            System.out.print("\n");
         }
     }
 }

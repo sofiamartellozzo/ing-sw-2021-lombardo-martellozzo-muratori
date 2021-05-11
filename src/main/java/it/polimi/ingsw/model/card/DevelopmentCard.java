@@ -5,11 +5,12 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.utility.AnsiColors;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /* ILA */
 
-public class DevelopmentCard extends Card {
+public class DevelopmentCard extends Card implements Serializable {
 
     private final int id;
     private final Color color;
@@ -108,15 +109,15 @@ public class DevelopmentCard extends Card {
 
     @Override
     public String toString() {
-        return  /*"  ______________ \n" +
-                "|   level:"+level+"    |\n" +
-                "|   cost:"+getCostForCli()+"   |\n" +
+        return "  ______________ \n" +
+                "|   level:" + level + "    |\n" +
+                "|   cost:" + getCostForCli() + "   |\n" +
                 "|              |\n" +
                 "|              |\n" +
                 "|    pay:1     |\n" +
                 "|    earn:1    |\n" +
                 "|   vPoints:1  |\n" +
-                "|______________| ";*/
+                "|______________| ";
         /*"DEVELOPMENT CARD: "+"      "+
         "color: "+color+"      "+
         "level: " +level+"     "+
@@ -125,8 +126,9 @@ public class DevelopmentCard extends Card {
         "earn:"+ getEarnForCli()+ "     "+
         "vPoints: "+getVictoryPoints();*/
 
-        "["+color+",Level:"+level+",Cost:" +getCostForCli()+",Pay:"+getPayForCli()+",Earn:"+ getEarnForCli()+",vPoints:"+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"]";
+        /*"["+color+",Level:"+level+",Cost:" +getCostForCli()+",Pay:"+getPayForCli()+",Earn:"+ getEarnForCli()+",vPoints:"+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"]";
 
+    }*/
     }
 
     /*public Color getColorForCli(){
@@ -137,6 +139,27 @@ public class DevelopmentCard extends Card {
         }
         throw new IllegalArgumentException("error");
     }*/
+    public String getColortoString(){
+        return "color: "+color+"\t\t\t";
+    }
+    public String getleveltostring(){
+        return "level: "+level+"\t\t\t\t";
+    }
+    public String getcosttostring(){
+        return "cost: "+getCostForCli()+"\t\t\t\t";
+    }
+    public String getpaytostring(){
+        return "pay: "+getPayForCli()+"\t\t\t\t\t";
+    }
+    public String getearntostring(){
+        return "earn: "+getEarnForCli()+"\t\t\t\t";
+    }
+    public String getvictorytostring(){
+        return "vp: "+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"\t\t\t\t\t";
+    }
+
+
+
     public String getCostForCli()
     {
         String cost = "" ;

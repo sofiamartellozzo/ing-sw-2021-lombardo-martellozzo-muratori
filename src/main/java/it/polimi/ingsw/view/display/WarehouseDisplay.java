@@ -2,11 +2,9 @@ package it.polimi.ingsw.view.display;
 
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Resource;
-import it.polimi.ingsw.model.TypeResource;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.utility.AnsiColors;
 
 import java.util.ArrayList;
@@ -17,7 +15,15 @@ import java.util.ArrayList;
  */
 public class WarehouseDisplay {
 
-    public static void main(String[] args) throws InvalidActionException {
+    private Warehouse warehouse;
+    private PlayerInterface player;
+
+    public WarehouseDisplay(Warehouse warehouse, PlayerInterface player){
+        this.warehouse = warehouse;
+        this.player = player;
+    }
+
+    /*public static void main(String[] args) throws InvalidActionException {
 
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
         Player player = new Player("bob");
@@ -29,7 +35,9 @@ public class WarehouseDisplay {
 
         player.getGameSpace().getResourceManager().addResourceToWarehouse(new Resource(TypeResource.SHIELD), 1);
         player.getGameSpace().getResourceManager().addResourceToWarehouse(new Resource(TypeResource.SERVANT), 2);
-        player.getGameSpace().getResourceManager().addResourceToWarehouse(new Resource(TypeResource.SERVANT), 2);
+        player.getGameSpace().getResourceManager().addResourceToWarehouse(new Resource(TypeResource.SERVANT), 2);*/
+
+        public void displayWarehouse() {
 
         System.out.print(AnsiColors.YELLOW_BOLD+"\nHERE IS YOUR WAREHOUSE:\n"+AnsiColors.RESET);
         for (int i = 0; i < 3; i++) {

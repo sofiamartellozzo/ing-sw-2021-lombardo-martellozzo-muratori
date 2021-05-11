@@ -3,11 +3,15 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.message.viewMsg.VSendPlayerDataMsg;
+import it.polimi.ingsw.message.viewMsg.VNotifyPositionIncreasedByMsg;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.model.SoloPlayer;
+import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.board.PersonalBoardInterface;
 import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
@@ -166,6 +170,11 @@ public class Room extends Observable {
         boardManager = initializedController.getBoardManager();
         turnSequence = initializedController.getTurnSequence();
         printRoomMessage("the game has been initialized, starting...");
+
+        for (PlayerInterface player:turnSequence.values()) {
+            VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your",player,boardManager);
+            notifyAllObserver(ObserverType.VIEW, msg);
+        }
         startFirstTurn();
     }
 
@@ -174,16 +183,33 @@ public class Room extends Observable {
         //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
         if (!isSoloMode) {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
-            System.out.println(turnSequence);
-            turnController = new TurnController(turnSequence, boardManager);
+            //System.out.println(turnSequence);
+            turnController = new TurnController(turnSequence, boardManager, listOfVirtualView);
             attachObserver(ObserverType.CONTROLLER, turnController);
         } else {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
             singlePlayer = initializedController.getSinglePlayer();
-            turnController = new TurnController(singlePlayer, boardManager);
+            turnController = new TurnController(singlePlayer, boardManager, listOfVirtualView);
             attachObserver(ObserverType.CONTROLLER, turnController);
         }
+
+        /* the initialization has finished so detach the observer*/
+        detachObserver(ObserverType.CONTROLLER, initializedController);
         turnController.gamePlay();
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    public PersonalBoardInterface getPlayerBoard(String username){
+        for (PlayerInterface player: turnSequence.values()) {
+            if(player.getUsername().equals(username)) {
+                return player.getGameSpace();
+            }
+        }
+        throw new IllegalArgumentException(" Error, not found any player with that username!");
     }
 
 

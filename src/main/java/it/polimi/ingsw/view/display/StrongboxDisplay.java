@@ -2,11 +2,9 @@ package it.polimi.ingsw.view.display;
 
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Resource;
-import it.polimi.ingsw.model.TypeResource;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.utility.AnsiColors;
 
 import java.util.ArrayList;
@@ -16,8 +14,15 @@ import java.util.ArrayList;
  */
 public class StrongboxDisplay {
 
+    private StrongBox strongBox;
+    private PlayerInterface player;
 
-    public static void main(String[] args) throws InvalidActionException {
+    public StrongboxDisplay(StrongBox strongBox, PlayerInterface player){
+        this.strongBox = strongBox;
+        this.player = player;
+    }
+
+    /*public static void main(String[] args) throws InvalidActionException {
 
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
         Player player = new Player("bob");
@@ -29,9 +34,10 @@ public class StrongboxDisplay {
 
         player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);
         player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);
-        player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);
+        player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);*/
 
-        //take the count of every type of resource inside the strongbox
+       public void displayStrongBox(){
+       //take the count of every type of resource inside the strongbox
         int coinInStrong = 0;
         int shieldInStrong = 0;
         int servantInStrong = 0;

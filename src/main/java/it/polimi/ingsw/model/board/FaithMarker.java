@@ -3,12 +3,18 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
+
+/*
+ * SOFIA
+ * */
+
 /**
  * Represents the Faith Marker within the FaithTrack
  * The "position" attribute indicates in which box of the FaithTrack the player is.
  * The "color" is Red because it is a type of resource.
  */
-public class FaithMarker extends Resource {
+public class FaithMarker extends Resource implements Serializable {
 
     private int position;
 

@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.board.Active;
 import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.board.State;
 import it.polimi.ingsw.model.cardAbility.*;
+import it.polimi.ingsw.utility.AnsiColors;
 
 import javax.print.DocFlavor;
 
@@ -171,13 +172,14 @@ public class LeaderCard extends Card{
 
     }
 
+
     @Override
     public String toString() {
         return
                 " LEADER CARD: "+ "\n"+
                 " specialAbility: " + specialAbility + "\n"+
                 " specialResource: " + specialResource + "\n"+
-                " requirements: " + requirements + "\n"+
+                " requirements: " + getRequirementsForCli() + "\n"+
                 " state: " + state + "\n"+
                 " cardID: " + cardID + "\n"+
                 " victoryPoints: " + victoryPoints ;
@@ -186,7 +188,7 @@ public class LeaderCard extends Card{
     public static void main(String[] args) {
 
         ArrayList<Object> req = new ArrayList<>();
-        req.add(new Resource(Color.PURPLE));
+        req.add(new Resource(Color.YELLOW));
         LeaderCard leaderCard = new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
 
         System.out.println(leaderCard.toString());

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.message;
 
+import it.polimi.ingsw.exception.InvalidActionException;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
+import javax.lang.model.element.TypeElement;
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,7 +16,7 @@ import java.util.HashMap;
  * The "depots" attribute contains the depots which compose the warehouse.
  */
 
-public abstract class Warehouse {
+public abstract class Warehouse implements Serializable {
     protected ArrayList<Depot> depots;
 
     /**

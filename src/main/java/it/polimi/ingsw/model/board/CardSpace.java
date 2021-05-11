@@ -3,6 +3,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**

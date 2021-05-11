@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.SoloPlayer;
 import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 
+import java.io.Serializable;
 import java.util.*;
 
 /*
@@ -13,7 +14,7 @@ import java.util.*;
 /**
  * this class is the same as the Personal Board but for the Solo Game
  */
-    public class SoloPersonalBoard extends PersonalBoard{
+    public class SoloPersonalBoard extends PersonalBoard implements Serializable {
 
     private List<ActionToken> actionTokens;
     private LorenzoFaithMarker lorenzoIlMagnifico;

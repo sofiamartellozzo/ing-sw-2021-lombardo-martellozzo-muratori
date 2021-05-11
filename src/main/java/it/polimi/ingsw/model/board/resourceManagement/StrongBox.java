@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * The "content" attribute is an ArrayList<Resource> contained by the strongbox.
  * */
 
-public class StrongBox{
+public class StrongBox implements Serializable{
     private final ArrayList<Resource> content;
 
     /**

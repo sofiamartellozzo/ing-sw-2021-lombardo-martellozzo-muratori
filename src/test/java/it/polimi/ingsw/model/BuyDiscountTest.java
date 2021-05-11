@@ -47,7 +47,7 @@ public class BuyDiscountTest extends TestCase {
     }
 
     @Test
-    public void testBuyCard() throws InvalidActionException{
+    public void testBuyCard() throws InvalidActionException {
         Resource resource = new Resource(Color.BLUE);
         buyDiscount.addResourceWithDiscount(resource);
 

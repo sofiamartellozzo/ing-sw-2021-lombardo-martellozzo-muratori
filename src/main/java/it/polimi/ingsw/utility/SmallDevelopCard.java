@@ -2,12 +2,14 @@ package it.polimi.ingsw.utility;
 
 import it.polimi.ingsw.model.Color;
 
+import java.io.Serializable;
+
 /**
  * this class represent a generic Development Card
  * with only a specific color and level
  * used as a requirements in Leader Card
  */
-public class SmallDevelopCard {
+public class SmallDevelopCard  {
     private Color color;
     private int level;
 

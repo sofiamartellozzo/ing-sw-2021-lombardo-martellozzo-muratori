@@ -4,12 +4,13 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Indicates the composition of the Warehouse and the Strongbox in the PersonalBoard
  */
-public class ResourceManager {
+public class ResourceManager implements Serializable {
 
     private final StrongBox strongBox;
     private final Warehouse warehouse;
@@ -100,7 +101,7 @@ public class ResourceManager {
      * Add all "resources" in the strongbox.
      * @param resources -> The resources you want to put in
      */
-    public void addResourcesToStrongBox(ArrayList<Resource> resources){
+    public void addResourcesToStrongBox(ArrayList<Resource> resources) throws InvalidActionException {
         try {
             strongBox.addResources(resources);
         } catch (InvalidActionException e) {

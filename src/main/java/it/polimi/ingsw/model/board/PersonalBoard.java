@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.cardAbility.AdditionalPower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  * It is composed by the "faithTrack" and the Strongbox and the Warehouse in the "resourceManager".
  * The "cardSpaces" attribute refers to the 3 card spaces of the board.
  */
-public class PersonalBoard implements PersonalBoardInterface {
+public class PersonalBoard implements PersonalBoardInterface,Serializable {
     private final FaithTrack faithTrack;
     private final ResourceManager resourceManager;
     private final ArrayList<CardSpace> cardSpaces;

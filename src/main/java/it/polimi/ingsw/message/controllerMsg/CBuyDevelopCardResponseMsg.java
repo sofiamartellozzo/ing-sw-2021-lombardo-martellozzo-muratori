@@ -1,10 +1,13 @@
 package it.polimi.ingsw.message.controllerMsg;
 
+import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.model.TurnAction;
 
 /**
+ * CLI ---> ActionController
+ *
  * ths is the msg by the client with his choice
- * send to the turn controller, and actually make the move
+ * send to the action controller (by Turn controller), and actually make the move
  */
 public class CBuyDevelopCardResponseMsg  extends ControllerGameMsg{
     private String username;
@@ -40,5 +43,10 @@ public class CBuyDevelopCardResponseMsg  extends ControllerGameMsg{
 
     public int getCardSpaceToStoreIt() {
         return cardSpaceToStoreIt;
+    }
+
+    @Override
+    public void notifyHandler(ControllerObserver controllerObserver) {
+        controllerObserver.receiveMsg(this);
     }
 }

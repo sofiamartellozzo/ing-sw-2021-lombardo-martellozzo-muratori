@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message.viewMsg;
 
+import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ControllerObserver;
 
 /**
@@ -42,7 +43,7 @@ public class VVConnectionRequestMsg extends ViewGameMsg{
     }
 
     @Override
-    public void notifyHandler(ControllerObserver controllerObserver) {
+    public void notifyHandler(ControllerObserver controllerObserver){
         /* this class now redirect the message with the info to the controller (lobby) */
         controllerObserver.receiveMsg(this);
     }

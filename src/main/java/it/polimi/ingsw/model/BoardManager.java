@@ -76,4 +76,6 @@ public class BoardManager {
         return developmentCardTable.getAvailable(player);
     }
 
+
+
 }

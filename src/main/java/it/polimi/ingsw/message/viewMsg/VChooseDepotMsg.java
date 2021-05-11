@@ -1,8 +1,11 @@
 package it.polimi.ingsw.message.viewMsg;
 
+import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.model.TypeResource;
 
 /**
+ * ActionController ---> VV ---> CLI
+ *
  * ask the client to choose in which depot store the resource
  */
 public class VChooseDepotMsg extends ViewGameMsg{
@@ -22,5 +25,10 @@ public class VChooseDepotMsg extends ViewGameMsg{
 
     public TypeResource getResourceToStore() {
         return resourceToStore;
+    }
+
+    @Override
+    public void notifyHandler(ViewObserver viewObserver) {
+        viewObserver.receiveMsg(this);
     }
 }

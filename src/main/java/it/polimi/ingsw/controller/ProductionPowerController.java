@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.SpecialCard;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.*;
 
@@ -19,14 +20,29 @@ public class ProductionPowerController extends Observable implements ControllerO
     private final PlayerInterface player;
     private final ArrayList<Resource> receivedResources;
 
-    public ProductionPowerController(Player player){
-        this.player = player;
-        this.receivedResources=new ArrayList<>();
+    private Map<String, VirtualView> virtualView;
+
+    public ProductionPowerController(Player player, Map<String, VirtualView> virtualView){
+        this.player = (Player) player;
+        this.receivedResources = new ArrayList<>();
+        this.virtualView = virtualView;
+        attachAllVV();
     }
 
-    public ProductionPowerController(SoloPlayer player){
-        this.player = player;
+    public ProductionPowerController(SoloPlayer player, Map<String, VirtualView> virtualView){
+        this.player = (SoloPlayer) player;
         this.receivedResources=new ArrayList<>();
+        this.virtualView = virtualView;
+        attachAllVV();
+    }
+
+    /**
+     * attach all VV of the players so this class can notify them
+     */
+    private void attachAllVV(){
+        for (String username: virtualView.keySet()) {
+            attachObserver(ObserverType.VIEW, virtualView.get(username));
+        }
     }
 
     public ArrayList<Resource> getReceivedResources(){return receivedResources;}
@@ -84,6 +100,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                     }
                 }
                 receivedResources.addAll(developmentCard.showProceedsProductionPower());
+
             }else if(msg.getWhich()>=4 && msg.getWhich()<=5){
                 int choose=4-msg.getWhich();
                 Warehouse warehouse = player.getGameSpace().getWarehouse();
