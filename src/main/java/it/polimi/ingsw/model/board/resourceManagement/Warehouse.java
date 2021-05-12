@@ -5,9 +5,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
-import javax.lang.model.element.TypeElement;
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,6 +41,14 @@ public abstract class Warehouse implements Serializable {
         if ((depot < 1) || (depot > depots.size())) throw new InvalidActionException("Choose a depot!");
         Depot depot1=depots.get(depot-1);
         if (!checkAvailableDepot(resource)) throw new InvalidActionException("The resource can't be add in any depot, move some resources or discard it");
+        ArrayList<Integer> availableDepot = availableDepot(resource);
+        boolean available=false;
+        for(Integer i:availableDepot){
+            if(i==depot){
+                available=true;
+            }
+        }
+        if(!available) throw new InvalidActionException("The resource can't be add here");
         depot1.addResource(resource);
     }
 
@@ -59,46 +65,67 @@ public abstract class Warehouse implements Serializable {
     }
 
     /**
-     * Usable just in case exists at least an AbilityDepot object in the warehouse.
-     * Move one resource from "fromDepot" to "toDepot".
+     * Move or exchange the content from "fromDepot" to "toDepot".
+     * The exchange can be possible only if both the depots are RealDepot.
      * After checking:
-     * - "fromDepot" and "toDepot" must be different.
-     * - If there are more than 3 depots in the warehouse, this means exists at least an AbilityDepot.
-     * - The "fromDepot" and/or "toDepot" parameters must refer to an AbilityDepot.
-     * @param fromDepot -> The depot where move the resource from
-     * @param toDepot -> The depot where move the resource to
+     * - The "fromDepot" is not empty;
+     * - If one of the depot is an AbilityDepot, both the depots content need to be of the same type;
+     * - If one of the depot is an AbilityDepot, the "toDepot" can't be full;
+     * - In case of exchange, both the depots must be able to contain the resources of the other
+     * - In case of both the depots are RealDepot and the "toDepot" is empty, the "toDepot" must be able to contain all resources of "fromDepot"
+     * @param fromDepot -> The depot where move from
+     * @param toDepot -> The depot where move to
      * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public void moveResourceToAbilityDepot(int fromDepot, int toDepot) throws InvalidActionException {
+    public void moveResource(int fromDepot,int toDepot) throws InvalidActionException {
+        if(fromDepot<1 || fromDepot>depots.size()) throw new InvalidActionException("First depot not valid!");
+        if(toDepot<1 || toDepot>depots.size()) throw new InvalidActionException("Second depot not valid!");
         if(fromDepot==toDepot) throw new InvalidActionException("You're moving in the same depot!");
-        if (depots.size()==3) throw new InvalidActionException("There's no depot you can move it in!");
-        if (fromDepot <= 0 || fromDepot > depots.size()) throw new InvalidActionException("Choose the first depot!");
-        if (toDepot <= 0 || toDepot > depots.size()) throw new InvalidActionException("Choose the second depot!");
-        if ((fromDepot!=4 && fromDepot!=5)&&(toDepot!=4 && toDepot!=5)) throw new InvalidActionException("Choose an ability depot!");
-        Resource resourceToMove = depots.get(fromDepot-1).getResources().get(0);
-        addResource(resourceToMove,toDepot);
-        removeResource(fromDepot);
-    }
-
-    /**
-     * Moves all resources from "fromDepot" to "toDepot".
-     * After checking:
-     * - "fromDepot" and "toDepot" must be different.
-     * - "fromDepot" and "toDepot" must refers to one of the depot of the warehouse.
-     * @param fromDepot -> The depot where move the resources from
-     * @param toDepot -> The depot where move the resources to
-     * @throws InvalidActionException -> If one of the condition is not respected
-     */
-    public void moveResources(int fromDepot, int toDepot) throws InvalidActionException {
-        if (fromDepot==toDepot) throw new InvalidActionException("You're moving in the same depot!");
-        if (fromDepot <= 0 || fromDepot > depots.size()) throw new InvalidActionException("Choose the first depot!");
-        if (toDepot <= 0 || toDepot > depots.size()) throw new InvalidActionException("Choose the second depot!");
-        Depot depot1 = depots.get(fromDepot-1);
-        Depot depot2 = depots.get(toDepot-1);
-        Resource movingResource = depot1.getResources().get(0);
-        int howManyResource = depot1.getResources().size();
-        depot1.removeResources(howManyResource);
-        depot2.addResources(howManyResource,movingResource);
+        Depot from = depots.get(fromDepot-1);
+        Depot to = depots.get(toDepot-1);
+        if(!from.isEmpty()){
+            if(from instanceof AbilityDepot || to instanceof AbilityDepot){ //At least one of the depot is an AbilityDepot
+                if(to.getType()!=null && from.getType().equals(to.getType())){ //The "to" depot type is not null (in case is a RealDepot) and has the same type of the "from" depot
+                    if(!to.isFull()){ //The "to" depot must not be full
+                        to.addResource(new Resource(from.getType()));
+                        from.removeResource();
+                    }else{
+                        throw new InvalidActionException("The depot you're trying to move is full!");
+                    }
+                }else if (to.getType()==null){ //The "to" depot is a RealDepot and is empty
+                    to.addResource(new Resource(from.getType()));
+                    from.removeResource();
+                }else if(!from.getType().equals(to.getType())){
+                    throw new InvalidActionException("The content type isn't the same!");
+                }
+            }else{ //both the depots are RealDepot
+                //REMEMBER: two RealDepot has always DIFFERENT content type
+                if(to.isEmpty() && from.getNumberResources()<=to.getSize()){ //The "to" depot is empty and can contains all resources of the "from" depot
+                    for(Resource resource: from.getResources()){
+                        to.addResource(resource);
+                    }
+                    from.removeResources(from.getNumberResources());
+                }else if(!to.isEmpty()){ //The "to" is not empty, the player can exchange the two contents if the size allows to
+                    if(to.getNumberResources()<=from.getSize() || from.getNumberResources()<=to.getSize()){
+                        //Clone the two contents
+                        ArrayList<Resource> contentFrom = (ArrayList<Resource>) from.getResources().clone();
+                        ArrayList<Resource> contentTo = (ArrayList<Resource>) to.getResources().clone();
+                        //Clear
+                        from.removeResources(from.getNumberResources());
+                        to.removeResources(to.getNumberResources());
+                        //Invert the contents
+                        from.addResources(contentTo.size(),contentTo.get(0));
+                        to.addResources(contentFrom.size(),contentFrom.get(0));
+                    }else{
+                        throw new InvalidActionException("You can't exchange the contents");
+                    }
+                }else{
+                    throw new InvalidActionException("There's no enough space in the depot you want to move to");
+                }
+            }
+        }else{
+            throw new InvalidActionException("There's no resource to be moved!");
+        }
     }
 
     /**
@@ -141,7 +168,8 @@ public abstract class Warehouse implements Serializable {
      */
     private boolean checkResourceInSomeDepot(Resource resource, int depot){
         for(int i=0;i<3;i++){
-            if((i+1!=depot) && (!depots.get(i).getResources().isEmpty()) && (depots.get(i).getType().equals(resource.getType())) && (depots.get(i).getType()!=null)){
+            Depot d=depots.get(i);
+            if(i+1!=depot && !d.getResources().isEmpty() && d.getType()!=null && d.getType().equals(resource.getType()) ){
                 return true;
             }
         }
@@ -240,13 +268,13 @@ public abstract class Warehouse implements Serializable {
      * @return -> An ArrayList<Integer> which contains which floor of the depot are available to put the "reosurce"
      * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public ArrayList<Integer> inWhichDepot(Resource resource) throws InvalidActionException {
+    public ArrayList<Integer> availableDepot(Resource resource) throws InvalidActionException {
         ArrayList<Integer> whichDepot = new ArrayList<>();
         if(resource==null) throw new InvalidActionException("Resource not valid");
         for(Depot depot:depots){
-            if(depot.getResources().isEmpty() && depot instanceof RealDepot && searchResource(resource)==-1){
+            if(depot.isEmpty() && depot instanceof RealDepot && (searchResource(resource)==-1||(searchResource(resource)>=4 && searchResource(resource)<=5))){
                 whichDepot.add(depot.getFloor());
-            }else if(!depot.isFull() && depot.getType().equals(resource.getType())){
+            }else if(!depot.isFull() && depot.getType()!=null && depot.getType().equals(resource.getType())){
                 whichDepot.add(depot.getFloor());
             }
         }

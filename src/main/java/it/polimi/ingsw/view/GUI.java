@@ -64,7 +64,6 @@ public class GUI extends Application implements ViewObserver {
         FXMLLoader loaderIntroScene = new FXMLLoader(getClass().getResource("/scenes/IntroScene.fxml"));
         introScene = new Scene(loaderIntroScene.load());
         introSceneController = loaderIntroScene.getController();
-        //PROBLEMA controller == null
         introSceneController.setGui(this);
         introSceneController.start();
     }
@@ -272,6 +271,7 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
+
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
 
@@ -282,15 +282,6 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
-    @Override
-    public void receiveMsg(VStandardPPRequestMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg) {
-
-    }
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {

@@ -14,6 +14,7 @@ public interface ControllerObserver extends Observer{
     /* received from VV, the first msg*/
     public void receiveMsg(VVConnectionRequestMsg msg);
 
+
     /* form VV to Lobby*/
     public void receiveMsg(CConnectionRequestMsg msg);
 
@@ -44,12 +45,7 @@ public interface ControllerObserver extends Observer{
     /*from client (CLI) to the PPController, to activate it*/
     public void receiveMsg(CActivateProductionPowerResponseMsg msg);
 
-
-
-
-
-    public void receiveMsg(CStandardPPResponseMsg msg);
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg);
+    void receiveMsg(CChooseDiscardResponseMsg msg);
 
 
 

@@ -48,6 +48,11 @@ public class RealDepot implements Depot, Serializable {
         return floor;
     }
 
+    @Override
+    public int getNumberResources() {
+        return resources.size();
+    }
+
     /**
      * @return -> How many resource the depot can contain.
      */
@@ -91,6 +96,11 @@ public class RealDepot implements Depot, Serializable {
     @Override
     public boolean isFull() {
         return resources.size() == size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return resources.isEmpty();
     }
 
     /**

@@ -51,10 +51,7 @@ public interface ViewObserver extends Observer{
 
     /*from PPController to client*/
     public void receiveMsg(VActivateProductionPowerRequestMsg msg);
-    /* PP activated  0  (standard PP)*/
-    public void receiveMsg(VStandardPPRequestMsg msg);
-    /* for special PP*/
-    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg);
+
 
 
     public void receiveMsg(VShowEndGameResultsMsg msg);

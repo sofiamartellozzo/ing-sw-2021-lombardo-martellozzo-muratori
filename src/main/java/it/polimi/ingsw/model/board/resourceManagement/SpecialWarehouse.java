@@ -36,7 +36,7 @@ public class SpecialWarehouse extends Decorator implements Serializable {
      */
     private void createDepot(Resource resource) throws InvalidActionException {
         if(resource==null) throw new InvalidActionException("Insert a correct resource!");
-        AbilityDepot abilityDepot = new AbilityDepot(resource.getType(),depots.size()+1);
+        AbilityDepot abilityDepot = new AbilityDepot(resource.getType(),warehouse.getDepots().size()+1);
         warehouse.getDepots().add(abilityDepot);
     }
 }

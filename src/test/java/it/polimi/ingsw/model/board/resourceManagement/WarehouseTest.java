@@ -130,7 +130,7 @@ public class WarehouseTest {
     }
 
     @Test
-    public void moveResourceToAbilityDepot() throws InvalidActionException {
+    public void moveResource_AtLeastOneParameterIsAnAbilityDepot() throws InvalidActionException {
         //Depot 1 -> 1 SHIELD
         //Depot 2 -> 2 SERVANTS
         //Depot 3 -> 2 STONES
@@ -138,22 +138,32 @@ public class WarehouseTest {
         this.addResource();
         SpecialWarehouse specialWarehouse = new SpecialWarehouse(warehouse,servant);
         //Depot 5
-        warehouse.moveResourceToAbilityDepot(2,5);
+        warehouse.moveResource(2,5);
         depot2.remove(servant);
         depot5.add(servant);
         warehouse.addResource(servant,2);
         depot2.add(servant);
         assertSame(5,warehouse.getDepots().size());
         assertSame(depot1.size(),warehouse.getDepots().get(0).getResources().size());
-        assertEquals(depot1,warehouse.getDepots().get(0).getResources());
+        for(int i=0;i<depot1.size();i++) {
+            assertEquals(depot1.get(i).getType(), warehouse.getDepots().get(0).getResources().get(i).getType());
+        }
         assertSame(depot2.size(),warehouse.getDepots().get(1).getResources().size());
-        assertEquals(depot2,warehouse.getDepots().get(1).getResources());
+        for(int i=0;i<depot2.size();i++) {
+            assertEquals(depot2.get(i).getType(), warehouse.getDepots().get(1).getResources().get(i).getType());
+        }
         assertSame(depot3.size(),warehouse.getDepots().get(2).getResources().size());
-        assertEquals(depot3,warehouse.getDepots().get(2).getResources());
+        for(int i=0;i<depot3.size();i++) {
+            assertEquals(depot3.get(i).getType(),warehouse.getDepots().get(2).getResources().get(i).getType());
+        }
         assertSame(depot4.size(),warehouse.getDepots().get(3).getResources().size());
-        assertEquals(depot4,warehouse.getDepots().get(3).getResources());
+        for(int i=0;i<depot4.size();i++) {
+            assertEquals(depot4.get(i).getType(),warehouse.getDepots().get(3).getResources().get(i).getType());
+        }
         assertSame(depot5.size(),warehouse.getDepots().get(4).getResources().size());
-        assertEquals(depot5,warehouse.getDepots().get(4).getResources());
+        for(int i=0;i<depot5.size();i++) {
+            assertEquals(depot5.get(i).getType(),warehouse.getDepots().get(4).getResources().get(i).getType());
+        }
         //Depot 1 -> 1 SHIELD
         //Depot 2 -> 2 SERVANTS
         //Depot 3 -> 2 STONES
@@ -162,73 +172,77 @@ public class WarehouseTest {
     }
 
     @Test (expected = InvalidActionException.class)
-    public void moveResourceToAbilityDepot_sameDepots_InvalidActionException() throws InvalidActionException {
-        warehouse.moveResourceToAbilityDepot(3,3);
+    public void moveResource_sameDepots_InvalidActionException() throws InvalidActionException {
+        warehouse.moveResource(3,3);
     }
 
     @Test (expected = InvalidActionException.class)
-    public void moveResourceToAbilityDepot_NoAbilityDepot_InvalidActionException() throws InvalidActionException {
-        warehouse.moveResourceToAbilityDepot(1,4);
+    public void moveResource_NoAbilityDepot_InvalidActionException() throws InvalidActionException {
+        warehouse.moveResource(1,4);
     }
 
     @Test (expected = InvalidActionException.class)
-    public void moveResourceToAbilityDepot_NotToAnAbilityDepot_InvalidActionException() throws InvalidActionException {
+    public void moveResource_NotToAnAbilityDepot_InvalidActionException() throws InvalidActionException {
         //Depot 1 -> 1 SHIELD
         //Depot 2 -> 2 SERVANTS
         //Depot 3 -> 2 STONES
         //Depot 4 -> 2 SHIELDS
         this.addResource();
-        warehouse.moveResourceToAbilityDepot(1,3);
+        warehouse.moveResource(1,3);
     }
 
     @Test
-    public void moveResources() throws InvalidActionException {
+    public void moveResource() throws InvalidActionException {
         //Depot 1 -> 1 SHIELD
         //Depot 2 -> 1 SERVANT
         //Depot 3 -> EMPTY
         //Depot 4 -> 1 SHIELD
         this.removeResource();
-        warehouse.moveResources(2,3);
+        warehouse.moveResource(2,3);
         depot3.addAll(depot2);
         depot2.clear();
         warehouse.addResource(servant,3);
         warehouse.addResource(servant,3);
         depot3.add(servant);
         depot3.add(servant);
-        warehouse.moveResources(1,4);
+        warehouse.moveResource(1,4);
         depot4.addAll(depot1);
         depot1.clear();
-        warehouse.moveResources(4,2);
-        depot2.addAll(depot4);
-        depot4.clear();
+        warehouse.moveResource(4,2);
+        depot2.add(depot4.get(0));
+        depot4.remove(0);
         assertSame(4,warehouse.getDepots().size());
         assertSame(depot1.size(),warehouse.getDepots().get(0).getResources().size());
-        assertEquals(depot1,warehouse.getDepots().get(0).getResources());
+        for(int i=0;i<depot1.size();i++) {
+            assertEquals(depot1.get(i).getType(), warehouse.getDepots().get(0).getResources().get(i).getType());
+        }
         assertSame(depot2.size(),warehouse.getDepots().get(1).getResources().size());
-        assertEquals(depot2,warehouse.getDepots().get(1).getResources());
+        for(int i=0;i<depot2.size();i++) {
+            assertEquals(depot2.get(i).getType(), warehouse.getDepots().get(1).getResources().get(i).getType());
+        }
         assertSame(depot3.size(),warehouse.getDepots().get(2).getResources().size());
-        assertEquals(depot3,warehouse.getDepots().get(2).getResources());
+        for(int i=0;i<depot3.size();i++) {
+            assertEquals(depot3.get(i).getType(),warehouse.getDepots().get(2).getResources().get(i).getType());
+        }
         assertSame(depot4.size(),warehouse.getDepots().get(3).getResources().size());
-        assertEquals(depot4,warehouse.getDepots().get(3).getResources());
+        for(int i=0;i<depot4.size();i++) {
+            assertEquals(depot4.get(i).getType(),warehouse.getDepots().get(3).getResources().get(i).getType());
+        }
         //Depot 1 -> EMPTY
         //Depot 2 -> 2 SHIELDS
         //Depot 3 -> 3 SERVANTS
         //Depot 4 -> EMPTY
     }
 
+
     @Test (expected = InvalidActionException.class)
-    public void moveResources_sameDepots_InvalidActionException() throws InvalidActionException {
-        warehouse.moveResources(3,3);
+    public void moveResource_fromDepotWrong_InvalidActionException() throws InvalidActionException {
+        warehouse.moveResource(0,3);
     }
 
     @Test (expected = InvalidActionException.class)
-    public void moveResources_fromDepotWrong_InvalidActionException() throws InvalidActionException {
-        warehouse.moveResources(0,3);
-    }
-
-    @Test (expected = InvalidActionException.class)
-    public void moveResources_toDepotWrong_InvalidActionException() throws InvalidActionException {
-        warehouse.moveResources(3,0);
+    public void moveResource_toDepotWrong_InvalidActionException() throws InvalidActionException {
+        warehouse.moveResource(3,0);
     }
 
     @Test
@@ -449,15 +463,21 @@ public class WarehouseTest {
          * 1 STONE
          * */
         ArrayList<Integer> expected = new ArrayList<>();
-        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.COIN)));
-        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.SHIELD)));
-        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.SERVANT)));
+        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.COIN)));
+        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.SHIELD)));
+        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.SERVANT)));
         expected.add(3);
         expected.add(4);
-        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.STONE)));
+        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.STONE)));
         expected.clear();
         warehouse.removeResource(2);
         expected.add(2);
-        assertEquals(expected,warehouse.inWhichDepot(new Resource(TypeResource.SHIELD)));
+        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.SHIELD)));
+    }
+
+    @Test (expected = InvalidActionException.class)
+    public void testAddResource_PuttingTwoResourcesInTwoDifferentDepots_InvalidActionException() throws InvalidActionException {
+        warehouse.addResource(new Resource(TypeResource.COIN),2);
+        warehouse.addResource(new Resource(TypeResource.COIN),3);
     }
 }

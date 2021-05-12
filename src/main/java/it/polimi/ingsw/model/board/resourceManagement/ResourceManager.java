@@ -149,26 +149,16 @@ public class ResourceManager implements Serializable {
     }
 
     /**
-     * Move a resource from "fromDepot" to "toDepot".
-     * It can be used just in case there are AbilityDepot in the warehouse
-     * and you want to move a resource from one of them or to one of them or both.
+     * Move/Exchange the content(s) from "fromDepot" to "toDepot".
      * @param fromDepot -> The depot where you want to move from
      * @param toDepot -> The depot where you want to move to
      * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public void moveResourceFromToAbilityDepot(int fromDepot, int toDepot) throws InvalidActionException {
-        warehouse.moveResourceToAbilityDepot(fromDepot,toDepot);
+    public void moveResource(int fromDepot, int toDepot) throws InvalidActionException {
+        warehouse.moveResource(fromDepot,toDepot);
     }
 
-    /**
-     * Move all resources contained by "fromDepot" to "toDepot".
-     * @param fromDepot -> The depot where you want to move from
-     * @param toDepot -> The depot where you want to move to
-     * @throws InvalidActionException -> If one of the conditions is not respected
-     */
-    public void moveResources (int fromDepot,int toDepot) throws InvalidActionException {
-        warehouse.moveResources(fromDepot,toDepot);
-    }
+
 
     /**
      * PRIVATE METHOD

@@ -52,6 +52,11 @@ public interface Depot {
     boolean isFull();
 
     /**
+     * @return -> True if the depot is empty, else false.
+     */
+    boolean isEmpty();
+
+    /**
      * Getter Method
      * @return -> The content type of the depot.
      */
@@ -67,6 +72,11 @@ public interface Depot {
      * @return -> The number of the "floor"/"depot"
      */
     int getFloor();
+
+    /**
+     * @return -> The number of resources that the depot contains.
+     */
+    int getNumberResources();
 
 
 }

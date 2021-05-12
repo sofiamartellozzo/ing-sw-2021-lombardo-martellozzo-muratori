@@ -2,7 +2,9 @@ package it.polimi.ingsw.message.controllerMsg;
 
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.model.TurnAction;
+import it.polimi.ingsw.model.TypeResource;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -19,6 +21,8 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     private String username;
     private String where;
     private Integer which;
+    private ArrayList<TypeResource> resourcesToPay;
+    private TypeResource resourceToGet;
     private TurnAction action;
 
     public CActivateProductionPowerResponseMsg(String msgContent, String username, String where, Integer which){
@@ -27,6 +31,8 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
         this.where = where;
         this.which = which;
         this.action = TurnAction.ACTIVE_PRODUCTION_POWER;
+        this.resourcesToPay=null;
+        this.resourceToGet=null;
     }
 
     public String getUsername() {
@@ -44,6 +50,18 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     public TurnAction getActionChose(){
         return action;
     }
+
+    public ArrayList<TypeResource> getResourcesToPay() {
+        return resourcesToPay;
+    }
+
+    public TypeResource getResourceToGet() {
+        return resourceToGet;
+    }
+
+    public void setResourceToGet(TypeResource resourceToGet){this.resourceToGet=resourceToGet;}
+
+    public void setResourcesToPay(ArrayList<TypeResource> resourcesToPay){this.resourcesToPay=resourcesToPay;}
 
     @Override
     public void notifyHandler(ControllerObserver controllerObserver) {

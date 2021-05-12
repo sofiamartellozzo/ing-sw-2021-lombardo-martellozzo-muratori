@@ -1,11 +1,12 @@
 [
   {
-    "typeAbility": "TRANSFORM_WHITE",
+    "typeAbility": "ADDITIONAL_POWER"
+  ,
     "specialResource": "COIN",
     "requirements": [
       {
         "color": "GREEN",
-        "typeResource": "SERVANT"
+        "level": 2
       }
     ],
     "cardID": 1,

@@ -483,6 +483,11 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     @Override
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
         //send to TurnController by Room and then to ActionController and PPController
         try {
@@ -493,15 +498,7 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
-    @Override
-    public void receiveMsg(CStandardPPResponseMsg msg) {
 
-    }
-
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
-
-    }
 
 
 

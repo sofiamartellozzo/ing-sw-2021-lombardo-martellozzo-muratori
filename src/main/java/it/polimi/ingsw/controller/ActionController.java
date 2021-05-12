@@ -296,6 +296,11 @@ public class ActionController extends Observable implements ControllerObserver {
         nextAction();
     }
 
+    @Override
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
+
+    }
+
     /**
      * this msg from the client is for active a Leader Card or Discard it
      *
@@ -374,15 +379,6 @@ public class ActionController extends Observable implements ControllerObserver {
     }
 
 
-    @Override
-    public void receiveMsg(CStandardPPResponseMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
-
-    }
 
 
 

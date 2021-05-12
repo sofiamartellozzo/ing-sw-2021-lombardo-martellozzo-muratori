@@ -883,7 +883,7 @@ public class CLI extends Observable implements ViewObserver {
 
                 if (msg.getDepotsActualSituation().containsKey(fromDepot) && msg.getDepotsActualSituation().containsKey(toDepot)) {
                     try {
-                        warehouse.moveResources(fromDepot, toDepot);
+                        warehouse.moveResource(fromDepot, toDepot);
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
                     }
@@ -984,15 +984,7 @@ public class CLI extends Observable implements ViewObserver {
 
     }
 
-    @Override
-    public void receiveMsg(VStandardPPRequestMsg msg) {
 
-    }
-
-    @Override
-    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg) {
-
-    }
 
 
     /**

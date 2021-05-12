@@ -76,6 +76,11 @@ public class AbilityDepot implements Depot, Serializable {
         return resources.size() == 2;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return resources.isEmpty();
+    }
+
     /**
      * Getter Method
      * @return -> The content type of the depot.
@@ -138,5 +143,10 @@ public class AbilityDepot implements Depot, Serializable {
     @Override
     public int getFloor() {
         return depot;
+    }
+
+    @Override
+    public int getNumberResources() {
+        return resources.size();
     }
 }

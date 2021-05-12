@@ -314,15 +314,6 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
 
-    @Override
-    public void receiveMsg(CStandardPPResponseMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
-
-    }
 
 
 
@@ -368,10 +359,16 @@ public class TurnController extends Observable implements ControllerObserver {
         checkEndGame();
     }
 
+
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
         //to ACTIONCONTROLLER
         notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
+
     }
 
     @Override

@@ -47,6 +47,7 @@ public class LeaderCard extends Card implements Serializable {
     public SpecialAbility getSpecialAbility(){return specialAbility;}
     public ArrayList<Object> getRequirements(){return requirements;}
     public State getState(){return state;}
+    public TypeResource getSpecialResource(){return specialResource;}
     //public void setSpecialResource(TypeResource type){this.specialResource = type;}
 
     /**

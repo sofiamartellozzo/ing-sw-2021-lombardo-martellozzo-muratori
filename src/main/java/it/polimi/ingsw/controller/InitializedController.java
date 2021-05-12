@@ -398,16 +398,11 @@ public class InitializedController extends Observable implements ControllerObser
 
     }
 
-
     @Override
-    public void receiveMsg(CStandardPPResponseMsg msg) {
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
     }
 
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
-
-    }
 
 
     @Override

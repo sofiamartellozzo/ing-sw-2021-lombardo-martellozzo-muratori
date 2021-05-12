@@ -145,6 +145,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
 
 
+
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
         //send to Production Power Controller
@@ -152,19 +153,14 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
         //send to Lobby(Room) and Action Controller
         notifyAllObserver(ObserverType.CONTROLLER, msg);
-    }
-
-    @Override
-    public void receiveMsg(CStandardPPResponseMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
-
     }
 
 
@@ -367,27 +363,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
-    /**
-     * after the choice of the player to activate PP 0
-     * @param msg
-     */
-    @Override
-    public void receiveMsg(VStandardPPRequestMsg msg) {
-        if (msg.getUsername().equals(this.username)){
-            sendToClient(msg);
-        }
-    }
 
-    /**
-     * after the choice of the player to activate special PP
-     * @param msg
-     */
-    @Override
-    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg) {
-        if (msg.getUsername().equals(this.username)){
-            sendToClient(msg);
-        }
-    }
 
 
     @Override
