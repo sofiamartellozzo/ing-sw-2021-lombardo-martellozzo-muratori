@@ -3,13 +3,15 @@ package it.polimi.ingsw.model.board.resourceManagement;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
+
 /**
  * Decorator Pattern
  * When the "SpecialDepot" ability activates,
  * adds a new AbilityDepot in the warehouse
  * decorated by the new created Ability Depot.
  */
-public class SpecialWarehouse extends Decorator{
+public class SpecialWarehouse extends Decorator implements Serializable {
 
     /**
      * Constructor

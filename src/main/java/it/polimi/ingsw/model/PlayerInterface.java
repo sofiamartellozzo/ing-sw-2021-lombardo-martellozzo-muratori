@@ -52,7 +52,7 @@ public interface PlayerInterface {
     public void moveResource(int depot1, int depot2) throws InvalidActionException;
     public int chooseDepot();
 
-    public void removeLeaderCard(int card) throws InvalidActionException;
+    public void removeLeaderCard(LeaderCard card) throws InvalidActionException;
     public void increasePosition();
 
     public boolean checkEndGame();

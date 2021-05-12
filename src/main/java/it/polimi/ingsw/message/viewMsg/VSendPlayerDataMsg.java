@@ -18,11 +18,13 @@ public class VSendPlayerDataMsg extends ViewGameMsg{
 
     private PlayerInterface player;
     private BoardManager boardManager;
+    private boolean soloMode;
 
-    public VSendPlayerDataMsg(String msgContent, PlayerInterface player, BoardManager boardManager) {
+    public VSendPlayerDataMsg(String msgContent, PlayerInterface player, BoardManager boardManager, boolean soloMode) {
         super(msgContent);
         this.player = player;
         this.boardManager = boardManager;
+        this.soloMode = soloMode;
     }
 
     public PlayerInterface getPlayer() {
@@ -31,6 +33,10 @@ public class VSendPlayerDataMsg extends ViewGameMsg{
 
     public BoardManager getBoardManager() {
         return boardManager;
+    }
+
+    public boolean isSoloMode() {
+        return soloMode;
     }
 
     @Override

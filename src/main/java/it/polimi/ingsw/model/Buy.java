@@ -4,12 +4,13 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
 * SOFI*/
 
-public class Buy implements BuyCard {
+public class Buy implements BuyCard, Serializable {
     @Override
     public void buyCard(int row, int column, BoardManager boardManager, Player player, int selectedCardSpace) throws InvalidActionException{
         //when the player decides to puy a card

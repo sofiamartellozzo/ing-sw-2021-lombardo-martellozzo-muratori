@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.card;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /* ILA */
 
-public class DevelopmentCardDeck {
+public class DevelopmentCardDeck implements Serializable {
 
     private ArrayList<DevelopmentCard> developDeck;
 

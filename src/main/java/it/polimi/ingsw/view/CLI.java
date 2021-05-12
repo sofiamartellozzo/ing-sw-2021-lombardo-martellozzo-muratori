@@ -407,7 +407,7 @@ public class CLI extends Observable implements ViewObserver {
             case "active_production_power": {
                 return TurnAction.ACTIVE_PRODUCTION_POWER;
             }
-            case "active_leader_cards": {
+            case "active_leader_card": {
                 return TurnAction.ACTIVE_LEADER_CARD;
             }
             case "get_action_token": {
@@ -420,7 +420,7 @@ public class CLI extends Observable implements ViewObserver {
                 return TurnAction.REMOVE_LEADER_CARD;
             }
             default:
-                throw new IllegalArgumentException(" Error this action is not valid! ");
+                return TurnAction.ERROR;
         }
     }
 
@@ -435,6 +435,10 @@ public class CLI extends Observable implements ViewObserver {
 
                 System.out.println(" Error, this username is not valid because it is already taken");
                 newUsername = askUsername();
+                username = newUsername;
+                /* the login process has to restart, so the client try again sending another request */
+                VVConnectionRequestMsg request = new VVConnectionRequestMsg("Trying to connect", iP, 0, username, gameSize);
+                this.client.sendMsg(request);
                 break;
 
             case "FULL_SIZE":  //all the rooms in the server are full, so the client can't be connected to the game
@@ -446,17 +450,14 @@ public class CLI extends Observable implements ViewObserver {
                 System.out.println(" Someone is now creating a new room! Please wait a moment ");
                 try {
                     Thread.sleep(5000);
+                    /* the login process has to restart, so the client try again sending another request */
+                    VVConnectionRequestMsg request2 = new VVConnectionRequestMsg("Trying to connect", iP, 0, username, gameSize);
+                    this.client.sendMsg(request2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 break;
         }
-
-        username = newUsername;
-        /* the login process has to restart, so the client try again sending another request */
-
-        VVConnectionRequestMsg request = new VVConnectionRequestMsg("Trying to connect", iP, 0, username, gameSize);
-        this.client.sendMsg(request);
     }
 
     /**
@@ -510,7 +511,6 @@ public class CLI extends Observable implements ViewObserver {
             System.out.println(msg.getMsgContent());
             System.out.println(" The actions that you are allowed to do are: " + msg.getAvailableActions());
             System.out.println(" Write the action you chose with _ between every word!! ");
-            boolean correct = false;
 
             in = new Scanner(System.in);
             in.reset();
@@ -518,16 +518,19 @@ public class CLI extends Observable implements ViewObserver {
             String action = in.nextLine();
             TurnAction turnAction = returnActionFromString(action.toLowerCase());
 
-            while (!correct) {
-                if (msg.getAvailableActions().contains(turnAction)) {
+            if (msg.getAvailableActions().contains(turnAction) && turnAction != TurnAction.ERROR) {
 
-                    CChooseActionTurnResponseMsg response = new CChooseActionTurnResponseMsg(" I made my choice, I decided the action I want to do", username, turnAction);
-                    client.sendMsg(response);
-                    correct = true;
-                }
+                CChooseActionTurnResponseMsg response = new CChooseActionTurnResponseMsg(" I made my choice, I decided the action I want to do", username, turnAction);
+                client.sendMsg(response);
+
+            } else {
+                VChooseActionTurnRequestMsg askAgain = new VChooseActionTurnRequestMsg("choose again an action", msg.getUsername(), msg.getAvailableActions());
+                this.receiveMsg(askAgain);
             }
+
         }
     }
+
     /**
      * the Client has to choose two cards from the card list composed by four cards, so there will be two Arrays,
      * one composed by the two chosen Cards, and the other composed by the two that the player denied
@@ -627,7 +630,7 @@ public class CLI extends Observable implements ViewObserver {
      */
 
     @Override
-    public void receiveMsg(VChooseResourceAndDepotMsg msg){
+    public void receiveMsg(VChooseResourceAndDepotMsg msg) {
 
         int depot = -1;
         String resourceColor = null;
@@ -735,219 +738,244 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
-        /**
-         * msg used to notify to all the game Player that a player increased his position of NumberOfPositionIncreased positions
-         * @param msg
-         */
-        @Override
-        public void receiveMsg(VNotifyPositionIncreasedByMsg msg){
+    @Override
+    public void receiveMsg(VUpdateWarehouseMsg msg) {
+        warehouse = msg.getWarehouse();
+        System.out.println(" Here is your Warehouse updated ");
+        showWarehouse(warehouse, player);
+    }
+
+
+    /**
+     * msg used to notify to all the game Player that a player increased his position of NumberOfPositionIncreased positions
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
+
+        System.out.println(msg.getMsgContent());
+        if (msg.getUsernameIncreased().equals(username)) {
+            System.out.println("Congratulations, your faith Marker increased his position " + msg.getNumberOfPositionIncreased());
+            // locally increasing the position of the faith Marker
+            faithTrack.getFaithMarker().increasePosition();
+            showFaithTrack(faithTrack, faithTrack.getPositionFaithMarker());
+        } else if (msg.getAllPlayerToNotify().contains(username)) {
+            System.out.println("\"msg.getUsernameIncreased()\"+ increased his position of: " + msg.getNumberOfPositionIncreased());
+        }
+
+    }
+
+    /**
+     * message received from the client when the controller has to warn him that before he had inserted a wrong
+     * or unavailable depot, so the client has to insert a new one and send it to the controller
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VNotValidDepotMsg msg) {
+
+        if (msg.getUsername().equals(username)) {
+            System.out.println(msg.getMsgContent());
+            System.out.println("You can't put in Depot " + msg.getUnableDepot() + " the resource " + "\"msg.getResourceChooseBefore()\"" + "that you choose before! ");
+
+            System.out.print("Here is your actual situation! ");
+            showWarehouse(warehouse, player);
+
+            System.out.print("\n");
+            System.out.println(" Please insert a new depot for this resource [number from 1 to 5] ");
+            in = new Scanner(System.in);
+            in.reset();
+
+            int newDepot = in.nextInt();
+            CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!", msg.getResourceChooseBefore(), newDepot, username);
+            client.sendMsg(response);
+        }
+
+    }
+
+    /**
+     * msg used to ask to the client which development card he wants to chose from the table and in
+     * which space he wants to put the card,the table indicates the available cards that he can buy
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
+
+        boolean correct = false;
+        if (msg.getUsername().equals(username)) {
+
+            developmentCardTable = msg.getTableCard();
+            System.out.println(msg.getMsgContent());
+
+            in = new Scanner(System.in);
+            in.reset();
+            showStrongBox(strongBox, player);
+            showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
+            showCardSpaces(cardSpaces, player);
+
+            System.out.println(" Insert a row [from 0 to 2] and a column [from 0 to 3] in the table from where you want to take the card ");
+            int row = in.nextInt();
+            int column = in.nextInt();
+
+            System.out.println(" Insert in which card Space you want to insert it [1,2 or 3] ");
+            int cardSpace = in.nextInt();
+
+            while (!correct) {
+
+                //check if the deck selected is not empty (and has at least one card) and if the client inserted a valid card space
+                if (!(msg.getTableCard().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 1 || cardSpace == 2 || cardSpace == 3)) {
+
+                    //to update the local version of the variable of the client
+                    //developmentCardTable.takeCard(row,column);
+                    cardSpaces.get(cardSpace).addCard(developmentCardTable.takeCard(row, column));
+                    try {
+                        strongBox.removeResources(developmentCardTable.getTable()[row][column].getDevelopDeck().get(developmentCardTable.getTable()[row][column].getDevelopDeck().size()).getCost());
+                    } catch (InvalidActionException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (developmentCardTable.getTable()[row][column].getDevelopDeck().isEmpty()) {
+                        msg.getCardAvailable()[row][column] = false;
+                    }
+                    System.out.println("Here is the card Table Updated! ");
+                    showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
+
+                    System.out.println("Here is your StrongBox Updated! ");
+                    showStrongBox(strongBox, player);
+
+                    System.out.println("Here are your card spaces updated");
+                    showCardSpaces(cardSpaces, player);
+
+                    CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
+                    client.sendMsg(response);
+                    correct = true;
+                }
+            }
+
+        }
+    }
+
+    /**
+     * msg sent from the client to indicate the depot from where he wants to take the resource
+     * and the depot in which he wants to put it
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VMoveResourceRequestMsg msg) {
+
+        boolean correct = false;
+        while (!correct) {
+            if (msg.getUsername().equals(username)) {
+
+                System.out.println(msg.getMsgContent());
+                in = new Scanner(System.in);
+                in.reset();
+
+                showWarehouse(warehouse, player);
+                System.out.println(" Write the origin depot from where you want to move: ");
+                int fromDepot = in.nextInt();
+
+                System.out.println(" Write the depot in which you want to move it ");
+                int toDepot = in.nextInt();
+
+                if (msg.getDepotsActualSituation().containsKey(fromDepot) && msg.getDepotsActualSituation().containsKey(toDepot)) {
+                    try {
+                        warehouse.moveResources(fromDepot, toDepot);
+                    } catch (InvalidActionException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Here is the updated situation of your Warehouse! ");
+                    showWarehouse(warehouse, player);
+
+                    CMoveResourceInfoMsg response = new CMoveResourceInfoMsg(" I choose from where and to where I want to put my resource ", username, fromDepot, toDepot);
+                    client.sendMsg(response);
+                    correct = true;
+
+                }
+
+            }
+        }
+    }
+
+    /**
+     * with that message the player has to choose if he wants to take from a row or a column (choice) and from which one (number)
+     *
+     * @param msg
+     */
+
+    @Override
+    public void receiveMsg(VBuyFromMarketRequestMsg msg) {
+
+        if (msg.getUsername().equals(username)) {
+            marketStructureData = msg.getMarket();
 
             System.out.println(msg.getMsgContent());
-            if (msg.getUsernameIncreased().equals(username)) {
-                System.out.println("Congratulations, your faith Marker increased his position " + msg.getNumberOfPositionIncreased());
-                // locally increasing the position of the faith Marker
-                faithTrack.getFaithMarker().increasePosition();
-                showFaithTrack(faithTrack, faithTrack.getPositionFaithMarker());
-            } else if (msg.getAllPlayerToNotify().contains(username)) {
-                System.out.println("\"msg.getUsernameIncreased()\"+ increased his position of: " + msg.getNumberOfPositionIncreased());
-            }
 
-        }
+            in = new Scanner(System.in);
+            in.reset();
 
-        /**
-         * message received from the client when the controller has to warn him that before he had inserted a wrong
-         * or unavailable depot, so the client has to insert a new one and send it to the controller
-         * @param msg
-         */
-        @Override
-        public void receiveMsg (VNotValidDepotMsg msg){
-
-            if (msg.getUsername().equals(username)) {
-                System.out.println(msg.getMsgContent());
-                System.out.println("You can't put in Depot " + msg.getUnableDepot() + " the resource " + "\"msg.getResourceChooseBefore()\"" + "that you choose before! ");
-
-                System.out.print("Here is your actual situation! ");
-                showWarehouse(warehouse, player);
-
-                System.out.print("\n");
-                System.out.println(" Please insert a new depot for this resource [number from 1 to 5] ");
-                in = new Scanner(System.in);
-                in.reset();
-
-                int newDepot = in.nextInt();
-                CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!", msg.getResourceChooseBefore(), newDepot, username);
-                client.sendMsg(response);
-            }
-
-        }
-
-        /**
-         * msg used to ask to the client which development card he wants to chose from the table and in
-         * which space he wants to put the card,the table indicates the available cards that he can buy
-         * @param msg
-         */
-        @Override
-        public void receiveMsg (VChooseDevelopCardRequestMsg msg){
+            // show the player the current market situation
+            showMarketStructure(marketStructureData);
 
             boolean correct = false;
-            if (msg.getUsername().equals(username)) {
 
-                developmentCardTable = msg.getTableCard();
-                System.out.println(msg.getMsgContent());
+            System.out.println(" Please insert if you want to choose a row or a column : ");
+            String choice = in.nextLine();
 
-                in = new Scanner(System.in);
-                in.reset();
-                showStrongBox(strongBox, player);
-                showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
-                showCardSpaces(cardSpaces, player);
-
-                System.out.println(" Insert a row [from 0 to 2] and a column [from 0 to 3] in the table from where you want to take the card ");
-                int row = in.nextInt();
-                int column = in.nextInt();
-
-                System.out.println(" Insert in which card Space you want to insert it [1,2 or 3] ");
-                int cardSpace = in.nextInt();
-
-                while (!correct) {
-
-                    //check if the deck selected is not empty (and has at least one card) and if the client inserted a valid card space
-                    if (!(msg.getTableCard().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 1 || cardSpace == 2 || cardSpace == 3)) {
-
-                        //to update the local version of the variable of the client
-                        //developmentCardTable.takeCard(row,column);
-                        cardSpaces.get(cardSpace).addCard(developmentCardTable.takeCard(row, column));
-                        try {
-                            strongBox.removeResources(developmentCardTable.getTable()[row][column].getDevelopDeck().get(developmentCardTable.getTable()[row][column].getDevelopDeck().size()).getCost());
-                        } catch (InvalidActionException e) {
-                            e.printStackTrace();
-                        }
-
-                        if (developmentCardTable.getTable()[row][column].getDevelopDeck().isEmpty()) {
-                            msg.getCardAvailable()[row][column] = false;
-                        }
-                        System.out.println("Here is the card Table Updated! ");
-                        showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
-
-                        System.out.println("Here is your StrongBox Updated! ");
-                        showStrongBox(strongBox, player);
-
-                        System.out.println("Here are your card spaces updated");
-                        showCardSpaces(cardSpaces, player);
-
-                        CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
-                        client.sendMsg(response);
-                        correct = true;
-                    }
-                }
-
+            if (choice.toLowerCase().equals("row")) {
+                System.out.println(" Please insert the number of the row that you want (0,1,2) ");
+            } else {
+                System.out.println(" Please insert the number of the column that you want (0,1,2,3) ");
             }
-        }
+            int number = in.nextInt();
 
-        /**
-         * msg sent from the client to indicate the depot from where he wants to take the resource
-         * and the depot in which he wants to put it
-         * @param msg
-         */
-        @Override
-        public void receiveMsg (VMoveResourceRequestMsg msg) {
 
-            boolean correct = false;
             while (!correct) {
-                if (msg.getUsername().equals(username)) {
 
-                    System.out.println(msg.getMsgContent());
-                    in = new Scanner(System.in);
-                    in.reset();
+                if ((choice.toLowerCase().equals("row") && number < 4) || (choice.toLowerCase().equals("column") && number < 5)) {
 
-                    showWarehouse(warehouse, player);
-                    System.out.println(" Write the origin depot from where you want to move: ");
-                    int fromDepot = in.nextInt();
-
-                    System.out.println(" Write the depot in which you want to move it ");
-                    int toDepot = in.nextInt();
-
-                    if (msg.getDepotsActualSituation().containsKey(fromDepot) && msg.getDepotsActualSituation().containsKey(toDepot)) {
+                    if (choice.toLowerCase().equals("row")) {
                         try {
-                            warehouse.moveResource(fromDepot, toDepot);
+                            marketStructureData.rowMoveMarble(number, (Player) player);  //update the market situation (changing the row)
                         } catch (InvalidActionException e) {
                             e.printStackTrace();
                         }
-                        System.out.println("Here is the updated situation of your Warehouse! ");
-                        showWarehouse(warehouse, player);
-
-                        CMoveResourceInfoMsg response = new CMoveResourceInfoMsg(" I choose from where and to where I want to put my resource ", username, fromDepot, toDepot);
-                        client.sendMsg(response);
-                        correct = true;
-
-                    }
-
-                }
-            }
-        }
-
-        /**
-         * with that message the player has to choose if he wants to take from a row or a column (choice) and from which one (number)
-         * @param msg
-         */
-
-        @Override
-        public void receiveMsg (VBuyFromMarketRequestMsg msg){
-
-            if (msg.getUsername().equals(username)) {
-                marketStructureData = msg.getMarket();
-
-                System.out.println(msg.getMsgContent());
-
-                in = new Scanner(System.in);
-                in.reset();
-
-                // show the player the current market situation
-                showMarketStructure(marketStructureData);
-
-                boolean correct = false;
-
-                System.out.println(" Please insert if you want to choose a row or a column : ");
-                String choice = in.nextLine();
-
-                if (choice.toLowerCase().equals("row")) {
-                    System.out.println(" Please insert the number of the row that you want (0,1,2) ");
-                } else {
-                    System.out.println(" Please insert the number of the column that you want (0,1,2,3) ");
-                }
-                int number = in.nextInt();
-
-
-                while (!correct) {
-
-                    if ((choice.toLowerCase().equals("row") && number < 4) || (choice.toLowerCase().equals("column") && number < 5)) {
-
-                        if (choice.toLowerCase().equals("row")) {
-                            try {
-                                marketStructureData.rowMoveMarble(number, (Player) player);  //update the market situation (changing the row)
-                            } catch (InvalidActionException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            try {
-                                marketStructureData.columnMoveMarble(number, (Player) this.player);  //update the market situation (changing the column)
-                            } catch (InvalidActionException e) {
-                                e.printStackTrace();
-                            }
+                    } else {
+                        try {
+                            marketStructureData.columnMoveMarble(number, (Player) this.player);  //update the market situation (changing the column)
+                        } catch (InvalidActionException e) {
+                            e.printStackTrace();
                         }
-
-                        System.out.println(" That's the updated situation of your market! ");
-                        showMarketStructure(marketStructureData);
-
-                        CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number);
-                        client.sendMsg(response);
-                        correct = true;
                     }
+
+                    System.out.println(" That's the updated situation of your market! ");
+                    showMarketStructure(marketStructureData);
+
+                    CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number);
+                    client.sendMsg(response);
+                    correct = true;
                 }
             }
         }
+    }
 
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
+        //...
+        System.out.println("Choose where to store this resource: " + msg.getResourceToStore() + " if you want to discard it send 0");
+        showWarehouse(this.warehouse, this.player);
+        int depot = in.nextInt();
+        Color rC = msg.getResourceToStore().getThisColor();
+        if (depot != 0) {
+            CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("the choice of the player for a resources recived", rC, depot, msg.getUsername());
+            client.sendMsg(response);
+        } else {
+            CChooseDiscardResourceMsg discard = new CChooseDiscardResourceMsg("the player choose to discard the resources", msg.getUsername());
+            client.sendMsg(discard);
+        }
 
     }
 
@@ -968,110 +996,119 @@ public class CLI extends Observable implements ViewObserver {
 
 
     /**
-         * this method displays to the players if they won or not
-         * @param msg
-         */
-        @Override
-        public void receiveMsg(VShowEndGameResultsMsg msg){
-            clearScreen();
+     * this method displays to the players if they won or not
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+        clearScreen();
 
-            if (msg.getWinnerUsername().contains(username)) {
-                WriteMessageDisplay.declareWinner();
-                System.out.println(" You totalize " + msg.getVictoryPoints() + " points");
-            } else {
-                WriteMessageDisplay.endGame();
-                WriteMessageDisplay.declareLoser();
-            }
-
-            in.reset();
-            out.flush();
+        if (msg.getWinnerUsername().contains(username)) {
+            WriteMessageDisplay.declareWinner();
+            System.out.println(" You totalize " + msg.getVictoryPoints() + " points");
+        } else {
+            WriteMessageDisplay.endGame();
+            WriteMessageDisplay.declareLoser();
         }
 
-        @Override
-        public void receiveMsg(VActionTokenActivateMsg msg){
-            //this have to be implemented
-        }
+        in.reset();
+        out.flush();
+    }
 
-        /**
-         * notification of starting the initialization
-         * @param msg from VV
-         */
-        @Override
-        public void receiveMsg(CVStartInitializationMsg msg){
-            System.out.println("The initialization has started...");
+    @Override
+    public void receiveMsg(VActionTokenActivateMsg msg) {
+        //this have to be implemented
+    }
 
-        }
-
-
-        /**
-         * method to clear the screen and remove older prints
-         */
-        private void clearScreen(){
-            System.out.println("reset and clear the screen");
-            System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
-            System.out.flush();
-        }
-
-        /*--------------------------------------------------------------------------------------------------------------------------------*/
-        // METHODS USED TO SHOW TO THE CLIENT
-        /**
-         * this method shows the FaithTrack to the player with his FaithMarker inside
-         * @param faithTrack
-         */
-        private void showFaithTrack (FaithTrack faithTrack,int positionOnFaithTrack){
-            FaithTrackDisplay faithT = new FaithTrackDisplay(faithTrack, faithTrack.getPositionFaithMarker());
-            faithT.showFaithTrack();
-        }
-
-
-        /**
-         * this method shows the updated Development card table
-         * @param developmentCardTable
-         */
-        private void showDevelopmentCardTable(DevelopmentCardTable developmentCardTable,boolean[][] availableCards){
-            DevelopmentCardTableDisplay table = new DevelopmentCardTableDisplay(developmentCardTable, availableCards);
-            table.displayCardTable();
-        }
-
-        /**
-         * method used to show the updated market to the player
-         * @param marketStructure
-         */
-        private void showMarketStructure(MarketStructure marketStructure){
-            MarketDisplay market = new MarketDisplay(marketStructure);
-            market.displayMarket();
-        }
-
-        /**
-         * method used to show to the player his StrongBox
-         * @param strongBox
-         * @param player
-         */
-        private void showStrongBox(StrongBox strongBox, PlayerInterface player){
-            StrongboxDisplay strongboxDisplay = new StrongboxDisplay(strongBox, player);
-            strongboxDisplay.displayStrongBox();
-        }
-
-        /**
-         * method used to show the warehouse content to the player
-         * @param warehouse
-         * @param player
-         */
-        private void showWarehouse(Warehouse warehouse, PlayerInterface player){
-            WarehouseDisplay warehouseDisplay = new WarehouseDisplay(warehouse, player);
-            warehouseDisplay.displayWarehouse();
-        }
-
-        /**
-         * method used to show the last card in every card Space of the player
-         * @param cardSpaces
-         * @param player
-         */
-        private void showCardSpaces(ArrayList < CardSpace > cardSpaces, PlayerInterface player){
-            CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces, player);
-            cardSpaceDisplay.showCardSpaces();
-        }
+    /**
+     * notification of starting the initialization
+     *
+     * @param msg from VV
+     */
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+        System.out.println("The initialization has started...");
 
     }
+
+
+    /**
+     * method to clear the screen and remove older prints
+     */
+    private void clearScreen() {
+        System.out.println("reset and clear the screen");
+        System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
+        System.out.flush();
+    }
+
+    /*--------------------------------------------------------------------------------------------------------------------------------*/
+    // METHODS USED TO SHOW TO THE CLIENT
+
+    /**
+     * this method shows the FaithTrack to the player with his FaithMarker inside
+     *
+     * @param faithTrack
+     */
+    private void showFaithTrack(FaithTrack faithTrack, int positionOnFaithTrack) {
+        FaithTrackDisplay faithT = new FaithTrackDisplay(faithTrack, faithTrack.getPositionFaithMarker());
+        faithT.showFaithTrack();
+    }
+
+
+    /**
+     * this method shows the updated Development card table
+     *
+     * @param developmentCardTable
+     */
+    private void showDevelopmentCardTable(DevelopmentCardTable developmentCardTable, boolean[][] availableCards) {
+        DevelopmentCardTableDisplay table = new DevelopmentCardTableDisplay(developmentCardTable, availableCards);
+        table.displayCardTable();
+    }
+
+    /**
+     * method used to show the updated market to the player
+     *
+     * @param marketStructure
+     */
+    private void showMarketStructure(MarketStructure marketStructure) {
+        MarketDisplay market = new MarketDisplay(marketStructure);
+        market.displayMarket();
+    }
+
+    /**
+     * method used to show to the player his StrongBox
+     *
+     * @param strongBox
+     * @param player
+     */
+    private void showStrongBox(StrongBox strongBox, PlayerInterface player) {
+        StrongboxDisplay strongboxDisplay = new StrongboxDisplay(strongBox, player);
+        strongboxDisplay.displayStrongBox();
+    }
+
+    /**
+     * method used to show the warehouse content to the player
+     *
+     * @param warehouse
+     * @param player
+     */
+    private void showWarehouse(Warehouse warehouse, PlayerInterface player) {
+        WarehouseDisplay warehouseDisplay = new WarehouseDisplay(warehouse, player);
+        warehouseDisplay.displayWarehouse();
+    }
+
+    /**
+     * method used to show the last card in every card Space of the player
+     *
+     * @param cardSpaces
+     * @param player
+     */
+    private void showCardSpaces(ArrayList<CardSpace> cardSpaces, PlayerInterface player) {
+        CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces, player);
+        cardSpaceDisplay.showCardSpaces();
+    }
+
+}
 
 

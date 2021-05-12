@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.board;
 
 /* ILA */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * infact te player has to play against lorenzo
  * */
 
-public class SoloFaithTrack extends FaithTrack {
+public class SoloFaithTrack extends FaithTrack implements Serializable {
 
     private LorenzoFaithMarker lorenzoFaithMarker;
 

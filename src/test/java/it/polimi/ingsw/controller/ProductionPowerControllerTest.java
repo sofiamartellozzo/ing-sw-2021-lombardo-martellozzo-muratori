@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.message.controllerMsg.CActivateProductionPowerResponseMsg;
-import it.polimi.ingsw.message.controllerMsg.CChooseSingleResourceToPutInStrongBoxResponseMsg;
+import it.polimi.ingsw.message.controllerMsg.CChooseSingleResourceToPutInStrongBoxResourceMsg;
 import it.polimi.ingsw.message.controllerMsg.CStandardPPResponseMsg;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
@@ -13,9 +13,14 @@ import it.polimi.ingsw.model.board.FaithTrack;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.board.resourceManagement.*;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.view.VirtualView;
 import junit.framework.TestCase;
 
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProductionPowerControllerTest extends TestCase {
     ProductionPowerController productionPowerController;
@@ -55,7 +60,9 @@ public class ProductionPowerControllerTest extends TestCase {
         //Adding in the first card space
         player.getGameSpace().getCardSpace(0).addCard(developmentCard);
         //Create the controller
-        productionPowerController=new ProductionPowerController(player);
+        Map<String, VirtualView> virtualView = new HashMap<>();
+        virtualView.put("pippo", new VirtualView(new ClientHandler(new Socket(),"lalal")));
+        productionPowerController=new ProductionPowerController(player, virtualView);
     }
 
     public void tearDown() throws Exception {
@@ -121,7 +128,7 @@ public class ProductionPowerControllerTest extends TestCase {
 
     public void testReceiveMsg_CChooseSingleResourceToPutInStrongBoxResponseMsg() {
         assertTrue(productionPowerController.getReceivedResources().isEmpty());
-        CChooseSingleResourceToPutInStrongBoxResponseMsg msg = new CChooseSingleResourceToPutInStrongBoxResponseMsg("Chosen resource",player.getUsername(),TypeResource.SERVANT);
+        CChooseSingleResourceToPutInStrongBoxResourceMsg msg = new CChooseSingleResourceToPutInStrongBoxResourceMsg("Chosen resource",player.getUsername(),TypeResource.SERVANT);
         productionPowerController.receiveMsg(msg);
         ArrayList<Resource> expectedReceivedResources = new ArrayList<>();
         expectedReceivedResources.add(new Resource(TypeResource.SERVANT));

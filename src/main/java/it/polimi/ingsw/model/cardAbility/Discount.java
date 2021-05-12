@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.cardAbility;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.*;
 
+import java.io.Serializable;
+
 /**
  * GIANLUCA
  * TEST PASSED
@@ -10,7 +12,7 @@ import it.polimi.ingsw.model.*;
  * buy a Development Card
  */
 
-public class Discount extends SpecialAbility{
+public class Discount extends SpecialAbility implements Serializable {
     /**
      * Constructor
      * @param resource

@@ -1,12 +1,14 @@
 package it.polimi.ingsw.model.board;
 
+import java.io.Serializable;
+
 /**
  * One of the type of the boxes.
  * It has the same attribute of Box class.
  * The "last" attribute indicates if it is the last box of the FaithTrack.
  * The "activated" attribute indicates if it was already activated.
  * */
-public class PopeBox extends Box{
+public class PopeBox extends Box implements Serializable {
 
     private boolean last;
     private boolean activated;

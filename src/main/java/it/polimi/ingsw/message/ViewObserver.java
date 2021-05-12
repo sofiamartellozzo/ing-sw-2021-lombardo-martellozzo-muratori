@@ -20,6 +20,8 @@ public interface ViewObserver extends Observer{
 
     /* multiple player, from initialized C...*/
     public void receiveMsg(VChooseResourceAndDepotMsg msg);
+    /* if not error in chose depot */
+    public void receiveMsg(VUpdateWarehouseMsg msg);
     /* if error in chose depot*/
     public void receiveMsg(VNotValidDepotMsg msg);
 
@@ -57,7 +59,7 @@ public interface ViewObserver extends Observer{
 
     public void receiveMsg(VShowEndGameResultsMsg msg);
 
-    /* only SOLO mode */
+    /* only SOLO mode, after the player end the turn (is Lorenzo playing) */
     public void receiveMsg(VActionTokenActivateMsg msg);
 
     void receiveMsg(CVStartInitializationMsg msg);

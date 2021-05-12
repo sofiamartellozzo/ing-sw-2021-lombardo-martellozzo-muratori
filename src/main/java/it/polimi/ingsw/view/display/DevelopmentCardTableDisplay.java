@@ -195,11 +195,11 @@ public class DevelopmentCardTableDisplay {
             for (int j = 0; j < 4; j++) {
                 if(getAvailable[i][j]) {
                     System.out.println("CARD" + "(" + i + "," + j + ")");
-                    System.out.print(tableCard.getTable()[i][j].getDevelopDeck().get(tableCard.getTable()[i][j].getDevelopDeck().size()).toString());
+                    System.out.print(tableCard.getTable()[i][j].getDevelopDeck().get(tableCard.getTable()[i][j].getDevelopDeck().size()-1).toString());
                 }else{
                     //if this deck is unavailable ( size = 0) this will be printed with another color
                     System.out.println("CARD" + "(" + i + "," + j + ")");
-                    System.out.print(AnsiColors.ANSI_RED+tableCard.getTable()[i][j].getDevelopDeck().get(tableCard.getTable()[i][j].getDevelopDeck().size()).toString()+AnsiColors.RESET);
+                    System.out.print(AnsiColors.ANSI_RED+tableCard.getTable()[i][j].getDevelopDeck().get(tableCard.getTable()[i][j].getDevelopDeck().size()-1).toString()+AnsiColors.RESET);
                 }
             }
 

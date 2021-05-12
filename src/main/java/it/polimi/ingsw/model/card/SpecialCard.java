@@ -3,6 +3,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /* ILA */
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * this special card created with the AdditionalPower, will create a new type of card,
  * in which the player receive one faithMarker points and chooses the resource he wants
  */
-public class SpecialCard {
+public class SpecialCard implements Serializable {
 
     private final ArrayList<Resource> costProductionPower;
     private ArrayList<Resource> earnProductionPower;  /* this is chosen by the player every time */

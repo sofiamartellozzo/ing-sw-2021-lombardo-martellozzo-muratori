@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.board;
 
+import java.io.Serializable;
+
 /**
 * GIANLUCA
  * TEST PASSED
  * It represents the Grey Box of the FaithTrack.
 * */
-public class SimpleBox extends Box{
+public class SimpleBox extends Box implements Serializable {
 
     /**
      * Constructor

@@ -4,12 +4,13 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
  * SOFI*/
 
-public class BuyDiscount implements BuyCard{
+public class BuyDiscount implements BuyCard, Serializable {
 
     /*
     * created by Dicount Ability */

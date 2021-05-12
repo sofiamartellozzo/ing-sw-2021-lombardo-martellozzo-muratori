@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.InvalidPropertiesFormatException;
 
 /*
 SOFIA
  */
 
-public class Resource{
+public class Resource implements Serializable {
 
     protected Color color;
     protected TypeResource typeResource;

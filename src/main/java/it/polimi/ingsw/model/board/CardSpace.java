@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * The "numberOfCards" attribute indicates how many cards are in.
  * The "cards" attribute contains the reference to the DevelopmentCard contained by the card space.
  */
-public class CardSpace {
+public class CardSpace implements Serializable{
 
     private final int whichSpace;
     private int numberOfCards;

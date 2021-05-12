@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model.board;
 
+import java.io.Serializable;
+
 /**
  * State Pattern
  * One of the component of the State Pattern, represent the state inactive of the Pope's Favor Tile
  */
-public class Inactive implements State{
+public class Inactive implements State, Serializable {
 
     /**
      * Returns 0 points, because the state is inactive.

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
-* SOFI*/
+ * SOFI*/
 
 /**
  * this class is the part of the controller that arraing the start of the game, and set the turn sequence
@@ -59,15 +59,12 @@ public class TurnController extends Observable implements ControllerObserver {
 
         this.turnSequence = new HashMap<>();
         setTurnSequence(players);
-        checkIfSoloMode();
-        this.boardManager = boardManager;
-        this.currentTurnIndex = 1;
         this.currentPlayer = (Player) players.get(1);
-        setVaticanSectionUnchecked();
         lastTurns = false;
-        numberOfLastTurn = numberOfPlayer-1;
-        this.virtualView = virtualView;
-        attachAllVV();
+        numberOfLastTurn = numberOfPlayer - 1;
+
+        commonSettings(boardManager, virtualView);
+
     }
 
     /* override of the constructor, for the Solo Mode */
@@ -76,6 +73,13 @@ public class TurnController extends Observable implements ControllerObserver {
         this.turnSequence = null;
         this.singlePlayer = player;
         this.numberOfPlayer = 1;
+
+        commonSettings(boardManager, virtualView);
+
+    }
+
+    /* settings for both constructor */
+    private void commonSettings(BoardManager boardManager, Map<String, VirtualView> virtualView) {
         checkIfSoloMode();
         this.boardManager = boardManager;
         this.currentTurnIndex = 1;
@@ -86,32 +90,32 @@ public class TurnController extends Observable implements ControllerObserver {
 
     /**
      * setting the turn sequence, created in the room
+     *
      * @param players
      */
-    private void setTurnSequence(HashMap<Integer, PlayerInterface> players){
+    private void setTurnSequence(HashMap<Integer, PlayerInterface> players) {
         turnSequence = players;
         numberOfPlayer = players.keySet().size();
-        System.out.println("number of players " +numberOfPlayer+ " index " +players.keySet());
+        System.out.println("number of players " + numberOfPlayer + " index " + players.keySet());
     }
 
     /**
      * at the initialization of the class set all vatican section to unchecked
      */
-    private void setVaticanSectionUnchecked(){
+    private void setVaticanSectionUnchecked() {
         checkPopesFavorTile = new ArrayList<>();
-        for (int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             checkPopesFavorTile.add(PopesFavorTileReview.UNCHECKED);
         }
     }
 
     /**
      * settings the boolean parameter for check if is Solo Mode or not
-     * */
-    private void checkIfSoloMode(){
-        if (numberOfPlayer == 1){
+     */
+    private void checkIfSoloMode() {
+        if (numberOfPlayer == 1) {
             isSoloMode = true;
-        }
-        else {
+        } else {
             isSoloMode = false;
         }
     }
@@ -119,8 +123,8 @@ public class TurnController extends Observable implements ControllerObserver {
     /**
      * attach all VV of the players so this class can notify them
      */
-    private void attachAllVV(){
-        for (String username: virtualView.keySet()) {
+    private void attachAllVV() {
+        for (String username : virtualView.keySet()) {
             attachObserver(ObserverType.VIEW, virtualView.get(username));
         }
     }
@@ -129,15 +133,15 @@ public class TurnController extends Observable implements ControllerObserver {
      * method to initialized the game, creating the spaces and setting everithing
      * exept the Board Manager the rest is setted differently if the number of player
      * are one or more : so solo mode or multiple mode
+     *
      * @throws InvalidActionException
      */
-    public void gamePlay() throws InvalidActionException{
+    public void gamePlay() throws InvalidActionException {
         //where the turn game starts
         printTurnCMesssage("A Turn can start...");
-        if (isSoloMode){
+        if (isSoloMode) {
             startSoloPlayerTurn(this.singlePlayer);
-        }
-        else{
+        } else {
             startPlayerTurn(this.currentPlayer);
         }
     }
@@ -145,28 +149,36 @@ public class TurnController extends Observable implements ControllerObserver {
     /**
      * start the game in solo mode, so create the Solo Player Turn that manage the different
      * action the player can do
+     *
      * @param player
      */
     private void startSoloPlayerTurn(SoloPlayer player) throws InvalidActionException {
-        printTurnCMesssage("The client \"" +player.getUsername()+ "\" choose to play in Solo Mode, starting his turn");
+        printTurnCMesssage("The client \"" + player.getUsername() + "\" choose to play in Solo Mode, starting his turn");
         player.setPlaying(true);
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
         currentSoloTurnIstance = spt;
-        if (currentTurnIndex > 1 && spt.checkEndTurn()){
-            ActionToken actionTokenActivated = spt.activateActionToken();
-            VActionTokenActivateMsg msg = new VActionTokenActivateMsg("an Action Token has been activated", player.getUsername(), actionTokenActivated.getCardID());
-            notifyAllObserver(ObserverType.VIEW, msg);
-            startSoloPlayerTurn(player);
+        VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("Start a new turn", player.getUsername(), spt.getAvailableAction());
+        notifyAllObserver(ObserverType.VIEW, msg);
+        while (!spt.checkEndGame()) {
+            if (spt.checkEndTurn()) {
+                ActionToken actionTokenActivated = spt.activateActionToken();
+                VActionTokenActivateMsg msg1 = new VActionTokenActivateMsg("an Action Token has been activated", player.getUsername(), actionTokenActivated.getCardID());
+                notifyAllObserver(ObserverType.VIEW, msg1);
+                startSoloPlayerTurn(player);
+            }
         }
+
+        //if here the game ended!!!
     }
 
     /**
      * start a new Turn of a Player in multiple mode, called any time a new turn start
      * first after setting all game, then at the end of the others player turn
+     *
      * @param player
      */
-    private void startPlayerTurn(Player player){
-        printTurnCMesssage("New Turn for \"" +player.getUsername()+ "\" is ready to start");
+    private void startPlayerTurn(Player player) {
+        printTurnCMesssage("New Turn for \"" + player.getUsername() + "\" is ready to start");
         player.setPlaying(true);
         PlayerTurn pt = new PlayerTurn(player, this.boardManager);
         currentTurnIstance = pt;
@@ -174,7 +186,7 @@ public class TurnController extends Observable implements ControllerObserver {
         VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
         //System.out.println(msg.getMsgContent());      DEBUGGING
-        if (currentTurnIndex > 1 && pt.checkEndTurn()){
+        if (currentTurnIndex > 1 && pt.checkEndTurn()) {
             nextTurn();
         }
     }
@@ -183,37 +195,39 @@ public class TurnController extends Observable implements ControllerObserver {
      * when a player end his turn, this method is called to set the next player
      * and create a new turn for him
      */
-    protected void nextTurn(){
-        if (this.currentTurnIndex == this.numberOfPlayer){
-            this.currentTurnIndex = 1;
+    protected void nextTurn() {
+        this.currentTurnIndex++;
+        if (!isSoloMode) {
+            int playerIndex = currentPlayer.getNumber();
+            if (playerIndex == this.numberOfPlayer) {
+                playerIndex = 1;
+            } else {
+                playerIndex++;
+            }
+            Player nextPlayer = (Player) this.turnSequence.get(playerIndex);
+            startPlayerTurn(nextPlayer);
         }
-        else {
-            this.currentTurnIndex++;
-        }
-        Player nextPlayer = (Player) this.turnSequence.get(currentTurnIndex);
-        startPlayerTurn(nextPlayer);
     }
 
     /**
      * check if one or more players are arrived at the end of the game, in that case create a special controller
      * to manage the last turn of the game
      */
-    private void checkEndGame(){
+    private void checkEndGame() {
         //check the conditions fot the last turn of the game
         currentPlayer.endTurn();
         boolean checkEnd = false;
-        for (Integer key: turnSequence.keySet()) {
+        for (Integer key : turnSequence.keySet()) {
             //if one player is arrived to the end of the faithTrack the checkEnd is set to true
-            if(turnSequence.get(key).checkEndGame()) {
+            if (turnSequence.get(key).checkEndGame()) {
                 checkEnd = true;
             }
         }
-        if (checkEnd){
+        if (checkEnd) {
             int keyCurrentP = 0;
-            for (Integer key: turnSequence.keySet()) {
-                if(turnSequence.get(key).getUsername().equals(currentPlayer.getUsername()))
-                {
-                   keyCurrentP = key;
+            for (Integer key : turnSequence.keySet()) {
+                if (turnSequence.get(key).getUsername().equals(currentPlayer.getUsername())) {
+                    keyCurrentP = key;
                 }
 
             }
@@ -222,8 +236,8 @@ public class TurnController extends Observable implements ControllerObserver {
         }
     }
 
-    private void checkIfFirstAction(){
-        if (actionController != null && actionController.endAction()){
+    private void checkIfFirstAction() {
+        if (actionController != null && actionController.endAction()) {
             detachObserver(ObserverType.CONTROLLER, actionController);
             actionController = null;
         }
@@ -231,22 +245,23 @@ public class TurnController extends Observable implements ControllerObserver {
 
     /*check if someone is in the pop's favor tile...*/
 
-    private void printTurnCMesssage(String messageToPrint){
+    private void printTurnCMesssage(String messageToPrint) {
         System.out.println(messageToPrint);
     }
 
     /*------------------------------------------------------------------------------------------------------------------*/
 
-            //WAIT THE MSG FROM THE CLIENT
+    //WAIT THE MSG FROM THE CLIENT
 
 
     /**
      * receive the msg from the client with the Action he choose
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
-        if(msg.getUsername().equals(currentPlayer.getUsername())) {
+        if ((currentPlayer!= null && msg.getUsername().equals(currentPlayer.getUsername())||(singlePlayer!=null && msg.getUsername().equals(singlePlayer.getUsername())))) {
 
             //check if is not the first one and detach Action Turn if there is
             checkIfFirstAction();
@@ -255,7 +270,13 @@ public class TurnController extends Observable implements ControllerObserver {
                 printTurnCMesssage("New action of the game");
 
                 /* create the controller to handle the specific action of the turn */
-                ActionController controller = new ActionController(currentPlayer, currentTurnIstance, boardManager, virtualView);
+                ActionController controller = null;
+                if (!isSoloMode){
+                    controller = new ActionController(currentPlayer, currentTurnIstance, boardManager, virtualView);
+                }
+                else{
+                    controller = new ActionController(singlePlayer, currentSoloTurnIstance, boardManager, virtualView);
+                }
                 this.actionController = controller;
 
                 //attach it as an observer
@@ -264,15 +285,22 @@ public class TurnController extends Observable implements ControllerObserver {
                 notifyAllObserver(ObserverType.CONTROLLER, msg);
 
             } else {
-                if(!lastTurns) {
+                if (!lastTurns) {
                     checkEndGame();
                     nextTurn();
-                }else{
+                } else {
                     this.numberOfLastTurn--;    //decrease the number of players that have to play
-                    if(numberOfLastTurn > 0) {
+                    if (numberOfLastTurn > 0) {
                         nextTurn();
-                    }else {                    // if the game is over EndGameController will be instantiated to count all the victory points
-                        EndGameController endGameController = new EndGameController(turnSequence,this);
+                    } else {                    // if the game is over EndGameController will be instantiated to count all the victory points
+                        EndGameController endGameController = null;
+                        if (!isSoloMode){
+                            endGameController = new EndGameController(turnSequence, this);
+                        }
+                        else{
+                            endGameController = new EndGameController(singlePlayer, this);
+                        }
+
                         try {
                             endGameController.startCounting();
                         } catch (InvalidActionException e) {
@@ -280,34 +308,19 @@ public class TurnController extends Observable implements ControllerObserver {
                         }
                         attachObserver(ObserverType.CONTROLLER, endGameController);
                     }
-
                 }
             }
         }
     }
 
-    /**
-     * handle the event in which one player decided to discard a resource from the market
-     * @param msg
-     */
-    @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
-        for (Integer key: turnSequence.keySet()) {
-            if (!turnSequence.get(key).getUsername().equals(msg.getUsername())){
-                //not the player that discarded the resource
-                turnSequence.get(key).increasePosition();
-                VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" "+turnSequence.get(key).getUsername()+ "\" increased his position because \"" +msg.getUsername()+ "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
-                //remember to set all the other players!!!!
-                notifyAllObserver(ObserverType.VIEW, notify);
-            }
-        }
-
-        //check end game (because all player has increased their position of 1
-        checkEndGame();
-    }
 
     @Override
     public void receiveMsg(CStandardPPResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
 
     }
 
@@ -332,6 +345,27 @@ public class TurnController extends Observable implements ControllerObserver {
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
         //to ACTIONCONTROLLER
         notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    /**
+     * handle the event in which one player decided to discard a resource from the market
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+        for (Integer key : turnSequence.keySet()) {
+            if (!turnSequence.get(key).getUsername().equals(msg.getUsername())) {
+                //not the player that discarded the resource
+                turnSequence.get(key).increasePosition();
+                VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
+                //remember to set all the other players!!!!
+                notifyAllObserver(ObserverType.VIEW, notify);
+            }
+        }
+
+        //check end game (because all player has increased their position of 1
+        checkEndGame();
     }
 
     @Override
@@ -368,14 +402,15 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
 
-
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
-        //not here
+        //here after buyFromMarket
+        //to ACTIONCONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     /*------------------------------------------------------*/
-            //GETTER FOR TESTING
+    //GETTER FOR TESTING
 
 
     public HashMap<Integer, PlayerInterface> getTurnSequence() {

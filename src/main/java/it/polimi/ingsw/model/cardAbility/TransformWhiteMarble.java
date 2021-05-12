@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.market.Ability;
 import it.polimi.ingsw.model.market.MarbleSpecial;
 
+import java.io.Serializable;
+
 
 /**
  * GIANLUCA
@@ -13,7 +15,7 @@ import it.polimi.ingsw.model.market.MarbleSpecial;
  * for each White Marble he draws
 * */
 
-public class TransformWhiteMarble extends SpecialAbility{
+public class TransformWhiteMarble extends SpecialAbility implements Serializable {
     /**
      * Constructor
      * @param resource

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.card.SpecialCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * Power provided by the LeaderCard
  * */
 
-public class AdditionalPower extends SpecialAbility{
+public class AdditionalPower extends SpecialAbility implements Serializable {
     /**
      * Constructor
      * @param resource

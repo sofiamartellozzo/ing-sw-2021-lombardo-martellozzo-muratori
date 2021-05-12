@@ -93,6 +93,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(VSendPlayerDataMsg msg) {
+
+    }
+
     public void roomSizeRequest() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/RoomScene.fxml"));
         roomScene = new Scene(loader.load());
@@ -231,6 +236,11 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
+    @Override
+    public void receiveMsg(VUpdateWarehouseMsg msg) {
+
+    }
+
 
     @Override
     public void receiveMsg(VNotValidDepotMsg msg) {
@@ -263,6 +273,26 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(VChooseDepotMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VStandardPPRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VChooseSingleResourceToPutInStrongBoxRequestMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
 
     }
@@ -277,3 +307,4 @@ public class GUI extends Application implements ViewObserver {
 
     }
 }
+

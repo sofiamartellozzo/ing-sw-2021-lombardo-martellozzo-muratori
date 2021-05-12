@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.exception.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * Implements Depot interface.
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * The "type" attribute indicates what resource type the depot can contain.
  * The "depot" is the same of the "floor" of the RealDepot object (in this case can assume 4 or 5)
  * */
-public class AbilityDepot implements Depot{
+public class AbilityDepot implements Depot, Serializable {
     private final ArrayList<Resource> resources;
     private final TypeResource type;
     private final int depot;

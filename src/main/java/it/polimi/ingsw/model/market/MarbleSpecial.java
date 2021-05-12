@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * in the market special, because if the player active this ability whenever he choose to
  * buy from the market an white marble this will return one Resource (choosen by himself)
  */
-public class MarbleSpecial extends Marble {
+public class MarbleSpecial extends Marble implements Serializable {
     private ArrayList<Ability> ability = new ArrayList<>();
 
     /* constructor of the class */

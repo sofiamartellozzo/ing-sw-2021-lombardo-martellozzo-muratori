@@ -132,17 +132,18 @@ public class ProductionPowerController extends Observable implements ControllerO
     public void receiveMsg(CStandardPPResponseMsg msg) {
         if(msg.getUsername().equals(player.getUsername())){
             ArrayList<Resource> resourcesToRemove = new ArrayList<>();
-            for(TypeResource resource: msg.getResourcesToRemove()){
-                resourcesToRemove.add(new Resource(resource));
+            //remove 2 resources
+            for (TypeResource r: msg.getResourcesToPay()) {
+                resourcesToRemove.add(new Resource(r.getThisColor()));
             }
-            if(msg.getWhere().equals("Warehouse")){
+            if(msg.getWhere().equals("warehouse")){
                 Warehouse warehouse = player.getGameSpace().getWarehouse();
                 try {
                     warehouse.removeResources(resourcesToRemove);
                 } catch (InvalidActionException e) {
                     e.printStackTrace();
                 }
-            }else if(msg.getWhere().equals("Strongbox")){
+            }else if(msg.getWhere().equals("strongbox")){
                 StrongBox strongBox = player.getGameSpace().getStrongbox();
                 try {
                     strongBox.removeResources(resourcesToRemove);
@@ -150,16 +151,18 @@ public class ProductionPowerController extends Observable implements ControllerO
                     e.printStackTrace();
                 }
             }
-            receivedResources.add(new Resource(msg.getResourceToAdd()));
+            receivedResources.add(new Resource(msg.getResourceToGet().getThisColor()));
         }
     }
 
     @Override
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg) {
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
+                //NOT here
         if(msg.getUsername().equals(player.getUsername())){
             receivedResources.add(new Resource(msg.getResource()));
         }
     }
+
 
 
 
@@ -218,11 +221,12 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     }
 
-
-
     @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
-
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+        //not here
     }
+
+
+
 
 }

@@ -1,10 +1,12 @@
 package it.polimi.ingsw.model.board;
 
 
+import java.io.Serializable;
+
 /**
  * One of the three type of boxes.
  */
-public class GoldBox extends Box{
+public class GoldBox extends Box implements Serializable {
 
     /**
      * Constructor

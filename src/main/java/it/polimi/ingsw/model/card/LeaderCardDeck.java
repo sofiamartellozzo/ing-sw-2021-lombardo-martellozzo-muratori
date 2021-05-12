@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.card;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /* ILA */
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 and the next time
 he has to give me back the same class */
 
-public class LeaderCardDeck {
+public class LeaderCardDeck implements Serializable {
 
     private ArrayList<LeaderCard>cards;
     private static LeaderCardDeck leaderCardDeck = null;

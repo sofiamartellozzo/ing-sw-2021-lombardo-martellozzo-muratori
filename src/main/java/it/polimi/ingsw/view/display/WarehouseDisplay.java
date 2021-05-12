@@ -41,11 +41,11 @@ public class WarehouseDisplay {
 
         System.out.print(AnsiColors.YELLOW_BOLD+"\nHERE IS YOUR WAREHOUSE:\n"+AnsiColors.RESET);
         for (int i = 0; i < 3; i++) {
-            if (player.getGameSpace().getResourceManager().getWarehouse().getDepots().get(i).getResources().isEmpty()) {
+            if (warehouse.getDepots().get(i).getResources().isEmpty()) {
                 System.out.print("DEPOT" + (i+1) + ":" + AnsiColors.RED_BOLD + " IS EMPTY\n" + AnsiColors.RESET);
             } else {
                 System.out.print("DEPOT" + (i+1) + ":");
-                for (Resource res : player.getGameSpace().getResourceManager().getWarehouse().getDepots().get(i).getResources()) {
+                for (Resource res : warehouse.getDepots().get(i).getResources()) {
                     System.out.print(createResForCli(res));
 
                 }

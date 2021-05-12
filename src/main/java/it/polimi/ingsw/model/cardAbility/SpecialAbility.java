@@ -3,6 +3,8 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
+
 /**
  * GIANLUCA
  * It refers to the Special Ability supplied by Leader Card
@@ -10,7 +12,7 @@ import it.polimi.ingsw.model.Resource;
  * active -> a boolean to indicate if it is "active" or "inactive"
  * type -> it refers to the resource on which the ability works
  */
-public abstract class SpecialAbility {
+public abstract class SpecialAbility implements Serializable {
     private boolean active;
     private final Resource resource;
     private final TypeAbility typeAbility;

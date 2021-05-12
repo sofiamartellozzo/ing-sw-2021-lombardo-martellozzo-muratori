@@ -9,6 +9,7 @@ import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VShowEndGameResultsMsg;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
+import it.polimi.ingsw.model.SoloPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,12 +21,19 @@ import java.util.HashMap;
 public class EndGameController extends Observable implements ControllerObserver {
 
     private HashMap<Integer, PlayerInterface> turnSequence;
+    private SoloPlayer soloPlayer;
     private final int numberOfPlayers;
     private TurnController turnController;
 
     public EndGameController(HashMap<Integer, PlayerInterface> turnSequence, TurnController turnController) {
         this.turnSequence = turnSequence;
         this.numberOfPlayers = turnSequence.keySet().size();
+        this.turnController = turnController;
+    }
+
+    public EndGameController(SoloPlayer soloPlayer, TurnController turnController){
+        this.soloPlayer = soloPlayer;
+        this.numberOfPlayers = 1;
         this.turnController = turnController;
     }
 
@@ -150,22 +158,27 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
         //NOT IMPLEMENTED HERE
     }
 
-    @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
-        //NOT IMPLEMENTED HERE
-    }
 
     @Override
     public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
+
+    }
 
 
 }

@@ -176,7 +176,7 @@ public class PersonalBoard implements PersonalBoardInterface,Serializable {
                 }
             }
 
-            if (countLeaderCard == player.getSpecialCard().size()) {
+            if (player.getSpecialCard()!= null && countLeaderCard == player.getSpecialCard().size()) {
                 for (int i = 0; i < player.getSpecialCard().size(); i++) {
                     SpecialCard specialCard = player.getSpecialCard().get(i);
                     if (resourceManager.countResource(warehouse.getContent(), specialCard.getCostProductionPower().get(0)) >= 1 || resourceManager.countResource(strongBox.getContent(), specialCard.getCostProductionPower().get(0)) >= 1) {

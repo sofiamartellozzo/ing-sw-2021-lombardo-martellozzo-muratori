@@ -2,7 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.SoloPersonalBoard;
 
-public class SoloPlayer extends Player{
+import java.io.Serializable;
+
+public class SoloPlayer extends Player implements Serializable {
 
 
     private SoloPersonalBoard gameSpace;

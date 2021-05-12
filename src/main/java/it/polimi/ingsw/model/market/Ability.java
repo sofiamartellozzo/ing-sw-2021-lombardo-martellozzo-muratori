@@ -2,11 +2,13 @@ package it.polimi.ingsw.model.market;
 
 import it.polimi.ingsw.model.Resource;
 
+import java.io.Serializable;
+
 /**
  * GIANLUCA
  * Maybe we can eliminate it...
  * */
-public class Ability {
+public class Ability implements Serializable {
     private boolean active;
     private Resource resource;
 

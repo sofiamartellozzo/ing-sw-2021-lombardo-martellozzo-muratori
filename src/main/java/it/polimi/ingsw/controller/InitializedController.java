@@ -45,7 +45,7 @@ public class InitializedController extends Observable implements ControllerObser
 
         this.canStart = false;
         this.numberOfPlayer = players.size();
-        System.out.println(players.size());
+        //System.out.println(players.size());       DEBUGGING
         this.turnSequence = new HashMap<>();
         this.virtualView = new HashMap<>();
         this.virtualView = virtualView;
@@ -79,6 +79,10 @@ public class InitializedController extends Observable implements ControllerObser
 
     public boolean canStart() {
         return canStart;
+    }
+
+    public int getNumberOfPlayer() {
+        return numberOfPlayer;
     }
 
     /**
@@ -130,6 +134,9 @@ public class InitializedController extends Observable implements ControllerObser
             //setting the attribute of the player with his Personal Board
             singlePlayer.setGameSpace(soloPersonalBoard);
 
+            VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your", singlePlayer ,boardManager, true);
+            notifyAllObserver(ObserverType.VIEW, msg);
+
             //call the msg to choose the leader card
             chooseLeaderCard(true);
 
@@ -143,6 +150,8 @@ public class InitializedController extends Observable implements ControllerObser
                 PersonalBoard personalBoard = personalBoardFactory.createGame();
                 this.turnSequence.get(i).setGameSpace(personalBoard);
                 this.turnSequence.get(i).setNumber(i);
+                VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your", turnSequence.get(i),boardManager, false);
+                notifyAllObserver(ObserverType.VIEW, msg);
             }
 
                 //then giving the resources initial to the players
@@ -293,13 +302,12 @@ public class InitializedController extends Observable implements ControllerObser
      */
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
+        //System.out.println("in receiving the 2 cards chosen ");       DEBUGGING
         if (msg.getAction().equals("firstChoose")) {
             //take all the Integer for Leader Card
-            ArrayList<Integer> twoChosen = new ArrayList<>();
-            twoChosen = msg.getChosenLeaderCard();
-            System.out.println(twoChosen);
-            ArrayList<Integer> twoDiscarded = new ArrayList<>();
-            twoDiscarded = msg.getDiscardedLeaderCard();
+            ArrayList<Integer> twoChosen =  msg.getChosenLeaderCard();
+            System.out.println("the 2 cards chosen "+twoChosen);
+            ArrayList<Integer> twoDiscarded = msg.getDiscardedLeaderCard();
             ArrayList<LeaderCard> chosenCards = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
                 if (boardManager.getAllLeaderCard().contains(twoChosen.get(i))) {
@@ -308,14 +316,23 @@ public class InitializedController extends Observable implements ControllerObser
                     chosenCards.add(chosen);
                 }
             }
+            System.out.println("the 2 cards chosen "+chosenCards);
             //take the player that choose the cards
-            PlayerInterface player = null;
-            try {
-                player = findByUsername(msg.getUsername());
-            } catch (NoSuchElementException e) {
-                e.printStackTrace();
+            if (this.getNumberOfPlayer() == 1){
+                singlePlayer.setLeaderCards(chosenCards);
+                System.out.println("the 2 cards chosen now in player "+singlePlayer.getLeaderCards());
             }
-            player.setLeaderCards(chosenCards);
+            else{
+                PlayerInterface player = null;
+                try {
+                    player = findByUsername(msg.getUsername());
+                } catch (NoSuchElementException e) {
+                    e.printStackTrace();
+                }
+                player.setLeaderCards(chosenCards);
+                System.out.println("the 2 cards chosen now in player "+player.getLeaderCards());
+            }
+
             //now remove the card from the deck
             boardManager.getLeaderCardDeck().remove(chosenCards);
         }
@@ -338,6 +355,8 @@ public class InitializedController extends Observable implements ControllerObser
         Resource r = new Resource(msg.getResource());
         try {
             player.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
+            //VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
+            //notifyAllObserver(ObserverType.VIEW, notification);
         } catch (InvalidActionException e) {
             e.printStackTrace();
             //create msg to send to client that he made an invalid action, so change the depot
@@ -370,21 +389,25 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
-    public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
 
     }
 
     @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
+    public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
     }
+
 
     @Override
     public void receiveMsg(CStandardPPResponseMsg msg) {
 
     }
 
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
 
+    }
 
 
     @Override

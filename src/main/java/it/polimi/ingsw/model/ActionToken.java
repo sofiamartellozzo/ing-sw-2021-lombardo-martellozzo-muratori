@@ -3,6 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.actionAbility.ActionAbility;
 
+import java.io.Serializable;
+
 /*
  * SOFI*/
 
@@ -12,7 +14,7 @@ import it.polimi.ingsw.model.actionAbility.ActionAbility;
  * (=the board specific for the single player)
  */
 
-public class ActionToken {
+public class ActionToken implements Serializable {
 
     /* the card have an ability that is activated when draw this card */
     private ActionAbility ability;

@@ -49,8 +49,7 @@ public interface ControllerObserver extends Observer{
 
 
     public void receiveMsg(CStandardPPResponseMsg msg);
-    public void receiveMsg(CActivateProductionPowerResponseMsg msg);
-    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResponseMsg msg);
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg);
 
 
 

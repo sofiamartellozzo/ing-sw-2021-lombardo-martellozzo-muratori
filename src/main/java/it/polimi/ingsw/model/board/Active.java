@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.board;
 
+import java.io.Serializable;
+
 /**
  * State Pattern
  * One of the component of the State Pattern.
  */
 
-public class Active implements State {
+public class Active implements State, Serializable {
 
     /**
      * It sets the State attribute of the relative Pope's Favor Tile to "Active"

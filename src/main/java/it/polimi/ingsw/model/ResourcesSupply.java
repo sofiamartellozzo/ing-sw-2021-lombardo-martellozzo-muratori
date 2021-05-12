@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /* ILA */
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * cell 4--> shield
  * */
 
-public class ResourcesSupply {
+public class ResourcesSupply implements Serializable {
 
     private final ArrayList<Cell> content;
     private static ResourcesSupply resourcesSupply = null;

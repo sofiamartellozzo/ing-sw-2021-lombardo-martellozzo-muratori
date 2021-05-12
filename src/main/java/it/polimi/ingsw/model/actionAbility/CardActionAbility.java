@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.SoloPlayer;
 
+import java.io.Serializable;
+
 /*
  * SOFI*/
 
@@ -12,7 +14,7 @@ import it.polimi.ingsw.model.SoloPlayer;
  * One type of the ability that do the remove of the card
  */
 
-public class CardActionAbility implements ActionAbility {
+public class CardActionAbility implements ActionAbility, Serializable {
     private Color color;
 
     /* constructor whit the color of the card to revome */

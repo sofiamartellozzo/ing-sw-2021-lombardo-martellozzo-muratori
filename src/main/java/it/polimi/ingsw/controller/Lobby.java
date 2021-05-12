@@ -211,8 +211,8 @@ public class Lobby extends Observable implements ControllerObserver {
                 newRoom.setSoloMode(true);
                 //and the size of the room to 1
                 newRoom.setSIZE(1);
-                //add the VV of the player
-                newRoom.addVV(username, userVV);
+                //add the VV of the player yet in add user
+                //newRoom.addVV(username, userVV);
             }
             else{
                 //setting the room size asking that to the client
@@ -310,7 +310,7 @@ public class Lobby extends Observable implements ControllerObserver {
         if (usersAssigned.contains(msg.getUsername())){
             //username used yet
             sendNackConnectionRequest(msg,"USER_NOT_VALID");
-            System.out.println("Error, username " +msg.getUsername()+ "not valid because is taken already");
+            System.out.println("Error, username \"" +msg.getUsername()+ "\" not valid because is taken already");
         }
         else{
             //now check if there is a room available or if all are occupied
@@ -331,7 +331,7 @@ public class Lobby extends Observable implements ControllerObserver {
             }
             else if (!creatingRoomLock.isLocked()){
                 //all occupied room are full but one can be created, or Solo Mode
-                if (gameMode.equals(0) || canCreateRoom.get()){
+                if (gameMode.equals("0") || canCreateRoom.get()){
                     createNewRoom(msg.getUsername(), gameMode, msg.getVV());
                 }
             }
@@ -426,7 +426,13 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
-        //not implemented here (Initialized Controller)
+        //send to Initialized Controller or TurnController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
 
@@ -489,6 +495,11 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CStandardPPResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
 
     }
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * The "type" attribute indicates what resource type the depot can contain.
  * The "floor" indicates if it is the 1st, 2nd, 3rd.
  * */
-public class RealDepot implements Depot{
+public class RealDepot implements Depot, Serializable {
     private final ArrayList<Resource> resources;
     private final int floor;
     private final int size;

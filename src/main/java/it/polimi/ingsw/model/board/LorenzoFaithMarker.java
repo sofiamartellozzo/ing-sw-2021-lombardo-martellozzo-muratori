@@ -3,19 +3,25 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 
-/**
- * Represents the FaithMarker of Lorenzo Il Magnifico.
- * As the normal FaithMarker, it indicates "position" of Lorenzo Il Magnifico
- * and has a color.
+import java.io.Serializable;
+
+/*
+SOFI
  */
-public class LorenzoFaithMarker extends Resource {
 
-    private int position;
+/**
+ * this class rapresent Lorenzo Il Magnifico
+ * this is like the faith marker, the differences are that it is BLACK (not red), rapresent Lorenzo il Magnifico
+ * himself to wich the player plays against only in single Mode
+ * it is stored in the (Solo) Personal Board of the player
+ */
 
-    /**
-     * Constructor
-     * Set position to 0 and color to BLACK.
-     */
+public class LorenzoFaithMarker extends Resource implements Serializable {
+
+    private int position;  //the position in the faith track
+    private Color color;   //it has to be BLACK
+
+    /* constructor */
     public LorenzoFaithMarker(){
         super(Color.BLACK);
         this.position = 0;

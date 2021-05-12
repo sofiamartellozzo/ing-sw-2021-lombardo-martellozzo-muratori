@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 
+import java.io.Serializable;
+
 /*
 * SOFIA*/
 
@@ -14,7 +16,7 @@ import it.polimi.ingsw.model.TypeResource;
  * it is rapresented by a color, that color rapresent the Resource that relese
  * when the plyer buy from the Market
  */
-public class ColoredMarble extends Marble {
+public class ColoredMarble extends Marble implements Serializable {
 
     /* constructor of the class */
     public ColoredMarble(Color color){

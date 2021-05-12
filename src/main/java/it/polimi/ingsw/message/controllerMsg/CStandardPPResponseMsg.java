@@ -7,13 +7,15 @@ import java.util.ArrayList;
 
 public class CStandardPPResponseMsg extends ControllerGameMsg{
     private String username;
-    private ArrayList<TypeResource> resources;
+    private ArrayList<TypeResource> resourcesToPay;
+    private TypeResource resourceToGet;
     private String where;
 
-    public CStandardPPResponseMsg(String msgContent, String username, ArrayList<TypeResource> resources, String where){
+    public CStandardPPResponseMsg(String msgContent, String username, ArrayList<TypeResource> resourcesToPay, TypeResource resourceToGet, String where){
         super(msgContent);
         this.username=username;
-        this.resources=resources;
+        this.resourcesToPay =resourcesToPay;
+        this.resourceToGet = resourceToGet;
         this.where=where;
     }
 
@@ -21,9 +23,11 @@ public class CStandardPPResponseMsg extends ControllerGameMsg{
         return username;
     }
 
-    public ArrayList<TypeResource> getResources() {
-        return resources;
+    public ArrayList<TypeResource> getResourcesToPay() {
+        return resourcesToPay;
     }
+
+    public TypeResource getResourceToGet(){return resourceToGet;}
 
     public String getWhere() {
         return where;

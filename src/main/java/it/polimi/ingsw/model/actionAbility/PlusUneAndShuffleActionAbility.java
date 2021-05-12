@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.actionAbility;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.SoloPlayer;
 
+import java.io.Serializable;
+
 /*
  * SOFI*/
 
@@ -9,7 +11,7 @@ import it.polimi.ingsw.model.SoloPlayer;
  * One type of the ability that increase the faith traker of +1 and shuffle the action token deck
  */
 
-public class PlusUneAndShuffleActionAbility implements ActionAbility {
+public class PlusUneAndShuffleActionAbility implements ActionAbility, Serializable {
     @Override
     public void activeAbility(BoardManager boardManager, SoloPlayer player) {
         /* move the black cross of plus one and shuffle all the cards

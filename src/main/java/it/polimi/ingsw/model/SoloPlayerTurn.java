@@ -14,7 +14,6 @@ public class SoloPlayerTurn extends PlayerTurn {
     public SoloPlayerTurn(SoloPlayer currentPlayer, BoardManager boardManager) {
         super(currentPlayer, boardManager);
         this.currentPlayer = currentPlayer;
-        addAction(TurnAction.GET_ACTION_TOKEN);
     }
 
     @Override
@@ -53,7 +52,11 @@ public class SoloPlayerTurn extends PlayerTurn {
     }
 
     @Override
-    public void discardLeaderCard(int which) {
+    public void discardLeaderCard(int which) throws InvalidActionException {
+        LeaderCard card = this.currentPlayer.selectLeaderCard(which);
+        if (card!=null){
+            currentPlayer.removeLeaderCard(card);
+        }
 
     }
 

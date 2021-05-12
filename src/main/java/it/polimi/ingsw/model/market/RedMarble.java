@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TypeResource;
 
+import java.io.Serializable;
+
 /*
  * SOFIA
  * */
@@ -14,7 +16,7 @@ import it.polimi.ingsw.model.TypeResource;
  * whith the color Red, so it has a different response when choose in the market
  * it doen't return a Resource but increment the position of the faith market of one
  */
-public class RedMarble extends Marble{
+public class RedMarble extends Marble implements Serializable {
 
     /* constructor of the class */
     public RedMarble() {

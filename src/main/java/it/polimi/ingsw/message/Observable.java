@@ -71,9 +71,13 @@ public abstract class Observable {
 
             case VIEW:
                 viewObserver.remove((ViewObserver) observer);
+                //debugging
+                System.out.println("detach a view " +observer.toString());
                 break;
             case CONTROLLER:
                 controllerObserver.remove((ControllerObserver) observer);
+                //debugging
+                System.out.println("detach a controller " +observer.toString());
                 break;
         }
     }

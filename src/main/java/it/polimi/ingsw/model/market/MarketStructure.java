@@ -45,7 +45,7 @@ public class MarketStructure implements Serializable {
      * @param column
      * @return
      */
-    public Marble getMarble(int row, int column){return marketStructure.structure[row][column];}
+    public Marble getMarble(int row, int column){return structure[row][column];}
 
     private void setSlide(Marble newSlide){
         this.slide = newSlide;

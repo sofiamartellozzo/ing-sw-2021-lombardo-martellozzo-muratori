@@ -7,13 +7,14 @@ import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.market.MarbleSpecial;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /*
  * SOFI*/
 
-public class Player implements PlayerInterface{
+public class Player implements PlayerInterface, Serializable {
 
     private String username;
     private int number;
@@ -360,7 +361,12 @@ public class Player implements PlayerInterface{
      */
     @Override
     public LeaderCard selectLeaderCard(int number) {
-        return this.leaderCards.get(number);
+        if (leaderCards.get(0).getCardID() == number){
+            return leaderCards.get(0);
+        }
+        else{
+            return leaderCards.get(1);
+        }
     }
 
     /**
@@ -504,9 +510,9 @@ public class Player implements PlayerInterface{
      * @param card
      */
     @Override
-    public void removeLeaderCard(int card) throws InvalidActionException{
-        if (this.leaderCards.get(card).getState().equals("Inactive")){
-            this.leaderCards.get(card);
+    public void removeLeaderCard(LeaderCard card) throws InvalidActionException{
+        if (card.getState() instanceof Inactive){
+            this.leaderCards.remove(card);
             this.getGameSpace().getFaithTrack().increasePosition();
         }
         else

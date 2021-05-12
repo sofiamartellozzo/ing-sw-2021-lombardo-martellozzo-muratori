@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.card;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ import javax.print.DocFlavor;
 
 /* ILA */
 
-public class LeaderCard extends Card{
+public class LeaderCard extends Card implements Serializable {
 
     private  SpecialAbility specialAbility;
     private  TypeResource specialResource;

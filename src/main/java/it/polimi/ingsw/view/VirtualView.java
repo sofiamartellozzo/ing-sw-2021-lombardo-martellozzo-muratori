@@ -118,7 +118,8 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
-        //not implemented here (in Initialized Controller)
+        //send to Initialized Controller or TurnController
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
 
@@ -161,7 +162,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     }
 
+    @Override
+    public void receiveMsg(CChooseSingleResourceToPutInStrongBoxResourceMsg msg) {
 
+    }
 
 
     @Override
@@ -180,9 +184,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     public void receiveMsg(VNackConnectionRequestMsg msg) {
 
         /* send this message (notify) to the client */
-        if (msg.getUsername().equals(this.username)) {
+        if (msg.getUserIp().equals(client.getUserIP()) && msg.getUserPort() == client.getUserPort() && msg.getUsername().equals(this.username) ) {
             //set the boolean that specify if the user is waiting in the lobby to false
             inLobby = false;
+
+            connectionLock.lock();
+            userConnected.set(false);
+            connectionLock.lock();
 
             sendToClient(msg);
         }
@@ -210,7 +218,9 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
-
+        if (msg.getPlayer().getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
     }
 
     /**
@@ -259,6 +269,17 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+    /**
+     * update to View a change in warehouse
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VUpdateWarehouseMsg msg) {
+        if (msg.getUsername().equals(this.username)) {
+            /* send this message (notify) to the client */
+            sendToClient(msg);
+        }
+    }
 
 
     /**

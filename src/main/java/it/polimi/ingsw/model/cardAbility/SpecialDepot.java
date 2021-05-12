@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.board.resourceManagement.SpecialWarehouse;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 
+import java.io.Serializable;
+
 
 /**
  * GIANLUCA
@@ -15,7 +17,7 @@ import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
  * of the SpecialAbility abstract class
  */
 
-public class SpecialDepot extends SpecialAbility{
+public class SpecialDepot extends SpecialAbility implements Serializable {
     /**
      * Constructor
      * @param resource

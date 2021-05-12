@@ -124,11 +124,21 @@ public class Room extends Observable {
         try {
             // in a room can be maximum 4 player
             if (numberOfPlayer < 4) {
-                Player player = new Player(username);
+
+                //add the new username to the list
                 playersId.add(username);
+                //update the number of players based on the number of usernames
                 numberOfPlayer = playersId.size();
 
-                turnSequence.put(numberOfPlayer, player);
+                if (!isSoloMode){
+                    /* multiple game*/
+                    Player player = new Player(username);
+                    turnSequence.put(numberOfPlayer, player);
+                }
+                else{
+                    SoloPlayer playerS = new SoloPlayer(username);
+                    singlePlayer = playerS;
+                }
 
                 addVV(username, VV);
                 //System.out.println("in add user " +turnSequence);     DEBUGGING
@@ -164,18 +174,38 @@ public class Room extends Observable {
     public void initializedGame() throws InvalidActionException {
         //creating the controller for the initialization
         //System.out.println(playersId.size());     DEBUGGING
+        attachAllVV();
         initializedController = new InitializedController(playersId, listOfVirtualView);
         attachObserver(ObserverType.CONTROLLER, initializedController);
         initializedController.createGame();
         boardManager = initializedController.getBoardManager();
-        turnSequence = initializedController.getTurnSequence();
+        if (!isSoloMode){
+            //fill the sequence with the players created
+            turnSequence = initializedController.getTurnSequence();
+        }
+        else{
+            //fill the attribute of the single player with the created one
+            singlePlayer = initializedController.getSinglePlayer();
+        }
+
         printRoomMessage("the game has been initialized, starting...");
 
+        /*
         for (PlayerInterface player:turnSequence.values()) {
             VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your",player,boardManager);
             notifyAllObserver(ObserverType.VIEW, msg);
-        }
+        }*/
         startFirstTurn();
+        boolean wait = true;
+        while  (wait){
+            //wait until the initialization has finished
+            if (initializedController.canStart()){
+                //startFirstTurn();
+                wait = false;
+            }
+        }
+
+
     }
 
     public void startFirstTurn() throws InvalidActionException {
@@ -188,13 +218,13 @@ public class Room extends Observable {
             attachObserver(ObserverType.CONTROLLER, turnController);
         } else {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
-            singlePlayer = initializedController.getSinglePlayer();
+            //singlePlayer = initializedController.getSinglePlayer();
             turnController = new TurnController(singlePlayer, boardManager, listOfVirtualView);
             attachObserver(ObserverType.CONTROLLER, turnController);
         }
 
         /* the initialization has finished so detach the observer*/
-        detachObserver(ObserverType.CONTROLLER, initializedController);
+        //detachObserver(ObserverType.CONTROLLER, initializedController);
         turnController.gamePlay();
     }
 
@@ -210,6 +240,15 @@ public class Room extends Observable {
             }
         }
         throw new IllegalArgumentException(" Error, not found any player with that username!");
+    }
+
+    /**
+     * attach all VV of the players so this class can notify them
+     */
+    private void attachAllVV(){
+        for (String username: listOfVirtualView.keySet()) {
+            attachObserver(ObserverType.VIEW, listOfVirtualView.get(username));
+        }
     }
 
 
