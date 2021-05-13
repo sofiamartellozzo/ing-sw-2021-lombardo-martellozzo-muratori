@@ -31,8 +31,6 @@ public class IntroSceneController {
     @FXML
     private RadioButton multiPlayerModeButton;
 
-    //Aggiungere testo dinamico nella finestra per far capire al giocatore che sta elaborando la richiesta o in caso di errori
-
     private String selectedIP;
     private boolean customIP;
     private boolean singleGameMode;
@@ -62,13 +60,11 @@ public class IntroSceneController {
 
     public void setGui(GUI gui){ this.gui=gui;}
 
-    public void clickPlayButton(){
+    public void clickPlayButton() throws IOException {
         if(customIP){
             selectedIP=ip.getText();
             System.out.println("New selected IP: "+selectedIP);
         }
-
-
 
         disableAllLoginFields();
 
@@ -77,15 +73,6 @@ public class IntroSceneController {
 
         //Check username valid and ip valid, if yes try to connect, else show errors and enable fields
 
-    }
-
-    public void disableAllLoginFields(){
-        playButton.setDisable(true);
-        ip.setDisable(true);
-        username.setDisable(true);
-    }
-
-    private void connection(String username) throws IOException {
         ClientSocket client = new ClientSocket(selectedIP,gui);
         client.beginConnection();
         System.out.println("Client connected");
@@ -97,21 +84,44 @@ public class IntroSceneController {
         }else if(multiPlayerModeButton.selectedProperty().getValue()){
             gameMode="1";
         }
-        VVConnectionRequestMsg requestMsg = new VVConnectionRequestMsg("Request connection",selectedIP,0,username,gameMode);
+        VVConnectionRequestMsg requestMsg = new VVConnectionRequestMsg("Request connection",selectedIP,0,getUsername,gameMode);
         client.sendMsg(requestMsg);
         new Thread(client).start();
     }
 
-    public void clickLocalHostButton(){
+    public void disableAllLoginFields(){
+        playButton.setDisable(true);
+        ip.setDisable(true);
+        username.setDisable(true);
+    }
 
+    public void enableAllLoginFields(){
+        playButton.setDisable(false);
+        ip.setDisable(false);
+        username.setDisable(false);
+    }
+
+    public void clickLocalHostButton(){
+        selectedIP="127.0.0.1";
+        customIP=false;
+
+        onlineServerButton.selectedProperty().setValue(false);
+        customIPButton.selectedProperty().setValue(false);
     }
 
     public void clickOnlineServerButton(){
+        //GET IP ONLINE SERVER
+        customIP=false;
 
+        localhostButton.selectedProperty().setValue(false);
+        customIPButton.selectedProperty().setValue(false);
     }
 
     public void clickCustomIPButton(){
+        customIP=true;
 
+        localhostButton.selectedProperty().setValue(false);
+        onlineServerButton.selectedProperty().setValue(false);
     }
 
     public void clickSinglePlayerModeButton(){

@@ -161,7 +161,7 @@ public class DevelopmentCardTableTest extends TestCase {
         squareCards[2][3]= smallDeck4;
 
 
-        developmentCardTable = DevelopmentCardTable.getInstance(squareCards);
+        developmentCardTable = new DevelopmentCardTable(squareCards);
 
 
     }

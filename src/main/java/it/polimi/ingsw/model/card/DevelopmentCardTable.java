@@ -10,13 +10,6 @@ import java.io.Serializable;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.model.board.CardSpace;
 
-/* ILA */
-
-/**
- SINGLETON: because I have to instance this class only once,
- and the next time
- he has to give me back the same class */
-
 public class DevelopmentCardTable implements Serializable {
 
     private DevelopmentCardDeck[][] table;     /* Matrix made of ArrayLists of DevelopmentCard */
@@ -27,17 +20,8 @@ public class DevelopmentCardTable implements Serializable {
      * @param table
      */
 
-    private DevelopmentCardTable(DevelopmentCardDeck[][] table) {
+    public DevelopmentCardTable(DevelopmentCardDeck[][] table) {
         this.table = table;
-    }
-
-    public static DevelopmentCardTable getInstance(DevelopmentCardDeck[][] square)
-    {
-        if (developmentCardTable == null)
-        {
-            developmentCardTable = new DevelopmentCardTable(square);
-        }
-        return developmentCardTable;
     }
 
     // Getter methods

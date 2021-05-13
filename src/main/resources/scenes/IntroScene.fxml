@@ -55,12 +55,12 @@
                      <children>
                         <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="201.0" rowValignment="BOTTOM">
                            <children>
-                              <RadioButton mnemonicParsing="false" text="Localhost">
+                              <RadioButton fx:id="localhostButton" mnemonicParsing="false" onAction="#clickLocalHostButton" text="Localhost">
                                  <font>
                                     <Font name="Noto Sans" size="12.0" />
                                  </font></RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Online Server" />
-                              <RadioButton mnemonicParsing="false" text="Custom IP" />
+                              <RadioButton fx:id="onlineServerButton" mnemonicParsing="false" onAction="#clickOnlineServerButton" text="Online Server" />
+                              <RadioButton fx:id="customIPButton" mnemonicParsing="false" onAction="#clickCustomIPButton" text="Custom IP" />
                            </children>
                         </FlowPane>
                      </children>
@@ -69,8 +69,8 @@
                      <children>
                         <FlowPane alignment="CENTER" columnHalignment="CENTER">
                            <children>
-                              <RadioButton mnemonicParsing="false" text="SinglePlayer" />
-                              <RadioButton mnemonicParsing="false" text="MultiPlayer" />
+                              <RadioButton fx:id="singlePlayerModeButton" mnemonicParsing="false" onAction="#clickSinglePlayerModeButton" text="SinglePlayer" />
+                              <RadioButton fx:id="multiPlayerModeButton" mnemonicParsing="false" onAction="#clickMultiPlayerModeButton" text="MultiPlayer" />
                            </children>
                         </FlowPane>
                      </children>
@@ -78,18 +78,18 @@
                   <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="53.0" prefWidth="298.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="IP" textAlignment="CENTER" wrappingWidth="297.9140577316284" />
-                        <TextField alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="298.0" promptText="Insert IP..." text="127.0.0.1" />
+                        <TextField fx:id="ip" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="298.0" promptText="Insert IP..." text="127.0.0.1" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="43.0" prefWidth="297.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Username" textAlignment="CENTER" wrappingWidth="298.0909957885742" />
-                        <TextField alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="299.0" promptText="Insert a username..." />
+                        <TextField fx:id="username" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="299.0" promptText="Insert a username..." />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="69.0" prefWidth="154.0">
                      <children>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" text="Play" textAlignment="CENTER">
+                        <Button fx:id="playButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#clickPlayButton" text="Play" textAlignment="CENTER">
                            <font>
                               <Font name="Noto Sans" size="12.0" />
                            </font>

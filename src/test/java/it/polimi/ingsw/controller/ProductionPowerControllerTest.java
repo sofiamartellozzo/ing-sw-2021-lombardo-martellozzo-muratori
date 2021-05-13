@@ -11,9 +11,14 @@ import it.polimi.ingsw.model.board.FaithTrack;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.board.resourceManagement.*;
 import it.polimi.ingsw.model.card.DevelopmentCard;
+import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.view.VirtualView;
 import junit.framework.TestCase;
 
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProductionPowerControllerTest extends TestCase {
     ProductionPowerController productionPowerController;
@@ -53,7 +58,9 @@ public class ProductionPowerControllerTest extends TestCase {
         //Adding in the first card space
         player.getGameSpace().getCardSpace(0).addCard(developmentCard);
         //Create the controller
-        productionPowerController=new ProductionPowerController(player,null);
+        Map<String, VirtualView> virtualView = new HashMap<>();
+        virtualView.put("pippo", new VirtualView(new ClientHandler(new Socket(),"lalal")));
+        productionPowerController=new ProductionPowerController(player, virtualView);
     }
 
     public void tearDown() throws Exception {
@@ -61,7 +68,7 @@ public class ProductionPowerControllerTest extends TestCase {
         productionPowerController=null;
     }
 
-    public void testReceiveMsg_CActivateProductionPowerResponseMsg() {
+    public void testReceiveMsg_CActivateProductionPowerResponseMsg_CardSpace1() {
         assertTrue(productionPowerController.getReceivedResources().isEmpty());
         CActivateProductionPowerResponseMsg msg = new CActivateProductionPowerResponseMsg("Activation Production Power",player.getUsername(),"Warehouse",1);
         productionPowerController.receiveMsg(msg);
@@ -92,11 +99,14 @@ public class ProductionPowerControllerTest extends TestCase {
         }
     }
 
-    public void testReceiveMsg_CChooseResourceResponseMsg() {
-        /*ArrayList<TypeResource> resources = new ArrayList<>();
-        resources.add(TypeResource.SHIELD);
-        resources.add(TypeResource.COIN);
-        CStandardPPResponseMsg msg = new CStandardPPResponseMsg("Chosen resource",player.getUsername(),resources,TypeResource.SERVANT,"Warehouse");
+    public void testReceiveMsg_CActivateProductionPowerResponseMsg_StandardPP() {
+        assertTrue(productionPowerController.getReceivedResources().isEmpty());
+        CActivateProductionPowerResponseMsg msg = new CActivateProductionPowerResponseMsg("Activation Production Power",player.getUsername(),"Warehouse",0);
+        ArrayList<TypeResource> resourcesToPay = new ArrayList<>();
+        resourcesToPay.add(TypeResource.COIN);
+        resourcesToPay.add(TypeResource.SHIELD);
+        msg.setResourcesToPay(resourcesToPay);
+        msg.setResourceToGet(TypeResource.SERVANT);
         productionPowerController.receiveMsg(msg);
         ArrayList<ArrayList<TypeResource>> expectedWarehouse = new ArrayList<>();
         for(int i=0;i<3;i++){
@@ -107,6 +117,7 @@ public class ProductionPowerControllerTest extends TestCase {
         assertSame(expectedWarehouse.size(),warehouse.getDepots().size());
         for(int i=0;i<warehouse.getDepots().size();i++){
             Depot depot = warehouse.getDepots().get(i);
+            System.out.println("Depot "+(i+1));
             assertEquals(expectedWarehouse.get(i).size(),depot.getResources().size());
             assertEquals(expectedWarehouse.get(i).isEmpty(),depot.getResources().isEmpty());
             if(!depot.getResources().isEmpty()){
@@ -114,20 +125,14 @@ public class ProductionPowerControllerTest extends TestCase {
                     assertEquals(expectedWarehouse.get(i).get(j),depot.getResources().get(j).getType());
                 }
             }
-        }*/
-    }
-
-    public void testReceiveMsg_CChooseSingleResourceToPutInStrongBoxResponseMsg() {
-        /*assertTrue(productionPowerController.getReceivedResources().isEmpty());
-        CChooseSingleResourceToPutInStrongBoxResourceMsg msg = new CChooseSingleResourceToPutInStrongBoxResourceMsg("Chosen resource",player.getUsername(),TypeResource.SERVANT);
-        productionPowerController.receiveMsg(msg);
+        }
         ArrayList<Resource> expectedReceivedResources = new ArrayList<>();
         expectedReceivedResources.add(new Resource(TypeResource.SERVANT));
         assertFalse(productionPowerController.getReceivedResources().isEmpty());
         assertSame(expectedReceivedResources.size(),productionPowerController.getReceivedResources().size());
         for(int i=0;i<expectedReceivedResources.size();i++){
             assertEquals(expectedReceivedResources.get(i).getType(),productionPowerController.getReceivedResources().get(i).getType());
-        }*/
+        }
     }
 
     public void testReceiveResources(){
@@ -135,7 +140,7 @@ public class ProductionPowerControllerTest extends TestCase {
         ArrayList<TypeResource> expectedStrongBox = new ArrayList<>();
         assertTrue(strongBox.getContent().isEmpty());
         assertSame(expectedStrongBox.size(),strongBox.getContent().size());
-        testReceiveMsg_CActivateProductionPowerResponseMsg();
+        testReceiveMsg_CActivateProductionPowerResponseMsg_CardSpace1();
         productionPowerController.receiveResources();
         expectedStrongBox.add(TypeResource.SERVANT);
         expectedStrongBox.add(TypeResource.STONE);

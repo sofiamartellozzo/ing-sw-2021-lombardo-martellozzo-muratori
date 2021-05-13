@@ -463,21 +463,22 @@ public class WarehouseTest {
          * 1 STONE
          * */
         ArrayList<Integer> expected = new ArrayList<>();
-        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.COIN)));
-        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.SHIELD)));
-        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.SERVANT)));
+        assertEquals(expected,warehouse.getAvailableDepot(new Resource(TypeResource.COIN)));
+        assertEquals(expected,warehouse.getAvailableDepot(new Resource(TypeResource.SHIELD)));
+        assertEquals(expected,warehouse.getAvailableDepot(new Resource(TypeResource.SERVANT)));
         expected.add(3);
         expected.add(4);
-        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.STONE)));
+        assertEquals(expected,warehouse.getAvailableDepot(new Resource(TypeResource.STONE)));
         expected.clear();
         warehouse.removeResource(2);
         expected.add(2);
-        assertEquals(expected,warehouse.availableDepot(new Resource(TypeResource.SHIELD)));
+        assertEquals(expected,warehouse.getAvailableDepot(new Resource(TypeResource.SHIELD)));
     }
 
     @Test (expected = InvalidActionException.class)
     public void testAddResource_PuttingTwoResourcesInTwoDifferentDepots_InvalidActionException() throws InvalidActionException {
-        warehouse.addResource(new Resource(TypeResource.COIN),2);
-        warehouse.addResource(new Resource(TypeResource.COIN),3);
+        warehouse.addResource(new Resource(TypeResource.SHIELD),1);
+        warehouse.addResource(new Resource(TypeResource.STONE),2);
+        warehouse.addResource(new Resource(TypeResource.SHIELD),3);
     }
 }

@@ -40,8 +40,8 @@ public abstract class Warehouse implements Serializable {
     public void addResource(Resource resource, int depot) throws InvalidActionException {
         if ((depot < 1) || (depot > depots.size())) throw new InvalidActionException("Choose a depot!");
         Depot depot1=depots.get(depot-1);
-        if (!checkAvailableDepot(resource)) throw new InvalidActionException("The resource can't be add in any depot, move some resources or discard it");
-        ArrayList<Integer> availableDepot = availableDepot(resource);
+        if(!checkAvailableDepot(resource)) throw new InvalidActionException("No depot can contain that resource!");
+        ArrayList<Integer> availableDepot = getAvailableDepot(resource);
         boolean available=false;
         for(Integer i:availableDepot){
             if(i==depot){
@@ -141,39 +141,13 @@ public abstract class Warehouse implements Serializable {
      * @param resource -> The resource you would put.
      * @return -> True if the resource can be put, else false.
      */
-    public boolean checkAvailableDepot(Resource resource) {
-       for(int i=0;i<3;i++){
-           if((depots.get(i).getResources().isEmpty()) && (!checkResourceInSomeDepot(resource,i+1))){
-               return true;
-           }else {
-               TypeResource type = depots.get(i).getType();
-               if (!depots.get(i).isFull() && resource.getType().equals(type)) {
-                   return true;
-               }
-           }
+    public boolean checkAvailableDepot(Resource resource) throws InvalidActionException {
+       ArrayList<Integer> availableDepot = getAvailableDepot(resource);
+       if(availableDepot==null || availableDepot.size()==0){
+           return false;
+       }else{
+           return true;
        }
-       for(int i=3;i<depots.size();i++){
-           if(!depots.get(i).isFull() && resource.getType().equals(depots.get(i).getType())){
-               return true;
-           }
-       }
-       return false;
-    }
-
-    /**
-     * Checks if one resource can be put "depot".
-     * @param resource -> The resource you want to check
-     * @param depot -> The depot where you would put in the resource
-     * @return -> True if the "resource" can be put in "depot", else false.
-     */
-    private boolean checkResourceInSomeDepot(Resource resource, int depot){
-        for(int i=0;i<3;i++){
-            Depot d=depots.get(i);
-            if(i+1!=depot && !d.getResources().isEmpty() && d.getType()!=null && d.getType().equals(resource.getType()) ){
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -268,14 +242,39 @@ public abstract class Warehouse implements Serializable {
      * @return -> An ArrayList<Integer> which contains which floor of the depot are available to put the "reosurce"
      * @throws InvalidActionException -> If one of the conditions is not respected
      */
-    public ArrayList<Integer> availableDepot(Resource resource) throws InvalidActionException {
+    public ArrayList<Integer> getAvailableDepot(Resource resource) throws InvalidActionException {
         ArrayList<Integer> whichDepot = new ArrayList<>();
         if(resource==null) throw new InvalidActionException("Resource not valid");
-        for(Depot depot:depots){
-            if(depot.isEmpty() && depot instanceof RealDepot && (searchResource(resource)==-1||(searchResource(resource)>=4 && searchResource(resource)<=5))){
-                whichDepot.add(depot.getFloor());
-            }else if(!depot.isFull() && depot.getType()!=null && depot.getType().equals(resource.getType())){
-                whichDepot.add(depot.getFloor());
+        for(int i=0;i<depots.size();i++){
+            boolean available=false;
+            //Get the depot to check
+            Depot depot1=depots.get(i);
+            //If it's one of the first three depots
+            //Check if it's empty or contains the same type of resource and has space
+            if(depot1 instanceof RealDepot && (depot1.isEmpty() || (depot1.getType().equals(resource.getType()) && !depot1.isFull()))){
+                //For now it's available
+                available=true;
+                //But checking if other "normal" depots already contains that type
+                for(int j=0;j<depots.size();j++){
+                    //If not the same depot
+                    if(i!=j){
+                        //Getting the other depot
+                        Depot depot2=depots.get(j);
+                        //If it's one of the first three depot and contains the same type
+                        if(depot2 instanceof RealDepot && !depot2.isEmpty() && depot2.getType().equals(resource.getType())){
+                            //So the depot found as available it's no more available
+                            available=false;
+                            break;
+                        }
+                    }
+                }
+                //If it's one the special depot, just check the content type and if it's not full
+            }else if(depot1 instanceof AbilityDepot && depot1.getType().equals(resource.getType()) && !depot1.isFull()){
+                available=true;
+            }
+            //If available add to the possible choices
+            if(available){
+                whichDepot.add(depot1.getFloor());
             }
         }
         return whichDepot;

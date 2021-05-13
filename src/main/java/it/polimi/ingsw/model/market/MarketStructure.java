@@ -17,18 +17,11 @@ public class MarketStructure implements Serializable {
     private Marble[][] structure; //row,column
     private Marble slide;
 
-    private static MarketStructure marketStructure = null;
 
     /*Constructor*/
-    private MarketStructure(Marble[][] structure, Marble slide) {
+    public MarketStructure(Marble[][] structure, Marble slide) {
         this.structure = structure;
         this.slide = slide;
-    }
-
-    public static MarketStructure getInstance(Marble[][] structure, Marble slide){
-        if (marketStructure == null)
-            marketStructure = new MarketStructure(structure, slide);
-        return marketStructure;
     }
 
     public Marble[][] getStructure() {
@@ -97,7 +90,7 @@ public class MarketStructure implements Serializable {
     public MarketStructureCopy copyOfTheMarket(){
 
         MarketStructureCopy marketStructureCopy = new MarketStructureCopy(slide);
-        marketStructureCopy.storeMarket(marketStructure.getStructure(), marketStructure.getSlide());
+        marketStructureCopy.storeMarket(this.getStructure(), this.getSlide());
 
         return marketStructureCopy;
     }

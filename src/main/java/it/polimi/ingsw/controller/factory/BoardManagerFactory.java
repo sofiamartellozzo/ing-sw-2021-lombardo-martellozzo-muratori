@@ -33,9 +33,9 @@ public class BoardManagerFactory {
      */
     public BoardManager createBoardManager(HashMap<Integer, PlayerInterface> turnSequence)
     {
-        MarketStructure marketStructure = MarketStructure.getInstance(createStructure(),new ColoredMarble(Color.PURPLE));
-        DevelopmentCardTable developmentCardTable = DevelopmentCardTable.getInstance(createDevelopmentDeckTable());
-        LeaderCardDeck leaderCardDeck = LeaderCardDeck.getInstance(createLeaderCardDeck());
+        MarketStructure marketStructure = new MarketStructure(createStructure(),new ColoredMarble(Color.PURPLE));
+        DevelopmentCardTable developmentCardTable = new DevelopmentCardTable(createDevelopmentDeckTable());
+        LeaderCardDeck leaderCardDeck = new LeaderCardDeck(createLeaderCardDeck());
         ResourcesSupplyFactory resourcesSupplyFactory = new ResourcesSupplyFactory();
         ResourcesSupply resourcesSupply = resourcesSupplyFactory.createTheResourcesSupply();
 

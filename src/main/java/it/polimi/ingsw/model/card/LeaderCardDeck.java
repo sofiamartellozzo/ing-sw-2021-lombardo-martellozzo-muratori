@@ -2,11 +2,6 @@ package it.polimi.ingsw.model.card;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/* ILA */
-
-/** SINGLETON: because I have to instance this class only once,
-and the next time
-he has to give me back the same class */
 
 public class LeaderCardDeck implements Serializable {
 
@@ -18,17 +13,8 @@ public class LeaderCardDeck implements Serializable {
      * @param cards
      */
 
-    private LeaderCardDeck(ArrayList<LeaderCard>cards){
+    public LeaderCardDeck(ArrayList<LeaderCard>cards){
         this.cards=cards;
-    }
-
-    public static LeaderCardDeck getInstance(ArrayList<LeaderCard>cards)
-    {
-        if(leaderCardDeck == null)
-        {
-            leaderCardDeck = new LeaderCardDeck(cards);
-        }
-        return leaderCardDeck;
     }
 
     public ArrayList<LeaderCard> getCards(){return cards;}

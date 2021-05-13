@@ -134,9 +134,7 @@ public class GUI extends Application implements ViewObserver {
     public void close(){
         stage.close();
         Platform.exit();
-        if(true/*client is connected*/){
-            client.closeConnection();
-        }
+        client.closeConnection();
         System.exit(0);
     }
 
@@ -253,7 +251,28 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VNackConnectionRequestMsg msg) {
+        switch(msg.getErrorInformation()){
+            case "USER_NOT_VALID":  // if the username is already taken, the player has to insert a new one
 
+                //Error(" Error, this username is not valid because it is already taken",stage);
+                getIntroSceneController().enableAllLoginFields();
+            case "FULL_SIZE":  //all the rooms in the server are full, so the client can't be connected to the game
+
+                //Error(" Error, server is full ",stage);
+                break;
+            case "WAIT":      //in this case the server is not full so there are new rooms available, and the client has to wait because someone is creating a new room
+                //Error(" Someone is now creating a new room! Please wait a moment ",stage);
+                try {
+                    Thread.sleep(5000);
+                    /* the login process has to restart, so the client try again sending another request */
+                    VVConnectionRequestMsg request2 = new VVConnectionRequestMsg("Trying to connect", iP, 0, username, gameSize);
+                    this.client.sendMsg(request2);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 
     @Override

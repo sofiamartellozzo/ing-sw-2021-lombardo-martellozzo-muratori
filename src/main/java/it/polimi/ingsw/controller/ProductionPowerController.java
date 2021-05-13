@@ -88,14 +88,14 @@ public class ProductionPowerController extends Observable implements ControllerO
                 for (TypeResource r: msg.getResourcesToPay()) {
                     resourcesToRemove.add(new Resource(r.getThisColor()));
                 }
-                if(msg.getWhere().equals("warehouse")){
+                if(msg.getWhere().equals("Warehouse")){
                     Warehouse warehouse = player.getGameSpace().getWarehouse();
                     try {
                         warehouse.removeResources(resourcesToRemove);
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
                     }
-                }else if(msg.getWhere().equals("strongbox")){
+                }else if(msg.getWhere().equals("Strongbox")){
                     StrongBox strongBox = player.getGameSpace().getStrongbox();
                     try {
                         strongBox.removeResources(resourcesToRemove);

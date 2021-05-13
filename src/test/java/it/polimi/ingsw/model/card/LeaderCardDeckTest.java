@@ -33,7 +33,7 @@ public class LeaderCardDeckTest extends TestCase {
         cards.add(card3);
         cards.add(card4);
 
-        leaderCardDeck = LeaderCardDeck.getInstance(cards);
+        leaderCardDeck = new LeaderCardDeck(cards);
     }
 
     @After
