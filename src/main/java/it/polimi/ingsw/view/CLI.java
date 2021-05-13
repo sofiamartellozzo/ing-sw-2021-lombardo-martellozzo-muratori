@@ -1019,12 +1019,14 @@ public class CLI extends Observable implements ViewObserver {
 
                     if (choice.toLowerCase().equals("row")) {
                         try {
+
                             marketStructureData.rowMoveMarble(number-1, (Player) player);  //update the market situation (changing the row)
                         } catch (InvalidActionException e) {
                             e.printStackTrace();
                         }
                     } else {
                         try {
+
                             marketStructureData.columnMoveMarble(number-1, (Player) this.player);  //update the market situation (changing the column)
                         } catch (InvalidActionException e) {
                             e.printStackTrace();
@@ -1034,7 +1036,7 @@ public class CLI extends Observable implements ViewObserver {
                     System.out.println(" That's the updated situation of your market! ");
                     showMarketStructure(marketStructureData);
 
-                        CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number);
+                        CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number-1);
                         client.sendMsg(response);
                         correct = true;
                     }

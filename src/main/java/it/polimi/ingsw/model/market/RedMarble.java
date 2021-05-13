@@ -25,7 +25,7 @@ public class RedMarble extends Marble implements Serializable {
 
     @Override
     public TypeResource choose(Player player) throws InvalidActionException {
-        player.getGameSpace().getFaithTrack().increasePosition();
+        //player.getGameSpace().getFaithTrack().increasePosition();
         return TypeResource.FAITHMARKER;
     }
 }

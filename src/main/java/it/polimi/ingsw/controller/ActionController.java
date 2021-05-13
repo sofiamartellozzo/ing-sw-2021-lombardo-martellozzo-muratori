@@ -161,15 +161,15 @@ public class ActionController extends Observable implements ControllerObserver {
     private ArrayList<Integer> cardAbleForPlayer() {
         ArrayList<Integer> possibleCardToBeDiscarded = new ArrayList<>();
         ArrayList<LeaderCard> leaderCards = this.player.getLeaderCards();
-        System.out.println("bug1");
-        System.out.println(leaderCards);
+        //System.out.println("bug1");       DEBUGGING
+        //System.out.println(leaderCards);
         if (leaderCards != null) {
-            System.out.println("bug2");
+            //System.out.println("bug2");       DEBUGGING
             for (LeaderCard card : leaderCards) {
-                System.out.println("bug3");
+                //System.out.println("bug3");           DEBUGGING
                 if (card.getState() instanceof Inactive) {
-                    System.out.println(card.getCardID());
-                    System.out.println("id of card of p");
+                    //System.out.println(card.getCardID());     DEBUGGING
+                    //System.out.println("id of card of p");
                     possibleCardToBeDiscarded.add(card.getCardID());
                 }
             }
@@ -190,9 +190,7 @@ public class ActionController extends Observable implements ControllerObserver {
                 player.buyCard(msg.getRow(), msg.getColumn(), boardManager, msg.getCardSpaceToStoreIt());
 
                 //remove tre 3 action from the able ones because can be made only once
-                turn.removeAction(msg.getActionChose());
-                //add the action that allows to end the player turn
-                turn.addAction(TurnAction.END_TURN);
+                removeAction(msg.getActionChose());
 
                 nextAction();
 
@@ -254,6 +252,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
                         if (resource.equals(TypeResource.FAITHMARKER)) {
                             /* the FAITHMARKER is not a real resources, it increased the position of the player in FT*/
+                            player.increasePosition();
                             VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
                             Map<Integer, PlayerInterface> players = boardManager.getPlayers();
                             notification.setAllPlayerToNotify(getPlayerAsList(players));
@@ -270,9 +269,7 @@ public class ActionController extends Observable implements ControllerObserver {
                 }
 
                 /* remove tre 3 action from the able ones because can be made only once */
-                turn.removeAction(msg.getActionChose());
-                /* add the action that allows to end the player turn */
-                turn.addAction(TurnAction.END_TURN);
+                removeAction(msg.getActionChose());
 
                 nextAction();
 
@@ -294,9 +291,7 @@ public class ActionController extends Observable implements ControllerObserver {
         /*notify so send the msg with the info to the right controller*/
         notifyAllObserver(ObserverType.CONTROLLER, msg);
         //remove tre 3 action from the able ones because can be made only once
-        turn.removeAction(msg.getActionChose());
-        //add the action that allows to end the player turn
-        turn.addAction(TurnAction.END_TURN);
+        removeAction(msg.getActionChose());
 
         nextAction();
     }
@@ -424,6 +419,19 @@ public class ActionController extends Observable implements ControllerObserver {
             notifyAllObserver(ObserverType.VIEW, msg);
         }
 
+    }
+
+    private void removeAction(TurnAction action){
+        if (!isSolo){
+            turn.removeAction(action);
+            /* add the action that allows to end the player turn */
+            turn.addAction(TurnAction.END_TURN);
+        }
+        else{
+            soloPlayerTurn.removeAction(action);
+            /* add the action that allows to end the player turn */
+            soloPlayerTurn.addAction(TurnAction.END_TURN);
+        }
     }
 
 }

@@ -3,8 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.card.LeaderCard;
 
-import java.util.ArrayList;
-
 /*
  * SOFI*/
 
@@ -34,7 +32,7 @@ public class SoloPlayerTurn extends PlayerTurn {
             case GET_ACTION_TOKEN:
                 //the player take the action token at the end of the turn
                 //get action token random
-                this.currentPlayer.getGameSpace().getActionTokenDeck(this.getBoardManager(), this.currentPlayer);
+                this.currentPlayer.getGameSpace().playActionToken(this.getBoardManager(), this.currentPlayer);
             default:
                 this.currentPlayer.endTurn();
         }
@@ -75,7 +73,7 @@ public class SoloPlayerTurn extends PlayerTurn {
      * method called at the end of each Solo Turn
      */
     public ActionToken activateActionToken() throws InvalidActionException {
-        ActionToken actionTokenActivated = this.currentPlayer.getGameSpace().getActionTokenDeck(this.getBoardManager(), this.currentPlayer);
+        ActionToken actionTokenActivated = this.currentPlayer.getGameSpace().playActionToken(this.getBoardManager(), this.currentPlayer);
         return actionTokenActivated;
     }
 }

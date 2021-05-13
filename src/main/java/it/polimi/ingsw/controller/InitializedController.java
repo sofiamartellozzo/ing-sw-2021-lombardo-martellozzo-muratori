@@ -96,15 +96,15 @@ public class InitializedController extends Observable implements ControllerObser
             SoloPlayer p = new SoloPlayer(players.get(0));
             singlePlayer = p;
         } else {
-            for (int i = 0; i < numberOfPlayer ; i++) {
+            for (int i = 0; i < numberOfPlayer; i++) {
                 Player p = new Player(players.get(i));
                 turnSequence.put(i + 1, p);
             }
         }
     }
 
-    private void attachAllVV(){
-        for (String username: virtualView.keySet()) {
+    private void attachAllVV() {
+        for (String username : virtualView.keySet()) {
             attachObserver(ObserverType.VIEW, virtualView.get(username));
         }
     }
@@ -134,7 +134,7 @@ public class InitializedController extends Observable implements ControllerObser
             //setting the attribute of the player with his Personal Board
             singlePlayer.setGameSpace(soloPersonalBoard);
 
-            VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your", singlePlayer ,boardManager, true);
+            VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your", singlePlayer, boardManager, true);
             notifyAllObserver(ObserverType.VIEW, msg);
 
             //call the msg to choose the leader card
@@ -150,19 +150,19 @@ public class InitializedController extends Observable implements ControllerObser
                 PersonalBoard personalBoard = personalBoardFactory.createGame();
                 this.turnSequence.get(i).setGameSpace(personalBoard);
                 this.turnSequence.get(i).setNumber(i);
-                VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your", turnSequence.get(i),boardManager, false);
+                VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your", turnSequence.get(i), boardManager, false);
                 notifyAllObserver(ObserverType.VIEW, msg);
             }
 
-                //then giving the resources initial to the players
-                giveStartResources();
+            //then giving the resources initial to the players
+            giveStartResources();
 
-                //call the msg to choose the leader card
-                chooseLeaderCard(false);
+            //call the msg to choose the leader card
+            chooseLeaderCard(false);
 
 
-                //now the came can start... Create the turn controller
-                canStart= true;
+            //now the came can start... Create the turn controller
+            canStart = true;
 
 
         }
@@ -241,7 +241,7 @@ public class InitializedController extends Observable implements ControllerObser
 
                 this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
                 /* notify all palyers that this one increase his position */
-                VNotifyPositionIncreasedByMsg notify1 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(3).getUsername(),1 );
+                VNotifyPositionIncreasedByMsg notify1 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(3).getUsername(), 1);
                 notify1.setAllPlayerToNotify(getPlayersAsList());
                 notifyAllObserver(ObserverType.VIEW, notify1);
 
@@ -254,7 +254,7 @@ public class InitializedController extends Observable implements ControllerObser
 
                     this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
                     /* notify all palyers that this one increase his position */
-                    VNotifyPositionIncreasedByMsg notify2 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(4).getUsername(),1 );
+                    VNotifyPositionIncreasedByMsg notify2 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(4).getUsername(), 1);
                     notify2.setAllPlayerToNotify(getPlayersAsList());
                     notifyAllObserver(ObserverType.VIEW, notify2);
                 }
@@ -282,9 +282,9 @@ public class InitializedController extends Observable implements ControllerObser
     /**
      * get an array list by the turn sequence
      */
-    private List<String> getPlayersAsList(){
+    private List<String> getPlayersAsList() {
         List<String> players = new ArrayList<>();
-        for (Integer i: turnSequence.keySet()) {
+        for (Integer i : turnSequence.keySet()) {
             players.add(turnSequence.get(i).getUsername());
         }
         return players;
@@ -292,7 +292,7 @@ public class InitializedController extends Observable implements ControllerObser
 
     /*--------------------------------------------------------------------------------------------------------------------*/
 
-                //HANDLE EVENT
+    //HANDLE EVENT
 
     /**
      * this msg contains the list of Leader Cards the user choose and
@@ -305,8 +305,8 @@ public class InitializedController extends Observable implements ControllerObser
         //System.out.println("in receiving the 2 cards chosen ");       DEBUGGING
         if (msg.getAction().equals("firstChoose")) {
             //take all the Integer for Leader Card
-            ArrayList<Integer> twoChosen =  msg.getChosenLeaderCard();
-            System.out.println("the 2 cards chosen "+twoChosen);
+            ArrayList<Integer> twoChosen = msg.getChosenLeaderCard();
+            System.out.println("the 2 cards chosen " + twoChosen);
             ArrayList<Integer> twoDiscarded = msg.getDiscardedLeaderCard();
             ArrayList<LeaderCard> chosenCards = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
@@ -316,13 +316,12 @@ public class InitializedController extends Observable implements ControllerObser
                     chosenCards.add(chosen);
                 }
             }
-            System.out.println("the 2 cards chosen "+chosenCards);
+            System.out.println("the 2 cards chosen " + chosenCards);
             //take the player that choose the cards
-            if (this.getNumberOfPlayer() == 1){
+            if (this.getNumberOfPlayer() == 1) {
                 singlePlayer.setLeaderCards(chosenCards);
-                System.out.println("the 2 cards chosen now in player "+singlePlayer.getLeaderCards());
-            }
-            else{
+                System.out.println("the 2 cards chosen now in player " + singlePlayer.getLeaderCards());
+            } else {
                 PlayerInterface player = null;
                 try {
                     player = findByUsername(msg.getUsername());
@@ -330,7 +329,7 @@ public class InitializedController extends Observable implements ControllerObser
                     e.printStackTrace();
                 }
                 player.setLeaderCards(chosenCards);
-                System.out.println("the 2 cards chosen now in player "+player.getLeaderCards());
+                System.out.println("the 2 cards chosen now in player " + player.getLeaderCards());
             }
 
             //now remove the card from the deck
@@ -344,29 +343,41 @@ public class InitializedController extends Observable implements ControllerObser
      * @param msg
      */
     @Override
-    public void receiveMsg(CChooseResourceAndDepotMsg msg){
+    public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //find the player by username
-        Player player = null;
-        try {
-            player = (Player) findByUsername(msg.getUsername());
-        } catch (NoSuchElementException e) {
-            e.printStackTrace();
-        }
         Resource r = new Resource(msg.getResource());
-        try {
-            player.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
-            //VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
-            //notifyAllObserver(ObserverType.VIEW, notification);
-        } catch (InvalidActionException e) {
-            e.printStackTrace();
-            //create msg to send to client that he made an invalid action, so change the depot
-            VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());
-            notifyAllObserver(ObserverType.VIEW, msg1);
+        if (singlePlayer == null) {
+            Player player = null;
+            try {
+                player = (Player) findByUsername(msg.getUsername());
+            } catch (NoSuchElementException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                player.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
+                //VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
+                //notifyAllObserver(ObserverType.VIEW, notification);
+            } catch (InvalidActionException e) {
+                e.printStackTrace();
+                //create msg to send to client that he made an invalid action, so change the depot
+                VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());
+                notifyAllObserver(ObserverType.VIEW, msg1);
+            }
+        }
+        else{
+            try {
+                singlePlayer.getGameSpace().getResourceManager().addResourceToWarehouse(r,msg.getDepot());
+            } catch (InvalidActionException e) {
+                e.printStackTrace();
+                VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());
+                notifyAllObserver(ObserverType.VIEW, msg1);
+            }
         }
     }
 
     /*---------------------------------------------------------------------------------------------------------------------*/
-                    //      not implemented here!!
+    //      not implemented here!!
 
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {

@@ -30,7 +30,7 @@ import java.util.*;
      * this method get one Action Token random, at the end of the player turn
      * these cards are all stored in a Specific Deck
      */
-    public ActionToken getActionTokenDeck(BoardManager boardManager, SoloPlayer player) throws InvalidActionException {
+    public ActionToken playActionToken(BoardManager boardManager, SoloPlayer player) throws InvalidActionException {
         Random random = new Random();
         ActionToken actionToken = this.actionTokens.get(random.nextInt(this.actionTokens.size()));
         actionToken.activeActionToken(boardManager, player);
