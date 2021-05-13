@@ -261,6 +261,7 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
+
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
 

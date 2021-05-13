@@ -205,6 +205,11 @@ public class ProductionPowerController extends Observable implements ControllerO
     }
 
     @Override
+    public void receiveMsg(CChangeActionTurnMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
 
     }

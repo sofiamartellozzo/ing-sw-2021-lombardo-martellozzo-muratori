@@ -2,6 +2,8 @@ package it.polimi.ingsw.message.viewMsg;
 
 import it.polimi.ingsw.message.ViewObserver;
 
+import it.polimi.ingsw.model.ActionToken;
+
 /**
  * TurnController ---> VV ---> CLI/GUI
  *
@@ -11,9 +13,10 @@ import it.polimi.ingsw.message.ViewObserver;
  */
 public class VActionTokenActivateMsg extends ViewGameMsg{
     private final String username;
-    private final int actionToken;
+    private ActionToken actionToken;
 
-    public VActionTokenActivateMsg(String msgContent, String username, int actionToken) {
+
+    public VActionTokenActivateMsg(String msgContent, String username, ActionToken actionToken) {
         super(msgContent);
         this.username = username;
         this.actionToken = actionToken;
@@ -23,7 +26,7 @@ public class VActionTokenActivateMsg extends ViewGameMsg{
         return username;
     }
 
-    public int getActionToken() {
+    public ActionToken getActionToken() {
         return actionToken;
     }
 

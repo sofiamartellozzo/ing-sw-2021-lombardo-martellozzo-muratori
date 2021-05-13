@@ -158,6 +158,16 @@ public class DevelopmentCardTable implements Serializable {
     }
 
     /**
+     * method used to show BUT NOT REMOVE the last card of a deck in the development table
+     * @param row
+     * @param column
+     * @return
+     */
+    public DevelopmentCard showLastCard(int row, int column){
+        return table[row][column].getDevelopDeck().get(table[row][column].getDevelopDeck().size()-1);
+    }
+
+    /**
      * create a copy of the card Table Card
      * @return
      * @throws FileNotFoundException

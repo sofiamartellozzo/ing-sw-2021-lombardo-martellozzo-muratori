@@ -203,6 +203,11 @@ public class ActionController extends Observable implements ControllerObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(CChangeActionTurnMsg msg) {
+
+    }
+
     /**
      * manage the request of the client to move a resource from a depot to another
      *

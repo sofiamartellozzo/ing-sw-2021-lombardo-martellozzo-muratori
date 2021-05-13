@@ -34,6 +34,9 @@ public interface ControllerObserver extends Observer{
     /* from CLI to Action Controller, to buy a Develop Card*/
     public void receiveMsg(CBuyDevelopCardResponseMsg msg);
 
+    /*from CLI to choose another action turn*/
+    public void receiveMsg(CChangeActionTurnMsg msg);
+
     /*from client (CLI) to the ActionController */
     public void receiveMsg(CMoveResourceInfoMsg msg);
 
@@ -45,7 +48,7 @@ public interface ControllerObserver extends Observer{
     /*from client (CLI) to the PPController, to activate it*/
     public void receiveMsg(CActivateProductionPowerResponseMsg msg);
 
-    void receiveMsg(CChooseDiscardResponseMsg msg);
+    public void receiveMsg(CChooseDiscardResponseMsg msg);
 
 
 

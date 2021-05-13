@@ -29,4 +29,12 @@ public class SmallDevelopCard  {
     public int getLevel() {
         return level;
     }
+
+
+    @Override
+    public String toString() {
+        return "SmallDevelopCard" +
+                "color =" + color +
+                ", level =" + level;
+    }
 }

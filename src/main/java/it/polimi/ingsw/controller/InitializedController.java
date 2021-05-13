@@ -379,6 +379,12 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
+    public void receiveMsg(CChangeActionTurnMsg msg) {
+
+    }
+
+
+    @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
 
     }
@@ -393,6 +399,7 @@ public class InitializedController extends Observable implements ControllerObser
 
     }
 
+
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
@@ -402,7 +409,6 @@ public class InitializedController extends Observable implements ControllerObser
     public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
     }
-
 
 
     @Override
@@ -424,6 +430,5 @@ public class InitializedController extends Observable implements ControllerObser
     public void receiveMsg(CVStartInitializationMsg msg) {
         //not here (VV-->Lobby and CLI)
     }
-
 
 }

@@ -27,12 +27,12 @@ public class DevelopmentCardTableDisplay {
     }
 
     public void displayCardTable() {
-    //public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
-        //DevelopmentCardDeck[][] squareCards = new DevelopmentCardDeck[3][4];
+        DevelopmentCardDeck[][] squareCards = new DevelopmentCardDeck[3][4];
 
         //create the hash map for the cost of a Card
-        /*ArrayList<Resource> array = new ArrayList<>();
+        ArrayList<Resource> array = new ArrayList<>();
         array.add(0, new Resource(Color.BLUE));
         array.add(1, new Resource(Color.PURPLE));
 
@@ -43,10 +43,10 @@ public class DevelopmentCardTableDisplay {
         ArrayList<Resource> cost = new ArrayList<>();
         cost.add(0, new Resource(Color.BLUE));
 
-        DevelopmentCard card1 = new DevelopmentCard(3, Color.GREEN, 1, array, proceeds, cost);
-        DevelopmentCard card2 = new DevelopmentCard(2, Color.GREEN, 1, array, proceeds, cost);
-        DevelopmentCard card3 = new DevelopmentCard(6, Color.GREEN, 1, array, proceeds, cost);
-        DevelopmentCard card4 = new DevelopmentCard(3, Color.GREEN, 1, array, proceeds, cost);
+        DevelopmentCard card1 = new DevelopmentCard(3,1, Color.GREEN, 1, array, proceeds, cost);
+        DevelopmentCard card2 = new DevelopmentCard(2,2, Color.GREEN, 1, array, proceeds, cost);
+        DevelopmentCard card3 = new DevelopmentCard(6,3, Color.GREEN, 1, array, proceeds, cost);
+        DevelopmentCard card4 = new DevelopmentCard(3,1, Color.GREEN, 1, array, proceeds, cost);
 
         ArrayList<DevelopmentCard> list = new ArrayList<>();
         list.add(card1);
@@ -55,10 +55,10 @@ public class DevelopmentCardTableDisplay {
         list.add(card4);
         DevelopmentCardDeck smallDeck1 = new DevelopmentCardDeck(list);
 
-        DevelopmentCard card91 = new DevelopmentCard(3, Color.GREEN, 2, array, proceeds, cost);
-        DevelopmentCard card92 = new DevelopmentCard(2, Color.GREEN, 2, array, proceeds, cost);
-        DevelopmentCard card93 = new DevelopmentCard(6, Color.GREEN, 2, array, proceeds, cost);
-        DevelopmentCard card94 = new DevelopmentCard(3, Color.GREEN, 2, array, proceeds, cost);
+        DevelopmentCard card91 = new DevelopmentCard(3, 2,Color.GREEN, 2, array, proceeds, cost);
+        DevelopmentCard card92 = new DevelopmentCard(2,1, Color.GREEN, 2, array, proceeds, cost);
+        DevelopmentCard card93 = new DevelopmentCard(6,4, Color.GREEN, 2, array, proceeds, cost);
+        DevelopmentCard card94 = new DevelopmentCard(3,1, Color.GREEN, 2, array, proceeds, cost);
 
         ArrayList<DevelopmentCard> list12 = new ArrayList<>();
         list12.add(card91);
@@ -67,10 +67,10 @@ public class DevelopmentCardTableDisplay {
         list12.add(card94);
         DevelopmentCardDeck smallDeck12 = new DevelopmentCardDeck(list12);
 
-        DevelopmentCard card81 = new DevelopmentCard(3, Color.GREEN, 3, array, proceeds, cost);
-        DevelopmentCard card82 = new DevelopmentCard(2, Color.GREEN, 3, array, proceeds, cost);
-        DevelopmentCard card83 = new DevelopmentCard(6, Color.GREEN, 3, array, proceeds, cost);
-        DevelopmentCard card84 = new DevelopmentCard(3, Color.GREEN, 3, array, proceeds, cost);
+        DevelopmentCard card81 = new DevelopmentCard(3,2, Color.GREEN, 3, array, proceeds, cost);
+        DevelopmentCard card82 = new DevelopmentCard(2,2, Color.GREEN, 3, array, proceeds, cost);
+        DevelopmentCard card83 = new DevelopmentCard(6,2, Color.GREEN, 3, array, proceeds, cost);
+        DevelopmentCard card84 = new DevelopmentCard(3,2, Color.GREEN, 3, array, proceeds, cost);
 
         ArrayList<DevelopmentCard> list13 = new ArrayList<>();
         list13.add(card81);
@@ -80,20 +80,20 @@ public class DevelopmentCardTableDisplay {
         DevelopmentCardDeck smallDeck13 = new DevelopmentCardDeck(list13);
 
 
-        DevelopmentCard card5 = new DevelopmentCard(3, Color.BLUE, 1, array, proceeds, cost);
-        DevelopmentCard card6 = new DevelopmentCard(2, Color.BLUE, 1, array, proceeds, cost);
-        DevelopmentCard card7 = new DevelopmentCard(6, Color.BLUE, 1, array, proceeds, cost);
-        DevelopmentCard card8 = new DevelopmentCard(3, Color.BLUE, 1, array, proceeds, cost);
+        DevelopmentCard card5 = new DevelopmentCard(3,2, Color.BLUE, 1, array, proceeds, cost);
+        DevelopmentCard card6 = new DevelopmentCard(2,2, Color.BLUE, 1, array, proceeds, cost);
+        DevelopmentCard card7 = new DevelopmentCard(6, 2,Color.BLUE, 1, array, proceeds, cost);
+        DevelopmentCard card8 = new DevelopmentCard(3,2, Color.BLUE, 1, array, proceeds, cost);
 
-        DevelopmentCard card55 = new DevelopmentCard(3, Color.BLUE, 2, array, proceeds, cost);
-        DevelopmentCard card66 = new DevelopmentCard(2, Color.BLUE, 2, array, proceeds, cost);
-        DevelopmentCard card77 = new DevelopmentCard(6, Color.BLUE, 2, array, proceeds, cost);
-        DevelopmentCard card88 = new DevelopmentCard(3, Color.BLUE, 2, array, proceeds, cost);
+        DevelopmentCard card55 = new DevelopmentCard(3,2,Color.BLUE, 2, array, proceeds, cost);
+        DevelopmentCard card66 = new DevelopmentCard(2,2, Color.BLUE, 2, array, proceeds, cost);
+        DevelopmentCard card77 = new DevelopmentCard(6,2, Color.BLUE, 2, array, proceeds, cost);
+        DevelopmentCard card88 = new DevelopmentCard(3,2, Color.BLUE, 2, array, proceeds, cost);
 
-        DevelopmentCard card555 = new DevelopmentCard(3, Color.BLUE, 3, array, proceeds, cost);
-        DevelopmentCard card666 = new DevelopmentCard(2, Color.BLUE, 3, array, proceeds, cost);
-        DevelopmentCard card777 = new DevelopmentCard(6, Color.BLUE, 3, array, proceeds, cost);
-        DevelopmentCard card888 = new DevelopmentCard(3, Color.BLUE, 3, array, proceeds, cost);
+        DevelopmentCard card555 = new DevelopmentCard(3,2, Color.BLUE, 3, array, proceeds, cost);
+        DevelopmentCard card666 = new DevelopmentCard(2,2, Color.BLUE, 3, array, proceeds, cost);
+        DevelopmentCard card777 = new DevelopmentCard(6,2, Color.BLUE, 3, array, proceeds, cost);
+        DevelopmentCard card888 = new DevelopmentCard(3,1, Color.BLUE, 3, array, proceeds, cost);
 
         ArrayList<DevelopmentCard> list1 = new ArrayList<>();
         list1.add(card5);
@@ -116,10 +116,10 @@ public class DevelopmentCardTableDisplay {
         list111.add(card888);
         DevelopmentCardDeck smallDeck222 = new DevelopmentCardDeck(list111);
 
-        DevelopmentCard card9 = new DevelopmentCard(3, Color.YELLOW, 1, array, proceeds, cost);
-        DevelopmentCard card10 = new DevelopmentCard(2, Color.YELLOW, 1, array, proceeds, cost);
-        DevelopmentCard card11 = new DevelopmentCard(6, Color.YELLOW, 1, array, proceeds, cost);
-        DevelopmentCard card12 = new DevelopmentCard(3, Color.YELLOW, 1, array, proceeds, cost);
+        DevelopmentCard card9 = new DevelopmentCard(3, 1,Color.YELLOW, 1, array, proceeds, cost);
+        DevelopmentCard card10 = new DevelopmentCard(2, 1,Color.YELLOW, 1, array, proceeds, cost);
+        DevelopmentCard card11 = new DevelopmentCard(6, 1,Color.YELLOW, 1, array, proceeds, cost);
+        DevelopmentCard card12 = new DevelopmentCard(3, 1,Color.YELLOW, 1, array, proceeds, cost);
 
         ArrayList<DevelopmentCard> list2 = new ArrayList<>();
         list2.add(card9);
@@ -128,10 +128,10 @@ public class DevelopmentCardTableDisplay {
         list2.add(card12);
         DevelopmentCardDeck smallDeck3 = new DevelopmentCardDeck(list2);
 
-        DevelopmentCard card13 = new DevelopmentCard(3, Color.PURPLE, 1, array, proceeds, cost);
-        DevelopmentCard card14 = new DevelopmentCard(2, Color.PURPLE, 1, array, proceeds, cost);
-        DevelopmentCard card15 = new DevelopmentCard(6, Color.PURPLE, 1, array, proceeds, cost);
-        DevelopmentCard card16 = new DevelopmentCard(3, Color.PURPLE, 1, array, proceeds, cost);
+        DevelopmentCard card13 = new DevelopmentCard(3,2, Color.PURPLE, 1, array, proceeds, cost);
+        DevelopmentCard card14 = new DevelopmentCard(2,2, Color.PURPLE, 1, array, proceeds, cost);
+        DevelopmentCard card15 = new DevelopmentCard(6, 2,Color.PURPLE, 1, array, proceeds, cost);
+        DevelopmentCard card16 = new DevelopmentCard(3,2, Color.PURPLE, 1, array, proceeds, cost);
 
         ArrayList<DevelopmentCard> list3 = new ArrayList<>();
         list3.add(card13);
@@ -155,13 +155,28 @@ public class DevelopmentCardTableDisplay {
 
         squareCards[0][3] = smallDeck4;
         squareCards[1][3] = smallDeck4;
-        squareCards[2][3] = smallDeck4;*/
+        squareCards[2][3] = smallDeck4;
+
+        boolean[][] available = new boolean[3][4];
+        available[1][0] = true;
+        available[2][0] = false;
+        available[0][0] = true;
+        available[2][1] = true;
+        available[1][1] = true;
+        available[0][1] = false;
+        available[2][2] = true;
+        available[1][2] = true;
+        available[0][2] = true;
+        available[0][3] = true;
+        available[1][3] = true;
+        available[2][3] = true;*/
 
 
         //DevelopmentCardTable developmentCardTable = DevelopmentCardTable.getInstance(squareCards);
 
         System.out.println(AnsiColors.RED_BOLD + "HERE IS THE DEVELOPMENT CARD TABLE\n" + AnsiColors.RESET);
-        
+
+
 
             /*row6 += tableCardCopy.getDeckTable(2,j).takeCard().getvictorytostring();
             row5 += tableCardCopy.getDeckTable(1,j).takeCard().getEarnForCli();
@@ -194,12 +209,12 @@ public class DevelopmentCardTableDisplay {
         for (int i = 2; i >= 0; i--) {
             for (int j = 0; j < 4; j++) {
                 if(getAvailable[i][j]) {
-                    System.out.println("CARD" + "(" + i + "," + j + ")");
-                    System.out.print(tableCard.getTable()[i][j].getDevelopDeck().get(tableCard.getTable()[i][j].getDevelopDeck().size()-1).toString());
+                    System.out.println("CARD" + "(" + i + "," + j + "): ");
+                    System.out.println(tableCard.showLastCard(i,j).toString()+"\n");
                 }else{
                     //if this deck is unavailable ( size = 0) this will be printed with another color
-                    System.out.println("CARD" + "(" + i + "," + j + ")");
-                    System.out.print(AnsiColors.ANSI_RED+tableCard.getTable()[i][j].getDevelopDeck().get(tableCard.getTable()[i][j].getDevelopDeck().size()-1).toString()+AnsiColors.RESET);
+                    System.out.println(AnsiColors.RED_BRIGHT+"NOT AVAILABLE CARD" + "(" + i + "," + j + "): "+AnsiColors.RESET);
+                    System.out.println(tableCard.showLastCard(i,j).toString()+AnsiColors.RESET+"\n");
                 }
             }
 

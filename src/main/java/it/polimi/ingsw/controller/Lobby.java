@@ -449,6 +449,11 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     @Override
+    public void receiveMsg(CChangeActionTurnMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
         //send to TurnController by Room and then to ActionController
         try {
@@ -497,11 +502,6 @@ public class Lobby extends Observable implements ControllerObserver {
             error.printStackTrace();
         }
     }
-
-
-
-
-
 
 
     /*----------------------------------------------------------------------------------------------------------------*/

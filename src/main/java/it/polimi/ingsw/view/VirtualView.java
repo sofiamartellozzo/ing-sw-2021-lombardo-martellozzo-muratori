@@ -131,6 +131,12 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
+    public void receiveMsg(CChangeActionTurnMsg msg) {
+        //send to Turn Controller
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
         //send to Action Controller
         notifyAllObserver(ObserverType.CONTROLLER, msg);
@@ -362,8 +368,6 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             sendToClient(msg);
         }
     }
-
-
 
 
     @Override

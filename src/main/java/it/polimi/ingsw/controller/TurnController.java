@@ -162,7 +162,7 @@ public class TurnController extends Observable implements ControllerObserver {
         while (!spt.checkEndGame()) {
             if (spt.checkEndTurn()) {
                 ActionToken actionTokenActivated = spt.activateActionToken();
-                VActionTokenActivateMsg msg1 = new VActionTokenActivateMsg("an Action Token has been activated", player.getUsername(), actionTokenActivated.getCardID());
+                VActionTokenActivateMsg msg1 = new VActionTokenActivateMsg("an Action Token has been activated", player.getUsername(), actionTokenActivated);
                 notifyAllObserver(ObserverType.VIEW, msg1);
                 startSoloPlayerTurn(player);
             }
@@ -323,6 +323,11 @@ public class TurnController extends Observable implements ControllerObserver {
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
         //to ACTION_CONTROLLER
         notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
+    public void receiveMsg(CChangeActionTurnMsg msg) {
+
     }
 
 

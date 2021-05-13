@@ -111,34 +111,16 @@ public class DevelopmentCard extends Card implements Serializable {
     public String toString() {
         return "  ______________ \n" +
                 "|   level:" + level + "    |\n" +
-                "|   cost:" + getCostForCli() + "   |\n" +
+                "|   cost:" + getCostForCli() + "  |\n" +
                 "|              |\n" +
                 "|              |\n" +
-                "|    pay:1     |\n" +
-                "|    earn:1    |\n" +
-                "|   vPoints:1  |\n" +
+                "|    pay:"+getPayForCli()+"    |\n" +
+                "|    earn:"+getEarnForCli()+" |\n" +
+                "|   vPoints:"+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"  |\n" +
                 "|______________| ";
-        /*"DEVELOPMENT CARD: "+"      "+
-        "color: "+color+"      "+
-        "level: " +level+"     "+
-        "cost: " +getCostForCli()+"    "+
-        "pay: "+getPayForCli()+ "    "+
-        "earn:"+ getEarnForCli()+ "     "+
-        "vPoints: "+getVictoryPoints();*/
 
-        /*"["+color+",Level:"+level+",Cost:" +getCostForCli()+",Pay:"+getPayForCli()+",Earn:"+ getEarnForCli()+",vPoints:"+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"]";
-
-    }*/
     }
 
-    /*public Color getColorForCli(){
-        if(color == Color.GREEN)
-        {
-            System.out.print(AnsiColors.GREEN_BOLD+"GREEN"+AnsiColors.RESET+",Level:"+AnsiColors.GREEN_BOLD+level+AnsiColors.RESET);
-            return Color.GREEN;
-        }
-        throw new IllegalArgumentException("error");
-    }*/
     public String getColortoString(){
         return "color: "+color+"\t\t\t";
     }
@@ -159,6 +141,8 @@ public class DevelopmentCard extends Card implements Serializable {
     }
 
 
+/*-------------------------------------------------------------------------------------------------------------------------*/
+                                  //METHODS TO CREATE THE RESOURCES
 
     public String getCostForCli()
     {

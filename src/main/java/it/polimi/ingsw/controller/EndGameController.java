@@ -146,6 +146,11 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
+    public void receiveMsg(CChangeActionTurnMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
 
         //NOT IMPLEMENTED HERE
@@ -171,6 +176,7 @@ public class EndGameController extends Observable implements ControllerObserver 
     @Override
     public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
+        //NOT IMPLEMENTED HERE
     }
 
 

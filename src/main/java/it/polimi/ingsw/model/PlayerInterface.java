@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.market.MarbleSpecial;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface PlayerInterface {
+public interface PlayerInterface{
     public String getUsername();
     public int getNumber();
     public BuyCard getBuyCard();

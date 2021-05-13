@@ -103,7 +103,7 @@ public class FaithTrackDisplay {
 
         }
         System.out.println(AnsiColors.RED_BOLD+"\n                       |--------------------|                 |-----------------------------|             |---------------------------------|"+AnsiColors.RESET);
-        System.out.print(AnsiColors.YELLOW_BOLD+  "                           [Pop'sFavor:"+pop1+"]"+AnsiColors.YELLOW_BRIGHT+"                              [Pop'sFavor:"+pop2+"]"+AnsiColors.RED_BOLD+ "                                [Pop'sFavor:"+pop3+"]"+ AnsiColors.RESET);
+        System.out.println(AnsiColors.YELLOW_BOLD+  "                           [Pop'sFavor:"+pop1+"]"+AnsiColors.YELLOW_BRIGHT+"                              [Pop'sFavor:"+pop2+"]"+AnsiColors.RED_BOLD+ "                                [Pop'sFavor:"+pop3+"]"+ AnsiColors.RESET);
 
     }
 }
