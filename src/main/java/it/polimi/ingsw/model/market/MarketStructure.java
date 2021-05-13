@@ -24,6 +24,7 @@ public class MarketStructure implements Serializable {
         this.slide = slide;
     }
 
+
     public Marble[][] getStructure() {
         return structure;
     }

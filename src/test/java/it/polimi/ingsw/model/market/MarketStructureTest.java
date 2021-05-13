@@ -31,7 +31,7 @@ public class MarketStructureTest extends TestCase {
         Marble m11 = new ColoredMarble(Color.YELLOW);
         Marble m12 = new ColoredMarble(Color.WHITE);
         Marble[][] structure = {{m,m1,m2,m3},{m4,m5,m6,m7},{m8,m9,m10,m11}};
-        marketStructure = new MarketStructure(structure, m12);
+        marketStructure = new MarketStructure(structure,m12);
     }
 
     @After

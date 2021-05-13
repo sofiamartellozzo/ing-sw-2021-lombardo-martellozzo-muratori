@@ -57,12 +57,13 @@ public class CardSpaceDisplay {
             }
             else {
                 System.out.println("CARD Space"+(i+1)+": ");
-                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getColor()+"\n");
+                /*System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getColor()+"\n");
                 System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getleveltostring()+"\n");
                 System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getcosttostring()+"\n");
                 System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getpaytostring()+"\n");
                 System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getearntostring()+"\n");
-                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getvictorytostring()+"\n");
+                System.out.print(player.getGameSpace().getCardSpace(i).getUpperCard().getvictorytostring()+"\n");*/
+                System.out.println(cardSpaces.get(i).getUpperCard().toString());
 
             }
             System.out.print("\n");

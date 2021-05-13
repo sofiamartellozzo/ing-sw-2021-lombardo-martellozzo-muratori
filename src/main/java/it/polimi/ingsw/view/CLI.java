@@ -49,6 +49,7 @@ public class CLI extends Observable implements ViewObserver {
 
     //local variables used to save locally the dates about a player and his game space
 
+    private BoardManager boardManager;
     private MarketStructure marketStructureData; //contains the data about the market
     private PlayerInterface player;
     private LeaderCardDeck leaderCards;
@@ -57,6 +58,7 @@ public class CLI extends Observable implements ViewObserver {
     private Warehouse warehouse;
     private FaithTrack faithTrack;
     private ArrayList<CardSpace> cardSpaces;
+    private ArrayList<TurnAction> possibleActions;   //contains the updated actions that a player can make
 
     /* create a cache of the Leader Card chosen by this client */
     private List<Integer> myLeaderCards;
@@ -513,6 +515,7 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VSendPlayerDataMsg msg) {
 
         player = msg.getPlayer();
+        boardManager = msg.getBoardManager();
         marketStructureData = msg.getBoardManager().getMarketStructure();
         leaderCards = msg.getBoardManager().getLeaderCardDeck();
         developmentCardTable = msg.getBoardManager().getDevelopmentCardTable();
@@ -531,6 +534,8 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VChooseActionTurnRequestMsg msg) {
 
         if (msg.getUsername().equals(username)) {
+            possibleActions = msg.getAvailableActions();
+
             System.out.println(msg.getMsgContent());
             System.out.println(" The actions that you are allowed to do are: " + msg.getAvailableActions());
             System.out.println(" Write the action you chose with _ between every word!! ");
@@ -924,13 +929,15 @@ public class CLI extends Observable implements ViewObserver {
                 }
                 else  //if all cards are not available he has to change the action he wants to play and send it to the controller
                     {
-                        System.out.println(AnsiColors.RED_BOLD+" Any Development Card i available, so you have to change the action you want to play! "+AnsiColors.RESET);
+                        System.out.println(AnsiColors.RED_BOLD+" Any Development Card is available, so you have to change the action you want to play! "+AnsiColors.RESET);
+                        System.out.println(" The actions you can choose from are: " +possibleActions);
                         System.out.println(" Write the action you chose with _ between every word! ");
                         in.reset();
+
                         String action = in.nextLine();
                         TurnAction turnAction = returnActionFromString(action.toLowerCase());
                         //send a msg to change the action
-                        CChangeActionTurnMsg request = new CChangeActionTurnMsg("I chose another action ",username,turnAction);
+                        CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ",username,turnAction);
                         this.client.sendMsg(request);
                     }
 
@@ -1020,14 +1027,14 @@ public class CLI extends Observable implements ViewObserver {
                     if (choice.toLowerCase().equals("row")) {
                         try {
 
-                            marketStructureData.rowMoveMarble(number-1, (Player) player);  //update the market situation (changing the row)
+                            marketStructureData.rowMoveMarble(number, (Player) player);  //update the market situation (changing the row)
                         } catch (InvalidActionException e) {
                             e.printStackTrace();
                         }
                     } else {
                         try {
 
-                            marketStructureData.columnMoveMarble(number-1, (Player) this.player);  //update the market situation (changing the column)
+                            marketStructureData.columnMoveMarble(number, (Player) this.player);  //update the market situation (changing the column)
                         } catch (InvalidActionException e) {
                             e.printStackTrace();
                         }
@@ -1217,6 +1224,11 @@ public class CLI extends Observable implements ViewObserver {
             if(msg.getUsername().equals(username)) {
                 System.out.println(msg.getMsgContent());
                 System.out.println("Action Token used: "+msg.getActionToken().toString());
+                try {
+                    msg.getActionToken().activeActionToken(boardManager,(SoloPlayer) player);
+                } catch (InvalidActionException e) {
+                    e.printStackTrace();
+                }
 
             }
         }

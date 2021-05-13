@@ -13,7 +13,6 @@ import it.polimi.ingsw.model.board.CardSpace;
 public class DevelopmentCardTable implements Serializable {
 
     private DevelopmentCardDeck[][] table;     /* Matrix made of ArrayLists of DevelopmentCard */
-    private static DevelopmentCardTable developmentCardTable = null;
 
     /**
      * constructor of the class
@@ -23,6 +22,7 @@ public class DevelopmentCardTable implements Serializable {
     public DevelopmentCardTable(DevelopmentCardDeck[][] table) {
         this.table = table;
     }
+
 
     // Getter methods
 
@@ -151,17 +151,6 @@ public class DevelopmentCardTable implements Serializable {
         return table[row][column].getDevelopDeck().get(table[row][column].getDevelopDeck().size()-1);
     }
 
-    /**
-     * create a copy of the card Table Card
-     * @return
-     * @throws FileNotFoundException
-     */
-    public TableCardCopy copyOFTheTable() throws FileNotFoundException {
 
-        TableCardCopy tableCardCopy = new TableCardCopy();
-        tableCardCopy.storeTable(developmentCardTable.getTable());
-
-        return tableCardCopy;
-    }
 
 }
