@@ -51,5 +51,5 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CChooseDiscardResponseMsg msg);
 
 
-
+    void receiveMsg(CStopPPMsg cStopPPMsg);
 }

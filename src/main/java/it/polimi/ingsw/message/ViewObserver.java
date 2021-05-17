@@ -5,6 +5,8 @@ import it.polimi.ingsw.message.controllerMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 
+import java.io.IOException;
+
 /**
  * OBSERVER
  * interface with the method of the view
@@ -17,6 +19,9 @@ public interface ViewObserver extends Observer{
 
     /* from Room after initialization, containing Player's data*/
     public void receiveMsg(VSendPlayerDataMsg msg);
+
+    /* from Room containing the info about the Room*/
+    void receiveMsg(VRoomInfoMsg msg);
 
     /* multiple player, from initialized C...*/
     public void receiveMsg(VChooseResourceAndDepotMsg msg);
@@ -59,5 +64,6 @@ public interface ViewObserver extends Observer{
     /* only SOLO mode, after the player end the turn (is Lorenzo playing) */
     public void receiveMsg(VActionTokenActivateMsg msg);
 
-    void receiveMsg(CVStartInitializationMsg msg);
+    void receiveMsg(CVStartInitializationMsg msg) throws IOException;
+
 }

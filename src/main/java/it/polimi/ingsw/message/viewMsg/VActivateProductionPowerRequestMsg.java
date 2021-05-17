@@ -2,6 +2,8 @@ package it.polimi.ingsw.message.viewMsg;
 
 import it.polimi.ingsw.message.ViewObserver;
 
+import java.util.ArrayList;
+
 /**
  * PPController ---> VV ---> CLI
  *
@@ -15,10 +17,12 @@ import it.polimi.ingsw.message.ViewObserver;
  */
 public class VActivateProductionPowerRequestMsg extends ViewGameMsg{
     private String username;
+    private ArrayList<Integer> activatablePP;
 
-    public VActivateProductionPowerRequestMsg(String msgContent, String username) {
+    public VActivateProductionPowerRequestMsg(String msgContent, String username, ArrayList<Integer> activatablePP) {
         super(msgContent);
         this.username=username;
+        this.activatablePP=activatablePP;
     }
 
     public String getUsername(){return username;}

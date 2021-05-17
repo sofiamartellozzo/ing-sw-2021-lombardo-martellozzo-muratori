@@ -525,6 +525,11 @@ public class CLI extends Observable implements ViewObserver {
         cardSpaces = msg.getPlayer().getGameSpace().getCardSpaces();
     }
 
+    @Override
+    public void receiveMsg(VRoomInfoMsg vRoomInfoMsg) {
+
+    }
+
     /**
      * this msg ask to the client which action he wants to play from the actions that he can do!!
      *
@@ -644,7 +649,16 @@ public class CLI extends Observable implements ViewObserver {
                 CChooseLeaderCardResponseMsg response2 = new CChooseLeaderCardResponseMsg(" chosen cards ", cardToRemoveOrActivate, msg.getUsername(), msg.getWhatFor());
                 this.client.sendMsg(response2);
             } else {
-                System.out.println("Sorry you cannot discard any Leader Card!");
+                System.out.println("Sorry you cannot "+msg.getWhatFor()+" any Leader Card!");
+                System.out.println(" The actions you can choose from are: " +possibleActions);
+                System.out.println(" Write the action you chose with _ between every word! ");
+                in.reset();
+
+                String action = in.nextLine();
+                TurnAction turnAction = returnActionFromString(action.toLowerCase());
+                //send a msg to change the action
+                CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ",username,turnAction);
+                this.client.sendMsg(request);
             }
         }
     }

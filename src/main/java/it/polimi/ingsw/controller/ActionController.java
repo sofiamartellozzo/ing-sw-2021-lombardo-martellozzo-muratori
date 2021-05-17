@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import com.google.gson.internal.LinkedTreeMap;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
@@ -8,6 +9,7 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Inactive;
+import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.view.VirtualView;
 import it.polimi.ingsw.model.card.DevelopmentCard;
@@ -22,6 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ActionController extends Observable implements ControllerObserver {
+
+    public PlayerInterface getPlayer() {
+        return player;
+    }
 
     /*the actual player of the turn*/
     private PlayerInterface player;
@@ -144,7 +150,7 @@ public class ActionController extends Observable implements ControllerObserver {
             case ACTIVE_LEADER_CARD:
                 //ask the player which card he want to active, before see if there are any that
                 //is inactive, otherwise send a msg that this action can't be made
-                ArrayList<Integer> possibleCardToBeActive = cardAbleForPlayer();
+                ArrayList<Integer> possibleCardToBeActive = cardActivatableForPlayer();
                 VChooseLeaderCardRequestMsg request5 = new VChooseLeaderCardRequestMsg("Because you chose to activated a card, select which one", possibleCardToBeActive, player.getUsername(), "active");
                 notifyAllObserver(ObserverType.VIEW, request5);
                 break;
@@ -175,6 +181,74 @@ public class ActionController extends Observable implements ControllerObserver {
             }
         }
         return possibleCardToBeDiscarded;
+    }
+
+    public ArrayList<Integer> cardActivatableForPlayer(){
+        //The result
+        ArrayList<Integer> possibleActivatableCards = new ArrayList<>();
+        //The player's leader cards
+        ArrayList<LeaderCard> leaderCards = this.player.getLeaderCards();
+        //The resource manager to check if has enough resources
+        ResourceManager resourceManager = this.player.getGameSpace().getResourceManager();
+        //All the development card in the personal board
+        ArrayList<DevelopmentCard> allDevelopmentCards = (ArrayList<DevelopmentCard>) player.getGameSpace().getAllCards().clone();
+        if(leaderCards!=null){
+            //For each leader card
+            for(LeaderCard card: leaderCards){
+                //Check if inactive
+                if(card.getState() instanceof Inactive){
+                    //If true, checking the requirements
+                    ArrayList<Object> requirements = card.getRequirements();
+                    ArrayList<Resource> requiredResources = new ArrayList<>();
+                    //If at the end the counter will be 0, all requirements are satisfied
+                    int counter = requirements.size();
+                    for(int i=0;i<requirements.size();i++){
+                        Object[] keys = ((LinkedTreeMap)requirements.get(i)).keySet().toArray();
+                        Object[] values = ((LinkedTreeMap)requirements.get(i)).values().toArray();
+                        Color color = null;
+                        for(int j=0;j<keys.length;j++){
+                            String key = (String) keys[j];
+                            if(key.equals("color")){
+                                String value = (String) values[j];
+                                switch(value){
+                                    case "GREEN": color=Color.GREEN;break; //Color -> Card
+                                    case "BLUE": color=Color.BLUE;break; //Color -> Card/Resource
+                                    case "YELLOW": color=Color.YELLOW;break;//Color -> Card/Resource
+                                    case "PURPLE": color=Color.PURPLE;break;//Color -> Card/Resource
+                                    case "GREY": color=Color.GREY;break;//Color -> Resource
+                                }
+                            }else if(key.equals("typeResource")){
+                                String value = (String) values[j];
+                                //Adding the resource to count at the end
+                                switch(value){
+                                    case "SHIELD":requiredResources.add(new Resource(TypeResource.SHIELD));break;
+                                    case "COIN":requiredResources.add(new Resource(TypeResource.COIN));break;
+                                    case "STONE":requiredResources.add(new Resource(TypeResource.STONE));break;
+                                    case "SERVANT":requiredResources.add(new Resource(TypeResource.SERVANT));break;
+                                }
+                            }else if(key.equals("level")){
+                                //The requirements it's a card
+                                Double value = (Double) values[j];
+                                for(int k=0;k<allDevelopmentCards.size();k++){
+                                    DevelopmentCard developmentCard = allDevelopmentCards.get(k);
+                                    if((developmentCard.getColor().equals(color) && ((value==0)||(value!=0 && developmentCard.getlevel()==value)))){
+                                        allDevelopmentCards.remove(k);
+                                        counter--;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(requiredResources.size()>0 && resourceManager.checkEnoughResources(requiredResources)){
+                        counter=0;
+                    }
+                    if(counter==0){
+                        possibleActivatableCards.add(card.getCardID());
+                    }
+                }
+            }
+        }
+        return possibleActivatableCards;
     }
 
     /**
@@ -301,6 +375,11 @@ public class ActionController extends Observable implements ControllerObserver {
 
     }
 
+    @Override
+    public void receiveMsg(CStopPPMsg cStopPPMsg) {
+
+    }
+
     /**
      * this msg from the client is for active a Leader Card or Discard it
      *
@@ -313,12 +392,13 @@ public class ActionController extends Observable implements ControllerObserver {
                 case "active":
                     //if the player ask to active it
                     try {
-                        if (!isSolo) {
-                            turn.activeLeaderCard(msg.getDiscardOrActiveCard());
-                        } else {
-                            soloPlayerTurn.activeLeaderCard(msg.getDiscardOrActiveCard());
+                        if(msg.getDiscardOrActiveCard()==0) {
+                            if (!isSolo) {
+                                turn.activeLeaderCard(msg.getDiscardOrActiveCard());
+                            } else {
+                                soloPlayerTurn.activeLeaderCard(msg.getDiscardOrActiveCard());
+                            }
                         }
-
                         nextAction();
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
@@ -329,17 +409,17 @@ public class ActionController extends Observable implements ControllerObserver {
                     //if the player ask to discard it
                     //then this player proceed in the faith track of one
                     try {
+                        if(msg.getDiscardOrActiveCard()==0) {
+                            if (!isSolo) {
+                                turn.discardLeaderCard(msg.getDiscardOrActiveCard());
+                            } else {
+                                soloPlayerTurn.discardLeaderCard(msg.getDiscardOrActiveCard());
+                            }
 
-                        if (!isSolo) {
-                            turn.discardLeaderCard(msg.getDiscardOrActiveCard());
-                        } else {
-                            soloPlayerTurn.discardLeaderCard(msg.getDiscardOrActiveCard());
+                            //and then notify everyone that this player increase the position
+                            VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("Someone increased his position: ", player.getUsername(), 1);
+                            notifyAllObserver(ObserverType.VIEW, notification);
                         }
-
-                        //and then notify everyone that this player increase the position
-                        VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("Someone increased his position: ", player.getUsername(), 1);
-                        notifyAllObserver(ObserverType.VIEW, notification);
-
                         nextAction();
                     } catch (InvalidActionException e) {
                         e.printStackTrace();

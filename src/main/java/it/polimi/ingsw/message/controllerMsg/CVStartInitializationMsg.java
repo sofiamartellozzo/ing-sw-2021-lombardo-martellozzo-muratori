@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.board.PersonalBoardInterface;
 import it.polimi.ingsw.model.card.LeaderCard;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -35,7 +36,11 @@ public class CVStartInitializationMsg extends GameMsg {
 
     @Override
     public void notifyHandler(ViewObserver viewObserver) {
-        viewObserver.receiveMsg(this);
+        try {
+            viewObserver.receiveMsg(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

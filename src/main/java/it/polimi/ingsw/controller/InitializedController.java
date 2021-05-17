@@ -421,6 +421,11 @@ public class InitializedController extends Observable implements ControllerObser
 
     }
 
+    @Override
+    public void receiveMsg(CStopPPMsg cStopPPMsg) {
+
+    }
+
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {

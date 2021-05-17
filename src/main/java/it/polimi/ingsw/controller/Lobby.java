@@ -9,10 +9,7 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VNotifyPositionIncreasedByMsg;
-import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VRoomSizeRequestMsg;
+import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -205,7 +202,6 @@ public class Lobby extends Observable implements ControllerObserver {
             this.notEmptyRoom.add(newRoom);
             updateRoomCounter();  //update the actual number of the rooms occupied
 
-            newRoom.addUser(username, userVV);
             if (gameMode.equals("0")){
                 //set the attribute of the Room true because the Client asked to play in Solo Mode
                 newRoom.setSoloMode(true);
@@ -221,6 +217,9 @@ public class Lobby extends Observable implements ControllerObserver {
                 VRoomSizeRequestMsg requestMsg = new VRoomSizeRequestMsg("Ask the client the size of the room where he wants to play", username, newRoom.getRoomID());
                 notifyAllObserver(ObserverType.VIEW, requestMsg);
             }
+
+            newRoom.addUser(username, userVV);
+
 
         } catch (LimitExceededException e) {
             e.printStackTrace();
@@ -359,6 +358,8 @@ public class Lobby extends Observable implements ControllerObserver {
         Room room = findRoomByID(roomId);
         if (room != null){
             room.setSIZE(msg.getRoomSize());
+            VRoomInfoMsg requestMsg = new VRoomInfoMsg("Sending the info about the room", room.getPlayersId(),room.getRoomID(),room.getPlayersId().size(),room.getSIZE());
+            notifyAllObserver(ObserverType.VIEW,requestMsg);
         }
 
     }
@@ -489,6 +490,11 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CChooseDiscardResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CStopPPMsg cStopPPMsg) {
 
     }
 

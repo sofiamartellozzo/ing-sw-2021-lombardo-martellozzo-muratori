@@ -164,6 +164,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
+    public void receiveMsg(CStopPPMsg msg) {
+        if(this.username.equals(msg.getUsername())){
+            notifyAllObserver(ObserverType.CONTROLLER,msg);
+        }
+    }
+
+    @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
         //send to Lobby(Room) and Action Controller
         notifyAllObserver(ObserverType.CONTROLLER, msg);
@@ -222,6 +229,15 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     public void receiveMsg(VSendPlayerDataMsg msg) {
         if (msg.getPlayer().getUsername().equals(this.username)){
             sendToClient(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VRoomInfoMsg msg){
+        for(String player: msg.getPlayersId()){
+            if(player.equals(this.username)){
+                sendToClient(msg);
+            }
         }
     }
 

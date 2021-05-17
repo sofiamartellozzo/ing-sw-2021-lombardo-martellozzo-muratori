@@ -377,6 +377,11 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     @Override
+    public void receiveMsg(CStopPPMsg cStopPPMsg) {
+
+    }
+
+    @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
         //to ACTIONCONTROLLER
         notifyAllObserver(ObserverType.CONTROLLER, msg);

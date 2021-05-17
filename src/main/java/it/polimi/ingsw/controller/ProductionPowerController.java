@@ -18,6 +18,7 @@ import java.util.*;
 public class ProductionPowerController extends Observable implements ControllerObserver {
 
     private final PlayerInterface player;
+    private Boolean notInterrupt;
     private final ArrayList<Resource> receivedResources;
 
     private Map<String, VirtualView> virtualView;
@@ -50,8 +51,8 @@ public class ProductionPowerController extends Observable implements ControllerO
     public void start(){
         //start production power action
         ArrayList<Integer> activatablePowers = player.getGameSpace().getActivatableCardSpace(player);
-        while(activatablePowers.size()>0){
-            VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, please choose which production power want to activate: ",player.getUsername());
+        while(activatablePowers.size()>0 && !notInterrupt){
+            VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, please choose which production power want to activate: ",player.getUsername(),activatablePowers);
             notifyAllObserver(ObserverType.VIEW,requestMsg);
             activatablePowers = player.getGameSpace().getActivatableCardSpace(player);
         }
@@ -153,6 +154,11 @@ public class ProductionPowerController extends Observable implements ControllerO
     @Override
     public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
+    }
+
+    @Override
+    public void receiveMsg(CStopPPMsg msg) {
+        notInterrupt=true;
     }
 
 

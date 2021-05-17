@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.message.viewMsg.VRoomInfoMsg;
 import it.polimi.ingsw.message.viewMsg.VSendPlayerDataMsg;
 import it.polimi.ingsw.message.viewMsg.VNotifyPositionIncreasedByMsg;
 import it.polimi.ingsw.model.BoardManager;
@@ -110,6 +111,7 @@ public class Room extends Observable {
 
     public void addVV(String userVV, VirtualView vV){
         listOfVirtualView.put(userVV, vV);
+        attachObserver(ObserverType.VIEW,vV);
     }
     /*----------------------------------------------------------------------------------------------------------------*/
 
@@ -148,6 +150,9 @@ public class Room extends Observable {
             }
 
             printRoomMessage("New player \"" + username + "\" added in the room!");
+
+
+
         } catch (LimitExceededException e) {
             e.printStackTrace();
         }
@@ -174,7 +179,6 @@ public class Room extends Observable {
     public void initializedGame() throws InvalidActionException {
         //creating the controller for the initialization
         //System.out.println(playersId.size());     DEBUGGING
-        attachAllVV();
         initializedController = new InitializedController(playersId, listOfVirtualView);
         attachObserver(ObserverType.CONTROLLER, initializedController);
         initializedController.createGame();

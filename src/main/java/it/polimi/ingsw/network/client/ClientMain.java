@@ -2,6 +2,8 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.exception.InputInvalidException;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.GUI.GUI;
+import javafx.application.Application;
 
 import java.util.Scanner;
 
@@ -43,7 +45,7 @@ public class ClientMain {
                 cli.start();
                 break;
             case 2:
-                //GIU
+                Application.launch(GUI.class,args);
                 break;
             default:
                 throw new Error("The number of the view don't mach..");
