@@ -27,6 +27,7 @@ public class DevelopmentCardTableDisplay {
     }
 
     public void displayCardTable() {
+
     /*public static void main(String[] args) {
 
         DevelopmentCardDeck[][] squareCards = new DevelopmentCardDeck[3][4];
@@ -34,14 +35,24 @@ public class DevelopmentCardTableDisplay {
         //create the hash map for the cost of a Card
         ArrayList<Resource> array = new ArrayList<>();
         array.add(0, new Resource(Color.BLUE));
-        array.add(1, new Resource(Color.PURPLE));
+        array.add(1, new Resource(Color.YELLOW));
+        array.add(2, new Resource(Color.YELLOW));
+        array.add(3, new Resource(Color.YELLOW));
+        array.add(4, new Resource(Color.YELLOW));
+        array.add(5, new Resource(Color.YELLOW));
+        array.add(6, new Resource(Color.YELLOW));
+        array.add(7, new Resource(Color.YELLOW));
 
         ArrayList<Resource> proceeds = new ArrayList<>();
         proceeds.add(0, new Resource(Color.GREY));
-        proceeds.add(1, new Resource(Color.YELLOW));
+        proceeds.add(1, new Resource(Color.GREY));
+        proceeds.add(2, new Resource(Color.YELLOW));
 
         ArrayList<Resource> cost = new ArrayList<>();
         cost.add(0, new Resource(Color.BLUE));
+        cost.add(1, new Resource(Color.BLUE));
+        cost.add(2, new Resource(Color.BLUE));
+        cost.add(3, new Resource(Color.BLUE));
 
         DevelopmentCard card1 = new DevelopmentCard(3,1, Color.GREEN, 1, array, proceeds, cost);
         DevelopmentCard card2 = new DevelopmentCard(2,2, Color.GREEN, 1, array, proceeds, cost);
@@ -172,11 +183,32 @@ public class DevelopmentCardTableDisplay {
         available[2][3] = true;*/
 
 
-        //DevelopmentCardTable developmentCardTable = DevelopmentCardTable.getInstance(squareCards);
+        //DevelopmentCardTable developmentCardTable = new DevelopmentCardTable(squareCards);
 
-        System.out.println(AnsiColors.RED_BOLD + "HERE IS THE DEVELOPMENT CARD TABLE\n" + AnsiColors.RESET);
+        System.out.println(AnsiColors.RED_BOLD + "HERE IS THE DEVELOPMENT CARD TABLE:\n" + AnsiColors.RESET);
 
 
+        String row0="";
+        String row01="";
+        String row02="";
+        String row1="";
+        String row2="";
+        String row3="";
+        String row4="";
+        String row5="";
+        String row6="";
+        String row7="";
+        String row8="";
+        String row9="";
+        String row10="";
+        String row11="";
+        String row12="";
+        String row13="";
+        String row14="";
+        String row15="";
+        String row16="";
+        String row17="";
+        String row18="";
 
             /*row6 += tableCardCopy.getDeckTable(2,j).takeCard().getvictorytostring();
             row5 += tableCardCopy.getDeckTable(1,j).takeCard().getEarnForCli();
@@ -185,28 +217,39 @@ public class DevelopmentCardTableDisplay {
             row2 += tableCardCopy.getDeckTable(1,j).takeCard().getleveltostring();
             row1 += tableCardCopy.getDeckTable(0,j).takeCard().getColortoString();*/
 
-            /*row18 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(3).getvictorytostring();
-            row17 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(3).getearntostring();
-            row16 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(3).getpaytostring();
-            row15 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(3).getcosttostring();
-            row14 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(3).getleveltostring();
-            row13 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(3).getColortoString();
-            
-            row12 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(3).getvictorytostring();
-            row11 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(3).getearntostring();
-            row10 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(3).getpaytostring();
-            row9 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(3).getcosttostring();
-            row8 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(3).getleveltostring();
-            row7 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(3).getColortoString();
+        for(int j = 0; j < 4 ;j++) {
+            int size1 = tableCard.getTable()[0][j].getDevelopDeck().size()-1;
 
-            row6 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(3).getvictorytostring();
-            row5 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(3).getearntostring();
-            row4 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(3).getpaytostring();
-            row3 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(3).getcosttostring();
-            row2 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(3).getleveltostring();
-            row1 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(3).getColortoString();*/
+            row18 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getvictorytostring();
+            row17 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getearntostring();
+            row16 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getpaytostring();
+            row15 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getcosttostring();
+            row14 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getleveltostring();
+            row13 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getColortoString();
+            row02 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getIDtoString();
 
-        for (int i = 2; i >= 0; i--) {
+            int size2 = tableCard.getTable()[0][j].getDevelopDeck().size()-1;
+
+            row12 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getvictorytostring();
+            row11 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getearntostring();
+            row10 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getpaytostring();
+            row9 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getcosttostring();
+            row8 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getleveltostring();
+            row7 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getColortoString();
+            row01 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getIDtoString();
+
+            int size3 = tableCard.getTable()[0][j].getDevelopDeck().size()-1;
+
+            row6 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getvictorytostring();
+            row5 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getearntostring();
+            row4 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getpaytostring();
+            row3 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getcosttostring();
+            row2 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getleveltostring();
+            row1 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getColortoString();
+            row0 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getIDtoString();
+        }
+
+        /*for (int i = 2; i >= 0; i--) {
             for (int j = 0; j < 4; j++) {
                 if(getAvailable[i][j]) {
                     System.out.println("CARD" + "(" + i + "," + j + "): ");
@@ -219,6 +262,66 @@ public class DevelopmentCardTableDisplay {
             }
 
 
+        }*/
+
+        for(int i = 0; i < 4 ; i++){
+            if(!getAvailable[0][i]){
+            //if(!available[0][i]){
+                System.out.print(AnsiColors.RED_BOLD+"CARD ("+0+","+i+")                   "+AnsiColors.RESET);
+            }else {
+                System.out.print("CARD ("+0+","+i+")                    ");
+            }
         }
+        System.out.print("\n");
+        System.out.println("┌---------------------┐    ┌----------------------┐    ┌------------------------┐    ┌-----------------------┐   ");
+        System.out.println(row02);
+        System.out.println(row13);
+        System.out.println(row14);
+        System.out.println(row15);
+        System.out.println(row16);
+        System.out.println(row17);
+        System.out.println(row18);
+        System.out.println("└---------------------┘     └---------------------┘    └-----------------------┘    └----------------------┘   ");
+        System.out.println("\n");
+
+        for(int i = 0; i <4  ; i++){
+            if(!getAvailable[1][i]){
+            //if(!available[1][i]){
+                System.out.print(AnsiColors.RED_BOLD+"CARD ("+1+","+i+")                   "+AnsiColors.RESET);
+            }else {
+                System.out.print("CARD ("+1+","+i+")                    ");
+            }
+        }
+
+        System.out.println("\n");
+        System.out.println("┌--------------------┐    ┌---------------------┐   ┌---------------------┐     ┌----------------------┐   ");
+        System.out.println(row01);
+        System.out.println(row7);
+        System.out.println(row8);
+        System.out.println(row9);
+        System.out.println(row10);
+        System.out.println(row11);
+        System.out.println(row12);
+        System.out.println("└--------------------┘    └---------------------┘   └---------------------┘     └-----------------------┘   ");
+        System.out.println("\n");
+
+        for(int i = 0; i < 4 ; i++){
+            if(!getAvailable[2][i]){
+            //if(!available[2][i]){
+                System.out.print(AnsiColors.RED_BOLD+"CARD ("+2+","+i+")                   "+AnsiColors.RESET);
+            }else {
+                System.out.print("CARD ("+2+","+i+")                    ");
+            }
+        }
+        System.out.println("\n");
+        System.out.println("┌--------------------┐    ┌----------------------┐    ┌----------------------┐     ┌----------------------┐   ");
+        System.out.println(row0);
+        System.out.println(row1);
+        System.out.println(row2);
+        System.out.println(row3);
+        System.out.println(row4);
+        System.out.println(row5);
+        System.out.println(row6);
+        System.out.println("└--------------------┘    └----------------------┘    └------------------------┘   └------------------------┘   ");
     }
 }

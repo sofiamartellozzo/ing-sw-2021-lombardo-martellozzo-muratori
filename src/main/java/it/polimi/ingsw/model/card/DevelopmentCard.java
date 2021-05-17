@@ -112,6 +112,7 @@ public class DevelopmentCard extends Card implements Serializable {
         return "  ______________ \n" +
                 "|   level:" + level + "    |\n" +
                 "|   cost:" + getCostForCli() + "  |\n" +
+                "|   ID:"   +id +"        \n"+
                 "|              |\n" +
                 "|              |\n" +
                 "|    pay:"+getPayForCli()+"    |\n" +
@@ -121,32 +122,57 @@ public class DevelopmentCard extends Card implements Serializable {
 
     }
 
+    public String getIDtoString(){ return " ID: "+id+"\t\t\t\t\t\t";}
     public String getColortoString(){
-        return "color: "+color+"\t\t\t";
+        return " color: "+color+"\t\t\t\t";
     }
     public String getleveltostring(){
-        return "level: "+level+"\t\t\t\t";
+        return " level: "+level+"\t\t\t\t\t";
     }
     public String getcosttostring(){
-        return "cost: "+getCostForCli()+"\t\t\t\t";
+        return " cost: "+getCostForCli();
     }
     public String getpaytostring(){
-        return "pay: "+getPayForCli()+"\t\t\t\t\t";
+        return " pay: "+getPayForCli();
     }
     public String getearntostring(){
-        return "earn: "+getEarnForCli()+"\t\t\t\t";
+        return " earn: "+getEarnForCli();
     }
-    public String getvictorytostring(){
-        return "vp: "+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"\t\t\t\t\t";
-    }
+    public String getvictorytostring(){ return " vp: "+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"\t\t\t\t\t\t"; }
 
 
 /*-------------------------------------------------------------------------------------------------------------------------*/
                                   //METHODS TO CREATE THE RESOURCES
 
+    /**
+     * private method used to calibrate te distance between two string depending on the lenght of the cost
+     * @param lenght
+     * @return
+     */
+    private String countSpaces(int lenght){
+        if(lenght == 1){
+            return "\t\t\t\t\t\t";
+        } else if(lenght == 2){
+            return "\t\t\t\t\t";
+        }else if(lenght == 3){
+            return "\t\t\t\t";
+        }else if(lenght == 4){
+            return "\t\t\t\t";
+        }else if(lenght == 5){
+            return "\t\t\t\t";
+        }else if(lenght == 6){
+            return "\t\t\t";
+        }else if(lenght == 7){
+            return "\t\t\t";
+        }else{
+            return "\t";
+        }
+    }
+
     public String getCostForCli()
     {
         String cost = "" ;
+        int lenght = 0;
         for (Resource res:costToBuy) {
 
             switch (res.getType()){
@@ -162,15 +188,20 @@ public class DevelopmentCard extends Card implements Serializable {
                 case SERVANT:
                     cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
                     break;
+                case FAITHMARKER:
+                    cost += AnsiColors.RED_BOLD+"\uD83D\uDD34"+AnsiColors.RESET;
+                    break;
 
             }
+            lenght++;
         }
-        return cost;
+        return cost+countSpaces(lenght);
     }
 
     public String getPayForCli()
     {
         String cost = "" ;
+        int lenght = 0;    //this variable count the lenght of the cost
         for (Resource res:costProductionPower) {
 
             switch (res.getType()){
@@ -186,15 +217,20 @@ public class DevelopmentCard extends Card implements Serializable {
                 case SERVANT:
                     cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
                     break;
+                case FAITHMARKER:
+                    cost += AnsiColors.RED_BOLD+"\uD83D\uDD34"+AnsiColors.RESET;
+                    break;
 
             }
+            lenght++;
         }
-        return cost;
+        return cost+countSpaces(lenght);
     }
 
     public String getEarnForCli()
     {
         String cost = "" ;
+        int lenght = 0;
         for (Resource res:earnProductionPower) {
 
             switch (res.getType()){
@@ -210,30 +246,16 @@ public class DevelopmentCard extends Card implements Serializable {
                 case SERVANT:
                     cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
                     break;
+                case FAITHMARKER:
+                    cost += AnsiColors.RED_BOLD+"\uD83D\uDD34"+AnsiColors.RESET;
+                    break;
 
             }
+            lenght++;
         }
-        return cost;
+        return cost+countSpaces(lenght);
     }
 
-    public static void main(String [] args){
-
-        ArrayList<Resource> array = new ArrayList<>();
-        array.add(0,new Resource(Color.BLUE));
-        array.add(1,new Resource(Color.PURPLE));
-
-        ArrayList<Resource> proceeds = new ArrayList<>();
-        proceeds.add(0,new Resource(Color.GREY));
-        proceeds.add(1,new Resource(Color.YELLOW));
-
-        ArrayList<Resource> cost = new ArrayList<>();
-        cost.add(0,new Resource(Color.BLUE));
-
-        DevelopmentCard card1 = new DevelopmentCard(1,3,Color.GREEN,1,array,proceeds,cost);
-
-        System.out.println(card1.toString());
-
-    }
 }
 
 

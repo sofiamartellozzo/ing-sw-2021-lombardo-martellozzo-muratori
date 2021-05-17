@@ -44,5 +44,9 @@ public class LeaderCardFactory {
         return leaderCards;
     }
 
+    public static void main(String[] args) throws FileNotFoundException {
+        LeaderCardFactory leaderCardFactory = new LeaderCardFactory();
+        leaderCardFactory.createLeaderCardDeck();
+    }
 
 }

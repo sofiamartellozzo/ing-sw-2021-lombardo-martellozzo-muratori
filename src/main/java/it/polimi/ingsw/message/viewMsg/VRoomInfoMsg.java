@@ -10,23 +10,29 @@ public class VRoomInfoMsg extends ViewGameMsg{
     private int numberOfPlayers;
     private int size;
 
-    public VRoomInfoMsg(String msgContent, ArrayList<String> playersId, String roomId, int numberOfPlayers, int size){
+    public VRoomInfoMsg(String msgContent, ArrayList<String> playersId, String roomId, int numberOfPlayers, int size) {
         super(msgContent);
-        this.playersId=playersId;
-        this.roomId=roomId;
-        this.numberOfPlayers=numberOfPlayers;
-        this.size=size;
+        this.playersId = playersId;
+        this.roomId = roomId;
+        this.numberOfPlayers = numberOfPlayers;
     }
 
-    public ArrayList<String> getPlayersId(){return playersId;}
+    public ArrayList<String> getPlayersId() {
+        return playersId;
+    }
 
-    public String getRoomId(){return roomId;}
+    public String getRoomId() {
+        return roomId;
+    }
 
-    public int getNumberOfPlayers(){return numberOfPlayers;}
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
 
-    public int getSize(){return size;}
+    public int getSize() { return size; }
 
     @Override
-    public void notifyHandler(ViewObserver viewObserver) { viewObserver.receiveMsg(this);}
-
+    public void notifyHandler(ViewObserver viewObserver) {
+        viewObserver.receiveMsg(this);
+    }
 }

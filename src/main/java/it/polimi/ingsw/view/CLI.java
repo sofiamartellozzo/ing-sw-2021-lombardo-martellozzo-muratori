@@ -15,6 +15,7 @@ import java.util.Scanner;
 import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.board.CardSpace;
 import it.polimi.ingsw.model.board.FaithTrack;
+import it.polimi.ingsw.model.board.SoloPersonalBoard;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
@@ -51,6 +52,7 @@ public class CLI extends Observable implements ViewObserver {
 
     //local variables used to save locally the dates about a player and his game space
 
+    private Boolean soloMode;
     private BoardManager boardManager;
     private MarketStructure marketStructureData; //contains the data about the market
     private PlayerInterface player;
@@ -88,9 +90,6 @@ public class CLI extends Observable implements ViewObserver {
         /* start class and visualized the Game Title */
         WriteMessageDisplay.writeTitle();
 
-        //remember to check the connection is actually working!!!!
-        WriteMessageDisplay.writeOnlineStatus();
-
         /* ask the client to press enter button */
         System.out.println("Press enter to start...");
         in.nextLine();
@@ -110,11 +109,12 @@ public class CLI extends Observable implements ViewObserver {
         while (connectionOFF) {
             try {
                 client.beginConnection();               //open connection with the server
+
                 if (!connectionOFF) {
                     //the connection didn't worked
                     break;
                 }
-                System.out.println("Client Connected");
+                WriteMessageDisplay.writeOnlineStatus();
                 clearScreen();
 
                 String user = null;
@@ -455,6 +455,20 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    /**
+     * method used to show all the name inside a Room
+     *
+     * @param players
+     * @param size
+     */
+    private void showPlayersInRoom(ArrayList<String> players, int size) {
+        System.out.println("Room Size: " + size);
+
+        for (String player : players) {
+            System.out.println(AnsiColors.RED_BOLD + "Player " + AnsiColors.RESET + player.toUpperCase());
+        }
+    }
+
     /*---------------------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
@@ -522,6 +536,7 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
 
+        soloMode = msg.isSoloMode();
         player = msg.getPlayer();
         boardManager = msg.getBoardManager();
         marketStructureData = msg.getBoardManager().getMarketStructure();
@@ -533,9 +548,25 @@ public class CLI extends Observable implements ViewObserver {
         cardSpaces = msg.getPlayer().getGameSpace().getCardSpaces();
     }
 
+    /**
+     * msg used to tell to the client if he has to wait because the room isn't completed
+     *
+     * @param msg
+     */
     @Override
-    public void receiveMsg(VRoomInfoMsg vRoomInfoMsg) {
+    public void receiveMsg(VRoomInfoMsg msg) {
+        clearScreen();
+        System.out.println(AnsiColors.ANSI_CYAN + "THE ROOM HAS BEEN CREATED! " + AnsiColors.RESET);
+        ArrayList<String> playersInside = msg.getPlayersId();
+        showPlayersInRoom(playersInside, msg.getNumberOfPlayers());
 
+        if (msg.getSize() == msg.getNumberOfPlayers()) {
+            System.out.println("The Game can start! ");
+        } else {
+
+            System.out.println("⌛⌛⌛ WAITING FOR PARTICIPANTS ⌛⌛⌛");
+            System.out.print("\n");
+        }
     }
 
     /**
@@ -561,7 +592,6 @@ public class CLI extends Observable implements ViewObserver {
             TurnAction turnAction = returnActionFromString(action.toLowerCase());
 
             if (msg.getAvailableActions().contains(turnAction) && turnAction != TurnAction.ERROR) {
-
 
                 CChooseActionTurnResponseMsg response = new CChooseActionTurnResponseMsg(" I made my choice, I decided the action I want to do", username, turnAction);
                 client.sendMsg(response);
@@ -602,7 +632,9 @@ public class CLI extends Observable implements ViewObserver {
             // show the four cards from which the player has to choose
             System.out.println(" There are the four Leader cards from which you have to choose : \n");
             for (Integer id : msg.getMiniDeckLeaderCardFour()) {
-                System.out.println(" Card number : " + id);
+
+                System.out.print(leaderCards.getLeaderCardById(id).toString());
+                //System.out.println(leaderCards.getLeaderCardById(id).getRequirementsForCli());
             }
 
             System.out.println(" Please, Choose the two Cards \n");
@@ -659,15 +691,15 @@ public class CLI extends Observable implements ViewObserver {
                 CChooseLeaderCardResponseMsg response2 = new CChooseLeaderCardResponseMsg(" chosen cards ", cardToRemoveOrActivate, msg.getUsername(), msg.getWhatFor());
                 this.client.sendMsg(response2);
             } else {
-                System.out.println("Sorry you cannot "+msg.getWhatFor()+" any Leader Card!");
-                System.out.println(" The actions you can choose from are: " +possibleActions);
+                System.out.println("Sorry you cannot " + msg.getWhatFor() + " any Leader Card!");
+                System.out.println(" The actions you can choose from are: " + possibleActions);
                 System.out.println(" Write the action you chose with _ between every word! ");
                 in.reset();
 
                 String action = in.nextLine();
                 TurnAction turnAction = returnActionFromString(action.toLowerCase());
                 //send a msg to change the action
-                CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ",username,turnAction);
+                CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ", username, turnAction);
                 this.client.sendMsg(request);
             }
         }
@@ -706,9 +738,9 @@ public class CLI extends Observable implements ViewObserver {
                 if (msg.getChoices() == null) {
                     System.out.println("Please enter the color of the resource you want : ");
                     System.out.println("YELLOW --> COIN 💰\n" +
-                                        "PURPLE --> SERVANT 👾\n" +
-                                         "BLUE --> SHIELD 🥏\n" +
-                                        "GREY --> STONE 🗿\n");
+                            "PURPLE --> SERVANT 👾\n" +
+                            "BLUE --> SHIELD 🥏\n" +
+                            "GREY --> STONE 🗿\n");
 
                     in = new Scanner(System.in);
                     resourceColor = in.nextLine().toUpperCase();
@@ -783,7 +815,6 @@ public class CLI extends Observable implements ViewObserver {
             client.sendMsg(response);
         }
     }
-
 
     @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {
@@ -896,11 +927,11 @@ public class CLI extends Observable implements ViewObserver {
                             //to update the local version of the variable of the client
                             //developmentCardTable.takeCard(row,column);
                             cardSpaces.get(cardSpace).addCard(developmentCardTable.takeCard(row, column));
-                            try {
+                            /*try {
                                 strongBox.removeResources(developmentCardTable.getTable()[row][column].getDevelopDeck().get(developmentCardTable.getTable()[row][column].getDevelopDeck().size()).getCost());
                             } catch (InvalidActionException e) {
                                 e.printStackTrace();
-                            }
+                            }*/
 
                             if (developmentCardTable.getTable()[row][column].getDevelopDeck().isEmpty()) {
                                 msg.getCardAvailable()[row][column] = false;
@@ -1032,7 +1063,6 @@ public class CLI extends Observable implements ViewObserver {
 
                     System.out.println(" That's the updated situation of your market! ");
                     showMarketStructure(marketStructureData);
-                    showWarehouse(warehouse,player);
 
                     CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number - 1);
                     client.sendMsg(response);
@@ -1090,230 +1120,237 @@ public class CLI extends Observable implements ViewObserver {
             System.out.println("Available card Spaces from which you can choose: \n" +
                     "0     ---> base Production Power \n" +
                     "1,2,3 ---> card Space's cards\n" +
-                    "4,5   ---> Special Cards (Only if you have a Leader Card activated)\n");
+                    "If you don't want to use others Production Powers please press whatever you want! ");
+            //"4,5   ---> Special Cards (Only if you have a Leader Card activated)\n");
 
-            while (!correct) {
 
-                choice = in.nextInt();
-                if (choice == 0 || choice == 1 || choice == 2 || choice == 3 || choice == 4 || choice == 5) {
-                    correct = true;
-                } else {
-                    System.out.println("Error, you insert an invalid production Power, insert another one! ");
-                }
-            }
+            choice = in.nextInt();
+            if (choice == 0 || choice == 1 || choice == 2 || choice == 3 || choice == 4 || choice == 5) {
 
-            in = new Scanner(System.in);
-            in.reset();
-            System.out.println("Insert from where you want to take the resources to pay the production (strongBox or wareHouse) ");
 
-            where = in.nextLine();
-            correct = false;
-
-            while (!correct) {
-                if (where.toLowerCase().equals("warehouse") || where.toLowerCase().equals("strongbox")) {
-                    correct = true;
-
-                } else {
-                    System.out.println("Error this place is not valid! Write another one ");
-                    in.reset();
-                    where = in.nextLine();
-                }
-
-            }
-            if (choice == 0) {   //if he decided to activate the base production power
-
-                System.out.println("Good, you activated the base Production Power! ");
-                System.out.println(msg.getMsgContent());
-
-                String choose1 = in.nextLine();
-                String choose2 = in.nextLine();
-
-                resources.add(getTypeFromString(choose1.toUpperCase()));
-                resources.add(getTypeFromString(choose2.toUpperCase()));
-
-                System.out.println("Insert the resource that you want, it will be put automatically in the StrongBox! ");
-                resourceToGet = in.nextLine();
-
-                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
-                response.setResourcesToPay(resources);
-                response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
-                this.client.sendMsg(response);
-            } else if (choice == 1 || choice == 2 || choice == 3) {   //if he chooses a normal card space
-
-                System.out.println("Good, you activated the production power of card space " + choice);
-                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
-                this.client.sendMsg(response);
-
-            } else {       // if he chooses a production power of a special card (Ability of a leader card)
-
-                System.out.println("Good, you activated the production power of a Special card ");
-                System.out.println("Insert the type of the resource that you want, it will be put automatically in the StrongBox! ");
+                in = new Scanner(System.in);
+                in.reset();
+                System.out.println("Insert from where you want to take the resources to pay the production (strongBox or wareHouse) ");
+                in.reset();
+                correct = false;
 
                 while (!correct) {
-                    resourceToGet = in.nextLine();
-                    if (checkType(resourceToGet.toUpperCase())) {
+                    where = in.nextLine();
+
+                    if (where.toLowerCase().equals("warehouse") || where.toLowerCase().equals("strongbox")) {
                         correct = true;
+
                     } else {
-
-                        System.out.println("Error, type not valid, insert a new one! ");
+                        System.out.println("Error this place is not valid! Write another one ");
+                        in.reset();
+                        where = in.nextLine();
                     }
+
                 }
-                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
-                response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
-                this.client.sendMsg(response);
+                if (choice == 0) {   //if he decided to activate the base production power
+
+                    System.out.println("Good, you activated the base Production Power! ");
+                    System.out.println("Choose the two resources that you want to pay to activate the PP! ");
+
+                    String choose1 = in.nextLine();
+                    String choose2 = in.nextLine();
+
+                    resources.add(getTypeFromString(choose1.toUpperCase()));
+                    resources.add(getTypeFromString(choose2.toUpperCase()));
+
+                    System.out.println("Insert the resource that you want, it will be put automatically in the StrongBox! ");
+                    resourceToGet = in.nextLine();
+
+                    CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
+                    response.setResourcesToPay(resources);
+                    response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
+                    this.client.sendMsg(response);
+                } else if (choice == 1 || choice == 2 || choice == 3) {   //if he chooses a normal card space
+
+                    System.out.println("Good, you activated the production power of card space " + choice);
+                    CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
+                    this.client.sendMsg(response);
+
+                } else {       // if he chooses a production power of a special card (Ability of a leader card)
+
+                    System.out.println("Good, you activated the production power of a Special card ");
+                    System.out.println("Insert the type of the resource that you want, it will be put automatically in the StrongBox! ");
+
+                    while (!correct) {
+                        resourceToGet = in.nextLine();
+                        if (checkType(resourceToGet.toUpperCase())) {
+                            correct = true;
+                        } else {
+
+                            System.out.println("Error, type not valid, insert a new one! ");
+                        }
+                    }
+                    CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
+                    response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
+                    this.client.sendMsg(response);
+                }
+
+                if (where.equals("warehouse")) {
+                    //warehouse.removeResources();
+                    System.out.println("Here is your warehouse updated situation! ");
+                    showWarehouse(warehouse, player);
+                } else {
+                    //strongBox.removeResources();
+                    System.out.println("Here is your strongbox updated situation! ");
+                    showStrongBox(strongBox, player);
+                }
+
             }
 
-            if (where.equals("warehouse")) {
-                //warehouse.removeResources();
-                System.out.println("Here is your warehouse updated situation! ");
-                showWarehouse(warehouse, player);
+        }
+
+    }
+
+        /**
+         * this method displays to the players if they won or not
+         *
+         * @param msg
+         */
+        @Override
+        public void receiveMsg (VShowEndGameResultsMsg msg){
+            clearScreen();
+
+            if (msg.getWinnerUsername().contains(username)) {
+                WriteMessageDisplay.declareWinner();
+                System.out.println(" You totalize " + msg.getVictoryPoints() + "points");
             } else {
-                //strongBox.removeResources();
-                System.out.println("Here is your strongbox updated situation! ");
-                showStrongBox(strongBox, player);
+                WriteMessageDisplay.endGame();
+                WriteMessageDisplay.declareLoser();
             }
 
+            in.reset();
+            out.flush();
         }
 
-    }
+        /**
+         * msg used to show to the player which action token is been activated at the end of the turn
+         * @param msg
+         */
+        @Override
+        public void receiveMsg (VActionTokenActivateMsg msg){
 
+            if (msg.getUsername().equals(username)) {
+                System.out.println(msg.getMsgContent());
+                System.out.println("Action Token used: ");
+                System.out.print("┌------------┐");
+                System.out.print("   " + msg.getActionToken().toString());
+                System.out.print("└------------┘");
+                try {
+                    msg.getActionToken().activeActionToken(boardManager, (SoloPlayer) player);
+                } catch (InvalidActionException e) {
+                    e.printStackTrace();
+                }
 
-    /**
-     * this method displays to the players if they won or not
-     *
-     * @param msg
-     */
-    @Override
-    public void receiveMsg(VShowEndGameResultsMsg msg) {
-        clearScreen();
-
-        if (msg.getWinnerUsername().contains(username)) {
-            WriteMessageDisplay.declareWinner();
-            System.out.println(" You totalize " + msg.getVictoryPoints() + "points");
-        } else {
-            WriteMessageDisplay.endGame();
-            WriteMessageDisplay.declareLoser();
-        }
-
-        in.reset();
-        out.flush();
-    }
-
-    /**
-     * msg used to show to the player which action token is been activated at the end of the turn
-     *
-     * @param msg
-     */
-    @Override
-    public void receiveMsg(VActionTokenActivateMsg msg) {
-
-        if (msg.getUsername().equals(username)) {
-            System.out.println(msg.getMsgContent());
-            System.out.println("Action Token used: " + msg.getActionToken().toString());
-            try {
-                msg.getActionToken().activeActionToken(boardManager, (SoloPlayer) player);
-            } catch (InvalidActionException e) {
-                e.printStackTrace();
             }
+        }
+
+        /**
+         * notification of starting the initialization
+         *
+         * @param msg from VV
+         */
+        @Override
+        public void receiveMsg (CVStartInitializationMsg msg){
+            System.out.println("The initialization has started...");
 
         }
+
+        @Override
+        public void receiveMsg (VServerUnableMsg msg){
+            System.out.println("⚠️ Sorry, now the server is not available\nTry later :)");
+            connectionOFF = false;
+        }
+
+
+        /**
+         * method to clear the screen and remove older prints
+         */
+        private void clearScreen () {
+            System.out.println("reset and clear the screen");
+            System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
+            System.out.flush();
+        }
+
+        /*--------------------------------------------------------------------------------------------------------------------------------*/
+        // METHODS USED TO SHOW TO THE CLIENT
+
+        /**
+         * this method shows the FaithTrack to the player with his FaithMarker inside, if its a solo mode Game it will send the Lorenzo's Position
+         *
+         * @param faithTrack
+         */
+        private void showFaithTrack (FaithTrack faithTrack,int positionOnFaithTrack){
+            int lorenzoPosition;
+            if (soloMode) {
+                SoloPersonalBoard soloP = (SoloPersonalBoard) player.getGameSpace();
+                lorenzoPosition = soloP.getLorenzoIlMagnifico().getPosition();
+            } else {
+                lorenzoPosition = 0;
+            }
+            FaithTrackDisplay faithT = new FaithTrackDisplay(faithTrack, faithTrack.getPositionFaithMarker(), soloMode, lorenzoPosition);
+            faithT.showFaithTrack();
+        }
+
+
+        /**
+         * this method shows the updated Development card table
+         *
+         * @param developmentCardTable
+         */
+        private void showDevelopmentCardTable (DevelopmentCardTable developmentCardTable,boolean[][] availableCards){
+            DevelopmentCardTableDisplay table = new DevelopmentCardTableDisplay(developmentCardTable, availableCards);
+            table.displayCardTable();
+        }
+
+        /**
+         * method used to show the updated market to the player
+         *
+         * @param marketStructure
+         */
+        private void showMarketStructure (MarketStructure marketStructure){
+            MarketDisplay market = new MarketDisplay(marketStructure);
+            market.displayMarket();
+        }
+
+        /**
+         * method used to show to the player his StrongBox
+         *
+         * @param strongBox
+         * @param player
+         */
+        private void showStrongBox (StrongBox strongBox, PlayerInterface player){
+            StrongboxDisplay strongboxDisplay = new StrongboxDisplay(strongBox, player);
+            strongboxDisplay.displayStrongBox();
+        }
+
+        /**
+         * method used to show the warehouse content to the player
+         *
+         * @param warehouse
+         * @param player
+         */
+        private void showWarehouse (Warehouse warehouse, PlayerInterface player){
+            WarehouseDisplay warehouseDisplay = new WarehouseDisplay(warehouse, player);
+            warehouseDisplay.displayWarehouse();
+        }
+
+        /**
+         * method used to show the last card in every card Space of the player
+         *
+         * @param cardSpaces
+         * @param player
+         */
+        private void showCardSpaces (ArrayList < CardSpace > cardSpaces, PlayerInterface player){
+            CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces, player);
+            cardSpaceDisplay.showCardSpaces();
+        }
+
     }
 
-    /**
-     * notification of starting the initialization
-     *
-     * @param msg from VV
-     */
-    @Override
-    public void receiveMsg(CVStartInitializationMsg msg) {
-        System.out.println("The initialization has started...");
-
-    }
-
-    @Override
-    public void receiveMsg(VServerUnableMsg msg) {
-        System.out.println("⚠️ Sorry, now the server is not available\nTry later :)");
-        connectionOFF = false;
-    }
-
-
-    /**
-     * method to clear the screen and remove older prints
-     */
-    private void clearScreen() {
-        System.out.println("reset and clear the screen");
-        System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
-        System.out.flush();
-    }
-
-    /*--------------------------------------------------------------------------------------------------------------------------------*/
-    // METHODS USED TO SHOW TO THE CLIENT
-
-    /**
-     * this method shows the FaithTrack to the player with his FaithMarker inside
-     *
-     * @param faithTrack
-     */
-    private void showFaithTrack(FaithTrack faithTrack, int positionOnFaithTrack) {
-        FaithTrackDisplay faithT = new FaithTrackDisplay(faithTrack, faithTrack.getPositionFaithMarker());
-        faithT.showFaithTrack();
-    }
-
-
-    /**
-     * this method shows the updated Development card table
-     *
-     * @param developmentCardTable
-     */
-    private void showDevelopmentCardTable(DevelopmentCardTable developmentCardTable, boolean[][] availableCards) {
-        DevelopmentCardTableDisplay table = new DevelopmentCardTableDisplay(developmentCardTable, availableCards);
-        table.displayCardTable();
-    }
-
-    /**
-     * method used to show the updated market to the player
-     *
-     * @param marketStructure
-     */
-    private void showMarketStructure(MarketStructure marketStructure) {
-        MarketDisplay market = new MarketDisplay(marketStructure);
-        market.displayMarket();
-    }
-
-    /**
-     * method used to show to the player his StrongBox
-     *
-     * @param strongBox
-     * @param player
-     */
-    private void showStrongBox(StrongBox strongBox, PlayerInterface player) {
-        StrongboxDisplay strongboxDisplay = new StrongboxDisplay(strongBox, player);
-        strongboxDisplay.displayStrongBox();
-    }
-
-    /**
-     * method used to show the warehouse content to the player
-     *
-     * @param warehouse
-     * @param player
-     */
-    private void showWarehouse(Warehouse warehouse, PlayerInterface player) {
-        WarehouseDisplay warehouseDisplay = new WarehouseDisplay(warehouse, player);
-        warehouseDisplay.displayWarehouse();
-    }
-
-    /**
-     * method used to show the last card in every card Space of the player
-     *
-     * @param cardSpaces
-     * @param player
-     */
-    private void showCardSpaces(ArrayList<CardSpace> cardSpaces, PlayerInterface player) {
-        CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces, player);
-        cardSpaceDisplay.showCardSpaces();
-    }
-
-
-}
 
 

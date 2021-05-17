@@ -1,8 +1,10 @@
 package it.polimi.ingsw.network.server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * server class that accept each client
@@ -19,6 +21,7 @@ public class GameServer {
      */
     public static final String SERVER_VERSION = "2.1.0";
 
+
     public static void main(String[] args) {
 
         ServerSocket socket;
@@ -34,6 +37,18 @@ public class GameServer {
 
         System.out.println("Server is running - version:" + SERVER_VERSION + "\naccepting...");
         Socket clientSocket = null;
+
+        InetAddress ia = null;
+
+        {
+            try {
+                ia = InetAddress.getLocalHost();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+            System.out.println(ia);
+        }
+
 
         while (true) {
             try {

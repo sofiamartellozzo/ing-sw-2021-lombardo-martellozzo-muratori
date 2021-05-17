@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.board.State;
 import it.polimi.ingsw.model.cardAbility.*;
 import it.polimi.ingsw.utility.AnsiColors;
+import it.polimi.ingsw.utility.SmallDevelopCard;
 
 import javax.print.DocFlavor;
 
@@ -48,7 +49,6 @@ public class LeaderCard extends Card implements Serializable {
     public ArrayList<Object> getRequirements(){return requirements;}
     public State getState(){return state;}
     public TypeResource getSpecialResource(){return specialResource;}
-    //public void setSpecialResource(TypeResource type){this.specialResource = type;}
 
     /**
      * method to take the ID of a Leader Card (an integer number that goes from 1 to 16)
@@ -68,18 +68,15 @@ public class LeaderCard extends Card implements Serializable {
         switch (typeSpecialAbility){
             case DISCOUNT:
                 this.specialAbility = new Discount(createResource(specialResource));
-                //return new Discount(createResource(specialResource));
                 break;
             case SPECIAL_DEPOT:
                 this.specialAbility = new SpecialDepot(createResource(specialResource));
-                //return new SpecialDepot(createResource(specialResource));
                 break;
             case TRANSFORM_WHITE:
                 this.specialAbility = new TransformWhiteMarble(createResource(specialResource));
                 break;
             case ADDITIONAL_POWER:
                 this.specialAbility = new AdditionalPower(createResource(specialResource));
-                //return new AdditionalPower(createResource(specialResource));
                 break;
             default:
                 throw new IllegalArgumentException(" Error, typeAbility not valid! ");
@@ -117,7 +114,6 @@ public class LeaderCard extends Card implements Serializable {
     public void activeCard(Player player) throws InvalidActionException {
         if(player == null) throw new InvalidActionException("Error, not valid!");
         state = new Active();
-        //this.specialAbility.activeAbility(player);
     }
 
     /**
@@ -140,7 +136,6 @@ public class LeaderCard extends Card implements Serializable {
      */
     @Override
     public int getVictoryPoints() {
-        //return this.state.returnPoints(victoryPoints);
         return this.getState().returnPoints(victoryPoints);
     }
 
@@ -148,51 +143,81 @@ public class LeaderCard extends Card implements Serializable {
     public String getRequirementsForCli(){
 
         String req = "" ;
-        for ( Object obj :requirements) {
 
-            if(obj.equals(TypeResource.COIN))
-            {
-                req += "\uD83D\uDFE1 ";
-            }
-            else if(obj.equals(TypeResource.SHIELD))
-            {
-                req += "\uD83D\uDD35";
-            }
-            else if(obj.equals(TypeResource.STONE))
-            {
-                req += "\u2B1C";
-            }
-            else if(obj.equals(TypeResource.SERVANT))
-            {
-                req += "\uD83D\uDFE3";
-            }
-            else if(obj.equals(Color.YELLOW)){
-                //quadrato giallo
-            }
-        }
+        /*for(int i = 0; i < requirements.size(); i++) {
+            if (requirements.get(i) instanceof Resource) {
+                if (((Resource) requirements.get(i)).getType().equals(TypeResource.COIN)) {
+                    req += AnsiColors.YELLOW_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                } else if (((Resource) requirements.get(i)).getType().equals(TypeResource.SERVANT)) {
+                    req += AnsiColors.PURPLE_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                } else if (((Resource) requirements.get(i)).getType().equals(TypeResource.SHIELD)) {
+                    req += AnsiColors.BLUE_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                } else if (((Resource) requirements.get(i)).getType().equals(TypeResource.STONE)) {
+                    req += AnsiColors.BLACK_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                }
+            } else if (requirements.get(i) instanceof SmallDevelopCard) {
+                if (((SmallDevelopCard) requirements.get(i)).getColor().equals(Color.BLUE)) {
+                    if (((SmallDevelopCard) requirements.get(i)).getLevel() == 0) {
+                        req += AnsiColors.BLUE_BOLD + " 🟦 level: 0" + AnsiColors.RESET;
+                    } else {
+                        req += AnsiColors.BLUE_BOLD + " 🟦 level: "+((SmallDevelopCard) requirements.get(i)).getLevel() + AnsiColors.RESET;
+                    }
+                }
+                if (((SmallDevelopCard) requirements.get(i)).getColor().equals(Color.YELLOW)) {
+                    if (((SmallDevelopCard) requirements.get(i)).getLevel() == 0) {
+                        req += AnsiColors.YELLOW_BOLD + " 🟦 level: 0" + AnsiColors.RESET;
+                    } else {
+                        req += AnsiColors.YELLOW_BOLD + " 🟦 level: " + ((SmallDevelopCard) requirements.get(i)).getLevel() + AnsiColors.RESET;
+                    }
+                }
+                if (((SmallDevelopCard) requirements.get(i)).getColor().equals(Color.PURPLE)) {
+                    if (((SmallDevelopCard) requirements.get(i)).getLevel() == 0) {
+                        req += AnsiColors.PURPLE_BOLD + " 🟦 level: 0" + AnsiColors.RESET;
+                    } else {
+                        req += AnsiColors.PURPLE_BOLD + " 🟦 level: "+((SmallDevelopCard) requirements.get(i)).getLevel() + AnsiColors.RESET;
+                    }
+                }
+                if (((SmallDevelopCard) requirements.get(i)).getColor().equals(Color.GREY)) {
+                    if (((SmallDevelopCard) requirements.get(i)).getLevel() == 0) {
+                        req += AnsiColors.BLACK_BOLD + " 🟦 level: 0" + AnsiColors.RESET;
+                    } else {
+                        req += AnsiColors.BLACK_BOLD + " 🟦 level: " + ((SmallDevelopCard) requirements.get(i)).getLevel() + AnsiColors.RESET;
+                    }
+                }
+            }*/
+
         return req;
-
     }
 
 
     @Override
     public String toString() {
         return
-                " LEADER CARD: "+ "\n"+
+                " cardID: " + cardID + "\n"+
                 " specialAbility: " + specialAbility + "\n"+
                 " specialResource: " + specialResource + "\n"+
                 " requirements: " + getRequirementsForCli() + "\n"+
-                " state: " + state + "\n"+
-                " cardID: " + cardID + "\n"+
-                " victoryPoints: " + victoryPoints ;
+                " state: " + AnsiColors.RED_BOLD+state + AnsiColors.RESET+"\n"+
+                " victoryPoints: " + AnsiColors.YELLOW_BOLD+victoryPoints+AnsiColors.RESET +"\n\n";
     }
+
+    //METHODS USED TO SHOW THE CARD
+
+    public String getIDtoString(){ return " ID: "+cardID+"\t\t\t\t\t\t";}
+    public String getSpecialAbilitytoString(){return " specialAbility: " + specialAbility+"\t\t\t\t\t";}
+    public String getSpecialResourceToString(){return " specialResource: " + specialResource +"\t\t\t\t";}
+    public String getRequirementsToString(){return " requirements: " + getRequirementsForCli();}
+    public String getStatetoString(){return " state: " + AnsiColors.RED_BOLD+state + AnsiColors.RESET+"\t\t\t\t";}
+    public String getVPointsToString(){return " victoryPoints: " + AnsiColors.YELLOW_BOLD+victoryPoints+AnsiColors.RESET+"\t\t\t";}
 
     public static void main(String[] args) {
 
         ArrayList<Object> req = new ArrayList<>();
-        req.add(new Resource(Color.YELLOW));
-        LeaderCard leaderCard = new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
+        req.add(new SmallDevelopCard(Color.PURPLE,0));
+        req.add(new SmallDevelopCard(Color.BLUE,1));
+        req.add(new SmallDevelopCard(Color.YELLOW,1));
 
+        LeaderCard leaderCard = new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
         System.out.println(leaderCard.toString());
     }
 }

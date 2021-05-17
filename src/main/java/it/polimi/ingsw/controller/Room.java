@@ -150,9 +150,6 @@ public class Room extends Observable {
             }
 
             printRoomMessage("New player \"" + username + "\" added in the room!");
-
-
-
         } catch (LimitExceededException e) {
             e.printStackTrace();
         }
@@ -179,6 +176,7 @@ public class Room extends Observable {
     public void initializedGame() throws InvalidActionException {
         //creating the controller for the initialization
         //System.out.println(playersId.size());     DEBUGGING
+        //attachAllVV();
         initializedController = new InitializedController(playersId, listOfVirtualView);
         attachObserver(ObserverType.CONTROLLER, initializedController);
         initializedController.createGame();
@@ -261,7 +259,7 @@ public class Room extends Observable {
             initializedController = null;
         }
     }
- 
+
 
     private void printRoomMessage(String messageToPrint) {
         System.out.println("[Room] " + this.roomID + " : " + messageToPrint);

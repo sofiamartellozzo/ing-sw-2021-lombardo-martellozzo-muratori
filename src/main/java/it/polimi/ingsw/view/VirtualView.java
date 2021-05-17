@@ -247,6 +247,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+
     /**
      * when the game and a turn started, the server need to ask a client which action
      * wants to make, so here the VV will forward the msg to the client

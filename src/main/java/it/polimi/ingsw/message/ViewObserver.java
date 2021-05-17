@@ -21,8 +21,8 @@ public interface ViewObserver extends Observer{
     /* from Room after initialization, containing Player's data*/
     public void receiveMsg(VSendPlayerDataMsg msg);
 
-    /* from Room containing the info about the Room*/
-    void receiveMsg(VRoomInfoMsg msg);
+    /*from Room containing the info about the Room*/
+    public void receiveMsg(VRoomInfoMsg msg);
 
     /* multiple player, from initialized C...*/
     public void receiveMsg(VChooseResourceAndDepotMsg msg);

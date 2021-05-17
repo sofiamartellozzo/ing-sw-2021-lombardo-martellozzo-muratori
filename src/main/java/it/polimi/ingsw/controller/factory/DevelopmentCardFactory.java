@@ -36,73 +36,73 @@ public class DevelopmentCardFactory {
         // creating the 12 different Development card deck composed each one by 4 cards
 
         ArrayList<DevelopmentCard> list1 = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {        //adding four cards every time to a deck
+        for (int i = 3; i >= 0; i--) {        //adding four cards every time to a deck
             list1.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck20 = new DevelopmentCardDeck(list1);
 
         ArrayList<DevelopmentCard> list2 = new ArrayList<>();
-        for (int i = 4; i < 8; i++) {
+        for (int i = 7; i >= 4; i--) {
             list2.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck10 = new DevelopmentCardDeck(list2);
 
         ArrayList<DevelopmentCard> list3 = new ArrayList<>();
-        for (int i = 8; i < 12; i++) {
+        for (int i = 11; i >= 8; i--) {
             list3.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck00 = new DevelopmentCardDeck(list3);
 
         ArrayList<DevelopmentCard> list4 = new ArrayList<>();
-        for (int i = 12; i < 16; i++) {
+        for (int i = 15; i >= 12; i--) {
             list4.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck21 = new DevelopmentCardDeck(list4);
 
         ArrayList<DevelopmentCard> list5 = new ArrayList<>();
-        for (int i = 16; i < 20; i++) {
+        for (int i = 19; i >= 16; i--) {
             list5.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck11 = new DevelopmentCardDeck(list5);
 
         ArrayList<DevelopmentCard> list6 = new ArrayList<>();
-        for (int i = 20; i < 24; i++) {
+        for (int i = 23; i >= 20; i--) {
             list6.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck01 = new DevelopmentCardDeck(list6);
 
         ArrayList<DevelopmentCard> list7 = new ArrayList<>();
-        for (int i = 24; i < 28; i++) {
+        for (int i = 27; i >= 24; i--) {
             list7.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck22 = new DevelopmentCardDeck(list7);
 
         ArrayList<DevelopmentCard> list8 = new ArrayList<>();
-        for (int i = 28; i < 32; i++) {
+        for (int i = 31; i >= 28; i--) {
             list8.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck12 = new DevelopmentCardDeck(list8);
 
         ArrayList<DevelopmentCard> list9 = new ArrayList<>();
-        for (int i = 32; i < 36; i++) {
+        for (int i = 35; i >= 32; i--) {
             list9.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck02 = new DevelopmentCardDeck(list9);
 
         ArrayList<DevelopmentCard> list10 = new ArrayList<>();
-        for (int i = 36; i < 40; i++) {
+        for (int i = 39; i >= 36; i--) {
             list10.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck23 = new DevelopmentCardDeck(list10);
 
         ArrayList<DevelopmentCard> list11 = new ArrayList<>();
-        for (int i = 40; i < 44; i++) {
+        for (int i = 43; i >= 40; i--) {
             list11.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck13 = new DevelopmentCardDeck(list11);
 
         ArrayList<DevelopmentCard> list12 = new ArrayList<>();
-        for (int i = 44; i < 48; i++) {
+        for (int i = 47; i >= 44; i--) {
             list12.add(cards.get(i));
         }
         DevelopmentCardDeck cardDeck03 = new DevelopmentCardDeck(list12);
