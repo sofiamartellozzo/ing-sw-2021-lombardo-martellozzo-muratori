@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color;
 
@@ -42,6 +43,7 @@ public class CLI extends Observable implements ViewObserver {
     private ClientSocket client;    //client that view the cli
     private String username;        //store locally the client username
     private String iP;              //store locally the client IP
+    private boolean connectionOFF;
 
     private String gameSize;
 
@@ -75,12 +77,13 @@ public class CLI extends Observable implements ViewObserver {
         out = System.out;
         in = new Scanner(System.in);
         this.args = args.clone();
+        connectionOFF = false;
     }
 
 
     public void start() {
 
-        boolean connectionOFF = true;
+        connectionOFF = true;
 
         /* start class and visualized the Game Title */
         WriteMessageDisplay.writeTitle();
@@ -107,6 +110,10 @@ public class CLI extends Observable implements ViewObserver {
         while (connectionOFF) {
             try {
                 client.beginConnection();               //open connection with the server
+                if (!connectionOFF) {
+                    //the connection didn't worked
+                    break;
+                }
                 System.out.println("Client Connected");
                 clearScreen();
 
@@ -128,7 +135,7 @@ public class CLI extends Observable implements ViewObserver {
                 connectionOFF = false;
 
             } catch (IOException e) {
-                System.out.println(" Error, can't reach the server ");
+                System.out.println("⚠️ Error, can't reach the server ");
                 connectionOFF = true;
             }
         }
@@ -273,7 +280,7 @@ public class CLI extends Observable implements ViewObserver {
      * @return
      */
     private boolean checkDepotValidity(int depot) {
-        return depot == 1 || depot == 2 || depot == 3 || depot == 4 || depot== 5;
+        return depot == 1 || depot == 2 || depot == 3 || depot == 4 || depot == 5;
     }
 
     /**
@@ -320,12 +327,13 @@ public class CLI extends Observable implements ViewObserver {
 
     /**
      * auxiliary method used to create the type from the string
+     *
      * @param type
      * @return
      */
-    private TypeResource getTypeFromString(String type){
+    private TypeResource getTypeFromString(String type) {
 
-        switch (type){
+        switch (type) {
             case "COIN":
                 return TypeResource.COIN;
             case "SHIELD":
@@ -554,6 +562,7 @@ public class CLI extends Observable implements ViewObserver {
 
             if (msg.getAvailableActions().contains(turnAction) && turnAction != TurnAction.ERROR) {
 
+
                 CChooseActionTurnResponseMsg response = new CChooseActionTurnResponseMsg(" I made my choice, I decided the action I want to do", username, turnAction);
                 client.sendMsg(response);
 
@@ -563,6 +572,7 @@ public class CLI extends Observable implements ViewObserver {
             }
         }
     }
+
     /**
      * the Client has to choose two cards from the card list composed by four cards, so there will be two Arrays,
      * one composed by the two chosen Cards, and the other composed by the two that the player denied
@@ -686,69 +696,69 @@ public class CLI extends Observable implements ViewObserver {
         if (msg.getUsername().equals(username)) {
 
             System.out.print(msg.getMsgContent());
-            System.out.println(" Here is your current Warehouse's situation ");
-            showWarehouse(warehouse, player);
+            //System.out.println(" Here is your current Warehouse's situation ");
+            //showWarehouse(warehouse, player);
 
-            System.out.println(" If you want to discard the resource digit 0, otherwise if you want to keep it digit 1! \uD83D\uDE00"+ AnsiColors.RESET);
+            System.out.println(" If you want to discard the resource digit 0, otherwise if you want to keep it digit 1! \uD83D\uDE00" + AnsiColors.RESET);
             int choice = in.nextInt();
 
-            if(choice == 1){    //if he chooses to keep the resource he will be asked info about which one he wants and where putting it
-            if (msg.getChoices() == null) {
-                System.out.println("Please enter the color of the resource you want : ");
-                System.out.println("YELLOW --> COIN,\n" +
-                        "PURPLE --> SERVANT,\n" +
-                        "BLUE --> SHIELD,\n" +
-                        "GREY --> STONE\n");
+            if (choice == 1) {    //if he chooses to keep the resource he will be asked info about which one he wants and where putting it
+                if (msg.getChoices() == null) {
+                    System.out.println("Please enter the color of the resource you want : ");
+                    System.out.println("YELLOW --> COIN 💰\n" +
+                                        "PURPLE --> SERVANT 👾\n" +
+                                         "BLUE --> SHIELD 🥏\n" +
+                                        "GREY --> STONE 🗿\n");
 
-                resourceColor = in.nextLine().toUpperCase();
+                    in = new Scanner(System.in);
+                    resourceColor = in.nextLine().toUpperCase();
 
-                // check if the color exist
-                while (!checkColor(resourceColor.toUpperCase())) {
+                    // check if the color exist
+                    while (!checkColor(resourceColor)) {
 
-
-                    System.out.println(" Error, please insert a valid color! ");
-                    resourceColor = in.nextLine();
-                }
+                        System.out.println(" Error, please insert a valid color! ");
+                        resourceColor = in.nextLine();
+                    }
 
                 /* create the color starting from the string written by the player,
                 with the function toUpperCase we are sure that the input of the player will be in an upperCase mode */
-                resColor = getColorFromString(resourceColor.toUpperCase());
+                    resColor = getColorFromString(resourceColor.toUpperCase());
 
-            } else {
-                // if he has to chose from specific type because the White Marble ability is activated
-                System.out.println(" You can choose from one of these: ");
-                for (TypeResource typeResource : msg.getChoices()) {
-                    System.out.print(typeResource.toString() + "\n");
-                }
+                } else {
+                    // if he has to chose from specific type because the White Marble ability is activated
+                    System.out.println(" You can choose from one of these: ");
+                    for (TypeResource typeResource : msg.getChoices()) {
+                        System.out.print(typeResource.toString() + "\n");
+                    }
 
-                resourceType = in.nextLine();
-                boolean correct = false;
+                    resourceType = in.nextLine();
+                    boolean correct = false;
 
-                while (!correct) {
-                    for (TypeResource type : msg.getChoices()) {
-                        if (type.toString().equals(resourceType.toUpperCase())) {
-                            correct = true;
+                    while (!correct) {
+                        for (TypeResource type : msg.getChoices()) {
+                            if (type.toString().equals(resourceType.toUpperCase())) {
+                                correct = true;
+                            }
                         }
-                    }
-                    if (!correct) {
-                        in.reset();
+                        if (!correct) {
+                            in.reset();
 
-                        System.out.println(" Error, please insert a valid Type! ");
-                        resourceType = in.nextLine();
+                            System.out.println(" Error, please insert a valid Type! ");
+                            resourceType = in.nextLine();
+                        }
+
                     }
+
+                    /*creates the color of the resource basing on the Type of it, written by the player*/
+                    typeColor = getColorFromType(resourceType.toUpperCase());
 
                 }
 
-                /*creates the color of the resource basing on the Type of it, written by the player*/
-                typeColor = getColorFromType(resourceType.toUpperCase());
-
-            }
-
-            while (!correctInput) {      //check if the exception is thrown and has to insert a new depot
+                //check if the exception is thrown and has to insert a new depot
 
                 System.out.println("Please enter the depot where you want to put the resource : ");
-                System.out.println("1 --> DEPOT1,\n" +
-                        "2 --> DEPOT2,\n" +
+                System.out.println("1 --> DEPOT1\n" +
+                        "2 --> DEPOT2\n" +
                         "3 --> DEPOT3\n");
 
                 depot = in.nextInt();
@@ -757,56 +767,29 @@ public class CLI extends Observable implements ViewObserver {
                 while (!checkDepotValidity(depot)) {
                     in.reset();
 
-                    System.out.println(" Error depot int not valid, insert a new one (1,2,3,4,5) ");
+                    System.out.println(" ⚠️ Error depot int not valid, insert a new one (1,2,3,4,5) ");
                     depot = in.nextInt();
                 }
 
                 //send one of this two types of responses depending on the type of request
-                CChooseResourceAndDepotMsg response;
-                if (msg.getChoices() == null) {
-                    try {
-                        warehouse.addResource(getResourceFromColor(resColor), depot);
-                        correctInput = true;
-                    } catch (InvalidActionException e) {
-                        System.out.println("⚠ Error, you can't put here this resource! Insert a new depot ");
-
-                    }
-                    //check if the exception is launched so if the depot can contain that resource
-                    if (correctInput) {
-                        System.out.println(" Here is your Warehouse updated ");
-                        showWarehouse(warehouse, player);
-                        response = new CChooseResourceAndDepotMsg(" resource and depot chosen ", resColor, depot, msg.getUsername());
-                        client.sendMsg(response);
-                    }
-                } else {
-                    try {
-                        warehouse.addResource(getResourceFromColor(typeColor), depot);
-                        correctInput = true;
-                    } catch (InvalidActionException e) {
-                        System.out.println("⚠ Error, you can't put here this resource! Insert a new depot ");
-                    }
-                    if (correctInput) {
-                        System.out.println(" Here is your Warehouse updated ");
-                        showWarehouse(warehouse, player);
-                        response = new CChooseResourceAndDepotMsg(" resource and depot chosen ", typeColor, depot, msg.getUsername());
-                        client.sendMsg(response);
-                    }
-                }
-              }
-
-            }
-            else{
-                CChooseDiscardResourceMsg response = new CChooseDiscardResourceMsg("I chose to discard this resource",username);
+                CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg(" resource and depot chosen ", resColor, depot, msg.getUsername());
                 client.sendMsg(response);
+
             }
+
+
+        } else {
+            CChooseDiscardResourceMsg response = new CChooseDiscardResourceMsg("I chose to discard this resource", username);
+            client.sendMsg(response);
         }
     }
+
 
     @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {
         warehouse = msg.getWarehouse();
-        System.out.println(" Here is your Warehouse updated ");
-        showWarehouse(warehouse, player);
+        //System.out.println(" Here is your Warehouse updated ");
+        //showWarehouse(warehouse, player);
     }
 
 
@@ -818,19 +801,19 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
 
-            System.out.println(msg.getMsgContent());
+        System.out.println(msg.getMsgContent());
 
-            if (msg.getUsernameIncreased().equals(username)) {
-                System.out.println("Congratulations, your faith Marker increased his position of " + msg.getNumberOfPositionIncreased()+" position!");
-                // locally increasing the position of the faith Marker
-                faithTrack.getFaithMarker().increasePosition();
-                showFaithTrack(faithTrack, faithTrack.getPositionFaithMarker());
+        if (msg.getUsernameIncreased().equals(username)) {
+            System.out.println("Congratulations, your faith Marker increased his position of " + msg.getNumberOfPositionIncreased() + " position!");
+            // locally increasing the position of the faith Marker
+            faithTrack.getFaithMarker().increasePosition();
+            showFaithTrack(faithTrack, faithTrack.getPositionFaithMarker());
 
-            } else if (msg.getAllPlayerToNotify().contains(username)) {
-                System.out.println( AnsiColors.YELLOW_BOLD+msg.getUsernameIncreased()+AnsiColors.RESET+" increased his position of: " + msg.getNumberOfPositionIncreased() +" position");
-            }
-
+        } else if (msg.getAllPlayerToNotify().contains(username)) {
+            System.out.println(AnsiColors.YELLOW_BOLD + msg.getUsernameIncreased() + AnsiColors.RESET + " increased his position of: " + msg.getNumberOfPositionIncreased() + " position");
         }
+
+    }
 
     /**
      * message received from the client when the controller has to warn him that before he had inserted a wrong
@@ -841,9 +824,9 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VNotValidDepotMsg msg) {
 
-            if (msg.getUsername().equals(username)) {
-                System.out.println(msg.getMsgContent());
-                System.out.println("You can't put in Depot " + msg.getUnableDepot() + "the resource (identified by color) -->" + msg.getResourceChooseBefore() + "that you choose before! ");
+        if (msg.getUsername().equals(username)) {
+            System.out.println(msg.getMsgContent());
+            System.out.println("You can't put in Depot " + msg.getUnableDepot() + "the resource (identified by color) --> " + msg.getResourceChooseBefore() + " that you choose before! ");
 
             System.out.print("Here is your actual situation! ");
             showWarehouse(warehouse, player);
@@ -858,7 +841,7 @@ public class CLI extends Observable implements ViewObserver {
             client.sendMsg(response);
         }
 
-        }
+    }
 
     /**
      * msg used to ask to the client which development card he wants to chose from the table and in
@@ -869,94 +852,94 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
 
-            boolean correct = false;
-            int countNotAvailable = 0;
-            if (msg.getUsername().equals(username)) {
+        boolean correct = false;
+        int countNotAvailable = 0;
+        if (msg.getUsername().equals(username)) {
 
             developmentCardTable = msg.getTableCard();
             System.out.println(msg.getMsgContent());
 
-                in = new Scanner(System.in);
-                in.reset();
+            in = new Scanner(System.in);
+            in.reset();
 
-                showStrongBox(strongBox, player);
-                System.out.println("\n");
-                showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
-                System.out.println("\n");
-                showCardSpaces(cardSpaces, player);
-                System.out.println("\n");
+            showStrongBox(strongBox, player);
+            System.out.println("\n");
+            showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
+            System.out.println("\n");
+            showCardSpaces(cardSpaces, player);
+            System.out.println("\n");
 
-                for(int i = 0; i < 3; i++){
-                    for( int j = 0; j < 4; j++){
-                       if(!msg.getCardAvailable()[i][j]){
-                           countNotAvailable ++;
-                       }
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 4; j++) {
+                    if (!msg.getCardAvailable()[i][j]) {
+                        countNotAvailable++;
                     }
                 }
+            }
 
-                if(countNotAvailable < 12) {      // if is < 12 it means that there is at least 1 card that a player can buy
-                    System.out.println(" If a card position is RED it means that you haven't got enough resources to pay it!" +
-                            " So, you can't buy it!" + AnsiColors.YELLOW_BOLD + "\t⚠");
-                    System.out.println(" Insert a row [from 0 to 2] and a column [from 0 to 3] in the table from where you want to take the card ");
-                    int row = in.nextInt();
-                    int column = in.nextInt();
+            if (countNotAvailable < 12) {      // if is < 12 it means that there is at least 1 card that a player can buy
+                System.out.println(" If a card position is RED it means that you haven't got enough resources to pay it!" +
+                        " So, you can't buy it!" + AnsiColors.YELLOW_BOLD + "\t⚠");
+                System.out.println(" Insert a row [from 0 to 2] and a column [from 0 to 3] in the table from where you want to take the card ");
+                int row = in.nextInt();
+                int column = in.nextInt();
 
-                    System.out.println(" Insert in which card Space you want to insert it [1,2 or 3] ");
-                    int cardSpace = in.nextInt();
+                System.out.println(" Insert in which card Space you want to insert it [1,2 or 3] ");
+                int cardSpace = in.nextInt();
 
-                    while (!correct) {
+                while (!correct) {
 
-                        //check if the deck selected is not empty (and has at least one card) and if the client inserted a valid card space
-                        if (!(msg.getTableCard().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 1 || cardSpace == 2 || cardSpace == 3)) {
-                            if (msg.getCardAvailable()[row][column]) { //if the player can buy the card in that position of the table
+                    //check if the deck selected is not empty (and has at least one card) and if the client inserted a valid card space
+                    if (!(msg.getTableCard().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 1 || cardSpace == 2 || cardSpace == 3)) {
+                        if (msg.getCardAvailable()[row][column]) { //if the player can buy the card in that position of the table
 
-                                //to update the local version of the variable of the client
-                                //developmentCardTable.takeCard(row,column);
-                                cardSpaces.get(cardSpace).addCard(developmentCardTable.takeCard(row, column));
-                                try {
-                                    strongBox.removeResources(developmentCardTable.getTable()[row][column].getDevelopDeck().get(developmentCardTable.getTable()[row][column].getDevelopDeck().size()).getCost());
-                                } catch (InvalidActionException e) {
-                                    e.printStackTrace();
-                                }
-
-                                if (developmentCardTable.getTable()[row][column].getDevelopDeck().isEmpty()) {
-                                    msg.getCardAvailable()[row][column] = false;
-                                }
-                                System.out.println("Here is the card Table Updated! ");
-                                showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
-
-                                System.out.println("Here is your StrongBox Updated! ");
-                                showStrongBox(strongBox, player);
-
-                                System.out.println("Here are your card spaces updated");
-                                showCardSpaces(cardSpaces, player);
-
-                                CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
-                                client.sendMsg(response);
-                                correct = true;
-                            } else {
-                                //if the player hasn't enough resources to buy the card
-                                System.out.println(AnsiColors.RED_BOLD + "Error, you can't buy this card because you don't have enough resources! " + AnsiColors.RESET);
+                            //to update the local version of the variable of the client
+                            //developmentCardTable.takeCard(row,column);
+                            cardSpaces.get(cardSpace).addCard(developmentCardTable.takeCard(row, column));
+                            try {
+                                strongBox.removeResources(developmentCardTable.getTable()[row][column].getDevelopDeck().get(developmentCardTable.getTable()[row][column].getDevelopDeck().size()).getCost());
+                            } catch (InvalidActionException e) {
+                                e.printStackTrace();
                             }
+
+                            if (developmentCardTable.getTable()[row][column].getDevelopDeck().isEmpty()) {
+                                msg.getCardAvailable()[row][column] = false;
+                            }
+                            System.out.println("Here is the card Table Updated! ");
+                            showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
+
+                            System.out.println("Here is your StrongBox Updated! ");
+                            showStrongBox(strongBox, player);
+
+                            System.out.println("Here are your card spaces updated");
+                            showCardSpaces(cardSpaces, player);
+
+                            CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
+                            client.sendMsg(response);
+                            correct = true;
+                        } else {
+                            //if the player hasn't enough resources to buy the card
+                            System.out.println(AnsiColors.RED_BOLD + "Error, you can't buy this card because you don't have enough resources! " + AnsiColors.RESET);
                         }
                     }
                 }
-                else  //if all cards are not available he has to change the action he wants to play and send it to the controller
-                    {
-                        System.out.println(AnsiColors.RED_BOLD+" Any Development Card is available, so you have to change the action you want to play! "+AnsiColors.RESET);
-                        System.out.println(" The actions you can choose from are: " +possibleActions);
-                        System.out.println(" Write the action you chose with _ between every word! ");
-                        in.reset();
-
-                        String action = in.nextLine();
-                        TurnAction turnAction = returnActionFromString(action.toLowerCase());
-                        //send a msg to change the action
-                        CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ",username,turnAction);
-                        this.client.sendMsg(request);
-                    }
-
+            } else  //if all cards are not available he has to change the action he wants to play and send it to the controller
+            {
+                System.out.println(AnsiColors.RED_BOLD + " Any Development Card is available, so you have to change the action you want to play! " + AnsiColors.RESET);
+                //System.out.println(" The actions you can choose from are: " + possibleActions);
+                //System.out.println(" Write the action you chose with _ between every word! ");
+                //in.reset();
+                CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.BUY_CARD);
+                client.sendMsg(change);
+                //String action = in.nextLine();
+                //TurnAction turnAction = returnActionFromString(action.toLowerCase());
+                //send a msg to change the action
+                //CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ", username, turnAction);
+                //this.client.sendMsg(request);
             }
+
         }
+    }
 
     /**
      * msg sent from the client to indicate the depot from where he wants to take the resource
@@ -982,14 +965,7 @@ public class CLI extends Observable implements ViewObserver {
                 System.out.println(" Write the depot in which you want to move it ");
                 int toDepot = in.nextInt();
 
-                    if (msg.getDepotsActualSituation().containsKey(fromDepot) && msg.getDepotsActualSituation().containsKey(toDepot)) {
-                        try {
-                            warehouse.moveResource(fromDepot, toDepot);
-                        } catch (InvalidActionException e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println("Here is the updated situation of your Warehouse! ");
-                        showWarehouse(warehouse, player);
+                if (msg.getDepotsActualSituation().containsKey(fromDepot) && msg.getDepotsActualSituation().containsKey(toDepot)) {
 
                     CMoveResourceInfoMsg response = new CMoveResourceInfoMsg(" I choose from where and to where I want to put my resource ", username, fromDepot, toDepot);
                     client.sendMsg(response);
@@ -1041,14 +1017,14 @@ public class CLI extends Observable implements ViewObserver {
                     if (choice.toLowerCase().equals("row")) {
                         try {
 
-                            marketStructureData.rowMoveMarble(number, (Player) player);  //update the market situation (changing the row)
+                            marketStructureData.rowMoveMarble(number - 1, (Player) player);  //update the market situation (changing the row)
                         } catch (InvalidActionException e) {
                             e.printStackTrace();
                         }
                     } else {
                         try {
 
-                            marketStructureData.columnMoveMarble(number, (Player) this.player);  //update the market situation (changing the column)
+                            marketStructureData.columnMoveMarble(number - 1, (Player) this.player);  //update the market situation (changing the column)
                         } catch (InvalidActionException e) {
                             e.printStackTrace();
                         }
@@ -1056,36 +1032,29 @@ public class CLI extends Observable implements ViewObserver {
 
                     System.out.println(" That's the updated situation of your market! ");
                     showMarketStructure(marketStructureData);
+                    showWarehouse(warehouse,player);
 
-                        CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number-1);
-                        client.sendMsg(response);
-                        correct = true;
-                    }
+                    CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number - 1);
+                    client.sendMsg(response);
+                    correct = true;
                 }
             }
-
-
         }
+
+
+    }
 
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
         //...
         System.out.println("Choose where to store this resource: " + msg.getResourceToStore() + " if you want to discard it send 0");
-        showWarehouse(this.warehouse, this.player);
+        //showWarehouse(this.warehouse, this.player);
         int depot = in.nextInt();
         Color rC = msg.getResourceToStore().getThisColor();
 
         if (depot != 0) {
-            try {
-                warehouse.addResource(new Resource(rC),depot);
-                showWarehouse(warehouse,player);
-                CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("the choice of the player for a resources recived", rC, depot, msg.getUsername());
-                client.sendMsg(response);
-
-            } catch (InvalidActionException e) {
-                System.out.println("Error, depot not valid! Choose another Depot ");
-                this.receiveMsg(msg);
-            }
+            CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("the choice of the player for a resources recived", rC, depot, msg.getUsername());
+            client.sendMsg(response);
 
         } else {
             CChooseDiscardResourceMsg discard = new CChooseDiscardResourceMsg("the player choose to discard the resources", msg.getUsername());
@@ -1096,45 +1065,47 @@ public class CLI extends Observable implements ViewObserver {
 
     /**
      * this msg is used to let the player choose between the production power that he wants to activate
-     *
+     * <p>
      * availableCardSpace:
-     *      - 0     ---> base PP
-     *      - 1,2,3 ---> card Space's cards
-     *      - 4,5   ---> Special cards
+     * - 0     ---> base PP
+     * - 1,2,3 ---> card Space's cards
+     * - 4,5   ---> Special cards
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
 
-     ArrayList<TypeResource> resources = new ArrayList<>();
-     boolean correct = false;
-     int choice = 0;
-     String where = null;
-     String resourceToGet = null;
-     in = new Scanner(System.in);
-     in.reset();
+        ArrayList<TypeResource> resources = new ArrayList<>();
+        boolean correct = false;
+        int choice = 0;
+        String where = null;
+        String resourceToGet = null;
+        in = new Scanner(System.in);
+        in.reset();
 
-        if(msg.getUsername().equals(username)) {
+        if (msg.getUsername().equals(username)) {
 
             System.out.println(msg.getMsgContent());
-            System.out.println( "Available card Spaces from which you can choose: \n"+
-                   "0     ---> base Production Power \n"+
-                   "1,2,3 ---> card Space's cards\n"+
-                   "4,5   ---> Special Cards (Only if you have a Leader Card activated)\n");
+            System.out.println("Available card Spaces from which you can choose: \n" +
+                    "0     ---> base Production Power \n" +
+                    "1,2,3 ---> card Space's cards\n" +
+                    "4,5   ---> Special Cards (Only if you have a Leader Card activated)\n");
 
-            while(!correct) {
+            while (!correct) {
 
                 choice = in.nextInt();
-                if(choice ==0 ||choice ==1 || choice ==2 || choice ==3 ||choice ==4 ||choice ==5){
+                if (choice == 0 || choice == 1 || choice == 2 || choice == 3 || choice == 4 || choice == 5) {
                     correct = true;
-                }
-                else{
+                } else {
                     System.out.println("Error, you insert an invalid production Power, insert another one! ");
                 }
             }
 
-            System.out.println("Insert from where you want to take the resources to pay the production (strongBox or wareHouse) ");
+            in = new Scanner(System.in);
             in.reset();
+            System.out.println("Insert from where you want to take the resources to pay the production (strongBox or wareHouse) ");
+
             where = in.nextLine();
             correct = false;
 
@@ -1144,10 +1115,12 @@ public class CLI extends Observable implements ViewObserver {
 
                 } else {
                     System.out.println("Error this place is not valid! Write another one ");
+                    in.reset();
+                    where = in.nextLine();
                 }
 
             }
-            if(choice == 0) {   //if he decided to activate the base production power
+            if (choice == 0) {   //if he decided to activate the base production power
 
                 System.out.println("Good, you activated the base Production Power! ");
                 System.out.println(msg.getMsgContent());
@@ -1161,18 +1134,17 @@ public class CLI extends Observable implements ViewObserver {
                 System.out.println("Insert the resource that you want, it will be put automatically in the StrongBox! ");
                 resourceToGet = in.nextLine();
 
-                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate",username,where,choice);
+                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
                 response.setResourcesToPay(resources);
                 response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
                 this.client.sendMsg(response);
-            }
-            else if(choice == 1|| choice == 2||choice == 3){   //if he chooses a normal card space
+            } else if (choice == 1 || choice == 2 || choice == 3) {   //if he chooses a normal card space
 
-                System.out.println("Good, you activated the production power of card space "+choice);
-                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate",username,where,choice);
+                System.out.println("Good, you activated the production power of card space " + choice);
+                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
                 this.client.sendMsg(response);
 
-            }else{       // if he chooses a production power of a special card (Ability of a leader card)
+            } else {       // if he chooses a production power of a special card (Ability of a leader card)
 
                 System.out.println("Good, you activated the production power of a Special card ");
                 System.out.println("Insert the type of the resource that you want, it will be put automatically in the StrongBox! ");
@@ -1181,25 +1153,24 @@ public class CLI extends Observable implements ViewObserver {
                     resourceToGet = in.nextLine();
                     if (checkType(resourceToGet.toUpperCase())) {
                         correct = true;
-                    }
-                    else {
+                    } else {
 
                         System.out.println("Error, type not valid, insert a new one! ");
                     }
                 }
-                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate",username,where,choice);
+                CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
                 response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
                 this.client.sendMsg(response);
             }
 
-        if(where.equals("warehouse")){
+            if (where.equals("warehouse")) {
                 //warehouse.removeResources();
                 System.out.println("Here is your warehouse updated situation! ");
-                showWarehouse(warehouse,player);
-            }else{
+                showWarehouse(warehouse, player);
+            } else {
                 //strongBox.removeResources();
                 System.out.println("Here is your strongbox updated situation! ");
-                showStrongBox(strongBox,player);
+                showStrongBox(strongBox, player);
             }
 
         }
@@ -1216,13 +1187,13 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         clearScreen();
 
-            if (msg.getWinnerUsername().contains(username)) {
-                WriteMessageDisplay.declareWinner();
-                System.out.println(" You totalize " + msg.getVictoryPoints() + "points");
-            } else {
-                WriteMessageDisplay.endGame();
-                WriteMessageDisplay.declareLoser();
-            }
+        if (msg.getWinnerUsername().contains(username)) {
+            WriteMessageDisplay.declareWinner();
+            System.out.println(" You totalize " + msg.getVictoryPoints() + "points");
+        } else {
+            WriteMessageDisplay.endGame();
+            WriteMessageDisplay.declareLoser();
+        }
 
         in.reset();
         out.flush();
@@ -1230,22 +1201,23 @@ public class CLI extends Observable implements ViewObserver {
 
     /**
      * msg used to show to the player which action token is been activated at the end of the turn
+     *
      * @param msg
      */
     @Override
-        public void receiveMsg(VActionTokenActivateMsg msg){
+    public void receiveMsg(VActionTokenActivateMsg msg) {
 
-            if(msg.getUsername().equals(username)) {
-                System.out.println(msg.getMsgContent());
-                System.out.println("Action Token used: "+msg.getActionToken().toString());
-                try {
-                    msg.getActionToken().activeActionToken(boardManager,(SoloPlayer) player);
-                } catch (InvalidActionException e) {
-                    e.printStackTrace();
-                }
-
+        if (msg.getUsername().equals(username)) {
+            System.out.println(msg.getMsgContent());
+            System.out.println("Action Token used: " + msg.getActionToken().toString());
+            try {
+                msg.getActionToken().activeActionToken(boardManager, (SoloPlayer) player);
+            } catch (InvalidActionException e) {
+                e.printStackTrace();
             }
+
         }
+    }
 
     /**
      * notification of starting the initialization
@@ -1256,7 +1228,13 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(CVStartInitializationMsg msg) {
         System.out.println("The initialization has started...");
 
-        }
+    }
+
+    @Override
+    public void receiveMsg(VServerUnableMsg msg) {
+        System.out.println("⚠️ Sorry, now the server is not available\nTry later :)");
+        connectionOFF = false;
+    }
 
 
     /**
@@ -1335,6 +1313,7 @@ public class CLI extends Observable implements ViewObserver {
         cardSpaceDisplay.showCardSpaces();
     }
 
-    }
+
+}
 
 

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.TurnAction;
 
 /**
  * CLI --> VV --> TurnController
+ *
  * msg from the client to choose another action turn (because he can't buy anything from the development card)
  */
 public class CChangeActionTurnMsg extends ControllerGameMsg {

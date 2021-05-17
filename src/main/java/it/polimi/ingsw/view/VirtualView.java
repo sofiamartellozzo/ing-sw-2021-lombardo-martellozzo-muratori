@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.controller.Lobby;
 import it.polimi.ingsw.message.*;
@@ -102,6 +103,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         if (msg.getPlayers().equals(username)){
             sendToClient(msg);
         }
+    }
+
+    @Override
+    public void receiveMsg(VServerUnableMsg msg) {
+
     }
 
     @Override
@@ -398,7 +404,9 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      */
     @Override
     public void receiveMsg(VActionTokenActivateMsg msg) {
-        if (msg.getUsername().equals(this.username) && gameMode.equals(0)){
+
+        if (msg.getUsername().equals(this.username) && gameMode.equals("0")){
+
             sendToClient(msg);
         }
     }

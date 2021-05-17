@@ -6,6 +6,7 @@ import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.connection.PingMsg;
 import it.polimi.ingsw.message.connection.PongMsg;
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 
 import java.io.BufferedInputStream;
@@ -29,7 +30,7 @@ public class ClientSocket extends Observable implements Runnable {
     private String IP;
     private Socket serverSocket;
 
-    public final static int SERVER_PORT = 4444;
+    public final static int SERVER_PORT = 2323;
 
     private boolean connectionOpen = false;
 
@@ -57,23 +58,30 @@ public class ClientSocket extends Observable implements Runnable {
             serverSocket = new Socket(IP, SERVER_PORT);
             connectionOpen = true;
         } catch (IOException e) {
-            System.err.println("Client unable to open the connection");
-            e.printStackTrace();
+            //System.err.println("Client unable to open the connection");
+            connectionOpen = false;
+            VServerUnableMsg error = new VServerUnableMsg("");
+            notifyAllObserver(ObserverType.VIEW, error);
+            //e.printStackTrace();
+
         }
 
 
         /* open the in/out Stream to communicate */
-        try {
-            out = new ObjectOutputStream(serverSocket.getOutputStream());
-            in = new ObjectInputStream(new BufferedInputStream(serverSocket.getInputStream()));
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            System.out.println("The Socket cannot open the connection!");
+        if (connectionOpen) {
+            try {
+                out = new ObjectOutputStream(serverSocket.getOutputStream());
+                in = new ObjectInputStream(new BufferedInputStream(serverSocket.getInputStream()));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                System.out.println("The Socket cannot open the connection!");
+            }
+
+
+
+            /* start the ping process */
+            // startPing();
         }
-
-
-        /* start the ping process */
-        // startPing();
     }
 
 

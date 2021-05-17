@@ -60,16 +60,20 @@ public class WarehouseDisplay {
 
         switch (resource.getType()){
             case SHIELD:
-                cost += AnsiColors.BLUE_BOLD+"\uD83D\uDD35"+AnsiColors.RESET;
+                //cost += AnsiColors.BLUE_BOLD+"\uD83D\uDD35"+AnsiColors.RESET;
+                cost += "🥏";
                 break;
             case STONE:
-                cost += AnsiColors.BLACK_BOLD+"\u26AB"+AnsiColors.RESET;
+                //cost += AnsiColors.BLACK_BOLD+"\u26AB"+AnsiColors.RESET;
+                cost += "🗿";
                 break;
             case COIN:
-                cost += AnsiColors.YELLOW_BOLD+"\uD83D\uDFE1"+AnsiColors.RESET;
+                //cost += AnsiColors.YELLOW_BOLD+"\uD83D\uDFE1"+AnsiColors.RESET;
+                cost += "💰";
                 break;
             case SERVANT:
-                cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
+                //cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
+                cost += "👾";
                 break;
 
         }

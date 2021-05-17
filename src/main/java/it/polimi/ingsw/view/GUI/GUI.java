@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.GUI;
 
 
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.controllerMsg.CRoomSizeResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.*;
@@ -313,6 +314,11 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VActionTokenActivateMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VServerUnableMsg msg) {
 
     }
 

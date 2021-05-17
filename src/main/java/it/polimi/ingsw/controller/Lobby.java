@@ -409,6 +409,7 @@ public class Lobby extends Observable implements ControllerObserver {
         //send to TurnController by Room
         try {
             Room room = findUserRoom(msg.getUsername());
+            room.detachInitializedC();
             room.notifyAllObserver(ObserverType.CONTROLLER, msg);
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();
@@ -451,7 +452,13 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CChangeActionTurnMsg msg) {
-
+        //send to TurnController by Room and then to ActionController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
     @Override

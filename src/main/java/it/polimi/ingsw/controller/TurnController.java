@@ -159,16 +159,6 @@ public class TurnController extends Observable implements ControllerObserver {
         currentSoloTurnIstance = spt;
         VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("Start a new turn", player.getUsername(), spt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
-        while (!spt.checkEndGame()) {
-            if (spt.checkEndTurn()) {
-                ActionToken actionTokenActivated = spt.activateActionToken();
-                VActionTokenActivateMsg msg1 = new VActionTokenActivateMsg("an Action Token has been activated", player.getUsername(), actionTokenActivated);
-                notifyAllObserver(ObserverType.VIEW, msg1);
-                startSoloPlayerTurn(player);
-            }
-        }
-
-        //if here the game ended!!!
     }
 
     /**
@@ -178,6 +168,7 @@ public class TurnController extends Observable implements ControllerObserver {
      * @param player
      */
     private void startPlayerTurn(Player player) {
+        currentPlayer = player;
         printTurnCMesssage("New Turn for \"" + player.getUsername() + "\" is ready to start");
         player.setPlaying(true);
         PlayerTurn pt = new PlayerTurn(player, this.boardManager);
@@ -185,10 +176,7 @@ public class TurnController extends Observable implements ControllerObserver {
         //send the msg to the client, to choose the action he want to make
         VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
-        //System.out.println(msg.getMsgContent());      DEBUGGING
-        if (currentTurnIndex > 1 && pt.checkEndTurn()) {
-            nextTurn();
-        }
+
     }
 
     /**
@@ -207,6 +195,19 @@ public class TurnController extends Observable implements ControllerObserver {
             Player nextPlayer = (Player) this.turnSequence.get(playerIndex);
             startPlayerTurn(nextPlayer);
         }
+        else {
+            ActionToken actionTokenActivated = null;
+            try {
+
+                actionTokenActivated = currentSoloTurnIstance.activateActionToken();
+                VActionTokenActivateMsg msg1 = new VActionTokenActivateMsg("an Action Token has been activated", singlePlayer.getUsername(), actionTokenActivated);
+                notifyAllObserver(ObserverType.VIEW, msg1);
+                startSoloPlayerTurn(singlePlayer);
+            } catch (InvalidActionException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     /**
@@ -215,29 +216,38 @@ public class TurnController extends Observable implements ControllerObserver {
      */
     private void checkEndGame() {
         //check the conditions fot the last turn of the game
-        currentPlayer.endTurn();
-        boolean checkEnd = false;
-        for (Integer key : turnSequence.keySet()) {
-            //if one player is arrived to the end of the faithTrack the checkEnd is set to true
-            if (turnSequence.get(key).checkEndGame()) {
-                checkEnd = true;
+        if (!isSoloMode) {
+            currentPlayer.endTurn();
+            boolean checkEnd = false;
+            for (Integer key : turnSequence.keySet()) {
+                //if one player is arrived to the end of the faithTrack the checkEnd is set to true
+                if (turnSequence.get(key).checkEndGame()) {
+                    checkEnd = true;
+                }
+            }
+            if (checkEnd) {
+                int keyCurrentP = 0;
+                for (Integer key : turnSequence.keySet()) {
+                    if (turnSequence.get(key).getUsername().equals(currentPlayer.getUsername())) {
+                        keyCurrentP = key;
+                    }
+
+                }
+                numberOfLastTurn = numberOfPlayer - keyCurrentP;      //it contains the number representing the total of last turn games
+                lastTurns = true;
             }
         }
-        if (checkEnd) {
-            int keyCurrentP = 0;
-            for (Integer key : turnSequence.keySet()) {
-                if (turnSequence.get(key).getUsername().equals(currentPlayer.getUsername())) {
-                    keyCurrentP = key;
-                }
-
-            }
-            numberOfLastTurn = numberOfPlayer - keyCurrentP;      //it contains the number representing the total of last turn games
-            lastTurns = true;
+        else{
+           if (singlePlayer.checkEndGame()){
+               //single mode the game has ended ...
+           }
         }
     }
 
     private void checkIfFirstAction() {
+        //System.out.println("CHECK ActionController!!!!!");            DEBUGGING
         if (actionController != null && actionController.endAction()) {
+            //System.out.println("ELIMINA ACTION CONTROLLER!!!!!");         DEBUGGING
             detachObserver(ObserverType.CONTROLLER, actionController);
             actionController = null;
         }
@@ -261,7 +271,7 @@ public class TurnController extends Observable implements ControllerObserver {
      */
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
-        if ((currentPlayer!= null && msg.getUsername().equals(currentPlayer.getUsername())||(singlePlayer!=null && msg.getUsername().equals(singlePlayer.getUsername())))) {
+        if ((currentPlayer != null && msg.getUsername().equals(currentPlayer.getUsername()) || (singlePlayer != null && msg.getUsername().equals(singlePlayer.getUsername())))) {
 
             //check if is not the first one and detach Action Turn if there is
             checkIfFirstAction();
@@ -271,13 +281,13 @@ public class TurnController extends Observable implements ControllerObserver {
 
                 /* create the controller to handle the specific action of the turn */
                 ActionController controller = null;
-                if (!isSoloMode){
+                if (!isSoloMode) {
                     controller = new ActionController(currentPlayer, currentTurnIstance, boardManager, virtualView);
-                }
-                else{
+                } else {
                     controller = new ActionController(singlePlayer, currentSoloTurnIstance, boardManager, virtualView);
                 }
                 this.actionController = controller;
+                System.out.println("HERE ACTION CONTROLLER: " + actionController);
 
                 //attach it as an observer
                 attachObserver(ObserverType.CONTROLLER, controller);
@@ -294,10 +304,9 @@ public class TurnController extends Observable implements ControllerObserver {
                         nextTurn();
                     } else {                    // if the game is over EndGameController will be instantiated to count all the victory points
                         EndGameController endGameController = null;
-                        if (!isSoloMode){
+                        if (!isSoloMode) {
                             endGameController = new EndGameController(turnSequence, this);
-                        }
-                        else{
+                        } else {
                             endGameController = new EndGameController(singlePlayer, this);
                         }
 
@@ -313,6 +322,20 @@ public class TurnController extends Observable implements ControllerObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(CChangeActionTurnMsg msg) {
+        detachObserver(ObserverType.CONTROLLER, actionController);
+        actionController = null;
+        if (!isSoloMode) {
+            VChooseActionTurnRequestMsg requestMsg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", currentPlayer.getUsername(), currentTurnIstance.getAvailableAction());
+            notifyAllObserver(ObserverType.VIEW, requestMsg);
+        } else {
+            VChooseActionTurnRequestMsg requestMsg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", singlePlayer.getUsername(), currentSoloTurnIstance.getAvailableAction());
+            notifyAllObserver(ObserverType.VIEW, requestMsg);
+        }
+
+    }
+
 
 
 
@@ -323,11 +346,6 @@ public class TurnController extends Observable implements ControllerObserver {
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
         //to ACTION_CONTROLLER
         notifyAllObserver(ObserverType.CONTROLLER, msg);
-    }
-
-    @Override
-    public void receiveMsg(CChangeActionTurnMsg msg) {
-
     }
 
 
@@ -350,14 +368,18 @@ public class TurnController extends Observable implements ControllerObserver {
      */
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
-        for (Integer key : turnSequence.keySet()) {
-            if (!turnSequence.get(key).getUsername().equals(msg.getUsername())) {
-                //not the player that discarded the resource
-                turnSequence.get(key).increasePosition();
-                VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
-                //remember to set all the other players!!!!
-                notifyAllObserver(ObserverType.VIEW, notify);
+        if (!isSoloMode) {
+            for (Integer key : turnSequence.keySet()) {
+                if (!turnSequence.get(key).getUsername().equals(msg.getUsername())) {
+                    //not the player that discarded the resource
+                    turnSequence.get(key).increasePosition();
+                    VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
+                    //remember to set all the other players!!!!
+                    notifyAllObserver(ObserverType.VIEW, notify);
+                }
             }
+        } else {
+            singlePlayer.getGameSpace().increaseLorenzoIlMagnifico();
         }
 
         //check end game (because all player has increased their position of 1
@@ -417,7 +439,7 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     /*------------------------------------------------------*/
-    //GETTER FOR TESTING
+                    //GETTER FOR TESTING
 
 
     public HashMap<Integer, PlayerInterface> getTurnSequence() {

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.message;
 
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.controllerMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.*;
@@ -64,6 +65,10 @@ public interface ViewObserver extends Observer{
     /* only SOLO mode, after the player end the turn (is Lorenzo playing) */
     public void receiveMsg(VActionTokenActivateMsg msg);
 
+    //void receiveMsg(CVStartInitializationMsg msg);
+
+    /* from client Socket main to cli gui*/
+    public void receiveMsg(VServerUnableMsg msg);
     void receiveMsg(CVStartInitializationMsg msg) throws IOException;
 
 }

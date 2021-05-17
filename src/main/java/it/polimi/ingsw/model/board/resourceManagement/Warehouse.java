@@ -251,7 +251,7 @@ public abstract class Warehouse implements Serializable {
             Depot depot1=depots.get(i);
             //If it's one of the first three depots
             //Check if it's empty or contains the same type of resource and has space
-            if(depot1 instanceof RealDepot && (depot1.isEmpty() || (depot1.getType().equals(resource.getType()) && !depot1.isFull()))){
+            if((depot1 instanceof RealDepot) && (depot1.isEmpty() || (depot1.getType().equals(resource.getType()) && !depot1.isFull()) )){
                 //For now it's available
                 available=true;
                 //But checking if other "normal" depots already contains that type

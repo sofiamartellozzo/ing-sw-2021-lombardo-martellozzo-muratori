@@ -356,8 +356,8 @@ public class InitializedController extends Observable implements ControllerObser
 
             try {
                 player.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
-                //VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
-                //notifyAllObserver(ObserverType.VIEW, notification);
+                VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
+                notifyAllObserver(ObserverType.VIEW, notification);
             } catch (InvalidActionException e) {
                 e.printStackTrace();
                 //create msg to send to client that he made an invalid action, so change the depot
@@ -368,6 +368,8 @@ public class InitializedController extends Observable implements ControllerObser
         else{
             try {
                 singlePlayer.getGameSpace().getResourceManager().addResourceToWarehouse(r,msg.getDepot());
+                VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", singlePlayer.getUsername(), singlePlayer.getGameSpace().getWarehouse());
+                notifyAllObserver(ObserverType.VIEW, notification);
             } catch (InvalidActionException e) {
                 e.printStackTrace();
                 VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());

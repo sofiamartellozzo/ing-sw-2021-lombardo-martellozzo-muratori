@@ -160,8 +160,7 @@ public class ActionController extends Observable implements ControllerObserver {
             default:
                 //choose not available
         }
-        //remove tre 3 action from the able ones because can be made only once
-        //check if the action has been made!!!
+
     }
 
     private ArrayList<Integer> cardAbleForPlayer() {
@@ -316,6 +315,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
         if (player.getUsername().equals(msg.getUsername())) {
             try {
+
                 /*get the resources returned buy the market with the choice of the player*/
                 resourcesFromMarket = player.buyFromMarket(msg.getWhichRorC(), msg.getRowOrColumn(), boardManager);
                 /*check for each resources returned from the market...*/
@@ -326,7 +326,13 @@ public class ActionController extends Observable implements ControllerObserver {
 
                         if (resource.equals(TypeResource.FAITHMARKER)) {
                             /* the FAITHMARKER is not a real resources, it increased the position of the player in FT*/
-                            player.increasePosition();
+                            if (!isSolo){
+                                player.increasePosition();
+                            }
+                            else{
+                                soloPlayerTurn.getCurrentPlayer().increasePosition();
+                            }
+
                             VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
                             Map<Integer, PlayerInterface> players = boardManager.getPlayers();
                             notification.setAllPlayerToNotify(getPlayerAsList(players));
@@ -447,7 +453,8 @@ public class ActionController extends Observable implements ControllerObserver {
         if (msg.getUsername().equals(player.getUsername())) {
             Resource r = new Resource(msg.getResource());
             try {
-                player.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
+                //player.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
+                player.getGameSpace().getWarehouse().addResource(r, msg.getDepot());
                 VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
                 notifyAllObserver(ObserverType.VIEW, notification);
             } catch (InvalidActionException e) {

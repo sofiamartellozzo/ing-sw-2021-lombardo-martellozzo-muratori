@@ -93,7 +93,7 @@ public class PlayerTurn implements PlayerTurnInterface {
 
 
     public boolean checkEndGame() throws InvalidActionException{
-        return true;
+        return false;
     }
 
     /* check if the player ended the turn or not */

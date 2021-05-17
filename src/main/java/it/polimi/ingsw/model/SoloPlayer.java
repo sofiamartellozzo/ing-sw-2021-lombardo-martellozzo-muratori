@@ -31,6 +31,11 @@ public class SoloPlayer extends Player implements Serializable {
         return gameSpace;
     }
 
+    @Override
+    public void increasePosition() {
+        gameSpace.getFaithTrack().increasePosition();
+    }
+
     public void setGameSpace(SoloPersonalBoard gameSpace) {
         this.gameSpace = gameSpace;
     }
@@ -48,5 +53,14 @@ public class SoloPlayer extends Player implements Serializable {
         else
             return "Check DevelopTable!";
 
+    }
+
+    @Override
+    public boolean checkEndGame() {
+        if ((gameSpace.getFaithTrack().getPositionFaithMarker()==24)||(gameSpace.getAllCards().size()==7)||(gameSpace.getLorenzoIlMagnifico().getPosition()==24)){
+            return true;
+        }
+        else
+            return false;
     }
 }

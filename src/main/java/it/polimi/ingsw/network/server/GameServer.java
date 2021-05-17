@@ -13,7 +13,7 @@ public class GameServer {
     /**
      * Socket Port to listen.
      */
-    public final static int SOCKET_PORT = 4444;
+    public final static int SOCKET_PORT = 2323;
     /**
      * Version of the server.
      */

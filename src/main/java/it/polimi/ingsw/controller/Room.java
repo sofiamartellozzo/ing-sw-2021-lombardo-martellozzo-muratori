@@ -255,6 +255,13 @@ public class Room extends Observable {
         }
     }
 
+    public void detachInitializedC(){
+        if (initializedController!=null){
+            detachObserver(ObserverType.CONTROLLER, initializedController);
+            initializedController = null;
+        }
+    }
+ 
 
     private void printRoomMessage(String messageToPrint) {
         System.out.println("[Room] " + this.roomID + " : " + messageToPrint);

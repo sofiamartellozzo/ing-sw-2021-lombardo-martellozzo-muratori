@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.TypeResource;
-import it.polimi.ingsw.utility.MarketStructureCopy;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -84,15 +83,5 @@ public class MarketStructure implements Serializable {
         return resourceFromMarket;
     }
 
-    /**
-     * create a copy of the Market (creating the structure and the slide Marble)
-     * @return
-     */
-    public MarketStructureCopy copyOfTheMarket(){
 
-        MarketStructureCopy marketStructureCopy = new MarketStructureCopy(slide);
-        marketStructureCopy.storeMarket(this.getStructure(), this.getSlide());
-
-        return marketStructureCopy;
-    }
 }
