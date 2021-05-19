@@ -15,4 +15,6 @@ import it.polimi.ingsw.model.SoloPlayer;
 
 public interface ActionAbility {
     public void activeAbility(BoardManager boardManager, SoloPlayer player) throws InvalidActionException;
+
+
 }

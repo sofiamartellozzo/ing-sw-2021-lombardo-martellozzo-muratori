@@ -109,16 +109,17 @@ public class DevelopmentCard extends Card implements Serializable {
 
     @Override
     public String toString() {
-        return "  ______________ \n" +
-                "|   level:" + level + "    |\n" +
-                "|   cost:" + getCostForCli() + "  |\n" +
-                "|   ID:"   +id +"        \n"+
-                "|              |\n" +
-                "|              |\n" +
-                "|    pay:"+getPayForCli()+"    |\n" +
-                "|    earn:"+getEarnForCli()+" |\n" +
-                "|   vPoints:"+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"  |\n" +
-                "|______________| ";
+        return "┌------------------------┐ \n" +
+
+                " ID: "   +id +"        \n"+
+                " color: "+color+"        \n"+
+                " level: " + level + "     \n" +
+                " cost: " + getCostForCli() + "  \n" +
+                " pay: "+getPayForCli()+"    \n" +
+                " earn: "+getEarnForCli()+" \n" +
+                " vp: "+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"  \n" +
+
+                "└-----------------------┘\n";
 
     }
 

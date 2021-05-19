@@ -86,13 +86,16 @@ public class ResourceManager implements Serializable {
             for(Resource resource: resources) {
                 int found = warehouse.searchResource(resource);
                 if (found!=-1){
+                    System.out.println("FOUND THE DEPOT ????? "+found);   //DEBUGGING
                     warehouse.removeResource(found);
                 }else{
                     removeFromStrongBox.add(resource);
                 }
             }
 
-            strongBox.removeResources(removeFromStrongBox);
+            if(!removeFromStrongBox.isEmpty()) {
+                strongBox.removeResources(removeFromStrongBox);
+            }
         }
 
     }

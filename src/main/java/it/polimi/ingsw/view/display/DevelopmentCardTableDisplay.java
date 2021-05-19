@@ -20,7 +20,7 @@ public class DevelopmentCardTableDisplay {
     private DevelopmentCardTable tableCard;
     private boolean[][] getAvailable;
 
-    public DevelopmentCardTableDisplay(DevelopmentCardTable developmentCardTable, boolean[][] getAvailable){
+    public DevelopmentCardTableDisplay(DevelopmentCardTable developmentCardTable, boolean[][] getAvailable) {
 
         this.tableCard = developmentCardTable;
         this.getAvailable = getAvailable;
@@ -28,9 +28,9 @@ public class DevelopmentCardTableDisplay {
 
     public void displayCardTable() {
 
-    /*public static void main(String[] args) {
+        //public static void main(String[] args) {
 
-        DevelopmentCardDeck[][] squareCards = new DevelopmentCardDeck[3][4];
+       /* DevelopmentCardDeck[][] squareCards = new DevelopmentCardDeck[3][4];
 
         //create the hash map for the cost of a Card
         ArrayList<Resource> array = new ArrayList<>();
@@ -55,9 +55,9 @@ public class DevelopmentCardTableDisplay {
         cost.add(3, new Resource(Color.BLUE));
 
         DevelopmentCard card1 = new DevelopmentCard(3,1, Color.GREEN, 1, array, proceeds, cost);
-        DevelopmentCard card2 = new DevelopmentCard(2,2, Color.GREEN, 1, array, proceeds, cost);
-        DevelopmentCard card3 = new DevelopmentCard(6,3, Color.GREEN, 1, array, proceeds, cost);
-        DevelopmentCard card4 = new DevelopmentCard(3,1, Color.GREEN, 1, array, proceeds, cost);
+        DevelopmentCard card2 = new DevelopmentCard(2,2, Color.GREEN, 2, array, proceeds, cost);
+        DevelopmentCard card3 = new DevelopmentCard(6,3, Color.GREEN, 3, array, proceeds, cost);
+        DevelopmentCard card4 = new DevelopmentCard(3,1, Color.GREEN, 4, array, proceeds, cost);
 
         ArrayList<DevelopmentCard> list = new ArrayList<>();
         list.add(card1);
@@ -128,9 +128,9 @@ public class DevelopmentCardTableDisplay {
         DevelopmentCardDeck smallDeck222 = new DevelopmentCardDeck(list111);
 
         DevelopmentCard card9 = new DevelopmentCard(3, 1,Color.YELLOW, 1, array, proceeds, cost);
-        DevelopmentCard card10 = new DevelopmentCard(2, 1,Color.YELLOW, 1, array, proceeds, cost);
-        DevelopmentCard card11 = new DevelopmentCard(6, 1,Color.YELLOW, 1, array, proceeds, cost);
-        DevelopmentCard card12 = new DevelopmentCard(3, 1,Color.YELLOW, 1, array, proceeds, cost);
+        DevelopmentCard card10 = new DevelopmentCard(2, 1,Color.YELLOW, 2, array, proceeds, cost);
+        DevelopmentCard card11 = new DevelopmentCard(6, 1,Color.YELLOW, 3, array, proceeds, cost);
+        DevelopmentCard card12 = new DevelopmentCard(3, 1,Color.YELLOW, 4, array, proceeds, cost);
 
         ArrayList<DevelopmentCard> list2 = new ArrayList<>();
         list2.add(card9);
@@ -180,35 +180,35 @@ public class DevelopmentCardTableDisplay {
         available[0][2] = true;
         available[0][3] = true;
         available[1][3] = true;
-        available[2][3] = true;*/
+        available[2][3] = true;
 
 
-        //DevelopmentCardTable developmentCardTable = new DevelopmentCardTable(squareCards);
+        DevelopmentCardTable developmentCardTable = new DevelopmentCardTable(squareCards);*/
 
         System.out.println(AnsiColors.RED_BOLD + "HERE IS THE DEVELOPMENT CARD TABLE:\n" + AnsiColors.RESET);
 
 
-        String row0="";
-        String row01="";
-        String row02="";
-        String row1="";
-        String row2="";
-        String row3="";
-        String row4="";
-        String row5="";
-        String row6="";
-        String row7="";
-        String row8="";
-        String row9="";
-        String row10="";
-        String row11="";
-        String row12="";
-        String row13="";
-        String row14="";
-        String row15="";
-        String row16="";
-        String row17="";
-        String row18="";
+        String row0 = "";
+        String row01 = "";
+        String row02 = "";
+        String row1 = "";
+        String row2 = "";
+        String row3 = "";
+        String row4 = "";
+        String row5 = "";
+        String row6 = "";
+        String row7 = "";
+        String row8 = "";
+        String row9 = "";
+        String row10 = "";
+        String row11 = "";
+        String row12 = "";
+        String row13 = "";
+        String row14 = "";
+        String row15 = "";
+        String row16 = "";
+        String row17 = "";
+        String row18 = "";
 
             /*row6 += tableCardCopy.getDeckTable(2,j).takeCard().getvictorytostring();
             row5 += tableCardCopy.getDeckTable(1,j).takeCard().getEarnForCli();
@@ -217,51 +217,132 @@ public class DevelopmentCardTableDisplay {
             row2 += tableCardCopy.getDeckTable(1,j).takeCard().getleveltostring();
             row1 += tableCardCopy.getDeckTable(0,j).takeCard().getColortoString();*/
 
-        for(int j = 0; j < 4 ;j++) {
-            int size1 = tableCard.getTable()[0][j].getDevelopDeck().size()-1;
+        for (int j = 0; j < 4; j++) {
 
-            row18 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getvictorytostring();
-            row17 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getearntostring();
-            row16 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getpaytostring();
-            row15 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getcosttostring();
-            row14 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getleveltostring();
-            row13 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getColortoString();
-            row02 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getIDtoString();
+            if (tableCard.getTable()[0][j].getDevelopDeck().isEmpty()) {
+                row18 += "                           ";
+                row17 += "                           ";
+                row16 += "                           ";
+                row15 += AnsiColors.RED_BOLD + "      EMPTY DECK           " + AnsiColors.RESET;
+                row14 += "                           ";
+                row13 += "                           ";
+                row02 += "                           ";
+            } else {
+                int size1 = tableCard.getTable()[0][j].getDevelopDeck().size() - 1;   //actual Dim of the Deck in the table
 
-            int size2 = tableCard.getTable()[0][j].getDevelopDeck().size()-1;
+                row18 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getvictorytostring();
+                row17 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getearntostring();
+                row16 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getpaytostring();
+                row15 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getcosttostring();
+                row14 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getleveltostring();
+                row13 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getColortoString();
+                row02 += tableCard.getTable()[0][j].getDevelopDeck().get(size1).getIDtoString();
+            }
 
-            row12 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getvictorytostring();
-            row11 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getearntostring();
-            row10 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getpaytostring();
-            row9 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getcosttostring();
-            row8 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getleveltostring();
-            row7 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getColortoString();
-            row01 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getIDtoString();
+            if (tableCard.getTable()[1][j].getDevelopDeck().isEmpty()) {   // If that card deck is empty!
+                row12 += "                           ";
+                row11 += "                           ";
+                row10 += "                           ";
+                row9 += AnsiColors.RED_BOLD + "      EMPTY DECK           " + AnsiColors.RESET;
+                row8 += "                            ";
+                row7 += "                            ";
+                row01 += "                           ";
+            } else {
+                int size2 = tableCard.getTable()[1][j].getDevelopDeck().size() - 1;
 
-            int size3 = tableCard.getTable()[0][j].getDevelopDeck().size()-1;
-
-            row6 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getvictorytostring();
-            row5 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getearntostring();
-            row4 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getpaytostring();
-            row3 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getcosttostring();
-            row2 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getleveltostring();
-            row1 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getColortoString();
-            row0 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getIDtoString();
-        }
-
-        /*for (int i = 2; i >= 0; i--) {
-            for (int j = 0; j < 4; j++) {
-                if(getAvailable[i][j]) {
-                    System.out.println("CARD" + "(" + i + "," + j + "): ");
-                    System.out.println(tableCard.showLastCard(i,j).toString()+"\n");
-                }else{
-                    //if this deck is unavailable ( size = 0) this will be printed with another color
-                    System.out.println(AnsiColors.RED_BRIGHT+"NOT AVAILABLE CARD" + "(" + i + "," + j + "): "+AnsiColors.RESET);
-                    System.out.println(tableCard.showLastCard(i,j).toString()+AnsiColors.RESET+"\n");
-                }
+                row12 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getvictorytostring();
+                row11 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getearntostring();
+                row10 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getpaytostring();
+                row9 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getcosttostring();
+                row8 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getleveltostring();
+                row7 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getColortoString();
+                row01 += tableCard.getTable()[1][j].getDevelopDeck().get(size2).getIDtoString();
             }
 
 
+            if (tableCard.getTable()[2][j].getDevelopDeck().isEmpty()) {
+                row6 += "                           ";
+                row5 += "                           ";
+                row4 += "                           ";
+                row3 += AnsiColors.RED_BOLD + "      EMPTY DECK           " + AnsiColors.RESET;
+                row2 += "                           ";
+                row1 += "                           ";
+                row0 += "                           ";
+            } else {
+                int size3 = tableCard.getTable()[2][j].getDevelopDeck().size() - 1;
+
+                row6 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getvictorytostring();
+                row5 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getearntostring();
+                row4 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getpaytostring();
+                row3 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getcosttostring();
+                row2 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getleveltostring();
+                row1 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getColortoString();
+                row0 += tableCard.getTable()[2][j].getDevelopDeck().get(size3).getIDtoString();
+            }
+        }
+
+        /*for(int j = 0; j < 4 ;j++) {
+
+            if (developmentCardTable.getTable()[0][j].getDevelopDeck().isEmpty()) {
+                row18 += "                           ";
+                row17 += "                           ";
+                row16 += "                           ";
+                row15 += AnsiColors.RED_BOLD + "      EMPTY DECK           " + AnsiColors.RESET;
+                row14 += "                           ";
+                row13 += "                           ";
+                row02 += "                           ";
+            } else {
+                int size1 = developmentCardTable.getTable()[0][j].getDevelopDeck().size() - 1;   //actual Dim of the Deck in the table
+
+                row18 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(size1).getvictorytostring();
+                row17 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(size1).getearntostring();
+                row16 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(size1).getpaytostring();
+                row15 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(size1).getcosttostring();
+                row14 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(size1).getleveltostring();
+                row13 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(size1).getColortoString();
+                row02 += developmentCardTable.getTable()[0][j].getDevelopDeck().get(size1).getIDtoString();
+            }
+
+            if (developmentCardTable.getTable()[1][j].getDevelopDeck().isEmpty()) {   // If that card deck is empty!
+                row12 += "                           ";
+                row11 += "                           ";
+                row10 += "                           ";
+                row9 += AnsiColors.RED_BOLD + "      EMPTY DECK           " + AnsiColors.RESET;
+                row8 += "                            ";
+                row7 += "                            ";
+                row01 += "                           ";
+            } else {
+                int size2 = developmentCardTable.getTable()[1][j].getDevelopDeck().size() - 1;
+
+                row12 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(size2).getvictorytostring();
+                row11 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(size2).getearntostring();
+                row10 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(size2).getpaytostring();
+                row9 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(size2).getcosttostring();
+                row8 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(size2).getleveltostring();
+                row7 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(size2).getColortoString();
+                row01 += developmentCardTable.getTable()[1][j].getDevelopDeck().get(size2).getIDtoString();
+            }
+
+
+            if (developmentCardTable.getTable()[2][j].getDevelopDeck().isEmpty()) {
+                row6 += "                           ";
+                row5 += "                           ";
+                row4 += "                           ";
+                row3 += AnsiColors.RED_BOLD + "      EMPTY DECK           " + AnsiColors.RESET;
+                row2 += "                           ";
+                row1 += "                           ";
+                row0 += "                           ";
+            } else {
+                int size3 = developmentCardTable.getTable()[2][j].getDevelopDeck().size() - 1;
+
+                row6 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(size3).getvictorytostring();
+                row5 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(size3).getearntostring();
+                row4 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(size3).getpaytostring();
+                row3 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(size3).getcosttostring();
+                row2 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(size3).getleveltostring();
+                row1 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(size3).getColortoString();
+                row0 += developmentCardTable.getTable()[2][j].getDevelopDeck().get(size3).getIDtoString();
+            }
         }*/
 
         for(int i = 0; i < 4 ; i++){
@@ -314,7 +395,7 @@ public class DevelopmentCardTableDisplay {
             }
         }
         System.out.println("\n");
-        System.out.println("┌--------------------┐    ┌----------------------┐    ┌----------------------┐     ┌----------------------┐   ");
+        System.out.println("┌--------------------┐    ┌----------------------┐    ┌----------------------┐    ┌----------------------┐   ");
         System.out.println(row0);
         System.out.println(row1);
         System.out.println(row2);

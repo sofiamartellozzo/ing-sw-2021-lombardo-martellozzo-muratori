@@ -1,8 +1,11 @@
 package it.polimi.ingsw.model.card;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
+import com.google.gson.internal.LinkedTreeMap;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
@@ -140,65 +143,68 @@ public class LeaderCard extends Card implements Serializable {
     }
 
 
-    public String getRequirementsForCli(){
+    public String getRequirementsForCli() {
 
-        String req = "" ;
+        String req = "";
 
-        /*for(int i = 0; i < requirements.size(); i++) {
-            if (requirements.get(i) instanceof Resource) {
-                if (((Resource) requirements.get(i)).getType().equals(TypeResource.COIN)) {
-                    req += AnsiColors.YELLOW_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
-                } else if (((Resource) requirements.get(i)).getType().equals(TypeResource.SERVANT)) {
-                    req += AnsiColors.PURPLE_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
-                } else if (((Resource) requirements.get(i)).getType().equals(TypeResource.SHIELD)) {
-                    req += AnsiColors.BLUE_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
-                } else if (((Resource) requirements.get(i)).getType().equals(TypeResource.STONE)) {
-                    req += AnsiColors.BLACK_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
-                }
-            } else if (requirements.get(i) instanceof SmallDevelopCard) {
-                if (((SmallDevelopCard) requirements.get(i)).getColor().equals(Color.BLUE)) {
-                    if (((SmallDevelopCard) requirements.get(i)).getLevel() == 0) {
-                        req += AnsiColors.BLUE_BOLD + " 🟦 level: 0" + AnsiColors.RESET;
-                    } else {
-                        req += AnsiColors.BLUE_BOLD + " 🟦 level: "+((SmallDevelopCard) requirements.get(i)).getLevel() + AnsiColors.RESET;
+        for (int i = 0; i < requirements.size(); i++) {
+            Object[] keys = ((Map) requirements.get(i)).keySet().toArray();
+            Object[] values = ((Map) requirements.get(i)).values().toArray();
+            for (int j = 0; j < keys.length; j++) {
+                String key = (String) keys[j];
+                if (key.equals("color") && keys[j+1].equals("level")) {
+                    String value = (String) values[j];
+                    switch (value) {
+                        case "GREEN":
+                            req += AnsiColors.GREEN_BOLD + " 🟦  level: "+values[j+1] + AnsiColors.RESET;
+                            break; //Color -> Card
+                        case "BLUE":
+                            req += AnsiColors.BLUE_BOLD + " 🟦 level: "+values[j+1]+ AnsiColors.RESET;
+                            break; //Color -> Card/Resource
+                        case "YELLOW":
+                            req += AnsiColors.YELLOW_BOLD + " 🟦 level: "+values[j+1] +AnsiColors.RESET;
+                            break;//Color -> Card/Resource
+                        case "PURPLE":
+                            req += AnsiColors.PURPLE_BOLD + " 🟦 level: "+values[j+1] +AnsiColors.RESET;
+                            break;//Color -> Card/Resource
+                    }
+                } else if(key.equals("color") && keys[j+1].equals("typeResource")){
+                    String value = (String) values[j+1];
+                    //Adding the resource to count at the end
+                    switch (value) {
+                        case "SHIELD":
+                            req += AnsiColors.BLUE_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                            break;
+                        case "COIN":
+                            req += AnsiColors.YELLOW_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                            break;
+                        case "STONE":
+                            req += AnsiColors.BLACK_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                            break;
+                        case "SERVANT":
+                            req += AnsiColors.PURPLE_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                            break;
                     }
                 }
-                if (((SmallDevelopCard) requirements.get(i)).getColor().equals(Color.YELLOW)) {
-                    if (((SmallDevelopCard) requirements.get(i)).getLevel() == 0) {
-                        req += AnsiColors.YELLOW_BOLD + " 🟦 level: 0" + AnsiColors.RESET;
-                    } else {
-                        req += AnsiColors.YELLOW_BOLD + " 🟦 level: " + ((SmallDevelopCard) requirements.get(i)).getLevel() + AnsiColors.RESET;
-                    }
-                }
-                if (((SmallDevelopCard) requirements.get(i)).getColor().equals(Color.PURPLE)) {
-                    if (((SmallDevelopCard) requirements.get(i)).getLevel() == 0) {
-                        req += AnsiColors.PURPLE_BOLD + " 🟦 level: 0" + AnsiColors.RESET;
-                    } else {
-                        req += AnsiColors.PURPLE_BOLD + " 🟦 level: "+((SmallDevelopCard) requirements.get(i)).getLevel() + AnsiColors.RESET;
-                    }
-                }
-                if (((SmallDevelopCard) requirements.get(i)).getColor().equals(Color.GREY)) {
-                    if (((SmallDevelopCard) requirements.get(i)).getLevel() == 0) {
-                        req += AnsiColors.BLACK_BOLD + " 🟦 level: 0" + AnsiColors.RESET;
-                    } else {
-                        req += AnsiColors.BLACK_BOLD + " 🟦 level: " + ((SmallDevelopCard) requirements.get(i)).getLevel() + AnsiColors.RESET;
-                    }
-                }
-            }*/
 
+            }
+
+        }
         return req;
     }
 
-
     @Override
     public String toString() {
-        return
-                " cardID: " + cardID + "\n"+
-                " specialAbility: " + specialAbility + "\n"+
-                " specialResource: " + specialResource + "\n"+
-                " requirements: " + getRequirementsForCli() + "\n"+
-                " state: " + AnsiColors.RED_BOLD+state + AnsiColors.RESET+"\n"+
-                " victoryPoints: " + AnsiColors.YELLOW_BOLD+victoryPoints+AnsiColors.RESET +"\n\n";
+        return "┌-------------------------------┐ \n" +
+
+                "   cardID: " +AnsiColors.CYAN_BOLD+ cardID +AnsiColors.RESET+ "\n"+
+                "   specialAbility: " + specialAbility + "\n"+
+                "   specialResource: " + specialResource + "\n"+
+                "   requirements: " + getRequirementsForCli() + "\n"+
+                "   state: " + AnsiColors.RED_BOLD+state + AnsiColors.RESET+"\n"+
+                "   victoryPoints: " + AnsiColors.YELLOW_BOLD+victoryPoints+AnsiColors.RESET +"\n"+
+
+                "└-------------------------------┘\n\n";
     }
 
     //METHODS USED TO SHOW THE CARD

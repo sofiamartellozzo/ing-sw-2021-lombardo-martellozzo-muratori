@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.actionAbility.ActionAbility;
+import it.polimi.ingsw.model.actionAbility.CardActionAbility;
+import it.polimi.ingsw.model.actionAbility.PlusTwoBlackCrossActionAbility;
+import it.polimi.ingsw.model.actionAbility.PlusUneAndShuffleActionAbility;
 
 import java.io.Serializable;
 
@@ -39,6 +42,22 @@ public class ActionToken implements Serializable {
 
     public int getCardID() {
         return cardID;
+    }
+
+
+    public String getAbility() {
+       if(ability instanceof CardActionAbility){
+           return "Card Action Ability";
+       }
+       else if(ability instanceof PlusTwoBlackCrossActionAbility){
+           return "Plus Two Black Cross Action Ability";
+       }
+       else if(ability instanceof PlusUneAndShuffleActionAbility){
+           return "Plus One And Shuffle Action Ability";
+       }
+       else{
+           throw new IllegalArgumentException(" error, this action token not exist");
+       }
     }
 
     @Override
