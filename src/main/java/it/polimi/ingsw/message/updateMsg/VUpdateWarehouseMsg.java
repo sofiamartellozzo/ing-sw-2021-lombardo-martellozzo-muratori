@@ -1,6 +1,7 @@
-package it.polimi.ingsw.message.viewMsg;
+package it.polimi.ingsw.message.updateMsg;
 
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 
 /**
@@ -8,7 +9,7 @@ import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
  *
  * send this msg from Server to notify the View (CLI or GUI) that the warehouse has changed
  */
-public class VUpdateWarehouseMsg extends ViewGameMsg{
+public class VUpdateWarehouseMsg extends ViewGameMsg {
     private String username;
     private Warehouse warehouse;
 

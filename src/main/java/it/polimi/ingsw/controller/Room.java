@@ -106,7 +106,7 @@ public class Room extends Observable {
     }
 
     public boolean isGameCanStart() {
-        return gameCanStart;
+        return initializedController.canStart();
     }
 
     public void addVV(String userVV, VirtualView vV){
@@ -191,21 +191,23 @@ public class Room extends Observable {
         }
 
         printRoomMessage("the game has been initialized, starting...");
+/*
+        while (!gameCanStart){
+            if (initializedController.canStart()){
+                System.out.println("The game can start in Room.. (here check initialized Controller)");
+                startFirstTurn();
+                gameCanStart = true;
+            }
+        }*/
 
         /*
         for (PlayerInterface player:turnSequence.values()) {
             VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your",player,boardManager);
             notifyAllObserver(ObserverType.VIEW, msg);
         }*/
-        startFirstTurn();
-        boolean wait = true;
-        while  (wait){
-            //wait until the initialization has finished
-            if (initializedController.canStart()){
-                //startFirstTurn();
-                wait = false;
-            }
-        }
+
+
+        //startFirstTurn();
 
 
     }
@@ -227,7 +229,9 @@ public class Room extends Observable {
 
         /* the initialization has finished so detach the observer*/
         //detachObserver(ObserverType.CONTROLLER, initializedController);
+        //gameCanStart = true;
         turnController.gamePlay();
+
     }
 
     /**
@@ -254,17 +258,11 @@ public class Room extends Observable {
     }
 
     public void detachInitializedC(){
-        if (initializedController!=null){
+        if (initializedController!=null && isGameCanStart()){
             detachObserver(ObserverType.CONTROLLER, initializedController);
             initializedController = null;
         }
     }
-
-
-    private void printRoomMessage(String messageToPrint) {
-        System.out.println("[Room] " + this.roomID + " : " + messageToPrint);
-    }
-
 
     /**
      * method used to manage the disconnection of a single player from a game, and delete his network
@@ -281,4 +279,12 @@ public class Room extends Observable {
         turnController.detachObserver(ObserverType.VIEW, playerVirtualView);
         listOfVirtualView.remove(username); //remove the username from the map in which every player is associated to his virtual view
     }
+
+
+
+    private void printRoomMessage(String messageToPrint) {
+        System.out.println("[Room] " + this.roomID + " : " + messageToPrint);
+    }
+
+
 }

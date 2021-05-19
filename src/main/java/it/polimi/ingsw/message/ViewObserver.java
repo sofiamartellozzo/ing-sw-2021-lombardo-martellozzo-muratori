@@ -1,12 +1,9 @@
 package it.polimi.ingsw.message;
 
-import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
-import it.polimi.ingsw.message.controllerMsg.CVStartInitializationMsg;
+import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.*;
-
-import java.io.IOException;
 
 /**
  * OBSERVER
@@ -40,8 +37,13 @@ public interface ViewObserver extends Observer{
     /* from InitC to each player to select the 2 L_Card*/
     public void receiveMsg(VChooseLeaderCardRequestMsg msg);
 
+    /*from InitController to the player that has chosen the Leader Card yet, but the others not*/
+    public void receiveMsg(VWaitOtherPlayerInitMsg msg);
+
     /* from Turn Controller to the client */
     public void receiveMsg(VChooseActionTurnRequestMsg msg);
+    /*msg to all other players that are not actually playing (beacouse is someone else turn)*/
+    public void receiveMsg(VWaitYourTurnMsg msg);
 
     /* fist (only in code order) of action chosen in ActionController, so send this msg to client for asking which card to buy */
     public void receiveMsg(VChooseDevelopCardRequestMsg msg);
@@ -51,12 +53,14 @@ public interface ViewObserver extends Observer{
 
     /* from ActionC to the client, so send to the client asking which choice in market */
     public void receiveMsg(VBuyFromMarketRequestMsg msg);
+    public void receiveMsg(VUpdateMarketMsg msg);
 
     /* from ActionC to the client, so send to the client asking which depot to store a resource */
     public void receiveMsg(VChooseDepotMsg msg);
 
     /*from PPController to client*/
     public void receiveMsg(VActivateProductionPowerRequestMsg msg);
+    public void receiveMsg(VUpdateStrongboxMsg msg);
 
 
 
@@ -69,6 +73,8 @@ public interface ViewObserver extends Observer{
 
     /* from client Socket main to cli gui*/
     public void receiveMsg(VServerUnableMsg msg);
-    void receiveMsg(CVStartInitializationMsg msg) throws IOException;
+    public void receiveMsg(CVStartInitializationMsg msg);
+    void receiveMsg(CGameCanStratMsg msg);
+
 
 }

@@ -9,14 +9,14 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
+import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
+import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.*;
-import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -405,11 +405,25 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     @Override
+    public void receiveMsg(CGameCanStratMsg msg) {
+        System.out.println(" try found room " );
+        try {
+            Room room = findUserRoom(msg.getOnePlayer());
+            System.out.println("found room " +room);
+            room.startFirstTurn();
+            room.detachInitializedC();
+            //room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError | InvalidActionException error) {
+            error.printStackTrace();
+        }
+    }
+
+    @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
         //send to TurnController by Room
         try {
             Room room = findUserRoom(msg.getUsername());
-            room.detachInitializedC();
+            //room.detachInitializedC();
             room.notifyAllObserver(ObserverType.CONTROLLER, msg);
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();
@@ -501,8 +515,15 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(CStopPPMsg cStopPPMsg) {
+    public void receiveMsg(CStopPPMsg msg) {
 
+        //send to TurnController by Room and then to ActionController and PPController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
     }
 
     @Override

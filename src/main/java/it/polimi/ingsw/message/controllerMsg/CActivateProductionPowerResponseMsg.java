@@ -20,12 +20,12 @@ import java.util.Map;
 public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
     private String username;
     private String where;
-    private Integer which;
+    private int which;
     private ArrayList<TypeResource> resourcesToPay;
     private TypeResource resourceToGet;
     private TurnAction action;
 
-    public CActivateProductionPowerResponseMsg(String msgContent, String username, String where, Integer which){
+    public CActivateProductionPowerResponseMsg(String msgContent, String username, String where, int which){
         super(msgContent);
         this.username=username;
         this.where = where;
@@ -43,7 +43,7 @@ public class CActivateProductionPowerResponseMsg extends ControllerGameMsg{
         return where;
     }
 
-    public Integer getWhich() {
+    public int getWhich() {
         return which;
     }
 

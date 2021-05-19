@@ -3,8 +3,8 @@ package it.polimi.ingsw.view.GUI;
 
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
+import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CRoomSizeResponseMsg;
-import it.polimi.ingsw.message.controllerMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.view.GUI.controller.*;
@@ -145,6 +145,11 @@ public class GUI extends Application implements ViewObserver {
         Platform.runLater(() -> {
             changeScene(initializeScene);
         });
+    }
+
+    @Override
+    public void receiveMsg(CGameCanStratMsg msg) {
+
     }
 
     public void setGameScene() throws IOException {
@@ -297,12 +302,22 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(VUpdateMarketMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VChooseDepotMsg msg) {
 
     }
 
     @Override
     public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VUpdateStrongboxMsg msg) {
 
     }
 
@@ -334,7 +349,17 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(VWaitYourTurnMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
 
     }
 

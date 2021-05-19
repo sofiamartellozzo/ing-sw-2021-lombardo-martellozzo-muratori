@@ -9,7 +9,7 @@ import java.io.Serializable;
  * with only a specific color and level
  * used as a requirements in Leader Card
  */
-public class SmallDevelopCard  {
+public class SmallDevelopCard implements Serializable {
     private Color color;
     private int level;
 

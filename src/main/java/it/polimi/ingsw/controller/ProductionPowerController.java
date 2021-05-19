@@ -5,6 +5,10 @@ import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
+import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
+import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
+import it.polimi.ingsw.message.updateMsg.VUpdateStrongboxMsg;
+import it.polimi.ingsw.message.updateMsg.VUpdateWarehouseMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
@@ -18,7 +22,7 @@ import java.util.*;
 public class ProductionPowerController extends Observable implements ControllerObserver {
 
     private final PlayerInterface player;
-    private Boolean notInterrupt;
+    private boolean notInterrupt;
     private final ArrayList<Resource> receivedResources;
 
     private Map<String, VirtualView> virtualView;
@@ -27,6 +31,7 @@ public class ProductionPowerController extends Observable implements ControllerO
         this.player = (Player) player;
         this.receivedResources = new ArrayList<>();
         this.virtualView = virtualView;
+        this.notInterrupt = false;
         attachAllVV();
     }
 
@@ -34,6 +39,7 @@ public class ProductionPowerController extends Observable implements ControllerO
         this.player = (SoloPlayer) player;
         this.receivedResources=new ArrayList<>();
         this.virtualView = virtualView;
+        this.notInterrupt = false;
         attachAllVV();
     }
 
@@ -51,14 +57,16 @@ public class ProductionPowerController extends Observable implements ControllerO
     public void start(){
         //start production power action
         ArrayList<Integer> activatablePowers = player.getGameSpace().getActivatableCardSpace(player);
-        while(activatablePowers.size()>0 && !notInterrupt){
+        if (activatablePowers.size()>0 && !notInterrupt){
             VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, please choose which production power want to activate: ",player.getUsername(),activatablePowers);
             notifyAllObserver(ObserverType.VIEW,requestMsg);
             activatablePowers = player.getGameSpace().getActivatableCardSpace(player);
         }
-        if(receivedResources!=null && receivedResources.size()>0) {
-            receiveResources();
+        if (activatablePowers==null || activatablePowers.size() == 0){
+            VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, no power activable", player.getUsername(), activatablePowers);
+            notifyAllObserver(ObserverType.VIEW, requestMsg);
         }
+
     }
 
     public void receiveResources(){
@@ -74,6 +82,8 @@ public class ProductionPowerController extends Observable implements ControllerO
         }
         try {
             player.getGameSpace().getStrongbox().addResources(resourcesToStrongBox);
+            VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("remove resources from strong box", player.getUsername(), player.getGameSpace().getStrongbox());
+            notifyAllObserver(ObserverType.VIEW, update);
         } catch (InvalidActionException e) {
             e.printStackTrace();
         }
@@ -81,25 +91,33 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+        System.out.println("Receiving REQUEST OF WITCH PP");
         if(msg.getUsername().equals(player.getUsername())){
             if(msg.getWhich()==0){
 
+                System.out.println("IN REMOVING RESOURCE");
                 ArrayList<Resource> resourcesToRemove = new ArrayList<>();
                 //remove 2 resources
                 for (TypeResource r: msg.getResourcesToPay()) {
                     resourcesToRemove.add(new Resource(r.getThisColor()));
                 }
-                if(msg.getWhere().equals("Warehouse")){
+                if(msg.getWhere().equals("warehouse")){
+                    System.out.println("TRY WWWW");
                     Warehouse warehouse = player.getGameSpace().getWarehouse();
                     try {
                         warehouse.removeResources(resourcesToRemove);
+                        VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("removed resources from warehouse", player.getUsername(), warehouse);
+                        notifyAllObserver(ObserverType.VIEW, update);
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
                     }
-                }else if(msg.getWhere().equals("Strongbox")){
+
+                }else if(msg.getWhere().equals("strongbox")){
                     StrongBox strongBox = player.getGameSpace().getStrongbox();
                     try {
                         strongBox.removeResources(resourcesToRemove);
+                        VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("remove resources from strong box", player.getUsername(), strongBox);
+                        notifyAllObserver(ObserverType.VIEW, update);
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
                     }
@@ -148,17 +166,19 @@ public class ProductionPowerController extends Observable implements ControllerO
                 receivedResources.add(new Resource(msg.getResourceToGet()));
                 receivedResources.add(new Resource(Color.RED));
             }
+            start();
         }
     }
 
-    @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
-
-    }
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
+        System.out.println("enter in STOP");
         notInterrupt=true;
+        if(receivedResources!=null && receivedResources.size()>0) {
+            System.out.println("enter in STOP2");
+            receiveResources();
+        }
     }
 
 
@@ -191,6 +211,11 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CGameCanStratMsg msg) {
 
     }
 
@@ -230,6 +255,9 @@ public class ProductionPowerController extends Observable implements ControllerO
         //not here
     }
 
+    @Override
+    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
+    }
 
 }

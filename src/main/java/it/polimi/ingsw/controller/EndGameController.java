@@ -5,6 +5,8 @@ import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
+import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
+import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VShowEndGameResultsMsg;
 import it.polimi.ingsw.model.Player;
@@ -128,6 +130,11 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
+    public void receiveMsg(CGameCanStratMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
 
         //NOT IMPLEMENTED HERE
@@ -180,7 +187,7 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
-    public void receiveMsg(CStopPPMsg cStopPPMsg) {
+    public void receiveMsg(CStopPPMsg msg) {
 
     }
 

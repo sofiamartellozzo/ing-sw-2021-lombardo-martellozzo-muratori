@@ -1,6 +1,8 @@
 package it.polimi.ingsw.message;
 
 import it.polimi.ingsw.message.controllerMsg.*;
+import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
+import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 
 /**
@@ -28,6 +30,8 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CChooseResourceAndDepotMsg msg);
     public void receiveMsg(CChooseLeaderCardResponseMsg msg); //this also to ActionController
 
+    public void receiveMsg(CGameCanStratMsg msg);
+
     /* from CLI to TurnController*/
     public void receiveMsg(CChooseActionTurnResponseMsg msg);
 
@@ -51,5 +55,5 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CChooseDiscardResponseMsg msg);
 
 
-    void receiveMsg(CStopPPMsg cStopPPMsg);
+    void receiveMsg(CStopPPMsg msg);
 }

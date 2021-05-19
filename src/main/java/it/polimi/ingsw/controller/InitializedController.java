@@ -6,6 +6,10 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
+import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
+import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
+import it.polimi.ingsw.message.updateMsg.VUpdateWarehouseMsg;
+import it.polimi.ingsw.message.updateMsg.VWaitOtherPlayerInitMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.message.ControllerObserver;
@@ -40,6 +44,8 @@ public class InitializedController extends Observable implements ControllerObser
 
     private Map<String, VirtualView> virtualView;
 
+    private int counterPlayerInitialized = 0;
+
     /* Constructor of the class */
     public InitializedController(ArrayList<String> players, Map<String, VirtualView> virtualView) {
 
@@ -61,9 +67,6 @@ public class InitializedController extends Observable implements ControllerObser
 
     }
 
-    public boolean turnCanStart() {
-        return canStart;
-    }
 
     public BoardManager getBoardManager() {
         return boardManager;
@@ -141,7 +144,7 @@ public class InitializedController extends Observable implements ControllerObser
             chooseLeaderCard(true);
 
             //now the came can start... Create the turn controller
-            canStart = true;
+           // canStart = true;
         } else {
             /*initialized multiplayer Mode*/
             //creating the Personal Board for each player
@@ -159,11 +162,6 @@ public class InitializedController extends Observable implements ControllerObser
 
             //call the msg to choose the leader card
             chooseLeaderCard(false);
-
-
-            //now the came can start... Create the turn controller
-            canStart = true;
-
 
         }
     }
@@ -252,7 +250,7 @@ public class InitializedController extends Observable implements ControllerObser
                     VChooseResourceAndDepotMsg msg4 = new VChooseResourceAndDepotMsg("You are the fourth player, please select another resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(4).getUsername());
                     notifyAllObserver(ObserverType.VIEW, msg4);
 
-                    this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
+                    this.turnSequence.get(4).getGameSpace().getFaithTrack().increasePosition();
                     /* notify all palyers that this one increase his position */
                     VNotifyPositionIncreasedByMsg notify2 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(4).getUsername(), 1);
                     notify2.setAllPlayerToNotify(getPlayersAsList());
@@ -292,7 +290,7 @@ public class InitializedController extends Observable implements ControllerObser
 
     /*--------------------------------------------------------------------------------------------------------------------*/
 
-    //HANDLE EVENT
+                //HANDLE EVENT OF THE GAME
 
     /**
      * this msg contains the list of Leader Cards the user choose and
@@ -303,6 +301,8 @@ public class InitializedController extends Observable implements ControllerObser
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
         //System.out.println("in receiving the 2 cards chosen ");       DEBUGGING
+        counterPlayerInitialized++;
+        System.out.println(counterPlayerInitialized);           //DEBUGGING
         if (msg.getAction().equals("firstChoose")) {
             //take all the Integer for Leader Card
             ArrayList<Integer> twoChosen = msg.getChosenLeaderCard();
@@ -334,7 +334,24 @@ public class InitializedController extends Observable implements ControllerObser
 
             //now remove the card from the deck
             boardManager.getLeaderCardDeck().remove(chosenCards);
+            if (counterPlayerInitialized==numberOfPlayer){
+                System.out.println("enter in can start!!!!");
+                //now the came can start... Create the turn controller
+                canStart = true;
+                CGameCanStratMsg startGame = new CGameCanStratMsg("", msg.getUsername());
+                notifyAllObserver(ObserverType.VIEW, startGame);
+                //System.out.println(startGame);
+            }
+            else{
+                VWaitOtherPlayerInitMsg wait = new VWaitOtherPlayerInitMsg("", msg.getUsername());
+                notifyAllObserver(ObserverType.VIEW, wait);
+            }
         }
+    }
+
+    @Override
+    public void receiveMsg(CGameCanStratMsg msg) {
+
     }
 
     /**
@@ -424,7 +441,7 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
-    public void receiveMsg(CStopPPMsg cStopPPMsg) {
+    public void receiveMsg(CStopPPMsg msg) {
 
     }
 

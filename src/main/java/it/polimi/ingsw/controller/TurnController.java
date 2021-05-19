@@ -5,6 +5,9 @@ import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
+import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
+import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
+import it.polimi.ingsw.message.updateMsg.VWaitYourTurnMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.VirtualView;
@@ -176,6 +179,12 @@ public class TurnController extends Observable implements ControllerObserver {
         //send the msg to the client, to choose the action he want to make
         VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
+        for (PlayerInterface p: turnSequence.values()) {
+            if (!p.getUsername().equals(player.getUsername())){
+                VWaitYourTurnMsg wait = new VWaitYourTurnMsg("", p.getUsername());
+                notifyAllObserver(ObserverType.VIEW, wait);
+            }
+        }
 
     }
 
@@ -247,7 +256,7 @@ public class TurnController extends Observable implements ControllerObserver {
     private void checkIfFirstAction() {
         //System.out.println("CHECK ActionController!!!!!");            DEBUGGING
         if (actionController != null && actionController.endAction()) {
-            //System.out.println("ELIMINA ACTION CONTROLLER!!!!!");         DEBUGGING
+            System.out.println("ELIMINA ACTION CONTROLLER!!!!!");
             detachObserver(ObserverType.CONTROLLER, actionController);
             actionController = null;
         }
@@ -399,14 +408,20 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(CStopPPMsg cStopPPMsg) {
-
+    public void receiveMsg(CStopPPMsg msg) {
+        //to ACTIONCONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
         //to ACTIONCONTROLLER
         notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
+    public void receiveMsg(CGameCanStratMsg msg) {
+
     }
 
 

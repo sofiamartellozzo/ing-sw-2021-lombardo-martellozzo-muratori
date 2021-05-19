@@ -1,4 +1,4 @@
-package it.polimi.ingsw.message.controllerMsg;
+package it.polimi.ingsw.message.updateMsg;
 
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.GameMsg;
@@ -13,9 +13,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
- *
  * Lobby <--- VV ---> CLI
- *
+ * <p>
  * msg form VV to notify the Lobby that a game is starting so it can set
  * the boolean (canCreateRoom) to true and say the player the information
  */
@@ -23,7 +22,7 @@ public class CVStartInitializationMsg extends GameMsg {
     private final String playerInvolved;
 
 
-    public CVStartInitializationMsg(String msgContent, String player ) {
+    public CVStartInitializationMsg(String msgContent, String player) {
         super(msgContent);
         this.playerInvolved = player;
     }
@@ -33,14 +32,11 @@ public class CVStartInitializationMsg extends GameMsg {
     }
 
 
-
     @Override
     public void notifyHandler(ViewObserver viewObserver) {
-        try {
-            viewObserver.receiveMsg(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        viewObserver.receiveMsg(this);
+
     }
 
     @Override

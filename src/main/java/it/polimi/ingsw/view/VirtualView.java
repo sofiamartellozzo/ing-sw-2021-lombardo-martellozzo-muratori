@@ -1,7 +1,8 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
+import it.polimi.ingsw.message.updateMsg.*;
+import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.controller.Lobby;
 import it.polimi.ingsw.message.*;
@@ -53,14 +54,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
 
-
     /**
      * receiving the message of a Request of connection by the client
      * this has to be send to the Controller
      *
      * @param msg
      */
-    public void receiveMsg(VVConnectionRequestMsg msg){
+    public void receiveMsg(VVConnectionRequestMsg msg) {
 
         //save the username of the client associated to this virtual view
         username = msg.getUsername();
@@ -83,7 +83,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
-    public void receiveMsg(CRoomSizeResponseMsg msg){
+    public void receiveMsg(CRoomSizeResponseMsg msg) {
         System.out.println("setting size room in VV");
 
         connectionLock.lock();
@@ -96,11 +96,12 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     /**
      * msg from himself to forward to the client (CLI or GUI)
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(CVStartInitializationMsg msg) {
-        if (msg.getPlayers().equals(username)){
+        if (msg.getPlayers().equals(username)) {
             sendToClient(msg);
         }
     }
@@ -113,8 +114,20 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
         //send to Initialized Controller
+        System.out.println("PASSING THROW VV " + msg.getUsername());
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
+
+    @Override
+    public void receiveMsg(CGameCanStratMsg msg) {
+        //send to room to start the game
+        if (msg.getOnePlayer().equals(username)) {
+            System.out.println("PASSING THROW VV for initialization");
+            notifyAllObserver(ObserverType.CONTROLLER, msg);
+        }
+    }
+
+
 
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
@@ -156,8 +169,6 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
 
-
-
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
         //send to Production Power Controller
@@ -171,8 +182,8 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
-        if(this.username.equals(msg.getUsername())){
-            notifyAllObserver(ObserverType.CONTROLLER,msg);
+        if (this.username.equals(msg.getUsername())) {
+            notifyAllObserver(ObserverType.CONTROLLER, msg);
         }
     }
 
@@ -199,7 +210,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     public void receiveMsg(VNackConnectionRequestMsg msg) {
 
         /* send this message (notify) to the client */
-        if (msg.getUserIp().equals(client.getUserIP()) && msg.getUserPort() == client.getUserPort() && msg.getUsername().equals(this.username) ) {
+        if (msg.getUserIp().equals(client.getUserIP()) && msg.getUserPort() == client.getUserPort() && msg.getUsername().equals(this.username)) {
             //set the boolean that specify if the user is waiting in the lobby to false
             inLobby = false;
 
@@ -233,15 +244,15 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
-        if (msg.getPlayer().getUsername().equals(this.username)){
+        if (msg.getPlayer().getUsername().equals(this.username)) {
             sendToClient(msg);
         }
     }
 
     @Override
-    public void receiveMsg(VRoomInfoMsg msg){
-        for(String player: msg.getPlayersId()){
-            if(player.equals(this.username)){
+    public void receiveMsg(VRoomInfoMsg msg) {
+        for (String player : msg.getPlayersId()) {
+            if (player.equals(this.username)) {
                 sendToClient(msg);
             }
         }
@@ -252,11 +263,19 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      * when the game and a turn started, the server need to ask a client which action
      * wants to make, so here the VV will forward the msg to the client
      * (CLI or GUI) will print out the request to make the client choose the Action
+     *
      * @param msg {VChooseActionTurnRequest}
      */
     @Override
     public void receiveMsg(VChooseActionTurnRequestMsg msg) {
-        if (msg.getUsername().equals(this.username)){
+        if (msg.getUsername().equals(this.username)) {
+            sendToClient(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VWaitYourTurnMsg msg) {
+        if (msg.getUsername().equals(this.username)) {
             sendToClient(msg);
         }
     }
@@ -279,6 +298,19 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     /**
+     * at the initialization of the game send this msg to all player
+     * until all have decided the 2 Leader card and resources (if had to)
+     * @param msg-> from Initialized Controller
+     */
+    @Override
+    public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
+        if (msg.getUsername().equals(this.username)) {
+            /* send this message (notify) to the client */
+            sendToClient(msg);
+        }
+    }
+
+    /**
      * msg received when is asked to the client to chose a Resource
      * and the depots where to store it
      *
@@ -289,13 +321,14 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         //check if the username is mine
         if (msg.getUsername().equals(this.username)) {
             /* send this message (notify) to the client */
-            System.out.println("choosing in VV");
+            //System.out.println("choosing in VV");
             sendToClient(msg);
         }
     }
 
     /**
      * update to View a change in warehouse
+     *
      * @param msg
      */
     @Override
@@ -346,11 +379,12 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * in this msg (specific of one client) is a request of the player to
      * move the resources from one depots to another
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
-        if (msg.getUsername().equals(this.username)){
+        if (msg.getUsername().equals(this.username)) {
             sendToClient(msg);
         }
     }
@@ -358,12 +392,22 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * in this msg (specific of one client) is a request of the player to
      * buy from the market in the turn
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
-        if (msg.getUsername().equals(this.username)){
+        if (msg.getUsername().equals(this.username)) {
             sendToClient(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VUpdateMarketMsg msg) {
+        for (PlayerInterface player: msg.getAllPlayers().values()) {
+            if (player.getUsername().equals(this.username)) {
+                sendToClient(msg);
+            }
         }
     }
 
@@ -371,11 +415,12 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      * in this msg (specific of one client) is after a request of the player to
      * buy from the market in the turn, so the server now need to know
      * in which depot store it
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
-        if (msg.getUsername().equals(this.username)){
+        if (msg.getUsername().equals(this.username)) {
             sendToClient(msg);
         }
     }
@@ -383,11 +428,19 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * in this msg (specific of one client) is after a request of the player to
      * activate a Production Power, so ask his which one activate
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
-        if (msg.getUsername().equals(this.username)){
+        if (msg.getUsername().equals(this.username)) {
+            sendToClient(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VUpdateStrongboxMsg msg) {
+        if (msg.getUsername().equals(this.username)) {
             sendToClient(msg);
         }
     }
@@ -401,12 +454,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * this msg contains the info of the Action Token activated at the end of the turn
      * check if is Solo Mode in addiction of the right username
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(VActionTokenActivateMsg msg) {
 
-        if (msg.getUsername().equals(this.username) && gameMode.equals("0")){
+        if (msg.getUsername().equals(this.username) && gameMode.equals("0")) {
 
             sendToClient(msg);
         }
@@ -424,10 +478,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      */
     private void tryToStartGame() {
         connectionLock.lock();
-        try{
+        try {
             //check if the connection is ON and ask to the Lobby if the Game can start
             if (userConnected.get() && lobby.canInitializeGameFor(this.username)) {
-                CVStartInitializationMsg msg = new CVStartInitializationMsg("A room is full so starting the initialization", username );
+                CVStartInitializationMsg msg = new CVStartInitializationMsg("A room is full so starting the initialization", username);
                 notifyAllObserver(ObserverType.CONTROLLER, msg);
                 lobby.startInitializationOfTheGame(username);
             }

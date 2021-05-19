@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
+import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Color;
 
@@ -603,6 +604,11 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(VWaitYourTurnMsg msg) {
+        WriteMessageDisplay.writeWaitingStatus();
+    }
+
     /**
      * the Client has to choose two cards from the card list composed by four cards, so there will be two Arrays,
      * one composed by the two chosen Cards, and the other composed by the two that the player denied
@@ -679,7 +685,8 @@ public class CLI extends Observable implements ViewObserver {
             }
 
             CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ", chosenCards, deniedCards, msg.getUsername(), "firstChoose");
-            this.client.sendMsg(response);
+            client.sendMsg(response);
+            System.out.println(response);
         } else {
             //discard or activate
             if (!msg.getMiniDeckLeaderCardFour().isEmpty()) {
@@ -692,17 +699,22 @@ public class CLI extends Observable implements ViewObserver {
                 this.client.sendMsg(response2);
             } else {
                 System.out.println("Sorry you cannot " + msg.getWhatFor() + " any Leader Card!");
-                System.out.println(" The actions you can choose from are: " + possibleActions);
-                System.out.println(" Write the action you chose with _ between every word! ");
-                in.reset();
+                //System.out.println(" The actions you can choose from are: " + possibleActions);
+                //System.out.println(" Write the action you chose with _ between every word! ");
+                //in.reset();
 
-                String action = in.nextLine();
-                TurnAction turnAction = returnActionFromString(action.toLowerCase());
+                //String action = in.nextLine();
+                //TurnAction turnAction = returnActionFromString(action.toLowerCase());
                 //send a msg to change the action
-                CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ", username, turnAction);
-                this.client.sendMsg(request);
+                CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.ACTIVE_LEADER_CARD);
+                client.sendMsg(change);
             }
         }
+    }
+
+    @Override
+    public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
+        System.out.println("WAIT...");
     }
 
     /**
@@ -824,6 +836,8 @@ public class CLI extends Observable implements ViewObserver {
     }
 
 
+
+
     /**
      * msg used to notify to all the game Player that a player increased his position of NumberOfPositionIncreased positions
      *
@@ -937,13 +951,13 @@ public class CLI extends Observable implements ViewObserver {
                                 msg.getCardAvailable()[row][column] = false;
                             }
                             System.out.println("Here is the card Table Updated! ");
-                            showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
+                            //showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
 
                             System.out.println("Here is your StrongBox Updated! ");
-                            showStrongBox(strongBox, player);
+                            //showStrongBox(strongBox, player);
 
                             System.out.println("Here are your card spaces updated");
-                            showCardSpaces(cardSpaces, player);
+                            //showCardSpaces(cardSpaces, player);
 
                             CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
                             client.sendMsg(response);
@@ -1018,6 +1032,7 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
 
         if (msg.getUsername().equals(username)) {
+            System.out.println("enter in ask info for market");
             marketStructureData = msg.getMarket();
 
             System.out.println(msg.getMsgContent());
@@ -1045,24 +1060,6 @@ public class CLI extends Observable implements ViewObserver {
 
                 if ((choice.toLowerCase().equals("row") && number < 4) || (choice.toLowerCase().equals("column") && number < 5)) {
 
-                    if (choice.toLowerCase().equals("row")) {
-                        try {
-
-                            marketStructureData.rowMoveMarble(number - 1, (Player) player);  //update the market situation (changing the row)
-                        } catch (InvalidActionException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        try {
-
-                            marketStructureData.columnMoveMarble(number - 1, (Player) this.player);  //update the market situation (changing the column)
-                        } catch (InvalidActionException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    System.out.println(" That's the updated situation of your market! ");
-                    showMarketStructure(marketStructureData);
 
                     CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number - 1);
                     client.sendMsg(response);
@@ -1071,7 +1068,16 @@ public class CLI extends Observable implements ViewObserver {
             }
         }
 
+    }
 
+    @Override
+    public void receiveMsg(VUpdateMarketMsg msg) {
+        marketStructureData = msg.getMarketUpdate();
+        if (msg.getUsername().equals(username)) {
+            System.out.println(" That's the updated situation of your market! ");
+            showMarketStructure(marketStructureData);
+            showWarehouse(warehouse, player);
+        }
     }
 
     @Override
@@ -1190,6 +1196,7 @@ public class CLI extends Observable implements ViewObserver {
                     this.client.sendMsg(response);
                 }
 
+                //delete these
                 if (where.equals("warehouse")) {
                     //warehouse.removeResources();
                     System.out.println("Here is your warehouse updated situation! ");
@@ -1201,156 +1208,173 @@ public class CLI extends Observable implements ViewObserver {
                 }
 
             }
+            else{
+                CStopPPMsg stop = new CStopPPMsg("stop PP ", msg.getUsername());
+                client.sendMsg(stop);
+
+            }
 
         }
 
     }
 
-        /**
-         * this method displays to the players if they won or not
-         *
-         * @param msg
-         */
-        @Override
-        public void receiveMsg (VShowEndGameResultsMsg msg){
-            clearScreen();
+    @Override
+    public void receiveMsg(VUpdateStrongboxMsg msg) {
+        strongBox = msg.getStrongBox();
+        showStrongBox(strongBox, player);
+    }
 
-            if (msg.getWinnerUsername().contains(username)) {
-                WriteMessageDisplay.declareWinner();
-                System.out.println(" You totalize " + msg.getVictoryPoints() + "points");
-            } else {
-                WriteMessageDisplay.endGame();
-                WriteMessageDisplay.declareLoser();
+    /**
+     * this method displays to the players if they won or not
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+        clearScreen();
+
+        if (msg.getWinnerUsername().contains(username)) {
+            WriteMessageDisplay.declareWinner();
+            System.out.println(" You totalize " + msg.getVictoryPoints() + "points");
+        } else {
+            WriteMessageDisplay.endGame();
+            WriteMessageDisplay.declareLoser();
+        }
+
+        in.reset();
+        out.flush();
+    }
+
+    /**
+     * msg used to show to the player which action token is been activated at the end of the turn
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VActionTokenActivateMsg msg) {
+
+        if (msg.getUsername().equals(username)) {
+            System.out.println(msg.getMsgContent());
+            System.out.println("Action Token used: ");
+            System.out.print("┌------------┐");
+            System.out.print("   " + msg.getActionToken().toString());
+            System.out.print("└------------┘");
+            try {
+                msg.getActionToken().activeActionToken(boardManager, (SoloPlayer) player);
+            } catch (InvalidActionException e) {
+                e.printStackTrace();
             }
 
-            in.reset();
-            out.flush();
         }
+    }
 
-        /**
-         * msg used to show to the player which action token is been activated at the end of the turn
-         * @param msg
-         */
-        @Override
-        public void receiveMsg (VActionTokenActivateMsg msg){
-
-            if (msg.getUsername().equals(username)) {
-                System.out.println(msg.getMsgContent());
-                System.out.println("Action Token used: ");
-                System.out.print("┌------------┐");
-                System.out.print("   " + msg.getActionToken().toString());
-                System.out.print("└------------┘");
-                try {
-                    msg.getActionToken().activeActionToken(boardManager, (SoloPlayer) player);
-                } catch (InvalidActionException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-
-        /**
-         * notification of starting the initialization
-         *
-         * @param msg from VV
-         */
-        @Override
-        public void receiveMsg (CVStartInitializationMsg msg){
-            System.out.println("The initialization has started...");
-
-        }
-
-        @Override
-        public void receiveMsg (VServerUnableMsg msg){
-            System.out.println("⚠️ Sorry, now the server is not available\nTry later :)");
-            connectionOFF = false;
-        }
-
-
-        /**
-         * method to clear the screen and remove older prints
-         */
-        private void clearScreen () {
-            System.out.println("reset and clear the screen");
-            System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
-            System.out.flush();
-        }
-
-        /*--------------------------------------------------------------------------------------------------------------------------------*/
-        // METHODS USED TO SHOW TO THE CLIENT
-
-        /**
-         * this method shows the FaithTrack to the player with his FaithMarker inside, if its a solo mode Game it will send the Lorenzo's Position
-         *
-         * @param faithTrack
-         */
-        private void showFaithTrack (FaithTrack faithTrack,int positionOnFaithTrack){
-            int lorenzoPosition;
-            if (soloMode) {
-                SoloPersonalBoard soloP = (SoloPersonalBoard) player.getGameSpace();
-                lorenzoPosition = soloP.getLorenzoIlMagnifico().getPosition();
-            } else {
-                lorenzoPosition = 0;
-            }
-            FaithTrackDisplay faithT = new FaithTrackDisplay(faithTrack, faithTrack.getPositionFaithMarker(), soloMode, lorenzoPosition);
-            faithT.showFaithTrack();
-        }
-
-
-        /**
-         * this method shows the updated Development card table
-         *
-         * @param developmentCardTable
-         */
-        private void showDevelopmentCardTable (DevelopmentCardTable developmentCardTable,boolean[][] availableCards){
-            DevelopmentCardTableDisplay table = new DevelopmentCardTableDisplay(developmentCardTable, availableCards);
-            table.displayCardTable();
-        }
-
-        /**
-         * method used to show the updated market to the player
-         *
-         * @param marketStructure
-         */
-        private void showMarketStructure (MarketStructure marketStructure){
-            MarketDisplay market = new MarketDisplay(marketStructure);
-            market.displayMarket();
-        }
-
-        /**
-         * method used to show to the player his StrongBox
-         *
-         * @param strongBox
-         * @param player
-         */
-        private void showStrongBox (StrongBox strongBox, PlayerInterface player){
-            StrongboxDisplay strongboxDisplay = new StrongboxDisplay(strongBox, player);
-            strongboxDisplay.displayStrongBox();
-        }
-
-        /**
-         * method used to show the warehouse content to the player
-         *
-         * @param warehouse
-         * @param player
-         */
-        private void showWarehouse (Warehouse warehouse, PlayerInterface player){
-            WarehouseDisplay warehouseDisplay = new WarehouseDisplay(warehouse, player);
-            warehouseDisplay.displayWarehouse();
-        }
-
-        /**
-         * method used to show the last card in every card Space of the player
-         *
-         * @param cardSpaces
-         * @param player
-         */
-        private void showCardSpaces (ArrayList < CardSpace > cardSpaces, PlayerInterface player){
-            CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces, player);
-            cardSpaceDisplay.showCardSpaces();
-        }
+    /**
+     * notification of starting the initialization
+     *
+     * @param msg from VV
+     */
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg) {
+        System.out.println("The initialization has started...");
 
     }
+
+    @Override
+    public void receiveMsg(CGameCanStratMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VServerUnableMsg msg) {
+        System.out.println("⚠️ Sorry, now the server is not available\nTry later :)");
+        connectionOFF = false;
+    }
+
+
+    /**
+     * method to clear the screen and remove older prints
+     */
+    private void clearScreen() {
+        System.out.println("reset and clear the screen");
+        System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
+        System.out.flush();
+    }
+
+    /*--------------------------------------------------------------------------------------------------------------------------------*/
+    // METHODS USED TO SHOW TO THE CLIENT
+
+    /**
+     * this method shows the FaithTrack to the player with his FaithMarker inside, if its a solo mode Game it will send the Lorenzo's Position
+     *
+     * @param faithTrack
+     */
+    private void showFaithTrack(FaithTrack faithTrack, int positionOnFaithTrack) {
+        int lorenzoPosition;
+        if (soloMode) {
+            SoloPersonalBoard soloP = (SoloPersonalBoard) player.getGameSpace();
+            lorenzoPosition = soloP.getLorenzoIlMagnifico().getPosition();
+        } else {
+            lorenzoPosition = 0;
+        }
+        FaithTrackDisplay faithT = new FaithTrackDisplay(faithTrack, faithTrack.getPositionFaithMarker(), soloMode, lorenzoPosition);
+        faithT.showFaithTrack();
+    }
+
+
+    /**
+     * this method shows the updated Development card table
+     *
+     * @param developmentCardTable
+     */
+    private void showDevelopmentCardTable(DevelopmentCardTable developmentCardTable, boolean[][] availableCards) {
+        DevelopmentCardTableDisplay table = new DevelopmentCardTableDisplay(developmentCardTable, availableCards);
+        table.displayCardTable();
+    }
+
+    /**
+     * method used to show the updated market to the player
+     *
+     * @param marketStructure
+     */
+    private void showMarketStructure(MarketStructure marketStructure) {
+        MarketDisplay market = new MarketDisplay(marketStructure);
+        market.displayMarket();
+    }
+
+    /**
+     * method used to show to the player his StrongBox
+     *
+     * @param strongBox
+     * @param player
+     */
+    private void showStrongBox(StrongBox strongBox, PlayerInterface player) {
+        StrongboxDisplay strongboxDisplay = new StrongboxDisplay(strongBox, player);
+        strongboxDisplay.displayStrongBox();
+    }
+
+    /**
+     * method used to show the warehouse content to the player
+     *
+     * @param warehouse
+     * @param player
+     */
+    private void showWarehouse(Warehouse warehouse, PlayerInterface player) {
+        WarehouseDisplay warehouseDisplay = new WarehouseDisplay(warehouse, player);
+        warehouseDisplay.displayWarehouse();
+    }
+
+    /**
+     * method used to show the last card in every card Space of the player
+     *
+     * @param cardSpaces
+     * @param player
+     */
+    private void showCardSpaces(ArrayList<CardSpace> cardSpaces, PlayerInterface player) {
+        CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces, player);
+        cardSpaceDisplay.showCardSpaces();
+    }
+
+}
 
 
 
