@@ -27,7 +27,7 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     private Map<String, VirtualView> virtualView;
 
-    public ProductionPowerController(Player player, Map<String, VirtualView> virtualView){
+    public ProductionPowerController(Player player, Map<String, VirtualView> virtualView) {
         this.player = (Player) player;
         this.receivedResources = new ArrayList<>();
         this.virtualView = virtualView;
@@ -35,9 +35,9 @@ public class ProductionPowerController extends Observable implements ControllerO
         attachAllVV();
     }
 
-    public ProductionPowerController(SoloPlayer player, Map<String, VirtualView> virtualView){
+    public ProductionPowerController(SoloPlayer player, Map<String, VirtualView> virtualView) {
         this.player = (SoloPlayer) player;
-        this.receivedResources=new ArrayList<>();
+        this.receivedResources = new ArrayList<>();
         this.virtualView = virtualView;
         this.notInterrupt = false;
         attachAllVV();
@@ -46,63 +46,69 @@ public class ProductionPowerController extends Observable implements ControllerO
     /**
      * attach all VV of the players so this class can notify them
      */
-    private void attachAllVV(){
-        for (String username: virtualView.keySet()) {
+    private void attachAllVV() {
+        for (String username : virtualView.keySet()) {
             attachObserver(ObserverType.VIEW, virtualView.get(username));
         }
     }
 
-    public ArrayList<Resource> getReceivedResources(){return receivedResources;}
+    public ArrayList<Resource> getReceivedResources() {
+        return receivedResources;
+    }
 
-    public void start(){
+    public void start() {
         //start production power action
         ArrayList<Integer> activatablePowers = player.getGameSpace().getActivatableCardSpace(player);
-        if (activatablePowers.size()>0 && !notInterrupt){
-            VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, please choose which production power want to activate: ",player.getUsername(),activatablePowers);
-            notifyAllObserver(ObserverType.VIEW,requestMsg);
+        if (activatablePowers.size() > 0 && !notInterrupt) {
+            VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, please choose which production power want to activate: ", player.getUsername(), activatablePowers);
+            notifyAllObserver(ObserverType.VIEW, requestMsg);
             activatablePowers = player.getGameSpace().getActivatableCardSpace(player);
         }
-        if (activatablePowers==null || activatablePowers.size() == 0){
+        if (activatablePowers == null || activatablePowers.size() == 0) {
             VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, no power activable", player.getUsername(), activatablePowers);
             notifyAllObserver(ObserverType.VIEW, requestMsg);
         }
 
     }
 
-    public void receiveResources(){
-        ArrayList<Resource> resourcesToStrongBox= new ArrayList<>();
-        for(Resource resource: receivedResources){
-            if(resource.getType().equals(TypeResource.FAITHMARKER)){
-                VNotifyPositionIncreasedByMsg requestMsg1= new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(),1);
+    public void receiveResources() {
+        ArrayList<Resource> resourcesToStrongBox = new ArrayList<>();
+        for (Resource resource : receivedResources) {
+            if (resource.getType().equals(TypeResource.FAITHMARKER)) {
+                VNotifyPositionIncreasedByMsg requestMsg1 = new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(), 1);
                 //put the player in the msg
-                notifyAllObserver(ObserverType.VIEW,requestMsg1);
-            }else{
+                notifyAllObserver(ObserverType.VIEW, requestMsg1);
+            } else {
                 resourcesToStrongBox.add(resource);
             }
         }
+
         try {
-            player.getGameSpace().getStrongbox().addResources(resourcesToStrongBox);
+            if (resourcesToStrongBox != null && resourcesToStrongBox.size() > 0) {
+                player.getGameSpace().getStrongbox().addResources(resourcesToStrongBox);
+            }
             VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("remove resources from strong box", player.getUsername(), player.getGameSpace().getStrongbox());
             notifyAllObserver(ObserverType.VIEW, update);
         } catch (InvalidActionException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
-        System.out.println("Receiving REQUEST OF WITCH PP");
-        if(msg.getUsername().equals(player.getUsername())){
-            if(msg.getWhich()==0){
+        //System.out.println("Receiving REQUEST OF WITCH PP");
+        if (msg.getUsername().equals(player.getUsername())) {
+            if (msg.getWhich() == 0) {
 
-                System.out.println("IN REMOVING RESOURCE");
+                //System.out.println("IN REMOVING RESOURCE");
                 ArrayList<Resource> resourcesToRemove = new ArrayList<>();
                 //remove 2 resources
-                for (TypeResource r: msg.getResourcesToPay()) {
+                for (TypeResource r : msg.getResourcesToPay()) {
                     resourcesToRemove.add(new Resource(r.getThisColor()));
                 }
-                if(msg.getWhere().equals("warehouse")){
-                    System.out.println("TRY WWWW");
+                if (msg.getWhere().equals("warehouse")) {
+                    //System.out.println("TRY WWWW");
                     Warehouse warehouse = player.getGameSpace().getWarehouse();
                     try {
                         warehouse.removeResources(resourcesToRemove);
@@ -112,7 +118,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                         e.printStackTrace();
                     }
 
-                }else if(msg.getWhere().equals("strongbox")){
+                } else if (msg.getWhere().equals("strongbox")) {
                     StrongBox strongBox = player.getGameSpace().getStrongbox();
                     try {
                         strongBox.removeResources(resourcesToRemove);
@@ -124,42 +130,42 @@ public class ProductionPowerController extends Observable implements ControllerO
                 }
                 receivedResources.add(new Resource(msg.getResourceToGet().getThisColor()));
 
-            }else if(msg.getWhich()>=1 && msg.getWhich()<=3){
+            } else if (msg.getWhich() >= 1 && msg.getWhich() <= 3) {
                 Warehouse warehouse = player.getGameSpace().getWarehouse();
                 StrongBox strongBox = player.getGameSpace().getStrongbox();
-                DevelopmentCard developmentCard = player.getGameSpace().getCardSpace(msg.getWhich()-1).getUpperCard();
-                if(warehouse.checkEnoughResources(developmentCard.showCostProductionPower())){
-                try {
-                    warehouse.removeResources(developmentCard.showCostProductionPower());
-                } catch (InvalidActionException e) {
-                    e.printStackTrace();
-                }
-                }else if(strongBox.checkEnoughResources(developmentCard.showCostProductionPower())){
-                    try{
+                DevelopmentCard developmentCard = player.getGameSpace().getCardSpace(msg.getWhich() - 1).getUpperCard();
+                if (warehouse.checkEnoughResources(developmentCard.showCostProductionPower())) {
+                    try {
+                        warehouse.removeResources(developmentCard.showCostProductionPower());
+                    } catch (InvalidActionException e) {
+                        e.printStackTrace();
+                    }
+                } else if (strongBox.checkEnoughResources(developmentCard.showCostProductionPower())) {
+                    try {
                         strongBox.removeResources(developmentCard.showCostProductionPower());
-                    }catch (InvalidActionException e){
+                    } catch (InvalidActionException e) {
                         e.printStackTrace();
                     }
                 }
                 receivedResources.addAll(developmentCard.showProceedsProductionPower());
 
-            }else if(msg.getWhich()>=4 && msg.getWhich()<=5){
-                int choose=4-msg.getWhich();
+            } else if (msg.getWhich() >= 4 && msg.getWhich() <= 5) {
+                int choose = 4 - msg.getWhich();
                 Warehouse warehouse = player.getGameSpace().getWarehouse();
                 StrongBox strongBox = player.getGameSpace().getStrongbox();
-                SpecialCard specialCard= player.getSpecialCard().get(choose);
-                if(warehouse.checkEnoughResources(specialCard.getCostProductionPower())){
-                    for(Resource resource: specialCard.getCostProductionPower()){
-                        try{
+                SpecialCard specialCard = player.getSpecialCard().get(choose);
+                if (warehouse.checkEnoughResources(specialCard.getCostProductionPower())) {
+                    for (Resource resource : specialCard.getCostProductionPower()) {
+                        try {
                             warehouse.removeResource(warehouse.searchResource(resource));
-                        }catch(InvalidActionException e){
+                        } catch (InvalidActionException e) {
                             e.printStackTrace();
                         }
                     }
-                }else if(strongBox.checkEnoughResources(specialCard.getCostProductionPower())){
-                    try{
+                } else if (strongBox.checkEnoughResources(specialCard.getCostProductionPower())) {
+                    try {
                         strongBox.removeResources(specialCard.getCostProductionPower());
-                    }catch (InvalidActionException e){
+                    } catch (InvalidActionException e) {
                         e.printStackTrace();
                     }
                 }
@@ -173,10 +179,10 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
-        System.out.println("enter in STOP");
-        notInterrupt=true;
-        if(receivedResources!=null && receivedResources.size()>0) {
-            System.out.println("enter in STOP2");
+        //System.out.println("enter in STOP");
+        notInterrupt = true;
+        if (receivedResources != null && receivedResources.size() > 0) {
+            //System.out.println("enter in STOP2");
             receiveResources();
         }
     }

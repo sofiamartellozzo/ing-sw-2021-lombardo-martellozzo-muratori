@@ -256,7 +256,7 @@ public class TurnController extends Observable implements ControllerObserver {
     private void checkIfFirstAction() {
         //System.out.println("CHECK ActionController!!!!!");            DEBUGGING
         if (actionController != null && actionController.endAction()) {
-            System.out.println("ELIMINA ACTION CONTROLLER!!!!!");
+            //System.out.println("ELIMINA ACTION CONTROLLER!!!!!");
             detachObserver(ObserverType.CONTROLLER, actionController);
             actionController = null;
         }

@@ -43,30 +43,40 @@ public class BoardManagerFactory {
     }
 
     protected Marble[][] createStructure(){
-
         Marble[][] marbles = new Marble[3][4];
         ArrayList<Marble> possibleMarbles = new ArrayList<>();
-
-        ColoredMarble marble1 = new ColoredMarble(Color.PURPLE);
-        ColoredMarble marble2 = new ColoredMarble(Color.YELLOW);
-        ColoredMarble marble3 = new ColoredMarble(Color.BLUE);
-        ColoredMarble marble4 = new ColoredMarble(Color.WHITE);
-        ColoredMarble marble5 = new ColoredMarble(Color.GREY);
-        RedMarble marble6 = new RedMarble();
-
-        possibleMarbles.add(0,marble1);
-        possibleMarbles.add(1,marble2);
-        possibleMarbles.add(2,marble3);
-        possibleMarbles.add(3,marble4);
-        possibleMarbles.add(4,marble5);
-        possibleMarbles.add(5,marble6);
-
+        ColoredMarble purple = new ColoredMarble(Color.PURPLE);
+        ColoredMarble yellow = new ColoredMarble(Color.YELLOW);
+        ColoredMarble blue = new ColoredMarble(Color.BLUE);
+        ColoredMarble white = new ColoredMarble(Color.WHITE);
+        ColoredMarble grey = new ColoredMarble(Color.GREY);
+        RedMarble red = new RedMarble();
+        //2 PURPLE
+        possibleMarbles.add(0,purple);
+        possibleMarbles.add(1,purple);
+        //2 YELLOW
+        possibleMarbles.add(2,yellow);
+        possibleMarbles.add(3,yellow);
+        //2 BLUE
+        possibleMarbles.add(4,blue);
+        possibleMarbles.add(5,blue);
+        //4 WHITE
+        possibleMarbles.add(6,white);
+        possibleMarbles.add(7,white);
+        possibleMarbles.add(8,white);
+        possibleMarbles.add(9,white);
+        //2 GREY
+        possibleMarbles.add(10,grey);
+        possibleMarbles.add(11,grey);
+        //1 RED
+        possibleMarbles.add(5,red);
         Random random = new Random();
-
         for(int i = 0; i<3; i++){
             for (int j = 0; j<4; j++)
             {
-                marbles[i][j] = possibleMarbles.get(random.nextInt(possibleMarbles.size()));
+                int choose=random.nextInt(possibleMarbles.size());
+                marbles[i][j] = possibleMarbles.get(choose);
+                possibleMarbles.remove(choose);
             }
         }
         return marbles;

@@ -6,10 +6,7 @@ import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
-import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
-import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
-import it.polimi.ingsw.message.updateMsg.VUpdateMarketMsg;
-import it.polimi.ingsw.message.updateMsg.VUpdateWarehouseMsg;
+import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Inactive;
@@ -281,6 +278,9 @@ public class ActionController extends Observable implements ControllerObserver {
             try {
                 player.buyCard(msg.getRow(), msg.getColumn(), boardManager, msg.getCardSpaceToStoreIt());
 
+                VUpdateDevTableMsg update = new VUpdateDevTableMsg("new develop table", player.getUsername(), boardManager.getDevelopmentCardTable(), boardManager.getPlayers());
+                notifyAllObserver(ObserverType.VIEW, update);
+
                 //remove tre 3 action from the able ones because can be made only once
                 removeAction(msg.getActionChose());
 
@@ -337,8 +337,15 @@ public class ActionController extends Observable implements ControllerObserver {
 
                 /*get the resources returned buy the market with the choice of the player*/
                 resourcesFromMarket = player.buyFromMarket(msg.getWhichRorC(), msg.getRowOrColumn(), boardManager);
-                VUpdateMarketMsg update = new VUpdateMarketMsg("the market has changed", msg.getUsername(), boardManager.getMarketStructure(), boardManager.getPlayers());
-                notifyAllObserver(ObserverType.VIEW, update);
+                if (!isSolo) {
+                    VUpdateMarketMsg update = new VUpdateMarketMsg("the market has changed", msg.getUsername(), boardManager.getMarketStructure(), boardManager.getPlayers());
+                    notifyAllObserver(ObserverType.VIEW, update);
+                } else {
+                    Map<Integer, PlayerInterface> singleP = new HashMap<>();
+                    singleP.put(1, soloPlayerTurn.getCurrentPlayer());
+                    VUpdateMarketMsg update = new VUpdateMarketMsg("the market has change", msg.getUsername(), boardManager.getMarketStructure(), singleP);
+                    notifyAllObserver(ObserverType.VIEW, update);
+                }
                 /*check for each resources returned from the market...*/
                 for (TypeResource resource : resourcesFromMarket) {
 
@@ -404,15 +411,8 @@ public class ActionController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CStopPPMsg msg) {
         notifyAllObserver(ObserverType.CONTROLLER, msg);
+        nextAction();
 
-        if (!isSolo) {
-            VChooseActionTurnRequestMsg nextAction = new VChooseActionTurnRequestMsg("", msg.getUsername(), turn.getAvailableAction());
-            notifyAllObserver(ObserverType.VIEW, nextAction);
-        }
-        else{
-            VChooseActionTurnRequestMsg nextAction = new VChooseActionTurnRequestMsg("", msg.getUsername(), soloPlayerTurn.getAvailableAction());
-            notifyAllObserver(ObserverType.VIEW, nextAction);
-        }
     }
 
     /**
@@ -427,11 +427,11 @@ public class ActionController extends Observable implements ControllerObserver {
                 case "active":
                     //if the player ask to active it
                     try {
-                            if (!isSolo) {
-                                turn.activeLeaderCard(msg.getLeaderCards().get(0));
-                            } else {
-                                soloPlayerTurn.activeLeaderCard(msg.getLeaderCards().get(0));
-                            }
+                        if (!isSolo) {
+                            turn.activeLeaderCard(msg.getLeaderCards().get(0));
+                        } else {
+                            soloPlayerTurn.activeLeaderCard(msg.getLeaderCards().get(0));
+                        }
 
                         nextAction();
                     } catch (InvalidActionException e) {
@@ -443,15 +443,15 @@ public class ActionController extends Observable implements ControllerObserver {
                     //if the player ask to discard it
                     //then this player proceed in the faith track of one
                     try {
-                            if (!isSolo) {
-                                turn.discardLeaderCard(msg.getLeaderCards().get(0));
-                            } else {
-                                soloPlayerTurn.discardLeaderCard(msg.getLeaderCards().get(0));
-                            }
+                        if (!isSolo) {
+                            turn.discardLeaderCard(msg.getLeaderCards().get(0));
+                        } else {
+                            soloPlayerTurn.discardLeaderCard(msg.getLeaderCards().get(0));
+                        }
 
-                            //and then notify everyone that this player increase the position
-                            VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("Someone increased his position: ", player.getUsername(), 1);
-                            notifyAllObserver(ObserverType.VIEW, notification);
+                        //and then notify everyone that this player increase the position
+                        VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("Someone increased his position: ", player.getUsername(), 1);
+                        notifyAllObserver(ObserverType.VIEW, notification);
 
                         nextAction();
                     } catch (InvalidActionException e) {
@@ -543,11 +543,15 @@ public class ActionController extends Observable implements ControllerObserver {
         if (!isSolo) {
             turn.removeAction(action);
             /* add the action that allows to end the player turn */
-            turn.addAction(TurnAction.END_TURN);
+            if (!turn.getAvailableAction().contains(TurnAction.END_TURN)) {
+                turn.addAction(TurnAction.END_TURN);
+            }
         } else {
             soloPlayerTurn.removeAction(action);
             /* add the action that allows to end the player turn */
-            soloPlayerTurn.addAction(TurnAction.END_TURN);
+            if (!soloPlayerTurn.getAvailableAction().contains(TurnAction.END_TURN)) {
+                soloPlayerTurn.addAction(TurnAction.END_TURN);
+            }
         }
     }
 

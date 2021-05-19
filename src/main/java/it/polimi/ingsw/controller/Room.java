@@ -89,6 +89,10 @@ public class Room extends Observable {
         return roomID;
     }
 
+    public int getNumberOfPlayer() {
+        return numberOfPlayer;
+    }
+
     public void setSIZE(int SIZE) {
         this.SIZE = SIZE;
     }
@@ -143,6 +147,8 @@ public class Room extends Observable {
                 }
 
                 addVV(username, VV);
+                //VRoomInfoMsg requestMsg = new VRoomInfoMsg("Sending the info about the room", this.playersId,this.roomID,this.numberOfPlayer,this.SIZE);
+                //notifyAllObserver(ObserverType.VIEW,requestMsg);
                 //System.out.println("in add user " +turnSequence);     DEBUGGING
 
             } else {

@@ -31,7 +31,8 @@ public class ClientMain {
 
             viewModeChoice = scanner.nextInt();
             if (viewModeChoice != 1 && viewModeChoice != 2) {
-                throw new InputInvalidException("Error! Plese insert a valid umber for the view mode..");
+                //throw new InputInvalidException("Error! Plese insert a valid umber for the view mode..");
+                System.out.println("Error! Plese insert a valid umber for the view mode..");
             } else {
                 setViewMode = true;
             }

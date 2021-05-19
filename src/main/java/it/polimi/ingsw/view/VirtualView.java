@@ -128,11 +128,12 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
 
-
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
         //send to Turn Controller
-        notifyAllObserver(ObserverType.CONTROLLER, msg);
+        if (msg.getUsername().equals(username)) {
+            notifyAllObserver(ObserverType.CONTROLLER, msg);
+        }
     }
 
     @Override
@@ -300,6 +301,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     /**
      * at the initialization of the game send this msg to all player
      * until all have decided the 2 Leader card and resources (if had to)
+     *
      * @param msg-> from Initialized Controller
      */
     @Override
@@ -376,6 +378,16 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     }
 
+    @Override
+    public void receiveMsg(VUpdateDevTableMsg msg) {
+        for (PlayerInterface player : msg.getAllPlayers().values()) {
+            if (player.getUsername().equals(this.username)) {
+                sendToClient(msg);
+            }
+        }
+    }
+
+
     /**
      * in this msg (specific of one client) is a request of the player to
      * move the resources from one depots to another
@@ -404,7 +416,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VUpdateMarketMsg msg) {
-        for (PlayerInterface player: msg.getAllPlayers().values()) {
+        for (PlayerInterface player : msg.getAllPlayers().values()) {
             if (player.getUsername().equals(this.username)) {
                 sendToClient(msg);
             }

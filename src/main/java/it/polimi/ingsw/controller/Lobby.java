@@ -29,7 +29,7 @@ public class Lobby extends Observable implements ControllerObserver {
     private static Lobby lobby = null;
 
     /* constructor */
-    private Lobby(){
+    private Lobby() {
         //create the objects inside this class
         canCreateRoom = new AtomicBoolean();
         canCreateRoom.set(true);
@@ -41,10 +41,11 @@ public class Lobby extends Observable implements ControllerObserver {
      * method called to instances this class, because is a Singleton
      * if is null is created a new Lobby object, otherwise is returned the class itself
      * because can be created only once
+     *
      * @return
      */
-    public static Lobby getInstance(){
-        if (lobby == null){
+    public static Lobby getInstance() {
+        if (lobby == null) {
             lobby = new Lobby();
         }
         return lobby;
@@ -87,8 +88,8 @@ public class Lobby extends Observable implements ControllerObserver {
 
 
     /*-------------------------------------------------------------------------------------------*/
-            //      Getter methods
-            //       (for testing)
+    //      Getter methods
+    //       (for testing)
 
     public static Lobby getLobby() {
         return lobby;
@@ -121,14 +122,15 @@ public class Lobby extends Observable implements ControllerObserver {
 
     /*-------------------------------------------------------------------------------------------*/
 
-     //METHODS FOR MANAGE THE ROOMS
+    //METHODS FOR MANAGE THE ROOMS
 
     /**
      * method to check if the room (given in input) is full or not
+     *
      * @param room -> the class Room to be checked calling his method
      * @return
      */
-    private boolean roomFull(Room room){
+    private boolean roomFull(Room room) {
         return room.isFull();
     }
 
@@ -136,11 +138,12 @@ public class Lobby extends Observable implements ControllerObserver {
      * scroll all the occupied room ad check if are all full
      * if not returned false so The Lobby know that can assign
      * the client to the first able room
+     *
      * @return
      */
-    private boolean allRoomsFull(){
-        for (Room room: notEmptyRoom) {
-            if (!roomFull(room)){
+    private boolean allRoomsFull() {
+        for (Room room : notEmptyRoom) {
+            if (!roomFull(room)) {
                 return false;
             }
         }
@@ -151,13 +154,12 @@ public class Lobby extends Observable implements ControllerObserver {
      * after checking if there is an available room this method returns the first room
      * available in this lobby
      */
-    private Room firstFreeRoom() throws NotFreeRoomAvailableError{
-        if (allRoomsFull()){
+    private Room firstFreeRoom() throws NotFreeRoomAvailableError {
+        if (allRoomsFull()) {
             throw new NotFreeRoomAvailableError("Error, there are not an available room right now");
-        }
-        else{
-            for (Room room: this.notEmptyRoom) {
-                if (!roomFull(room)){
+        } else {
+            for (Room room : this.notEmptyRoom) {
+                if (!roomFull(room)) {
                     return room;
                 }
             }
@@ -169,18 +171,19 @@ public class Lobby extends Observable implements ControllerObserver {
      * private method to update the number of room
      * called after adding or removing a room
      */
-    private void updateRoomCounter(){
+    private void updateRoomCounter() {
         this.numberOfRooms = this.notEmptyRoom.size();
     }
 
     /**
      * private method to find a Room in the not empty List by its ID
+     *
      * @param roomId
      * @return
      */
-    private Room findRoomByID(String roomId){
-        for (Room room: this.notEmptyRoom){
-            if (room.getRoomID().equals(roomId)){
+    private Room findRoomByID(String roomId) {
+        for (Room room : this.notEmptyRoom) {
+            if (room.getRoomID().equals(roomId)) {
                 return room;
             }
         }
@@ -191,26 +194,26 @@ public class Lobby extends Observable implements ControllerObserver {
      * method used to create a new Room by one user
      * using lock to stop a possible player that wants to inizialized a new
      * room in the same moment---> he have to wait
+     *
      * @param username
      * @param gameMode
      */
-    private void createNewRoom(String username, String gameMode, VirtualView userVV){
+    private void createNewRoom(String username, String gameMode, VirtualView userVV) {
         creatingRoomLock.lock();
-        try{
+        try {
             usersAssigned.add(username);
-            Room newRoom = new Room("Room  #" +this.numberOfRooms);
+            Room newRoom = new Room("Room  #" + this.numberOfRooms);
             this.notEmptyRoom.add(newRoom);
             updateRoomCounter();  //update the actual number of the rooms occupied
 
-            if (gameMode.equals("0")){
+            if (gameMode.equals("0")) {
                 //set the attribute of the Room true because the Client asked to play in Solo Mode
                 newRoom.setSoloMode(true);
                 //and the size of the room to 1
                 newRoom.setSIZE(1);
                 //add the VV of the player yet in add user
                 //newRoom.addVV(username, userVV);
-            }
-            else{
+            } else {
                 //setting the room size asking that to the client
                 canCreateRoom.set(false); //now this client is creating a new room, so I set this parameter to false and not letting anyone else to do the same now
                 newRoom.setSoloMode(false);
@@ -236,11 +239,12 @@ public class Lobby extends Observable implements ControllerObserver {
     /**
      * check if this username can start the game, so is in a full room and the Controller
      * can start to inizialized the game
+     *
      * @param username the player ask a network
      * @return true if the controller can start, false otherwise
      */
-    public boolean canInitializeGameFor(String username){
-        if (this.usersAssigned.contains(username)){
+    public boolean canInitializeGameFor(String username) {
+        if (this.usersAssigned.contains(username)) {
             //the user has been assigned to a Room
             Room userRoom = null;
             try {
@@ -251,7 +255,7 @@ public class Lobby extends Observable implements ControllerObserver {
             }
             //send to the client the number of players in his room and ask if it's ok to start
             //VRoomSizeRequestMsg request = new VRoomSizeRequestMsg()
-            if (userRoom!=null && userRoom.isFull()){
+            if (userRoom != null && userRoom.isFull()) {
                 return true;
             }
         }
@@ -260,23 +264,25 @@ public class Lobby extends Observable implements ControllerObserver {
 
     /**
      * find the room where the user is assigned
+     *
      * @param username
      * @return
      * @throws NotFreeRoomAvailableError
      */
-    private Room findUserRoom(String username) throws NotFreeRoomAvailableError{
-        for (Room r:this.notEmptyRoom) {
+    private Room findUserRoom(String username) throws NotFreeRoomAvailableError {
+        for (Room r : this.notEmptyRoom) {
             if (r.getPlayersId().contains(username))
                 return r;
         }
-        throw  new NotFreeRoomAvailableError("Username not found in the list of the Rooms in the Lobby!");
+        throw new NotFreeRoomAvailableError("Username not found in the list of the Rooms in the Lobby!");
     }
 
     /**
      * called by Lobby after check whit this class method (can Initialized Game for..)
+     *
      * @param username
      */
-    public void startInitializationOfTheGame(String username){
+    public void startInitializationOfTheGame(String username) {
         try {
             findUserRoom(username).initializedGame();
         } catch (NotFreeRoomAvailableError | InvalidActionException error) {
@@ -287,7 +293,7 @@ public class Lobby extends Observable implements ControllerObserver {
 
 
     /*-----------------------------------------------------------------------------------------------------------------*/
-            //HANDLE EVENTS
+    //HANDLE EVENTS
 
 
     /**
@@ -296,52 +302,53 @@ public class Lobby extends Observable implements ControllerObserver {
      * it has to be unique
      * then assign to this client the room where to play
      * (the client before has to say if he want to play in Solo mode or Multi player)
+     *
      * @param msg
      */
     @Override
-    public void receiveMsg(CConnectionRequestMsg msg){
+    public void receiveMsg(CConnectionRequestMsg msg) {
         String gameMode = msg.getGameSize();
         String convertedGameMode = convertStringForMode(gameMode);
-        System.out.println("[Lobby] request of a connection from: " +msg.getIP()+ " on @" +msg.getPort()+ " given  \"" +msg.getUsername()+ "\" as username " +
-                "asking for playing in " +convertedGameMode+ " Game!");
+        System.out.println("[Lobby] request of a connection from: " + msg.getIP() + " on @" + msg.getPort() + " given  \"" + msg.getUsername() + "\" as username " +
+                "asking for playing in " + convertedGameMode + " Game!");
 
         //check if the username is not used yet
-        if (usersAssigned.contains(msg.getUsername())){
+        if (usersAssigned.contains(msg.getUsername())) {
             //username used yet
-            sendNackConnectionRequest(msg,"USER_NOT_VALID");
-            System.out.println("Error, username \"" +msg.getUsername()+ "\" not valid because is taken already");
-        }
-        else{
+            sendNackConnectionRequest(msg, "USER_NOT_VALID");
+            System.out.println("Error, username \"" + msg.getUsername() + "\" not valid because is taken already");
+        } else {
             //now check if there is a room available or if all are occupied
             //if the client wants to play in Solo mode check only if can create a new room
-            if (!allRoomsFull()&&!gameMode.equals("0")){
+            if (!allRoomsFull() && !gameMode.equals("0")) {
                 //there is an available room
                 usersAssigned.add(msg.getUsername());
                 Room room = null;
-                try{
+                try {
                     room = firstFreeRoom();
-                    if (room!=null && !roomFull(room)) {
+                    if (room != null && !roomFull(room)) {
                         room.addUser(msg.getUsername(), msg.getVV());
+                        if (room.getNumberOfPlayer() > 1) {
+                            VRoomInfoMsg requestMsg = new VRoomInfoMsg("You have been added to the room", room.getPlayersId(), room.getRoomID(), room.getNumberOfPlayer(), room.getSIZE());
+                            notifyAllObserver(ObserverType.VIEW, requestMsg);
+                        }
                         //System.out.println("user added: " +room.getPlayersId().get(1));
                     }
-                }catch (NotFreeRoomAvailableError | LimitExceededException e){
+                } catch (NotFreeRoomAvailableError | LimitExceededException e) {
                     e.printStackTrace();
                 }
-            }
-            else if (!creatingRoomLock.isLocked()){
+            } else if (!creatingRoomLock.isLocked()) {
                 //all occupied room are full but one can be created, or Solo Mode
-                if (gameMode.equals("0") || canCreateRoom.get()){
+                if (gameMode.equals("0") || canCreateRoom.get()) {
                     createNewRoom(msg.getUsername(), gameMode, msg.getVV());
                 }
-            }
-            else if (this.numberOfRooms == MAX_NUMBER_ROOM){
+            } else if (this.numberOfRooms == MAX_NUMBER_ROOM) {
                 //all rooms are full and is not possible to create a new room
-                sendNackConnectionRequest(msg,"FULL_SIZE");
+                sendNackConnectionRequest(msg, "FULL_SIZE");
                 System.out.println("Error: all rooms are Full, Sorry try later!");
-            }
-            else if (!canCreateRoom.get()){
+            } else if (!canCreateRoom.get()) {
                 //if you arrived here this means that all rooms are occupied but the server is not full (#room==16) so the reason is that someone else is creating a new room
-                sendNackConnectionRequest(msg,"WAIT");
+                sendNackConnectionRequest(msg, "WAIT");
                 System.out.println("Error: someone else is creating a room, please wait a few seconds!");
             }
         }
@@ -349,6 +356,7 @@ public class Lobby extends Observable implements ControllerObserver {
 
     /**
      * msg from the client with the size of the room where he (the first) wants to play
+     *
      * @param msg
      */
     @Override
@@ -356,10 +364,10 @@ public class Lobby extends Observable implements ControllerObserver {
         //System.out.println("setting size room in Lobby");         DEBUGGING
         String roomId = msg.getRoomID();
         Room room = findRoomByID(roomId);
-        if (room != null){
+        if (room != null) {
             room.setSIZE(msg.getRoomSize());
-            VRoomInfoMsg requestMsg = new VRoomInfoMsg("Sending the info about the room", room.getPlayersId(),room.getRoomID(),room.getPlayersId().size(),room.getSIZE());
-            notifyAllObserver(ObserverType.VIEW,requestMsg);
+            VRoomInfoMsg requestMsg = new VRoomInfoMsg("The room has been created", room.getPlayersId(), room.getRoomID(), room.getNumberOfPlayer(), room.getSIZE());
+            notifyAllObserver(ObserverType.VIEW, requestMsg);
         }
 
     }
@@ -367,18 +375,19 @@ public class Lobby extends Observable implements ControllerObserver {
     /**
      * notification from VV that a room is full so the initialization has started
      * so the attribute is setted to true because a new room now can be initialized
+     *
      * @param msg
      */
     @Override
     public void receiveMsg(CVStartInitializationMsg msg) {
         creatingRoomLock.lock();
         try {
-            if (!findUserRoom(msg.getPlayers()).isSoloMode()){
+            if (!findUserRoom(msg.getPlayers()).isSoloMode()) {
                 canCreateRoom.set(true);
             }
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();
-        }finally {
+        } finally {
             creatingRoomLock.unlock();
         }
 
@@ -386,10 +395,11 @@ public class Lobby extends Observable implements ControllerObserver {
 
     /**
      * creating the Error message to send to the client, after notify the view
+     *
      * @param msg
      */
-    private void sendNackConnectionRequest(CConnectionRequestMsg msg, String errorInformation){
-        VNackConnectionRequestMsg nackMsg = new VNackConnectionRequestMsg("Connection cannot be established ", msg.getPort(), msg.getIP(),msg.getUsername(),errorInformation);
+    private void sendNackConnectionRequest(CConnectionRequestMsg msg, String errorInformation) {
+        VNackConnectionRequestMsg nackMsg = new VNackConnectionRequestMsg("Connection cannot be established ", msg.getPort(), msg.getIP(), msg.getUsername(), errorInformation);
         notifyAllObserver(ObserverType.VIEW, nackMsg);
     }
 
@@ -406,10 +416,10 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CGameCanStratMsg msg) {
-        System.out.println(" try found room " );
+        System.out.println(" try found room ");
         try {
             Room room = findUserRoom(msg.getOnePlayer());
-            System.out.println("found room " +room);
+            System.out.println("found room " + room);
             room.startFirstTurn();
             room.detachInitializedC();
             //room.notifyAllObserver(ObserverType.CONTROLLER, msg);
@@ -438,8 +448,6 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
 
-
-
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //send to Initialized Controller or TurnController
@@ -450,7 +458,6 @@ public class Lobby extends Observable implements ControllerObserver {
             error.printStackTrace();
         }
     }
-
 
 
     @Override
@@ -545,11 +552,12 @@ public class Lobby extends Observable implements ControllerObserver {
     /**
      * because the client type 0 or 1 to choose the game mode
      * convert the number to print out the right msg
+     *
      * @param mode
      * @return
      */
-    private String convertStringForMode(String mode){
-        switch (mode){
+    private String convertStringForMode(String mode) {
+        switch (mode) {
             case "0":
                 return "Solo Mode";
             case "1":

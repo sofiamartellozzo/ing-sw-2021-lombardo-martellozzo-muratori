@@ -47,6 +47,8 @@ public interface ViewObserver extends Observer{
 
     /* fist (only in code order) of action chosen in ActionController, so send this msg to client for asking which card to buy */
     public void receiveMsg(VChooseDevelopCardRequestMsg msg);
+    /*notify all player the new situation of the DevTable after someone bougth a card*/
+    public void receiveMsg(VUpdateDevTableMsg msg);
 
     /* from ActionC to the client */
     public void receiveMsg(VMoveResourceRequestMsg msg);

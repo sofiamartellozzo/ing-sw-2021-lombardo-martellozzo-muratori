@@ -15,6 +15,7 @@ public class VRoomInfoMsg extends ViewGameMsg{
         this.playersId = playersId;
         this.roomId = roomId;
         this.numberOfPlayers = numberOfPlayers;
+        this.size = size;
     }
 
     public ArrayList<String> getPlayersId() {
