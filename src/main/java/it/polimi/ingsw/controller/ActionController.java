@@ -427,34 +427,32 @@ public class ActionController extends Observable implements ControllerObserver {
                 case "active":
                     //if the player ask to active it
                     try {
-                        if (msg.getDiscardOrActiveCard() == 0) {
                             if (!isSolo) {
-                                turn.activeLeaderCard(msg.getDiscardOrActiveCard());
+                                turn.activeLeaderCard(msg.getLeaderCards().get(0));
                             } else {
-                                soloPlayerTurn.activeLeaderCard(msg.getDiscardOrActiveCard());
+                                soloPlayerTurn.activeLeaderCard(msg.getLeaderCards().get(0));
                             }
-                        }
+
                         nextAction();
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
-                        System.out.println("Cannot active " + msg.getChosenLeaderCard().get(0) + " Leader Card!");
+                        System.out.println("Cannot active " + msg.getLeaderCards().get(0) + " Leader Card!");
                     }
                     break;
                 case "remove":
                     //if the player ask to discard it
                     //then this player proceed in the faith track of one
                     try {
-                        if (msg.getDiscardOrActiveCard() == 0) {
                             if (!isSolo) {
-                                turn.discardLeaderCard(msg.getDiscardOrActiveCard());
+                                turn.discardLeaderCard(msg.getLeaderCards().get(0));
                             } else {
-                                soloPlayerTurn.discardLeaderCard(msg.getDiscardOrActiveCard());
+                                soloPlayerTurn.discardLeaderCard(msg.getLeaderCards().get(0));
                             }
 
                             //and then notify everyone that this player increase the position
                             VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("Someone increased his position: ", player.getUsername(), 1);
                             notifyAllObserver(ObserverType.VIEW, notification);
-                        }
+
                         nextAction();
                     } catch (InvalidActionException e) {
                         e.printStackTrace();

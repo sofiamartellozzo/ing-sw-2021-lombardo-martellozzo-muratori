@@ -5,7 +5,17 @@ import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CRoomSizeResponseMsg;
+import it.polimi.ingsw.message.controllerMsg.ControllerGameMsg;
 import it.polimi.ingsw.message.viewMsg.*;
+import it.polimi.ingsw.model.BoardManager;
+import it.polimi.ingsw.model.PlayerInterface;
+import it.polimi.ingsw.model.board.CardSpace;
+import it.polimi.ingsw.model.board.FaithTrack;
+import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
+import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
+import it.polimi.ingsw.model.card.DevelopmentCardTable;
+import it.polimi.ingsw.model.card.LeaderCardDeck;
+import it.polimi.ingsw.model.market.MarketStructure;
 import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.view.GUI.controller.*;
 import javafx.application.Application;
@@ -15,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GUI extends Application implements ViewObserver {
 
@@ -45,6 +56,16 @@ public class GUI extends Application implements ViewObserver {
 
     private String gameSize;
     private String[] args;
+
+    private PlayerInterface player;
+    private BoardManager boardManager;
+    private LeaderCardDeck leaderCards;
+    private MarketStructure marketStructureData;
+    private DevelopmentCardTable developmentCardTable;
+    private Warehouse warehouse;
+    private StrongBox strongBox;
+    private FaithTrack faithTrack;
+    private ArrayList<CardSpace> cardSpaces;
 
     public static void main(String[] args){ Application.launch(args);}
 
@@ -126,24 +147,55 @@ public class GUI extends Application implements ViewObserver {
     }
 
     public void setInitializeScene() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/PreGameScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/InitializeScene.fxml"));
         initializeScene = new Scene(loader.load());
         initializeSceneController =loader.getController();
         initializeSceneController.setGui(this);
+        initializeSceneController.setPlayer(player);
+    }
+
+
+
+    @Override
+    public void receiveMsg(VSendPlayerDataMsg msg) {
+        player = msg.getPlayer();
+        boardManager = msg.getBoardManager();
+        marketStructureData = msg.getBoardManager().getMarketStructure();
+        leaderCards = msg.getBoardManager().getLeaderCardDeck();
+        developmentCardTable = msg.getBoardManager().getDevelopmentCardTable();
+        warehouse = msg.getPlayer().getGameSpace().getResourceManager().getWarehouse();
+        strongBox = msg.getPlayer().getGameSpace().getResourceManager().getStrongBox();
+        faithTrack = msg.getPlayer().getGameSpace().getFaithTrack();
+        cardSpaces = msg.getPlayer().getGameSpace().getCardSpaces();
     }
 
     @Override
-    public void receiveMsg(CVStartInitializationMsg msg){
-
+    public void receiveMsg(VChooseResourceAndDepotMsg msg) {
         try {
             setInitializeScene();
         }catch (IOException e){
             e.printStackTrace();
         }
-
-        stage.setResizable(true);
+        initializeSceneController.start();
         Platform.runLater(() -> {
+            stage.setResizable(true);
             changeScene(initializeScene);
+            if(msg.getUsername().equals(username)) {
+                initializeSceneController.chooseResource(msg);
+            }
+        });
+
+    }
+
+    @Override
+    public void receiveMsg(VNotValidDepotMsg msg) {
+        Platform.runLater(() -> {
+            if(stage.getScene().equals(initializeScene)){
+                //Ask again depot initializeController
+
+            }else if(stage.getScene().equals(gameScene)){
+                //Ask again depot from gameController
+            }
         });
     }
 
@@ -177,6 +229,10 @@ public class GUI extends Application implements ViewObserver {
         Platform.exit();
         client.closeConnection();
         System.exit(0);
+    }
+
+    public void sendMsg(ControllerGameMsg msg){
+        client.sendMsg(msg);
     }
 
     public void setClient(ClientSocket client){this.client=client;}
@@ -259,6 +315,46 @@ public class GUI extends Application implements ViewObserver {
         return args;
     }
 
+    public String getiP() {
+        return iP;
+    }
+
+    public PlayerInterface getPlayer() {
+        return player;
+    }
+
+    public BoardManager getBoardManager() {
+        return boardManager;
+    }
+
+    public LeaderCardDeck getLeaderCards() {
+        return leaderCards;
+    }
+
+    public MarketStructure getMarketStructureData() {
+        return marketStructureData;
+    }
+
+    public DevelopmentCardTable getDevelopmentCardTable() {
+        return developmentCardTable;
+    }
+
+    public Warehouse getWarehouse() {
+        return warehouse;
+    }
+
+    public StrongBox getStrongBox() {
+        return strongBox;
+    }
+
+    public FaithTrack getFaithTrack() {
+        return faithTrack;
+    }
+
+    public ArrayList<CardSpace> getCardSpaces() {
+        return cardSpaces;
+    }
+
     @Override
     public void receiveMsg(VNackConnectionRequestMsg msg) {
         switch(msg.getErrorInformation()){
@@ -286,10 +382,14 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
+    public void receiveMsg(CVStartInitializationMsg msg){
 
     }
 
+    @Override
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
+
+    }
 
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
@@ -338,12 +438,6 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(VSendPlayerDataMsg msg) {
-
-    }
-
-
-    @Override
     public void receiveMsg(VChooseActionTurnRequestMsg msg) {
 
     }
@@ -364,18 +458,7 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(VChooseResourceAndDepotMsg msg) {
-
-    }
-
-    @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {
-
-    }
-
-
-    @Override
-    public void receiveMsg(VNotValidDepotMsg msg) {
 
     }
 

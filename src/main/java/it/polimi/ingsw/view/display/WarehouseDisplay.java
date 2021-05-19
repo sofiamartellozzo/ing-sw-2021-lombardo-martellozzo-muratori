@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.board.resourceManagement.Depot;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.utility.AnsiColors;
 
@@ -40,12 +41,13 @@ public class WarehouseDisplay {
         public void displayWarehouse() {
 
         System.out.print(AnsiColors.YELLOW_BOLD+"\nHERE IS YOUR WAREHOUSE:\n"+AnsiColors.RESET);
-        for (int i = 0; i < 3; i++) {
-            if (warehouse.getDepots().get(i).getResources().isEmpty()) {
+        for (int i = 0; i < warehouse.getDepots().size(); i++) {
+            Depot depot = warehouse.getDepots().get(i);
+            if (depot.isEmpty()) {
                 System.out.print("DEPOT" + (i+1) + ":" + AnsiColors.RED_BOLD + " IS EMPTY\n" + AnsiColors.RESET);
             } else {
                 System.out.print("DEPOT" + (i+1) + ":");
-                for (Resource res : warehouse.getDepots().get(i).getResources()) {
+                for (Resource res : depot.getResources()) {
                     System.out.print(createResForCli(res));
 
                 }

@@ -78,7 +78,7 @@ public class LeaderCardTest extends TestCase {
         player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);
 
         String where = "Warehouse";
-        leaderCard.activeCard(res,player);
+        //leaderCard.activeCard(res,player);
 
         assertEquals(leaderCard.getState().toString(),"Active");
     }

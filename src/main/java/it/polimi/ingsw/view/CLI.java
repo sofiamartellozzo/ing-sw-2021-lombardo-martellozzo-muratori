@@ -711,7 +711,7 @@ public class CLI extends Observable implements ViewObserver {
                 }
             }
 
-            CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ", chosenCards, deniedCards, msg.getUsername(), "firstChoose");
+            CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ", chosenCards, msg.getUsername(), "firstChoose");
             client.sendMsg(response);
             System.out.println(response);
         } else {
@@ -1290,9 +1290,6 @@ public class CLI extends Observable implements ViewObserver {
 
                         } else {
                             System.out.println("Error this place is not valid! Write another one ");
-                            in = new Scanner(System.in);
-                            in.reset();
-                            where = in.nextLine();
                         }
 
                     }
@@ -1497,7 +1494,7 @@ public class CLI extends Observable implements ViewObserver {
      * @param strongBox
      */
     private void showStrongBox(StrongBox strongBox) {
-        StrongboxDisplay strongboxDisplay = new StrongboxDisplay(strongBox, player);
+        StrongboxDisplay strongboxDisplay = new StrongboxDisplay(strongBox);
         strongboxDisplay.displayStrongBox();
     }
 

@@ -117,18 +117,6 @@ public class LeaderCard extends Card implements Serializable {
     public void activeCard(Player player) throws InvalidActionException {
         if(player == null) throw new InvalidActionException("Error, not valid!");
         state = new Active();
-    }
-
-    /**
-     * method used when the special ability is activated and create the special card,
-     * so the payer has to choose the resource he wants
-     * @param resource
-     * @param player
-     * @throws InvalidActionException
-     */
-    public void activeCard(Resource resource,Player player) throws InvalidActionException {
-        if(player == null) throw new InvalidActionException("Error, not valid!");
-        state = new Active();
         this.specialAbility.activeAbility(player);
     }
 

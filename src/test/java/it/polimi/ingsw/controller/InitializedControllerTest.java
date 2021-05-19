@@ -85,8 +85,8 @@ public class InitializedControllerTest extends TestCase {
         ArrayList<Integer> card2 = new ArrayList<>();
         card2.add(3);
         card2.add(4);
-        CChooseLeaderCardResponseMsg m = new CChooseLeaderCardResponseMsg("boo", card, card2, "pippo", "firstChoose");
-        initializedController.receiveMsg(m);
+        //CChooseLeaderCardResponseMsg m = new CChooseLeaderCardResponseMsg("boo", card, card2, "pippo", "firstChoose");
+        //initializedController.receiveMsg(m);
 
         //
     }

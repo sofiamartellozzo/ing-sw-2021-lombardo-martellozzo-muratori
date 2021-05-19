@@ -73,11 +73,10 @@ public class PlayerTurn implements PlayerTurnInterface {
     @Override
     public void activeLeaderCard(int which) throws InvalidActionException {
         LeaderCard card =  this.currentPlayer.selectLeaderCard(which);
-        if (card!=null && card.getSpecialAbility().equals("Addictional Power")){
-            this.currentPlayer.activeLeaderCardAbility((card), new Resource(Color.YELLOW));
-        }
-        else{
+        if(card!=null){
             this.currentPlayer.activeLeaderCardAbility(card);
+        }else{
+            throw new InvalidActionException("Card not valid!");
         }
 
     }

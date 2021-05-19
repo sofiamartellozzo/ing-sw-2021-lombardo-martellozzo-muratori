@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+import com.google.gson.internal.LinkedTreeMap;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.card.DevelopmentCard;
@@ -376,11 +377,81 @@ public class Player implements PlayerInterface, Serializable {
      */
     @Override
     public void activeLeaderCardAbility(LeaderCard card) throws InvalidActionException {
+        ArrayList<DevelopmentCard> allDevelopmentCards = this.getGameSpace().getAllCards();
         //verify the cost
-        ArrayList<Object> costOfCard = new ArrayList<>();
-        costOfCard = card.getRequirements();
-        if (costOfCard.contains(DevelopmentCard.class))
-        card.activeCard(this);
+        if(card.getState() instanceof Inactive){
+            //If true, checking the requirements
+            ArrayList<Object> requirements = card.getRequirements();
+            ArrayList<Resource> requiredResources = new ArrayList<>();
+            //If at the end the counter will be 0, all requirements are satisfied
+            int counter = requirements.size();
+            for (int i = 0; i < requirements.size(); i++) {
+                Object[] keys = ((LinkedTreeMap) requirements.get(i)).keySet().toArray();
+                Object[] values = ((LinkedTreeMap) requirements.get(i)).values().toArray();
+                Color color = null;
+                for (int j = 0; j < keys.length; j++) {
+                    String key = (String) keys[j];
+                    if (key.equals("color")) {
+                        String value = (String) values[j];
+                        switch (value) {
+                            case "GREEN":
+                                color = Color.GREEN;
+                                break; //Color -> Card
+                            case "BLUE":
+                                color = Color.BLUE;
+                                break; //Color -> Card/Resource
+                            case "YELLOW":
+                                color = Color.YELLOW;
+                                break;//Color -> Card/Resource
+                            case "PURPLE":
+                                color = Color.PURPLE;
+                                break;//Color -> Card/Resource
+                            case "GREY":
+                                color = Color.GREY;
+                                break;//Color -> Resource
+                        }
+                    } else if (key.equals("typeResource")) {
+                        String value = (String) values[j];
+                        //Adding the resource to count at the end
+                        switch (value) {
+                            case "SHIELD":
+                                requiredResources.add(new Resource(TypeResource.SHIELD));
+                                break;
+                            case "COIN":
+                                requiredResources.add(new Resource(TypeResource.COIN));
+                                break;
+                            case "STONE":
+                                requiredResources.add(new Resource(TypeResource.STONE));
+                                break;
+                            case "SERVANT":
+                                requiredResources.add(new Resource(TypeResource.SERVANT));
+                                break;
+                        }
+                    } else if (key.equals("level")) {
+                        //The requirements it's a card
+                        Double value = (Double) values[j];
+                        for (int k = 0; k < allDevelopmentCards.size(); k++) {
+                            DevelopmentCard developmentCard = allDevelopmentCards.get(k);
+                            if ((developmentCard.getColor().equals(color) && ((value == 0) || (value != 0 && developmentCard.getlevel() == value)))) {
+                                allDevelopmentCards.remove(k);
+                                counter--;
+                            }
+                        }
+                    }
+                }
+            }
+            if (requiredResources.size() > 0 && this.getGameSpace().getResourceManager().checkEnoughResources(requiredResources)) {
+                counter = 0;
+            }
+            if(counter==0){
+                card.activeCard(this);
+            }else{
+                throw new InvalidActionException("This leader card can't be activated!");
+            }
+        }else{
+            throw new InvalidActionException("This leader card is already activated");
+        }
+
     }
 
     /**
@@ -392,7 +463,7 @@ public class Player implements PlayerInterface, Serializable {
      */
     @Override
     public void activeLeaderCardAbility(LeaderCard card,Resource choice) throws InvalidActionException {
-        card.activeCard(choice, this);
+        //card.activeCard(choice, this);
     }
 
 

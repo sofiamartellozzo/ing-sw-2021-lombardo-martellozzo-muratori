@@ -10,6 +10,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class IntroSceneController {
     private GUI gui;
@@ -118,24 +120,37 @@ public class IntroSceneController {
     }
 
     public void clickLocalHostButton(){
+        playButton.setDisable(false);
         selectedIP="127.0.0.1";
         customIP=false;
 
+        ip.setDisable(true);
         onlineServerButton.selectedProperty().setValue(false);
         customIPButton.selectedProperty().setValue(false);
     }
 
     public void clickOnlineServerButton(){
-        //GET IP ONLINE SERVER
+        playButton.setDisable(false);
         customIP=false;
 
+        try{
+            selectedIP= InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            System.out.println("Not possible to get IP Address Online Server");
+            playButton.setDisable(true);
+        }
+
+        ip.setDisable(true);
         localhostButton.selectedProperty().setValue(false);
         customIPButton.selectedProperty().setValue(false);
     }
 
     public void clickCustomIPButton(){
+        playButton.setDisable(false);
         customIP=true;
 
+        ip.setDisable(false);
         localhostButton.selectedProperty().setValue(false);
         onlineServerButton.selectedProperty().setValue(false);
     }

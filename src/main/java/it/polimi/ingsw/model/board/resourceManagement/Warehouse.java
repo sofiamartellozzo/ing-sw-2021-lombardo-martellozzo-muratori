@@ -46,6 +46,7 @@ public abstract class Warehouse implements Serializable {
         for(Integer i:availableDepot){
             if(i==depot){
                 available=true;
+                break;
             }
         }
         if(!available) throw new InvalidActionException("The resource can't be add here");
@@ -80,51 +81,53 @@ public abstract class Warehouse implements Serializable {
     public void moveResource(int fromDepot,int toDepot) throws InvalidActionException {
         if(fromDepot<1 || fromDepot>depots.size()) throw new InvalidActionException("First depot not valid!");
         if(toDepot<1 || toDepot>depots.size()) throw new InvalidActionException("Second depot not valid!");
-        if(fromDepot==toDepot) throw new InvalidActionException("You're moving in the same depot!");
-        Depot from = depots.get(fromDepot-1);
-        Depot to = depots.get(toDepot-1);
-        if(!from.isEmpty()){
-            if(from instanceof AbilityDepot || to instanceof AbilityDepot){ //At least one of the depot is an AbilityDepot
-                if(to.getType()!=null && from.getType().equals(to.getType())){ //The "to" depot type is not null (in case is a RealDepot) and has the same type of the "from" depot
-                    if(!to.isFull()){ //The "to" depot must not be full
+        if(fromDepot!=toDepot) {
+            Depot from = depots.get(fromDepot - 1);
+            Depot to = depots.get(toDepot - 1);
+            if (!from.isEmpty()) {
+                if (from instanceof AbilityDepot || to instanceof AbilityDepot) { //At least one of the depot is an AbilityDepot
+                    if (to.getType() != null && from.getType().equals(to.getType())) { //The "to" depot type is not null (in case is a RealDepot) and has the same type of the "from" depot
+                        if (!to.isFull()) { //The "to" depot must not be full
+                            to.addResource(new Resource(from.getType()));
+                            from.removeResource();
+                        } else {
+                            throw new InvalidActionException("The depot you're trying to move is full!");
+                        }
+                    } else if (to.getType() == null) { //The "to" depot is a RealDepot and is empty
                         to.addResource(new Resource(from.getType()));
                         from.removeResource();
-                    }else{
-                        throw new InvalidActionException("The depot you're trying to move is full!");
+                    } else if (!from.getType().equals(to.getType())) {
+                        throw new InvalidActionException("The content type isn't the same!");
                     }
-                }else if (to.getType()==null){ //The "to" depot is a RealDepot and is empty
-                    to.addResource(new Resource(from.getType()));
-                    from.removeResource();
-                }else if(!from.getType().equals(to.getType())){
-                    throw new InvalidActionException("The content type isn't the same!");
-                }
-            }else{ //both the depots are RealDepot
-                //REMEMBER: two RealDepot has always DIFFERENT content type
-                if(to.isEmpty() && from.getNumberResources()<=to.getSize()){ //The "to" depot is empty and can contains all resources of the "from" depot
-                    for(Resource resource: from.getResources()){
-                        to.addResource(resource);
-                    }
-                    from.removeResources(from.getNumberResources());
-                }else if(!to.isEmpty()){ //The "to" is not empty, the player can exchange the two contents if the size allows to
-                    if(to.getNumberResources()<=from.getSize() || from.getNumberResources()<=to.getSize()){
-                        //Clone the two contents
-                        ArrayList<Resource> contentFrom = (ArrayList<Resource>) from.getResources().clone();
-                        ArrayList<Resource> contentTo = (ArrayList<Resource>) to.getResources().clone();
-                        //Clear
+                } else { //both the depots are RealDepot
+                    //REMEMBER: two RealDepot has always DIFFERENT content type
+                    if (to.isEmpty() && from.getNumberResources() <= to.getSize()) { //The "to" depot is empty and can contains all resources of the "from" depot
+                        for (Resource resource : from.getResources()) {
+                            to.addResource(resource);
+                        }
                         from.removeResources(from.getNumberResources());
-                        to.removeResources(to.getNumberResources());
-                        //Invert the contents
-                        from.addResources(contentTo.size(),contentTo.get(0));
-                        to.addResources(contentFrom.size(),contentFrom.get(0));
-                    }else{
-                        throw new InvalidActionException("You can't exchange the contents");
+                    } else if (!to.isEmpty()) { //The "to" is not empty, the player can exchange the two contents if the size allows to
+                        if (to.getNumberResources() <= from.getSize() || from.getNumberResources() <= to.getSize()) {
+                            //Clone the two contents
+                            ArrayList<Resource> contentFrom = (ArrayList<Resource>) from.getResources().clone();
+                            ArrayList<Resource> contentTo = (ArrayList<Resource>) to.getResources().clone();
+                            //Clear
+                            from.removeResources(from.getNumberResources());
+                            to.removeResources(to.getNumberResources());
+                            //Invert the contents
+                            from.addResources(contentTo.size(), contentTo.get(0));
+                            to.addResources(contentFrom.size(), contentFrom.get(0));
+                        } else {
+                            throw new InvalidActionException("You can't exchange the contents");
+                        }
+                    } else {
+                        throw new InvalidActionException("There's no enough space in the depot you want to move to");
                     }
-                }else{
-                    throw new InvalidActionException("There's no enough space in the depot you want to move to");
                 }
+            } else {
+                throw new InvalidActionException("There's no resource to be moved!");
             }
-        }else{
-            throw new InvalidActionException("There's no resource to be moved!");
+
         }
     }
 

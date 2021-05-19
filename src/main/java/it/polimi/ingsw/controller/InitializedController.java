@@ -305,9 +305,8 @@ public class InitializedController extends Observable implements ControllerObser
         System.out.println(counterPlayerInitialized);           //DEBUGGING
         if (msg.getAction().equals("firstChoose")) {
             //take all the Integer for Leader Card
-            ArrayList<Integer> twoChosen = msg.getChosenLeaderCard();
+            ArrayList<Integer> twoChosen = msg.getLeaderCards();
             System.out.println("the 2 cards chosen " + twoChosen);
-            ArrayList<Integer> twoDiscarded = msg.getDiscardedLeaderCard();
             ArrayList<LeaderCard> chosenCards = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
                 if (boardManager.getAllLeaderCard().contains(twoChosen.get(i))) {

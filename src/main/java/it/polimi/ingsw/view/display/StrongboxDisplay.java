@@ -15,11 +15,9 @@ import java.util.ArrayList;
 public class StrongboxDisplay {
 
     private StrongBox strongBox;
-    private PlayerInterface player;
 
-    public StrongboxDisplay(StrongBox strongBox, PlayerInterface player){
+    public StrongboxDisplay(StrongBox strongBox){
         this.strongBox = strongBox;
-        this.player = player;
     }
 
     /*public static void main(String[] args) throws InvalidActionException {

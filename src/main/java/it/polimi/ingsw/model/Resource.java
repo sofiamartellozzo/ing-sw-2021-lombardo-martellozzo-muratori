@@ -47,6 +47,9 @@ public class Resource implements Serializable {
             case GREY:
                 this.typeResource = TypeResource.STONE;
                 break;
+            case BLACK:
+                this.typeResource = TypeResource.LORENZO;
+                break;
             default:
                 throw new IllegalArgumentException("Color not allowed for create a Resource!");
         }

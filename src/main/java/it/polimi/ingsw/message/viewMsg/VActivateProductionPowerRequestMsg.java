@@ -27,9 +27,7 @@ public class VActivateProductionPowerRequestMsg extends ViewGameMsg{
 
     public String getUsername(){return username;}
 
-    public ArrayList<Integer> getActivatablePP() {
-        return activatablePP;
-    }
+    public ArrayList<Integer> getActivatablePP(){return activatablePP;}
 
     @Override
     public void notifyHandler(ViewObserver viewObserver) {
