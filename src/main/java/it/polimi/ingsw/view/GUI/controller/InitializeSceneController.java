@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.GUI.controller;
 
+import it.polimi.ingsw.message.controllerMsg.CChooseDiscardResourceMsg;
+import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseResourceAndDepotMsg;
@@ -16,15 +18,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 
 public class InitializeSceneController {
     private GUI gui;
-    private PlayerInterface player;
 
     @FXML
     private Label player1,player2,player3,player4;
@@ -44,6 +44,8 @@ public class InitializeSceneController {
     @FXML
     private ImageView resourceChosen;
 
+    @FXML
+    private Button discardResource;
 
     @FXML
     private Button depot1, depot2, depot3;
@@ -54,17 +56,19 @@ public class InitializeSceneController {
     @FXML
     private ImageView leaderCard1,leaderCard2,leaderCard3,leaderCard4;
 
-    @FXML
-    private GridPane commands;
-
     private Color chosenColor;
+
+    private ArrayList<Integer> idLeaderCards;
+    private ArrayList<Integer> chosenLeaderCards;
 
     public void start(){
         depot.setVisible(false);
         resource.setVisible(false);
         leaderCard.setVisible(false);
 
-        message.setText("You're the player "+player.getNumber());
+        message.setText("You're the player "+gui.getPlayer().getNumber());
+
+        setPlayers();
 
         ArrayList<ArrayList<ImageView>> warehouse = getWarehouseGraphics();
 
@@ -74,10 +78,9 @@ public class InitializeSceneController {
                 depot.get(j).setVisible(false);
             }
         }
+
         disableResource();
         disableButtons();
-
-        commands.setVisible(false);
 
     }
 
@@ -120,7 +123,7 @@ public class InitializeSceneController {
         resource.setVisible(false);
         resourceChosen.setImage(coin.getImage());
         resourceLabel.setText("COIN");
-        resourceLabel.setTextFill((new javafx.scene.paint.Color(255,221,0,1)));
+        resourceLabel.setTextFill((new javafx.scene.paint.Color((double)255/255,(double)221/255,(double)0/255,1)));
         chooseDepot();
     }
     public void shieldMouseClick(){
@@ -128,25 +131,30 @@ public class InitializeSceneController {
         resource.setVisible(false);
         resourceChosen.setImage(shield.getImage());
         resourceLabel.setText("SHIELD");
-        resourceLabel.setTextFill((new javafx.scene.paint.Color(0,175,255,1)));
+        resourceLabel.setTextFill((new javafx.scene.paint.Color((double)0/255,(double)175/255,(double)255/255,1)));
         chooseDepot();
     }
     public void servantMouseClick(){
         chosenColor =Color.PURPLE;
         resource.setVisible(false);
         resourceChosen.setImage(servant.getImage());
+        resourceLabel.setText("SERVANT");
+        resourceLabel.setTextFill((new javafx.scene.paint.Color((double)187/255,(double)0/255,(double)255/255,1)));
         chooseDepot();
     }
     public void stoneMouseClick(){
         chosenColor =Color.GREY;
         resource.setVisible(false);
         resourceChosen.setImage(stone.getImage());
+        resourceLabel.setText("STONE");
+        resourceLabel.setTextFill((new javafx.scene.paint.Color((double)99/255,(double)99/255,(double)99/255,1)));
         chooseDepot();
     }
 
     private void chooseDepot(){
         setWarehouseGraphics();
-        Warehouse warehouse = player.getGameSpace().getWarehouse();
+        depotMessage.setText("You choose this resource:");
+        Warehouse warehouse = gui.getWarehouse();
         ArrayList<Button> depotButtons=getDepotButton();
         for(Button button:depotButtons){
             button.setDisable(false);
@@ -156,29 +164,93 @@ public class InitializeSceneController {
 
     public void clickDepot1(){
         depot.setVisible(false);
-        CChooseResourceAndDepotMsg responseMsg=new CChooseResourceAndDepotMsg("The player "+player.getUsername()+" has chosen a "+chosenColor+" resource and depot 1",chosenColor,1,player.getUsername());
+        CChooseResourceAndDepotMsg responseMsg=new CChooseResourceAndDepotMsg("The player "+gui.getUsername()+" has chosen a "+chosenColor+" resource and depot 1",chosenColor,1,gui.getUsername());
         gui.sendMsg(responseMsg);
     }
 
     public void clickDepot2(){
         depot.setVisible(false);
-        CChooseResourceAndDepotMsg responseMsg=new CChooseResourceAndDepotMsg("The player "+player.getUsername()+" has chosen a "+chosenColor+" resource and depot 2",chosenColor,2,player.getUsername());
+        CChooseResourceAndDepotMsg responseMsg=new CChooseResourceAndDepotMsg("The player "+gui.getUsername()+" has chosen a "+chosenColor+" resource and depot 2",chosenColor,2,gui.getUsername());
         gui.sendMsg(responseMsg);
     }
 
     public void clickDepot3(){
         depot.setVisible(false);
-        CChooseResourceAndDepotMsg responseMsg=new CChooseResourceAndDepotMsg("The player "+player.getUsername()+" has chosen a "+chosenColor+" resource and depot 3",chosenColor,3,player.getUsername());
+        CChooseResourceAndDepotMsg responseMsg=new CChooseResourceAndDepotMsg("The player "+gui.getUsername()+" has chosen a "+chosenColor+" resource and depot 3",chosenColor,3,gui.getUsername());
         gui.sendMsg(responseMsg);
     }
 
     public void chooseLeaderCard(VChooseLeaderCardRequestMsg msg){
+        ArrayList<ImageView> leaderCards = getLeaderCards();
+        idLeaderCards=msg.getMiniDeckLeaderCardFour();
+        for(int i=0;i<msg.getMiniDeckLeaderCardFour().size();i++){
+            Integer id=msg.getMiniDeckLeaderCardFour().get(i);
+            if(i<leaderCards.size()){
+                leaderCards.get(i).setImage(new Image("/images/frontCards/LeaderCard ("+id+").png"));
+            }else{
+                leaderCards.get(i).setVisible(false);
+            }
+        }
+        leaderCard.setVisible(true);
+    }
 
+    public void leaderCard1Entered(){leaderCard1.setEffect(new Glow());}
+    public void leaderCard2Entered(){leaderCard2.setEffect(new Glow());}
+    public void leaderCard3Entered(){leaderCard3.setEffect(new Glow());}
+    public void leaderCard4Entered(){leaderCard4.setEffect(new Glow());}
+
+    public void leaderCard1Exited(){leaderCard1.setEffect(null);}
+    public void leaderCard2Exited(){leaderCard2.setEffect(null);}
+    public void leaderCard3Exited(){leaderCard3.setEffect(null);}
+    public void leaderCard4Exited(){leaderCard4.setEffect(null);}
+
+    public void leaderCard1Click(){
+        if(chosenLeaderCards==null){
+            chosenLeaderCards=new ArrayList<>();
+        }
+        chosenLeaderCards.add(idLeaderCards.get(0));
+        leaderCard1.setEffect(new Glow());
+        if(chosenLeaderCards.size()==2){
+            CChooseLeaderCardResponseMsg responseMsg= new CChooseLeaderCardResponseMsg("I chose two leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose");
+            gui.sendMsg(responseMsg);
+        }
+    }
+    public void leaderCard2Click(){
+        if(chosenLeaderCards==null){
+            chosenLeaderCards=new ArrayList<>();
+        }
+        chosenLeaderCards.add(idLeaderCards.get(1));
+        leaderCard2.setEffect(new Glow());
+        if(chosenLeaderCards.size()==2){
+            CChooseLeaderCardResponseMsg responseMsg= new CChooseLeaderCardResponseMsg("I chose two leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose");
+            gui.sendMsg(responseMsg);
+        }
+    }
+    public void leaderCard3Click(){
+        if(chosenLeaderCards==null){
+            chosenLeaderCards=new ArrayList<>();
+        }
+        chosenLeaderCards.add(idLeaderCards.get(2));
+        leaderCard3.setEffect(new Glow());
+        if(chosenLeaderCards.size()==2){
+            CChooseLeaderCardResponseMsg responseMsg= new CChooseLeaderCardResponseMsg("I chose two leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose");
+            gui.sendMsg(responseMsg);
+        }
+    }
+    public void leaderCard4Click(){
+        if(chosenLeaderCards==null){
+            chosenLeaderCards=new ArrayList<>();
+        }
+        chosenLeaderCards.add(idLeaderCards.get(3));
+        leaderCard1.setEffect(new Glow());
+        if(chosenLeaderCards.size()==2){
+            CChooseLeaderCardResponseMsg responseMsg= new CChooseLeaderCardResponseMsg("I chose two leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose");
+            gui.sendMsg(responseMsg);
+        }
     }
 
     public void setGui(GUI gui) { this.gui = gui; }
 
-    public void setPlayer(PlayerInterface player){this.player=player;}
 
     private ArrayList<ArrayList<ImageView>> getWarehouseGraphics(){
         ArrayList<ArrayList<ImageView>> warehouseGraphics=new ArrayList<>();
@@ -216,7 +288,7 @@ public class InitializeSceneController {
 
     private void setWarehouseGraphics(){
         ArrayList<ArrayList<ImageView>> warehouseGraphics=getWarehouseGraphics();
-        Warehouse warehouse = player.getGameSpace().getWarehouse();
+        Warehouse warehouse = gui.getWarehouse();
 
         for(int i=0;i<warehouse.getDepots().size();i++){
             Depot depot = warehouse.getDepots().get(i);
@@ -251,5 +323,40 @@ public class InitializeSceneController {
         for(Button button:buttons){
             button.setDisable(true);
         }
+    }
+
+    public void clickDiscardResource(){
+        discardResource.setDisable(false);
+        this.gui.sendMsg(new CChooseDiscardResourceMsg("jajsjf",gui.getUsername()));
+    }
+
+    private ArrayList<Label> getPlayers(){
+        ArrayList<Label> players = new ArrayList<>();
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+        players.add(player4);
+        return players;
+    }
+
+    private void setPlayers(){
+        ArrayList<Label> players = getPlayers();
+        Object[] boardManagerPlayers = gui.getBoardManager().getPlayers().values().toArray();
+        for(int i=0;i<4;i++){
+            if(i<boardManagerPlayers.length){
+                players.get(i).setText(((PlayerInterface) boardManagerPlayers[i]).getUsername());
+            }else{
+                players.get(i).setVisible(false);
+            }
+        }
+    }
+
+    private ArrayList<ImageView> getLeaderCards(){
+        ArrayList<ImageView> leaderCards=new ArrayList<>();
+        leaderCards.add(leaderCard1);
+        leaderCards.add(leaderCard2);
+        leaderCards.add(leaderCard3);
+        leaderCards.add(leaderCard4);
+        return leaderCards;
     }
 }

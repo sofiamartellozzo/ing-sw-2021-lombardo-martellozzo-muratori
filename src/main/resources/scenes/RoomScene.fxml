@@ -21,7 +21,7 @@
          <children>
             <Label alignment="TOP_CENTER" text="You are the first player!" textAlignment="CENTER" textFill="#cfdbff">
                <font>
-                  <Font name="Noto Sans" size="50.0" />
+                  <Font size="50.0" />
                </font>
                <effect>
                   <DropShadow />

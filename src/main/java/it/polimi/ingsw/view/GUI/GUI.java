@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class GUI extends Application implements ViewObserver {
 
@@ -66,6 +67,8 @@ public class GUI extends Application implements ViewObserver {
     private StrongBox strongBox;
     private FaithTrack faithTrack;
     private ArrayList<CardSpace> cardSpaces;
+
+    private ReentrantLock lock = new ReentrantLock();
 
     public static void main(String[] args){ Application.launch(args);}
 
@@ -151,10 +154,7 @@ public class GUI extends Application implements ViewObserver {
         initializeScene = new Scene(loader.load());
         initializeSceneController =loader.getController();
         initializeSceneController.setGui(this);
-        initializeSceneController.setPlayer(player);
     }
-
-
 
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
@@ -173,12 +173,12 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VChooseResourceAndDepotMsg msg) {
         try {
             setInitializeScene();
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
         initializeSceneController.start();
         Platform.runLater(() -> {
-            stage.setResizable(true);
+            stage.setResizable(false);
             changeScene(initializeScene);
             if(msg.getUsername().equals(username)) {
                 initializeSceneController.chooseResource(msg);
@@ -196,6 +196,38 @@ public class GUI extends Application implements ViewObserver {
             }else if(stage.getScene().equals(gameScene)){
                 //Ask again depot from gameController
             }
+        });
+    }
+
+
+    @Override
+    public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
+        if (msg.getUsername().equals(username)) {
+            if (msg.getWhatFor().equals("initialization")) {
+                Platform.runLater(() -> {
+                    if (stage.getScene().equals(initializeScene)) {
+                        initializeSceneController.chooseLeaderCard(msg);
+                    } else {
+                        try {
+                            setInitializeScene();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        initializeSceneController.start();
+                        stage.setResizable(false);
+                        changeScene(initializeScene);
+                        initializeSceneController.chooseLeaderCard(msg);
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
+        Platform.runLater(()->{
+            changeScene(initializeScene);
+            initializeSceneController.start();
         });
     }
 
@@ -452,15 +484,8 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
-    @Override
-    public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
 
-    }
 
-    @Override
-    public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
-
-    }
 
     @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {

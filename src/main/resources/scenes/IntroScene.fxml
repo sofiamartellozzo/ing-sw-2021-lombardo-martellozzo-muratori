@@ -37,7 +37,7 @@
                            <center>
                               <Text fill="#002f66" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to" textAlignment="CENTER" wrappingWidth="256.3640878200531" BorderPane.alignment="CENTER">
                                  <font>
-                                    <Font name="Noto Sans Bold" size="24.0" />
+                                    <Font name="System Bold" size="24.0" />
                                  </font>
                               </Text>
                            </center>
@@ -55,10 +55,7 @@
                      <children>
                         <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="201.0" rowValignment="BOTTOM">
                            <children>
-                              <RadioButton fx:id="localhostButton" mnemonicParsing="false" onAction="#clickLocalHostButton" text="Localhost">
-                                 <font>
-                                    <Font name="Noto Sans" size="12.0" />
-                                 </font></RadioButton>
+                              <RadioButton fx:id="localhostButton" mnemonicParsing="false" onAction="#clickLocalHostButton" text="Localhost" />
                               <RadioButton fx:id="onlineServerButton" mnemonicParsing="false" onAction="#clickOnlineServerButton" text="Online Server" />
                               <RadioButton fx:id="customIPButton" mnemonicParsing="false" onAction="#clickCustomIPButton" text="Custom IP" />
                            </children>
