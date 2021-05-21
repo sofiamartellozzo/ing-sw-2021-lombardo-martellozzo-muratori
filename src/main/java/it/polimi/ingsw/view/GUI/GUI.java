@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class GUI extends Application implements ViewObserver {
-
     private Stage stage;
 
     private Scene introScene;
@@ -57,6 +56,7 @@ public class GUI extends Application implements ViewObserver {
 
     private String gameSize;
     private String[] args;
+    boolean receiveMsg;
 
     private PlayerInterface player;
     private BoardManager boardManager;
@@ -68,7 +68,7 @@ public class GUI extends Application implements ViewObserver {
     private FaithTrack faithTrack;
     private ArrayList<CardSpace> cardSpaces;
 
-    private ReentrantLock lock = new ReentrantLock();
+    private ReentrantLock lock=new ReentrantLock();
 
     public static void main(String[] args){ Application.launch(args);}
 
@@ -112,13 +112,13 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VRoomSizeRequestMsg msg) {
-            Platform.runLater(() -> {
-                try {
-                    roomSizeRequest(msg.getRoomID());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+        Platform.runLater(()->{
+            try {
+                roomSizeRequest(msg.getRoomID());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void roomSizeRequest(String idRoom) throws IOException {
@@ -128,6 +128,7 @@ public class GUI extends Application implements ViewObserver {
         roomStage = new Stage();
         roomStage.setResizable(false);
         roomStage.setScene(roomScene);
+        roomStage.initOwner(stage);
         roomStage.show();
         roomSceneController.setGui(this);
         roomSceneController.setIdRoom(idRoom);
@@ -142,11 +143,10 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VRoomInfoMsg vRoomInfoMsg) {
-        Platform.runLater(() -> {
+        Platform.runLater(()-> {
             lobbySceneController.updateLobby(vRoomInfoMsg);
             changeScene(lobbyScene);
         });
-
     }
 
     public void setInitializeScene() throws IOException {
@@ -167,36 +167,35 @@ public class GUI extends Application implements ViewObserver {
         strongBox = msg.getPlayer().getGameSpace().getResourceManager().getStrongBox();
         faithTrack = msg.getPlayer().getGameSpace().getFaithTrack();
         cardSpaces = msg.getPlayer().getGameSpace().getCardSpaces();
+            try {
+                setInitializeScene();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.setResizable(false);
+            initializeSceneController.start();
+        Platform.runLater(()->{
+            changeScene(initializeScene);
+        });
     }
 
     @Override
     public void receiveMsg(VChooseResourceAndDepotMsg msg) {
-        try {
-            setInitializeScene();
-        } catch (IOException e){
-            e.printStackTrace();
+        if(msg.getUsername().equals(username)) {
+            initializeSceneController.chooseResource(msg);
         }
-        initializeSceneController.start();
-        Platform.runLater(() -> {
-            stage.setResizable(false);
-            changeScene(initializeScene);
-            if(msg.getUsername().equals(username)) {
-                initializeSceneController.chooseResource(msg);
-            }
-        });
-
     }
 
     @Override
     public void receiveMsg(VNotValidDepotMsg msg) {
-        Platform.runLater(() -> {
+        //Platform.runLater(() -> {
             if(stage.getScene().equals(initializeScene)){
                 //Ask again depot initializeController
 
             }else if(stage.getScene().equals(gameScene)){
                 //Ask again depot from gameController
             }
-        });
+        //});
     }
 
 
@@ -204,21 +203,7 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
         if (msg.getUsername().equals(username)) {
             if (msg.getWhatFor().equals("initialization")) {
-                Platform.runLater(() -> {
-                    if (stage.getScene().equals(initializeScene)) {
-                        initializeSceneController.chooseLeaderCard(msg);
-                    } else {
-                        try {
-                            setInitializeScene();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        initializeSceneController.start();
-                        stage.setResizable(false);
-                        changeScene(initializeScene);
-                        initializeSceneController.chooseLeaderCard(msg);
-                    }
-                });
+                initializeSceneController.chooseLeaderCard(msg);
             }
         }
     }
