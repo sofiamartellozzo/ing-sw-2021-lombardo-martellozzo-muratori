@@ -40,6 +40,7 @@ public class WarehouseDisplay {
 
         public void displayWarehouse() {
 
+
         System.out.print(AnsiColors.YELLOW_BOLD+"\nHERE IS YOUR WAREHOUSE:\n"+AnsiColors.RESET);
         for (int i = 0; i < warehouse.getDepots().size(); i++) {
             Depot depot = warehouse.getDepots().get(i);

@@ -30,4 +30,9 @@ public class CardActionAbility implements ActionAbility, Serializable {
         boardManager.getDevelopmentCardTable().getSquare(this.color);
         boardManager.getDevelopmentCardTable().getSquare(this.color);
     }
+
+    @Override
+    public String toString() {
+        return "   Ability: "  + "removed Two card of color " + color.toString();
+    }
 }

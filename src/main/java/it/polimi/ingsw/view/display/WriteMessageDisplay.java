@@ -33,7 +33,7 @@ public class WriteMessageDisplay {
     }
 
     /**
-     * if the network is working print the phrase CONNECTED, YOU'RE ONLINE
+     * if the network is working print the phrase CONNECTED
      */
     public static void writeOnlineStatus(){
 
@@ -48,17 +48,48 @@ public class WriteMessageDisplay {
     }
 
     /**
+     * if the player chooses to play offline OFFLINE
+     */
+    public static void writeOfflineStatus() {
+        System.out.println(AnsiColors.BLUE_BOLD+" " +
+                "        ___    ___ _  _             \n" +
+                "        / __)  / __) |(_)            \n" +
+                "  ___ _| |__ _| |__| | _ ____  _____ \n" +
+                " / _ (_   __|_   __) || |  _ \\| ___ |\n" +
+                "| |_| || |    | |  | || | | | | ____|\n" +
+                " \\___/ |_|    |_|   \\_)_|_| |_|_____)\n" +
+                "                                     "+AnsiColors.RESET);
+    }
+
+    /**
      * if another player is playing, this message indicates to the player to wait
      */
     public static void writeWaitingStatus(){
-        System.out.println(" " +
-                "             _ __                               __                    \n" +
-                " _    _____ _(_) /_  __ _____  __ __  _______   / /___ _________       \n" +
-                "| |/|/ / _ `/ / __/ / // / _ \\/ // / / __/ -_) / __/ // / __/ _ \\_ _ _ \n" +
-                "|__,__/\\_,_/_/\\__/  \\_, /\\___/\\_,_/ /_/  \\__/  \\__/\\_,_/_/ /_//_(_|_|_)\n" +
-                "                   /___/                                               ");
+        System.out.println(""+ AnsiColors.RESET+
+                "__          __   _ _                              _______                     \n" +
+                "\\ \\        / /  (_) |                            |__   __|                    \n" +
+                " \\ \\  /\\  / /_ _ _| |_   _   _  ___  _   _ _ __     | |_   _ _ __ _ __        \n" +
+                "  \\ \\/  \\/ / _` | | __| | | | |/ _ \\| | | | '__|    | | | | | '__| '_ \\       \n" +
+                "   \\  /\\  / (_| | | |_  | |_| | (_) | |_| | |       | | |_| | |  | | | |_ _ _ \n" +
+                "    \\/  \\/ \\__,_|_|\\__|  \\__, |\\___/ \\__,_|_|       |_|\\__,_|_|  |_| |_(_|_|_)\n" +
+                "                          __/ |                                               \n" +
+                "                         |___/                                                \n");
     }
 
+    /**
+     * waiting msg when the player has to wait that other player
+     */
+    public static void writeWaitOtherPlayers(){
+        System.out.println(""+ AnsiColors.RESET +
+                "__          __   _ _         \n" +
+                "\\ \\        / /  (_) |        \n" +
+                " \\ \\  /\\  / /_ _ _| |_       \n" +
+                "  \\ \\/  \\/ / _` | | __|      \n" +
+                "   \\  /\\  / (_| | | |_ _ _ _ \n" +
+                "    \\/  \\/ \\__,_|_|\\__(_|_|_)  :)\n" +
+                "                              "
+        );
+    }
     /**
      * method that shows " END GAME" to say that the play is over!
      */

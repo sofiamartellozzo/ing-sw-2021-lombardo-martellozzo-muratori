@@ -44,6 +44,9 @@ public class ActionToken implements Serializable {
         return cardID;
     }
 
+    public ActionAbility getActionAbility(){
+        return ability;
+    }
 
     public String getAbility() {
        if(ability instanceof CardActionAbility){

@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.util.*;
 
 import it.polimi.ingsw.model.TurnAction;
+import it.polimi.ingsw.model.actionAbility.CardActionAbility;
 import it.polimi.ingsw.model.board.CardSpace;
 import it.polimi.ingsw.model.board.FaithTrack;
 import it.polimi.ingsw.model.board.SoloPersonalBoard;
@@ -168,6 +169,7 @@ public class CLI extends Observable implements ViewObserver {
      */
     private String askUsername() {
 
+        boolean correct = false;
         /* preparing an Input scanner in order to take the Username from the client*/
         in = new Scanner(System.in);
         in.reset();
@@ -175,7 +177,17 @@ public class CLI extends Observable implements ViewObserver {
         String username = null;
         out.println("Please insert the Username that you want ");
 
-        username = in.nextLine();
+        while (!correct) {
+
+            username = in.nextLine();
+            // if the player insert a Tab as username this can't be possible
+            if (username.length() < 1) {
+                System.out.println("!! Invalid Usernam, insert a new one ");
+
+            }else{
+                correct = true;
+            }
+        }
 
         return username;
     }
@@ -745,7 +757,7 @@ public class CLI extends Observable implements ViewObserver {
 
     @Override
     public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
-        System.out.println("WAIT...");
+        WriteMessageDisplay.writeWaitOtherPlayers();
     }
 
     /**
@@ -908,7 +920,7 @@ public class CLI extends Observable implements ViewObserver {
             System.out.println("Congratulations, your faith Marker increased his position of " + msg.getNumberOfPositionIncreased() + " position!");
             // locally increasing the position of the faith Marker
             faithTrack.getFaithMarker().increasePosition();
-            showFaithTrack(faithTrack, faithTrack.getPositionFaithMarker());
+            showFaithTrack(faithTrack);
 
         } else if (msg.getAllPlayerToNotify().contains(username)) {
             System.out.println(AnsiColors.YELLOW_BOLD + msg.getUsernameIncreased() + AnsiColors.RESET + " increased his position of: " + msg.getNumberOfPositionIncreased() + " position");
@@ -964,6 +976,7 @@ public class CLI extends Observable implements ViewObserver {
         int row = 0;
         int column = 0;
         int cardSpace = 0;
+        int cardSpace1 = 0;
         boolean correct = false;
         int countNotAvailable = 0;
         if (msg.getUsername().equals(username)) {
@@ -1012,17 +1025,18 @@ public class CLI extends Observable implements ViewObserver {
 
                 System.out.println(" Insert in which card Space you want to insert it [1,2 or 3] ");
                 try {
-                    cardSpace = in.nextInt();
+                    cardSpace1 = in.nextInt();
                 } catch (InputMismatchException eio) {
                     System.out.println("ERRORE Puoi inserire solo numeri");
                     in.nextLine();
                 }
 
+                cardSpace = cardSpace1-1;
 
                 while (!correct) {
 
                     //check if the deck selected is not empty (and has at least one card) and if the client inserted a valid card space
-                    if (!(msg.getTableCard().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 1 || cardSpace == 2 || cardSpace == 3)) {
+                    if (!(msg.getTableCard().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 0 || cardSpace == 1 || cardSpace == 2)) {
                         if (msg.getCardAvailable()[row][column]) { //if the player can buy the card in that position of the table
 
                             //to update the local version of the variable of the client
@@ -1260,7 +1274,10 @@ public class CLI extends Observable implements ViewObserver {
 
         ArrayList<TypeResource> resources = new ArrayList<>();
         boolean correct = false;
+        boolean correctResource = false;
         int choice = 0;
+        String choose1 = "";
+        String choose2 = "";
         String where = null;
         String resourceToGet = null;
         in = new Scanner(System.in);
@@ -1303,6 +1320,15 @@ public class CLI extends Observable implements ViewObserver {
                         }
 
                     }
+                    //show to the client his situation of the warehouse/strongbox
+
+                    if(where.toLowerCase().equals("warehouse")){
+                        System.out.println("HERE IS YOUR WAREHOUSE! ");
+                        showWarehouse(warehouse);
+                    }else{
+                        System.out.println("HERE IS YOUR STRONGBOX! ");
+                        showStrongBox(strongBox);
+                    }
                     if (choice == 0) {   //if he decided to activate the base production power
 
                     printCLIMessage("Good, you activated the base Production Power! ");
@@ -1311,8 +1337,18 @@ public class CLI extends Observable implements ViewObserver {
                         in = new Scanner(System.in);
                         in.reset();
 
-                        String choose1 = in.nextLine();
-                        String choose2 = in.nextLine();
+                        while(!correctResource) {
+
+                            choose1 = in.nextLine();
+                            choose2 = in.nextLine();
+
+                            if(checkType(choose1) && checkType(choose2)){    // checking if the resources' Types are valid
+                                correctResource = true;
+                            }
+                            else{
+                                System.out.println("Error,Invalid Resources, write other Types!! ");
+                            }
+                        }
 
                         resources.add(getTypeFromString(choose1.toUpperCase()));
                         resources.add(getTypeFromString(choose2.toUpperCase()));
@@ -1408,12 +1444,18 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VActionTokenActivateMsg msg) {
 
             if (msg.getUsername().equals(username)) {
+
                 System.out.println(msg.getMsgContent());
                 System.out.println("Action Token used: ");
                 System.out.println("┌---------------------┐");
                 System.out.print("\n");
                 System.out.println("   CardId: " +AnsiColors.CYAN_BOLD+msg.getActionToken().getCardID()+AnsiColors.RESET);
-                System.out.println("   Ability: " + msg.getActionToken().getAbility());
+                if(msg.getActionToken().getAbility().equals("Card Action Ability")) {
+                    System.out.println(((CardActionAbility)msg.getActionToken().getActionAbility()).toString());
+                }
+                else{
+                    System.out.println("   Ability: " + msg.getActionToken().getAbility());
+                }
                 System.out.print("\n");
                 System.out.println("└----------------------┘");
                 try {
@@ -1465,7 +1507,7 @@ public class CLI extends Observable implements ViewObserver {
      *
      * @param faithTrack
      */
-    private void showFaithTrack(FaithTrack faithTrack, int positionOnFaithTrack) {
+    private void showFaithTrack(FaithTrack faithTrack) {
         int lorenzoPosition;
         if (soloMode) {
             SoloPersonalBoard soloP = (SoloPersonalBoard) player.getGameSpace();
