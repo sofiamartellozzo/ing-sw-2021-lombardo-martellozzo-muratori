@@ -19,4 +19,9 @@ public class PlusUneAndShuffleActionAbility implements ActionAbility, Serializab
         player.getGameSpace().increaseLorenzoIlMagnifico();
         player.getGameSpace().shuffleActionToken();
     }
+
+    @Override
+    public String toString() {
+        return "PlusOne";
+    }
 }

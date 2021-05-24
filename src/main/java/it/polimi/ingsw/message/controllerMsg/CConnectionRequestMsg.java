@@ -31,6 +31,12 @@ public class CConnectionRequestMsg extends ControllerGameMsg {
         this.gameSize = gameSize;
     }
 
+    public CConnectionRequestMsg(String content, String username, String gameSize ){
+        super(content);
+        this.username = username;
+        this.gameSize = gameSize;
+    }
+
     public InetAddress getIP() {
         return IP;
     }

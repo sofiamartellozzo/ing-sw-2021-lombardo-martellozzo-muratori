@@ -7,6 +7,7 @@ import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
+import it.polimi.ingsw.message.updateMsg.VLorenzoIncreasedMsg;
 import it.polimi.ingsw.message.updateMsg.VWaitYourTurnMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
@@ -159,6 +160,7 @@ public class TurnController extends Observable implements ControllerObserver {
         printTurnCMesssage("The client \"" + player.getUsername() + "\" choose to play in Solo Mode, starting his turn");
         player.setPlaying(true);
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
+        spt.removeAction(TurnAction.SEE_OTHER_PLAYER);
         currentSoloTurnIstance = spt;
         VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("Start a new turn", player.getUsername(), spt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
@@ -211,6 +213,15 @@ public class TurnController extends Observable implements ControllerObserver {
                 actionTokenActivated = currentSoloTurnIstance.activateActionToken();
                 VActionTokenActivateMsg msg1 = new VActionTokenActivateMsg("an Action Token has been activated", singlePlayer.getUsername(), actionTokenActivated);
                 notifyAllObserver(ObserverType.VIEW, msg1);
+                if (actionTokenActivated.getAbility().equals("Plus Two Black Cross Action Ability")){
+
+                        VLorenzoIncreasedMsg notify2 = new VLorenzoIncreasedMsg("Lorenzo increased of 2 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 2);
+                        notifyAllObserver(ObserverType.VIEW, notify2);}
+                if (actionTokenActivated.getAbility().equals("Plus One And Shuffle Action Ability")) {
+
+                    VLorenzoIncreasedMsg notify1 = new VLorenzoIncreasedMsg("Lorenzo increased of 1 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 1);
+                    notifyAllObserver(ObserverType.VIEW, notify1);
+                }
                 startSoloPlayerTurn(singlePlayer);
             } catch (InvalidActionException e) {
                 e.printStackTrace();
@@ -382,6 +393,7 @@ public class TurnController extends Observable implements ControllerObserver {
                 if (!turnSequence.get(key).getUsername().equals(msg.getUsername())) {
                     //not the player that discarded the resource
                     turnSequence.get(key).increasePosition();
+                    actionController.decrementNumberResourcesFromM();
                     VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
                     //remember to set all the other players!!!!
                     notifyAllObserver(ObserverType.VIEW, notify);
@@ -389,6 +401,10 @@ public class TurnController extends Observable implements ControllerObserver {
             }
         } else {
             singlePlayer.getGameSpace().increaseLorenzoIlMagnifico();
+            actionController.decrementNumberResourcesFromM();
+            VLorenzoIncreasedMsg notify = new VLorenzoIncreasedMsg("Lorenzo incresed his position", singlePlayer.getUsername(), singlePlayer, 1);
+            notifyAllObserver(ObserverType.VIEW, notify);
+
         }
 
         //check end game (because all player has increased their position of 1
@@ -402,14 +418,17 @@ public class TurnController extends Observable implements ControllerObserver {
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
-    @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
-    }
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
         //to ACTIONCONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
+    public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
+        //to ActionController
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 

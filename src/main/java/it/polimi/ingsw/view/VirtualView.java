@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.controller.MessageHandler;
+import it.polimi.ingsw.controller.OfflineLobby;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.model.PlayerInterface;
@@ -22,10 +24,15 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     private String gameMode;    //0 for solo mode, 1 for multiplayer
 
     private Lobby lobby;        //the game Lobby on this Server
+    private OfflineLobby offLobby; //in offline mode
 
     private ClientHandler client;
 
     private boolean inLobby;           //if true this client is waiting in the lobby
+
+    private MessageHandler messageHandler;      //for offline mode
+
+    //private ViewObserver viewMode;
 
     /**
      * {@link AtomicBoolean} for the first connection, is true if the connection has been accepted and, after the disconnection, Lobby has to be clean.
@@ -39,6 +46,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     public VirtualView(ClientHandler client) {
         this.client = client;    //specific for this VV
+
         this.lobby = Lobby.getInstance();  //create a Lobby or get one created yet
         attachObserver(ObserverType.CONTROLLER, lobby);  //attach it as it is a controller observer
         lobby.attachObserver(ObserverType.VIEW, this); //listening each other, the VV is like a View observer too
@@ -46,11 +54,32 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         userConnected = new AtomicBoolean(false);
     }
 
+    /* the constructor for the offline mode*/
+    public VirtualView(String username, MessageHandler messageHandler) {
+        this.username = username;
+        this.gameMode = "0";
+
+        this.messageHandler = messageHandler;
+
+        this.offLobby = new OfflineLobby(username);
+        attachObserver(ObserverType.CONTROLLER, offLobby);
+        offLobby.attachObserver(ObserverType.VIEW, this);
+
+        userConnected = new AtomicBoolean(false);
+    }
+
+
     /**
      * send a message to the client throw his Client Handler
      */
     private void sendToClient(GameMsg msg) {
-        client.sendMsg(msg);
+        if (offLobby == null) {
+            client.sendMsg(msg);
+        }
+        else{
+            //notifyAllObserver(ObserverType.VIEW,msg);
+            messageHandler.receivedMsgForView(msg);
+        }
     }
 
 
@@ -69,15 +98,26 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         //set true that the user is in the Lobby, if something will went wrong change it to false!
         inLobby = true;
 
-        connectionLock.lock();
-        userConnected.set(true);
-        connectionLock.unlock();
+        if (!msg.getMsgContent().equals("OFFLINE")) {
 
-        //create the message to send to the controller with the username the client send
-        CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of connection by a client", client.getUserIP(), client.getUserPort(), username, gameMode);
-        requestToController.setVirtualView(this);
-        // "send" the message to the controller
-        notifyAllObserver(ObserverType.CONTROLLER, requestToController);
+            connectionLock.lock();
+            userConnected.set(true);
+            connectionLock.unlock();
+
+            //create the message to send to the controller with the username the client send
+            CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of connection by a client", client.getUserIP(), client.getUserPort(), username, gameMode);
+            requestToController.setVirtualView(this);
+            // "send" the message to the controller
+            notifyAllObserver(ObserverType.CONTROLLER, requestToController);
+
+        } else {
+            //offline Mode
+            //create the message to send to the controller with the username the client send
+            CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of connection by a client in offline mode", username, gameMode);
+            requestToController.setVirtualView(this);
+            // "send" the message to the controller
+            notifyAllObserver(ObserverType.CONTROLLER, requestToController);
+        }
 
         tryToStartGame();
     }
@@ -114,7 +154,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
         //send to Initialized Controller
-        System.out.println("PASSING THROW VV " + msg.getUsername());
+        //System.out.println("PASSING THROW VV " + msg.getUsername());
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
@@ -122,8 +162,22 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     public void receiveMsg(CGameCanStratMsg msg) {
         //send to room to start the game
         if (msg.getOnePlayer().equals(username)) {
-            System.out.println("PASSING THROW VV for initialization");
+            //System.out.println("PASSING THROW VV for initialization");
             notifyAllObserver(ObserverType.CONTROLLER, msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VAnotherPlayerInfoMsg msg) {
+        if (username.equals(msg.getUsernameAsking())) {
+            sendToClient(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VWhichPlayerRequestMsg msg) {
+        if (username.equals(msg.getUsername())) {
+            sendToClient(msg);
         }
     }
 
@@ -176,14 +230,18 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
-    @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
-
-    }
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
         if (this.username.equals(msg.getUsername())) {
+            notifyAllObserver(ObserverType.CONTROLLER, msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
+        //to Turn Controller
+        if (username.equals(msg.getUsernameAsking())) {
             notifyAllObserver(ObserverType.CONTROLLER, msg);
         }
     }
@@ -438,6 +496,18 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     /**
+     * nitification to the client after Lorenzo increased his position
+     *
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VLorenzoIncreasedMsg msg) {
+        if (msg.getUsername().equals(this.username)) {
+            sendToClient(msg);
+        }
+    }
+
+    /**
      * in this msg (specific of one client) is after a request of the player to
      * activate a Production Power, so ask his which one activate
      *
@@ -486,19 +556,25 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     //METHODS PRIVATE AUXILIARY
 
     /**
-     * called by VV after recived a Msg of a Connection Request by the client
+     * called by VV after received a Msg of a Connection Request by the client
      */
     private void tryToStartGame() {
-        connectionLock.lock();
-        try {
-            //check if the connection is ON and ask to the Lobby if the Game can start
-            if (userConnected.get() && lobby.canInitializeGameFor(this.username)) {
-                CVStartInitializationMsg msg = new CVStartInitializationMsg("A room is full so starting the initialization", username);
-                notifyAllObserver(ObserverType.CONTROLLER, msg);
-                lobby.startInitializationOfTheGame(username);
+        if (offLobby == null) {
+            connectionLock.lock();
+            try {
+                //check if the connection is ON and ask to the Lobby if the Game can start
+                if (userConnected.get() && lobby.canInitializeGameFor(this.username)) {
+                    CVStartInitializationMsg msg = new CVStartInitializationMsg("A room is full so starting the initialization", username);
+                    notifyAllObserver(ObserverType.CONTROLLER, msg);
+                    lobby.startInitializationOfTheGame(username);
+                }
+            } finally {
+                connectionLock.unlock();
             }
-        } finally {
-            connectionLock.unlock();
+        } else {
+            CVStartInitializationMsg msg = new CVStartInitializationMsg("A room is full so starting the initialization", username);
+            notifyAllObserver(ObserverType.CONTROLLER, msg);
+            //lobby.startInitializationOfTheGame(username);
         }
 
     }

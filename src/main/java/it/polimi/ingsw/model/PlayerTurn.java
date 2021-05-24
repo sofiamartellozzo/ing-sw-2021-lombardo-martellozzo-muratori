@@ -50,6 +50,9 @@ public class PlayerTurn implements PlayerTurnInterface {
             //the player did one of these 3, so I have to eliminate all of them from the available ones in this class
             availableAction.removeAll(onlyOneOfThese);
         }
+        else if (actionToRemove.equals(TurnAction.SEE_OTHER_PLAYER)){
+            availableAction.remove(actionToRemove);
+        }
     }
 
     /**

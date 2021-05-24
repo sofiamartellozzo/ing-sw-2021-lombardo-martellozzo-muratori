@@ -180,14 +180,15 @@ public class EndGameController extends Observable implements ControllerObserver 
         //NOT IMPLEMENTED HERE
     }
 
-    @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
-        //NOT IMPLEMENTED HERE
-    }
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
 
     }
 

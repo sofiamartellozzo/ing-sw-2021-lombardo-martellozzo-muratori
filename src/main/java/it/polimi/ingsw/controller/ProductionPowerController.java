@@ -187,6 +187,11 @@ public class ProductionPowerController extends Observable implements ControllerO
         }
     }
 
+    @Override
+    public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
+
+    }
+
 
 
 
@@ -261,9 +266,6 @@ public class ProductionPowerController extends Observable implements ControllerO
         //not here
     }
 
-    @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
-    }
 
 }

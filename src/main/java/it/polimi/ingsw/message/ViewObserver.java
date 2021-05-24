@@ -55,16 +55,16 @@ public interface ViewObserver extends Observer{
 
     /* from ActionC to the client, so send to the client asking which choice in market */
     public void receiveMsg(VBuyFromMarketRequestMsg msg);
+    /*msg with the update market after someone bought from it*/
     public void receiveMsg(VUpdateMarketMsg msg);
-
     /* from ActionC to the client, so send to the client asking which depot to store a resource */
     public void receiveMsg(VChooseDepotMsg msg);
+    /* notify the client that lorenzo has increased his position of..*/
+    public void receiveMsg(VLorenzoIncreasedMsg msg);
 
     /*from PPController to client*/
     public void receiveMsg(VActivateProductionPowerRequestMsg msg);
     public void receiveMsg(VUpdateStrongboxMsg msg);
-
-
 
     public void receiveMsg(VShowEndGameResultsMsg msg);
 
@@ -78,5 +78,6 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(CVStartInitializationMsg msg);
     void receiveMsg(CGameCanStratMsg msg);
 
-
+    public void receiveMsg(VAnotherPlayerInfoMsg msg);
+    public void receiveMsg(VWhichPlayerRequestMsg msg);
 }

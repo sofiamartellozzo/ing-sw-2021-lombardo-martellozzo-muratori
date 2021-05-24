@@ -90,9 +90,12 @@ public class ClientHandler extends Observable implements Runnable {
 
         } catch (ClassNotFoundException | IOException | InvalidActionException /*| InterruptedException */ e) {
             System.err.println("Error from input client message");
-        } finally {
-            //clientSocket.close();
+
+            //because of losing the connection
             disconnect();
+        } finally {
+            clientSocket.close();
+            //disconnect();
         }
     }
 

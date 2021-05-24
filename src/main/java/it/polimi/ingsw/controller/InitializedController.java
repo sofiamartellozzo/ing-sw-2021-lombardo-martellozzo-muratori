@@ -128,6 +128,7 @@ public class InitializedController extends Observable implements ControllerObser
         //create the board manager
         BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
         boardManager = boardManagerFactory.createBoardManager(turnSequence);
+        System.out.println("in INITIALIZEDC " +boardManager.toString());
 
         if (numberOfPlayer == 1) {
             /*initialized solo Mode*/
@@ -306,7 +307,7 @@ public class InitializedController extends Observable implements ControllerObser
         if (msg.getAction().equals("firstChoose")) {
             //take all the Integer for Leader Card
             ArrayList<Integer> twoChosen = msg.getLeaderCards();
-            System.out.println("the 2 cards chosen " + twoChosen);
+            //System.out.println("the 2 cards chosen " + twoChosen);
             ArrayList<LeaderCard> chosenCards = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
                 if (boardManager.getAllLeaderCard().contains(twoChosen.get(i))) {
@@ -315,11 +316,11 @@ public class InitializedController extends Observable implements ControllerObser
                     chosenCards.add(chosen);
                 }
             }
-            System.out.println("the 2 cards chosen " + chosenCards);
+            //System.out.println("the 2 cards chosen " + chosenCards);
             //take the player that choose the cards
             if (this.getNumberOfPlayer() == 1) {
                 singlePlayer.setLeaderCards(chosenCards);
-                System.out.println("the 2 cards chosen now in player " + singlePlayer.getLeaderCards());
+                //System.out.println("the 2 cards chosen now in player " + singlePlayer.getLeaderCards());
             } else {
                 PlayerInterface player = null;
                 try {
@@ -328,13 +329,13 @@ public class InitializedController extends Observable implements ControllerObser
                     e.printStackTrace();
                 }
                 player.setLeaderCards(chosenCards);
-                System.out.println("the 2 cards chosen now in player " + player.getLeaderCards());
+                //System.out.println("the 2 cards chosen now in player " + player.getLeaderCards());
             }
 
             //now remove the card from the deck
             boardManager.getLeaderCardDeck().remove(chosenCards);
             if (counterPlayerInitialized==numberOfPlayer){
-                System.out.println("enter in can start!!!!");
+                //System.out.println("enter in can start!!!!");
                 //now the came can start... Create the turn controller
                 canStart = true;
                 CGameCanStratMsg startGame = new CGameCanStratMsg("", msg.getUsername());
@@ -434,13 +435,15 @@ public class InitializedController extends Observable implements ControllerObser
 
     }
 
+
+
     @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
+    public void receiveMsg(CStopPPMsg msg) {
 
     }
 
     @Override
-    public void receiveMsg(CStopPPMsg msg) {
+    public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
 
     }
 

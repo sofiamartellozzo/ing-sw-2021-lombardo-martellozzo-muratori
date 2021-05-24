@@ -27,8 +27,8 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CVStartInitializationMsg msg);
 
     /* from CLI to InitializedC*/
-    public void receiveMsg(CChooseResourceAndDepotMsg msg);
-    public void receiveMsg(CChooseLeaderCardResponseMsg msg); //this also to ActionController
+    public void receiveMsg(CChooseResourceAndDepotMsg msg);     //also in Action Controller
+    public void receiveMsg(CChooseLeaderCardResponseMsg msg);   //this also to ActionController
 
     public void receiveMsg(CGameCanStratMsg msg);
 
@@ -51,9 +51,7 @@ public interface ControllerObserver extends Observer{
 
     /*from client (CLI) to the PPController, to activate it*/
     public void receiveMsg(CActivateProductionPowerResponseMsg msg);
+    public void receiveMsg(CStopPPMsg msg);
 
-    public void receiveMsg(CChooseDiscardResponseMsg msg);
-
-
-    void receiveMsg(CStopPPMsg msg);
+    public void receiveMsg(CAskSeeSomeoneElseMsg msg);
 }

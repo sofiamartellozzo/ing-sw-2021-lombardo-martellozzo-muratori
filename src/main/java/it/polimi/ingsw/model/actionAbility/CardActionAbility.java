@@ -35,4 +35,6 @@ public class CardActionAbility implements ActionAbility, Serializable {
     public String toString() {
         return "   Ability: "  + "removed Two card of color " + color.toString();
     }
+
+
 }

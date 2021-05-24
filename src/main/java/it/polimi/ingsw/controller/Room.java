@@ -113,9 +113,9 @@ public class Room extends Observable {
         return initializedController.canStart();
     }
 
-    public void addVV(String userVV, VirtualView vV){
+    public void addVV(String userVV, VirtualView vV) {
         listOfVirtualView.put(userVV, vV);
-        attachObserver(ObserverType.VIEW,vV);
+        attachObserver(ObserverType.VIEW, vV);
     }
     /*----------------------------------------------------------------------------------------------------------------*/
 
@@ -136,12 +136,11 @@ public class Room extends Observable {
                 //update the number of players based on the number of usernames
                 numberOfPlayer = playersId.size();
 
-                if (!isSoloMode){
+                if (!isSoloMode) {
                     /* multiple game*/
                     Player player = new Player(username);
                     turnSequence.put(numberOfPlayer, player);
-                }
-                else{
+                } else {
                     SoloPlayer playerS = new SoloPlayer(username);
                     singlePlayer = playerS;
                 }
@@ -187,31 +186,18 @@ public class Room extends Observable {
         attachObserver(ObserverType.CONTROLLER, initializedController);
         initializedController.createGame();
         boardManager = initializedController.getBoardManager();
-        if (!isSoloMode){
+        //printRoomMessage("in ROOM " + boardManager.toString());
+        if (!isSoloMode) {
             //fill the sequence with the players created
             turnSequence = initializedController.getTurnSequence();
-        }
-        else{
+        } else {
             //fill the attribute of the single player with the created one
             singlePlayer = initializedController.getSinglePlayer();
         }
 
         printRoomMessage("the game has been initialized, starting...");
-/*
-        while (!gameCanStart){
-            if (initializedController.canStart()){
-                System.out.println("The game can start in Room.. (here check initialized Controller)");
-                startFirstTurn();
-                gameCanStart = true;
-            }
-        }*/
 
-        /*
-        for (PlayerInterface player:turnSequence.values()) {
-            VSendPlayerDataMsg msg = new VSendPlayerDataMsg("Here are the personal Data about your",player,boardManager);
-            notifyAllObserver(ObserverType.VIEW, msg);
-        }*/
-
+        gameCanStart = true;
 
         //startFirstTurn();
 
@@ -221,6 +207,7 @@ public class Room extends Observable {
     public void startFirstTurn() throws InvalidActionException {
         //creating the controller for the turn
         //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
+
         if (!isSoloMode) {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
             //System.out.println(turnSequence);
@@ -229,6 +216,7 @@ public class Room extends Observable {
         } else {
             //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
             //singlePlayer = initializedController.getSinglePlayer();
+            printRoomMessage("IN ROOM2 " + boardManager);
             turnController = new TurnController(singlePlayer, boardManager, listOfVirtualView);
             attachObserver(ObserverType.CONTROLLER, turnController);
         }
@@ -241,13 +229,12 @@ public class Room extends Observable {
     }
 
     /**
-     *
      * @param username
      * @return
      */
-    public PersonalBoardInterface getPlayerBoard(String username){
-        for (PlayerInterface player: turnSequence.values()) {
-            if(player.getUsername().equals(username)) {
+    public PersonalBoardInterface getPlayerBoard(String username) {
+        for (PlayerInterface player : turnSequence.values()) {
+            if (player.getUsername().equals(username)) {
                 return player.getGameSpace();
             }
         }
@@ -257,14 +244,14 @@ public class Room extends Observable {
     /**
      * attach all VV of the players so this class can notify them
      */
-    private void attachAllVV(){
-        for (String username: listOfVirtualView.keySet()) {
+    private void attachAllVV() {
+        for (String username : listOfVirtualView.keySet()) {
             attachObserver(ObserverType.VIEW, listOfVirtualView.get(username));
         }
     }
 
-    public void detachInitializedC(){
-        if (initializedController!=null && isGameCanStart()){
+    public void detachInitializedC() {
+        if (initializedController != null && isGameCanStart()) {
             detachObserver(ObserverType.CONTROLLER, initializedController);
             initializedController = null;
         }
@@ -285,7 +272,6 @@ public class Room extends Observable {
         turnController.detachObserver(ObserverType.VIEW, playerVirtualView);
         listOfVirtualView.remove(username); //remove the username from the map in which every player is associated to his virtual view
     }
-
 
 
     private void printRoomMessage(String messageToPrint) {

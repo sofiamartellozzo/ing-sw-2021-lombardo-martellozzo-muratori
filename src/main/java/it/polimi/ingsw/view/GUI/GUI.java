@@ -221,6 +221,16 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
+    @Override
+    public void receiveMsg(VAnotherPlayerInfoMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VWhichPlayerRequestMsg msg) {
+
+    }
+
     public void setGameScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/GameScene.fxml"));
         gameScene = new Scene(loader.load());
@@ -425,6 +435,11 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VLorenzoIncreasedMsg msg) {
 
     }
 

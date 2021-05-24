@@ -1,6 +1,9 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.controller.MessageHandler;
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.message.*;
+import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.model.*;
@@ -37,6 +40,8 @@ import it.polimi.ingsw.view.display.WriteMessageDisplay;
  */
 public class CLI extends Observable implements ViewObserver {
 
+    private String[] args;           //the args receive from the ClientMain
+
     private Scanner in;             //for input data from console
     private PrintStream out;        //for output data for console
 
@@ -47,7 +52,12 @@ public class CLI extends Observable implements ViewObserver {
 
     private String gameSize;
 
-    private String[] args;           //the args receive from the ClientMain
+    private boolean offline;        //set true if client ask to play in offline Mode (=> SOLO)
+    private VirtualView offlineVirtualView;
+    private MessageHandler messageHandler;  //the message queue for offline mode
+
+
+    /*-------------------------------------------------------------------------------------*/
 
     //local variables used to save locally the dates about a player and his game space
 
@@ -62,6 +72,8 @@ public class CLI extends Observable implements ViewObserver {
     private FaithTrack faithTrack;
     private ArrayList<CardSpace> cardSpaces;
     private ArrayList<TurnAction> possibleActions;   //contains the updated actions that a player can make
+
+    /*-------------------------------------------------------------------------------------*/
 
     /* create a cache of the Leader Card chosen by this client */
     private List<Integer> myLeaderCards;
@@ -79,6 +91,7 @@ public class CLI extends Observable implements ViewObserver {
         in = new Scanner(System.in);
         this.args = args.clone();
         connectionOFF = false;
+
     }
 
 
@@ -98,47 +111,112 @@ public class CLI extends Observable implements ViewObserver {
 
         /* set up the client info */
 
-        //first ask the IP for the connection
-        iP = askIPAddress();
+        //ask if the client wants to play offline
+        offline = askTypeConnection();
 
-        /* Initialize client socket */
-        client = new ClientSocket(iP, this);
+        if (!offline) {
+            /*the client choose to play online*/
 
-        /* repeat this cycle until the connection go ON and the client reaches the server */
-        while (connectionOFF) {
-            try {
-                client.beginConnection();               //open connection with the server
+            //first ask the IP for the connection
+            iP = askIPAddress();
 
-                if (!connectionOFF) {
-                    //the connection didn't worked
-                    break;
+            /* Initialize client socket */
+            client = new ClientSocket(iP, this);
+
+
+            /* repeat this cycle until the connection go ON and the client reaches the server */
+            while (connectionOFF) {
+                try {
+                    client.beginConnection();               //open connection with the server
+
+                    if (!connectionOFF) {
+                        //the connection didn't worked
+                        break;
+                    }
+                    WriteMessageDisplay.writeOnlineStatus();
+                    clearScreen();
+
+                    String user = null;
+                    user = askUsername();
+                    /* put inside the variable username the name that the client chose*/
+                    username = user;
+
+
+                    String gameMode = askGameMode();
+                    gameSize = gameMode;
+
+                    /* try to create the connection sending the username, port and ip */
+                    VVConnectionRequestMsg request = new VVConnectionRequestMsg("Request Connection ", iP, 0, username, gameSize);
+                    //client.sendMsg(request);
+                    sendMsg(request);
+
+                    // start client Thread ....
+                    new Thread(client).start();
+                    connectionOFF = false;
+
+                } catch (IOException e) {
+                    printCLIMessage("⚠️ Error, can't reach the server ");
+                    connectionOFF = true;
                 }
-                WriteMessageDisplay.writeOnlineStatus();
-                clearScreen();
+            }
+        }
+        else{
+            //write offline status!!!!
+            WriteMessageDisplay.writeOfflineStatus();
+            /*ask to set the username*/
+            String user = null;
+            user = askUsername();
+            /* put inside the variable username the name that the client chose*/
+            username = user;
+            /*create the message handler, he work as Client Socket but not throw the net*/
+            messageHandler = new MessageHandler();
+            /*generate a sort of Virtual View*/
+            messageHandler.generateVV(username);
+            /*
+            offlineVirtualView = new VirtualView(username);
+            attachObserver(ObserverType.VIEW, offlineVirtualView);
+            attachObserver(ObserverType.CONTROLLER, offlineVirtualView);*/
+            //this.offlineVirtualView.attachObserver(ObserverType.VIEW, this);
+            messageHandler.attachObserver(ObserverType.VIEW, this);
+            //printCLIMessage("before run");
+            new Thread(messageHandler).start();
+            //printCLIMessage("after run");
+            /* try to create the connection sending the username, port and ip */
+            VVConnectionRequestMsg request = new VVConnectionRequestMsg("OFFLINE", username);
+            sendMsg(request);
+        }
 
-                String user = null;
-                user = askUsername();
-                /* put inside the variable username the name that the client chose*/
-                username = user;
+    }
 
+    /**
+     * ask the client if want to play offline or online
+     *
+     * @return client choice, [true == Offline]
+     */
+    private boolean askTypeConnection() {
+        printCLIMessage("type [offline] or [online] to choose your game mode");
+        printCLIMessage("🚨Remember: if you choose to play OFFLINE the game will be in Solo Mode!");
 
-                String gameMode = askGameMode();
-                gameSize = gameMode;
+        in = new Scanner(System.in);
+        in.reset();
+        String typeConnection = in.nextLine().toUpperCase();
 
-                /* try to create the connection sending the username, port and ip */
-                VVConnectionRequestMsg request = new VVConnectionRequestMsg("Request Connection ", iP, 0, username, gameSize);
-                client.sendMsg(request);
-
-                // start client Thread ....
-                new Thread(client).start();
-                connectionOFF = false;
-
-            } catch (IOException e) {
-                System.out.println("⚠️ Error, can't reach the server ");
-                connectionOFF = true;
+        boolean getInput = false;
+        while (!getInput) {
+            if (typeConnection.equals("OFFLINE")) {
+                getInput = true;
+                return true;
+            } else if (typeConnection.equals("ONLINE")) {
+                getInput = true;
+                return false;
+            } else {
+                printCLIMessage("⚠️You type it wrong, please insert the right choice");
+                typeConnection = in.nextLine().toUpperCase();
             }
         }
 
+        //default
+        return false;
     }
 
     private String askIPAddress() {
@@ -163,6 +241,7 @@ public class CLI extends Observable implements ViewObserver {
         }
         return ip;
     }
+
 
     /**
      * method to ask the player its Username, and check if it is valid
@@ -216,6 +295,20 @@ public class CLI extends Observable implements ViewObserver {
         return size;
     }
 
+    private void sendMsg(GameMsg msg){
+        if (!offline){
+            //send it throw the net
+            client.sendMsg(msg);
+        }
+        else{
+            //send to the VV
+            //offlineVirtualView.notifyAllObserver(ObserverType.CONTROLLER,msg);
+            //msg.notifyHandler((ControllerObserver) offlineVirtualView);
+            //notifyAllObserver(ObserverType.CONTROLLER, msg);
+            messageHandler.receiveMsgForVV(msg);
+        }
+    }
+
     /**
      * auxiliary method to check if the GameMode is 0 (for solo player) or 1
      *
@@ -242,20 +335,20 @@ public class CLI extends Observable implements ViewObserver {
 
         int numberOfPlayer = -1;
 
-        while(!correctInput) {
+        while (!correctInput) {
 
             try {
                 numberOfPlayer = in.nextInt();
                 correctInput = true;
             } catch (InputMismatchException eio) {
-                System.out.println("ERRORE Puoi inserire solo numeri");
+                printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                 in.nextLine();
             }
         }
 
 
         while (!validRoomSize(numberOfPlayer)) {
-            printCLIMessage(" Invalid input, insert another one");
+            printCLIMessage("Invalid input, insert another one");
             numberOfPlayer = in.nextInt();
         }
 
@@ -405,7 +498,7 @@ public class CLI extends Observable implements ViewObserver {
                 insert = in.nextInt();
                 validInput = true;
             } catch (InputMismatchException eio) {
-                System.out.println("ERRORE Puoi inserire solo numeri");
+                printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                 in.nextLine();
             }
 
@@ -471,6 +564,9 @@ public class CLI extends Observable implements ViewObserver {
             case "remove_leader_card": {
                 return TurnAction.REMOVE_LEADER_CARD;
             }
+            case "see_other_player": {
+                return TurnAction.SEE_OTHER_PLAYER;
+            }
             default:
                 return TurnAction.ERROR;
         }
@@ -483,10 +579,10 @@ public class CLI extends Observable implements ViewObserver {
      */
     private void showPlayersInRoom(ArrayList<String> players, int actualNumberPlayers, int roomsize) {
         printCLIMessage("Room Size: " + roomsize);
-        printCLIMessage("Actually: " +actualNumberPlayers+ "/" +roomsize);
+        printCLIMessage("Actually: " + actualNumberPlayers + "/" + roomsize);
 
         for (String player : players) {
-            System.out.println(AnsiColors.RED_BOLD + "Player " + AnsiColors.RESET + player.toUpperCase());
+            printCLIMessage(AnsiColors.RED_BOLD + "Player " + AnsiColors.RESET + player.toUpperCase());
         }
     }
 
@@ -504,21 +600,24 @@ public class CLI extends Observable implements ViewObserver {
                 username = newUsername;
                 /* the login process has to restart, so the client try again sending another request */
                 VVConnectionRequestMsg request = new VVConnectionRequestMsg("Trying to connect", iP, 0, username, gameSize);
-                this.client.sendMsg(request);
+                //client.sendMsg(request);
+                sendMsg(request);
                 break;
 
             case "FULL_SIZE":  //all the rooms in the server are full, so the client can't be connected to the game
 
-                System.out.println(" Error, server is full ");
+                printCLIMessage(" Error, server is full ");
                 break;
 
-            case "WAIT":      //in this case the server is not full so there are new rooms available, and the client has to wait because someone is creating a new room
-                System.out.println(" Someone is now creating a new room! Please wait a moment ");
+            case "WAIT":
+                //in this case the server is not full so there are new rooms available, and the client has to wait because someone is creating a new room
+                printCLIMessage(" Someone is now creating a new room! Please wait a moment ");
                 try {
                     Thread.sleep(5000);
                     /* the login process has to restart, so the client try again sending another request */
                     VVConnectionRequestMsg request2 = new VVConnectionRequestMsg("Trying to connect", iP, 0, username, gameSize);
-                    this.client.sendMsg(request2);
+                    //client.sendMsg(request2);
+                    sendMsg(request2);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -537,7 +636,7 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VRoomSizeRequestMsg msg) {
 
-        System.out.println("setting size room in CLI");
+        printCLIMessage("setting size room in CLI");
         int roomSize = -1;
 
         printCLIMessage(" Please insert the number of players you want to play with [2,3 or 4]");
@@ -546,13 +645,14 @@ public class CLI extends Observable implements ViewObserver {
 
         /* send the msg to the controller with the size room he chose */
         CRoomSizeResponseMsg response = new CRoomSizeResponseMsg(" asking the room size ", roomSize, msg.getUsername(), msg.getRoomID());
-        client.sendMsg(response);
+        //client.sendMsg(response);
+        sendMsg(response);
     }
 
     /**
      * this msg is sent from the Room and contains all the data about the player and the board Manager
      *
-     * @param msg
+     * @param msg contains all the info about tha player just initialized
      */
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
@@ -568,6 +668,7 @@ public class CLI extends Observable implements ViewObserver {
         faithTrack = msg.getPlayer().getGameSpace().getFaithTrack();
         cardSpaces = msg.getPlayer().getGameSpace().getCardSpaces();
     }
+
 
     /**
      * msg used to tell to the client if he has to wait because the room isn't completed
@@ -586,7 +687,7 @@ public class CLI extends Observable implements ViewObserver {
             printCLIMessage("The Game can start! ");
         } else {
 
-            System.out.println("⌛⌛⌛ WAITING FOR PARTICIPANTS ⌛⌛⌛");
+            printCLIMessage("⌛⌛⌛ WAITING FOR PARTICIPANTS ⌛⌛⌛");
             System.out.print("\n");
         }
     }
@@ -616,7 +717,8 @@ public class CLI extends Observable implements ViewObserver {
             if (msg.getAvailableActions().contains(turnAction) && turnAction != TurnAction.ERROR) {
 
                 CChooseActionTurnResponseMsg response = new CChooseActionTurnResponseMsg(" I made my choice, I decided the action I want to do", username, turnAction);
-                client.sendMsg(response);
+                //client.sendMsg(response);
+                sendMsg(response);
 
             } else {
                 VChooseActionTurnRequestMsg askAgain = new VChooseActionTurnRequestMsg("choose again an action", msg.getUsername(), msg.getAvailableActions());
@@ -687,7 +789,7 @@ public class CLI extends Observable implements ViewObserver {
                     try {
                         cardId2 = in.nextInt();
                     } catch (InputMismatchException eio) {
-                        System.out.println("ERRORE Puoi inserire solo numeri");
+                        printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                         in.nextLine();
                     }
 
@@ -705,7 +807,7 @@ public class CLI extends Observable implements ViewObserver {
                     cardId1 = in.nextInt();
                     cardId2 = in.nextInt();
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
 
@@ -724,8 +826,8 @@ public class CLI extends Observable implements ViewObserver {
             }
 
             CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ", chosenCards, msg.getUsername(), "firstChoose");
-            client.sendMsg(response);
-            //System.out.println(response);         DEBUG
+            //client.sendMsg(response);
+            sendMsg(response);
         } else {
             //discard or activate
             if (!msg.getMiniDeckLeaderCardFour().isEmpty()) {
@@ -736,21 +838,15 @@ public class CLI extends Observable implements ViewObserver {
                 in = new Scanner(System.in);
                 in.reset();
 
-
                 int cardToRemoveOrActivate = in.nextInt();
                 CChooseLeaderCardResponseMsg response2 = new CChooseLeaderCardResponseMsg(" chosen cards ", cardToRemoveOrActivate, msg.getUsername(), msg.getWhatFor());
-                this.client.sendMsg(response2);
+                sendMsg(response2);
+
             } else {
                 printCLIMessage("Sorry you cannot " + msg.getWhatFor() + " any Leader Card!");
-                //System.out.println(" The actions you can choose from are: " + possibleActions);
-                //System.out.println(" Write the action you chose with _ between every word! ");
-                //in.reset();
-
-                //String action = in.nextLine();
-                //TurnAction turnAction = returnActionFromString(action.toLowerCase());
                 //send a msg to change the action
                 CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.ACTIVE_LEADER_CARD);
-                client.sendMsg(change);
+                sendMsg(change);
             }
         }
     }
@@ -791,24 +887,24 @@ public class CLI extends Observable implements ViewObserver {
             in = new Scanner(System.in);
             in.reset();
 
-            while(!correctInput) {
+            while (!correctInput) {
 
                 try {
                     choice = in.nextInt();
                     correctInput = true;
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
             }
 
             if (choice == 1) {    //if he chooses to keep the resource he will be asked info about which one he wants and where putting it
                 if (msg.getChoices() == null) {
-                    System.out.println("Please enter the color of the resource you want : ");
+                    printCLIMessage("Please enter the color of the resource you want : ");
                     System.out.println("YELLOW --> COIN 💰\n" +
-                                        "PURPLE --> SERVANT 👾\n" +
-                                        "BLUE --> SHIELD 🥏\n" +
-                                        "GREY --> STONE 🗿\n");
+                            "PURPLE --> SERVANT 👾\n" +
+                            "BLUE --> SHIELD 🥏\n" +
+                            "GREY --> STONE 🗿\n");
 
                     in = new Scanner(System.in);
                     in.reset();
@@ -861,7 +957,7 @@ public class CLI extends Observable implements ViewObserver {
 
                 //check if the exception is thrown and has to insert a new depot
 
-                System.out.println("Please enter the depot where you want to put the resource : ");
+                printCLIMessage("Please enter the depot where you want to put the resource : ");
                 System.out.println("1 --> DEPOT1\n" +
                         "2 --> DEPOT2\n" +
                         "3 --> DEPOT3\n");
@@ -872,7 +968,7 @@ public class CLI extends Observable implements ViewObserver {
                 try {
                     depot = in.nextInt();
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
 
@@ -887,14 +983,14 @@ public class CLI extends Observable implements ViewObserver {
 
                 //send one of this two types of responses depending on the type of request
                 CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg(" resource and depot chosen ", resColor, depot, msg.getUsername());
-                client.sendMsg(response);
+                sendMsg(response);
 
             }
 
 
         } else {
             CChooseDiscardResourceMsg response = new CChooseDiscardResourceMsg("I chose to discard this resource", username);
-            client.sendMsg(response);
+            sendMsg(response);
         }
     }
 
@@ -917,7 +1013,7 @@ public class CLI extends Observable implements ViewObserver {
         printCLIMessage(msg.getMsgContent());
 
         if (msg.getUsernameIncreased().equals(username)) {
-            System.out.println("Congratulations, your faith Marker increased his position of " + msg.getNumberOfPositionIncreased() + " position!");
+            printCLIMessage("Congratulations, your faith Marker increased his position of " + msg.getNumberOfPositionIncreased() + " position!");
             // locally increasing the position of the faith Marker
             faithTrack.getFaithMarker().increasePosition();
             showFaithTrack(faithTrack);
@@ -941,25 +1037,25 @@ public class CLI extends Observable implements ViewObserver {
             int newDepot = 0;
 
             printCLIMessage(msg.getMsgContent());
-            System.out.println("You can't put in Depot " + msg.getUnableDepot() + "the resource (identified by color) --> " + msg.getResourceChooseBefore() + " that you choose before! ");
+            printCLIMessage("You can't put in Depot " + msg.getUnableDepot() + "the resource (identified by color) --> " + msg.getResourceChooseBefore() + " that you choose before! ");
 
-            System.out.print("Here is your actual situation! ");
+            printCLIMessage("Here is your actual situation! ");
             showWarehouse(warehouse);
 
             System.out.print("\n");
-            System.out.println(" Please insert a new depot for this resource [number from 1 to 5] ");
+            printCLIMessage(" Please insert a new depot for this resource [number from 1 to 5] ");
             in = new Scanner(System.in);
             in.reset();
 
             try {
                 newDepot = in.nextInt();
             } catch (InputMismatchException eio) {
-                System.out.println("ERRORE Puoi inserire solo numeri");
+                printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                 in.nextLine();
             }
 
             CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!", msg.getResourceChooseBefore(), newDepot, username);
-            client.sendMsg(response);
+            sendMsg(response);
         }
 
     }
@@ -1005,7 +1101,7 @@ public class CLI extends Observable implements ViewObserver {
             if (countNotAvailable < 12) {      // if is < 12 it means that there is at least 1 card that a player can buy
                 printCLIMessage(" If a card position is RED it means that you haven't got enough resources to pay it!" +
                         " So, you can't buy it!" + AnsiColors.YELLOW_BOLD + "\t⚠");
-                System.out.println(" Insert a row [from 0 to 2] and a column [from 0 to 3] in the table from where you want to take the card ");
+                printCLIMessage(" Insert a row [from 0 to 2] and a column [from 0 to 3] in the table from where you want to take the card ");
 
                 in = new Scanner(System.in);
                 in.reset();
@@ -1013,21 +1109,21 @@ public class CLI extends Observable implements ViewObserver {
                 try {
                     row = in.nextInt();
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
                 try {
                     column = in.nextInt();
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
 
-                System.out.println(" Insert in which card Space you want to insert it [1,2 or 3] ");
+                printCLIMessage(" Insert in which card Space you want to insert it [1,2 or 3] ");
                 try {
                     cardSpace1 = in.nextInt();
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
 
@@ -1061,7 +1157,7 @@ public class CLI extends Observable implements ViewObserver {
                             showCardSpaces(cardSpaces);
 
                             CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
-                            client.sendMsg(response);
+                            sendMsg(response);
                             correct = true;
                         } else {
                             //if the player hasn't enough resources to buy the card
@@ -1076,7 +1172,7 @@ public class CLI extends Observable implements ViewObserver {
                 //System.out.println(" Write the action you chose with _ between every word! ");
                 //in.reset();
                 CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.BUY_CARD);
-                client.sendMsg(change);
+                sendMsg(change);
                 //String action = in.nextLine();
                 //TurnAction turnAction = returnActionFromString(action.toLowerCase());
                 //send a msg to change the action
@@ -1138,7 +1234,7 @@ public class CLI extends Observable implements ViewObserver {
                 if (msg.getDepotsActualSituation().containsKey(fromDepot) && msg.getDepotsActualSituation().containsKey(toDepot)) {
 
                     CMoveResourceInfoMsg response = new CMoveResourceInfoMsg(" I choose from where and to where I want to put my resource ", username, fromDepot, toDepot);
-                    client.sendMsg(response);
+                    sendMsg(response);
                     correct = true;
 
                 }
@@ -1179,7 +1275,7 @@ public class CLI extends Observable implements ViewObserver {
                 if (choice.toLowerCase().equals("row") || choice.toLowerCase().equals("column")) {
                     valid = true;
                 } else {
-                    System.out.println(" Error invalid place, write another one");
+                    printCLIMessage(" Error invalid place, write another one");
                     in = new Scanner(System.in);
                     in.reset();
                     choice = in.nextLine();
@@ -1187,14 +1283,14 @@ public class CLI extends Observable implements ViewObserver {
             }
 
             if (choice.toLowerCase().equals("row")) {
-                System.out.println(" Please insert the number of the row that you want (1,2,3) ");
+                printCLIMessage(" Please insert the number of the row that you want (1,2,3) ");
             } else {
-                System.out.println(" Please insert the number of the column that you want (1,2,3,4) ");
+                printCLIMessage(" Please insert the number of the column that you want (1,2,3,4) ");
             }
             try {
                 number = in.nextInt();
             } catch (InputMismatchException eio) {
-                System.out.println("ERRORE Puoi inserire solo numeri");
+                printCLIMessage(" ⚠️ ERRORE : Puoi inserire solo numeri");
                 in.nextLine();
             }
 
@@ -1204,15 +1300,14 @@ public class CLI extends Observable implements ViewObserver {
                 if ((choice.toLowerCase().equals("row") && number < 4 && number > 0) || (choice.toLowerCase().equals("column") && number < 5 && number > 0)) {
 
                     CBuyFromMarketInfoMsg response = new CBuyFromMarketInfoMsg(" I chose the row/column that I want to take from the market ", username, choice, number - 1);
-                    client.sendMsg(response);
+                    sendMsg(response);
                     correct = true;
-                }
-                else {
-                    System.out.println("Error, insert a valid number! ");
+                } else {
+                    printCLIMessage("Error, insert a valid number! ");
                     try {
                         number = in.nextInt();
                     } catch (InputMismatchException eio) {
-                        System.out.println("ERRORE Puoi inserire solo numeri");
+                        printCLIMessage("⚠️ ERRORE : Puoi inserire solo numeri");
                         in.nextLine();
                     }
                 }
@@ -1242,7 +1337,7 @@ public class CLI extends Observable implements ViewObserver {
         try {
             depot = in.nextInt();
         } catch (InputMismatchException eio) {
-            printCLIMessage("ERRORE Puoi inserire solo numeri");
+            printCLIMessage("⚠️ERRORE: Puoi inserire solo numeri");
             in.nextLine();
         }
 
@@ -1250,13 +1345,23 @@ public class CLI extends Observable implements ViewObserver {
 
         if (depot != 0) {
             CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("the choice of the player for a resources recived", rC, depot, msg.getUsername());
-            client.sendMsg(response);
+            sendMsg(response);
 
         } else {
             CChooseDiscardResourceMsg discard = new CChooseDiscardResourceMsg("the player choose to discard the resources", msg.getUsername());
-            client.sendMsg(discard);
+            sendMsg(discard);
         }
 
+    }
+
+    @Override
+    public void receiveMsg(VLorenzoIncreasedMsg msg) {
+        if (msg.getUsername().equals(username)) {
+            player = msg.getPlayer();
+            faithTrack = msg.getPlayer().getGameSpace().getFaithTrack();
+            printCLIMessage(" Lorenzo increased his position in FT of " + msg.getNumberStep() + " step");
+            showFaithTrack(faithTrack);
+        }
     }
 
     /**
@@ -1296,7 +1401,7 @@ public class CLI extends Observable implements ViewObserver {
                 try {
                     choice = in.nextInt();
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
 
@@ -1305,6 +1410,8 @@ public class CLI extends Observable implements ViewObserver {
                     in = new Scanner(System.in);
                     in.reset();
                     printCLIMessage("Insert from where you want to take the resources to pay the production (strongBox or wareHouse) ");
+                    showStrongBox(strongBox);
+                    showWarehouse(warehouse);
                     correct = false;
 
                     while (!correct) {
@@ -1316,7 +1423,7 @@ public class CLI extends Observable implements ViewObserver {
                             correct = true;
 
                         } else {
-                            System.out.println("Error this place is not valid! Write another one ");
+                            printCLIMessage("Error this place is not valid! Write another one ");
                         }
 
                     }
@@ -1331,8 +1438,8 @@ public class CLI extends Observable implements ViewObserver {
                     }
                     if (choice == 0) {   //if he decided to activate the base production power
 
-                    printCLIMessage("Good, you activated the base Production Power! ");
-                    printCLIMessage("Choose the two resources that you want to pay to activate the PP! ");
+                        printCLIMessage("Good, you activated the base Production Power! ");
+                        printCLIMessage("Choose the two resources that you want to pay to activate the PP! ");
 
                         in = new Scanner(System.in);
                         in.reset();
@@ -1353,23 +1460,26 @@ public class CLI extends Observable implements ViewObserver {
                         resources.add(getTypeFromString(choose1.toUpperCase()));
                         resources.add(getTypeFromString(choose2.toUpperCase()));
 
-                    printCLIMessage("Insert the resource that you want, it will be put automatically in the StrongBox! ");
-                    resourceToGet = in.nextLine();
+                        printCLIMessage("Insert the resource that you want, it will be put automatically in the StrongBox! ");
+                        resourceToGet = in.nextLine();
 
                         CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
                         response.setResourcesToPay(resources);
                         response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
-                        this.client.sendMsg(response);
-                    } else if (choice == 1 || choice == 2 || choice == 3) {   //if he chooses a normal card space
+                        sendMsg(response);
 
-                    printCLIMessage("Good, you activated the production power of card space " + choice);
-                    CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
-                    this.client.sendMsg(response);
+                    } else if (choice == 1 || choice == 2 || choice == 3) {
 
-                    } else {       // if he chooses a production power of a special card (Ability of a leader card)
+                        //if he chooses a normal card space
+                        printCLIMessage("Good, you activated the production power of card space " + choice);
+                        CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
+                        sendMsg(response);
 
-                    printCLIMessage("Good, you activated the production power of a Special card ");
-                    printCLIMessage("Insert the type of the resource that you want, it will be put automatically in the StrongBox! ");
+                    } else {
+
+                        // if he chooses a production power of a special card (Ability of a leader card)
+                        printCLIMessage("Good, you activated the production power of a Special card ");
+                        printCLIMessage("Insert the type of the resource that you want, it will be put automatically in the StrongBox! ");
 
                         while (!correct) {
                             in = new Scanner(System.in);
@@ -1385,24 +1495,21 @@ public class CLI extends Observable implements ViewObserver {
                         }
                         CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
                         response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
-                        this.client.sendMsg(response);
+                        sendMsg(response);
                     }
 
 
-                } else {      //if the player doesn't want to activate others PP
+                } else {
+                    //if the player doesn't want to activate others PP
                     CStopPPMsg msg1 = new CStopPPMsg(" I don't want to activate any other Production Power", username);
-                    this.client.sendMsg(msg1);
+                    sendMsg(msg1);
 
-                    //CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.BUY_CARD);
-                    //client.sendMsg(change);
                 }
-            } else {  //if the player can't activate any production power
-
+            } else {
+                //if the player can't activate any production power
                 CStopPPMsg msg1 = new CStopPPMsg(" I don't want to activate any other Production Power", username);
-                this.client.sendMsg(msg1);
+                sendMsg(msg1);
 
-                //CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.BUY_CARD);
-                //client.sendMsg(change);
             }
 
         }
@@ -1484,6 +1591,32 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(VAnotherPlayerInfoMsg msg) {
+        PlayerInterface otherPlayer = msg.getPlayer();
+        printCLIMessage("you asked to see the " + otherPlayer.getUsername() + " stuff: ");
+        showFaithTrack(otherPlayer.getGameSpace().getFaithTrack());
+        showWarehouse(otherPlayer.getGameSpace().getWarehouse());
+        showStrongBox(otherPlayer.getGameSpace().getStrongbox());
+        showCardSpaces(otherPlayer.getGameSpace().getCardSpaces());
+    }
+
+    @Override
+    public void receiveMsg(VWhichPlayerRequestMsg msg) {
+        if (username.equals(msg.getUsername())) {
+            printCLIMessage("You ask to see the information of another player, please insert the username of which one:");
+            for (String username : msg.getOtherPlayers()) {
+                printCLIMessage(username);
+            }
+            in = new Scanner(System.in);
+            String userChosen = in.nextLine();
+
+            CAskSeeSomeoneElseMsg asking = new CAskSeeSomeoneElseMsg("", this.username, userChosen);
+            printCLIMessage(asking.toString());
+            sendMsg(asking);
+        }
+    }
+
+    @Override
     public void receiveMsg(VServerUnableMsg msg) {
         printCLIMessage("⚠️ Sorry, now the server is not available\nTry later :)");
         connectionOFF = false;
@@ -1494,7 +1627,7 @@ public class CLI extends Observable implements ViewObserver {
      * method to clear the screen and remove older prints
      */
     private void clearScreen() {
-        System.out.println("reset and clear the screen");
+        //System.out.println("reset and clear the screen");
         System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
         System.out.flush();
     }
@@ -1571,7 +1704,7 @@ public class CLI extends Observable implements ViewObserver {
     }
 
 
-    private void printCLIMessage(String message){
+    private void printCLIMessage(String message) {
         System.out.println(message);
     }
 

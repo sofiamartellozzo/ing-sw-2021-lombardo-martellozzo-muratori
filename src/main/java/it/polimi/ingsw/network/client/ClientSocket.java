@@ -200,6 +200,7 @@ public class ClientSocket extends Observable implements Runnable {
         }
         try {
             serverSocket.close();
+            //if GUI is on handle the scene for the disconnection
         } catch (IOException e) {
             System.err.println("error closing the connection");
         }

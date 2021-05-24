@@ -20,4 +20,9 @@ public class PlusTwoBlackCrossActionAbility implements ActionAbility, Serializab
         player.getGameSpace().increaseLorenzoIlMagnifico();
         player.getGameSpace().increaseLorenzoIlMagnifico();
     }
+
+    @Override
+    public String toString() {
+        return "PlusTwo";
+    }
 }

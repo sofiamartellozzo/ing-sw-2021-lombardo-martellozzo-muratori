@@ -18,12 +18,20 @@ public class VVConnectionRequestMsg extends ViewGameMsg{
     private String username;
     private String gameSize;
 
+    /*standard constructor*/
     public VVConnectionRequestMsg(String content, String IP, int port, String username, String gameSize) {
         super(content);
         this.IP = IP;
-        Port = port;
+        this.Port = port;
         this.username = username;
         this.gameSize = gameSize;
+    }
+
+    /* constructor for offline mode*/
+    public VVConnectionRequestMsg(String content, String username){
+        super(content);
+        this.username = username;
+        this.gameSize = "0";        //offline only Solo Mode
     }
 
     public String getIP() {

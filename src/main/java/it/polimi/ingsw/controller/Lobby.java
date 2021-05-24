@@ -416,10 +416,10 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CGameCanStratMsg msg) {
-        System.out.println(" try found room ");
+        //System.out.println(" try found room ");
         try {
             Room room = findUserRoom(msg.getOnePlayer());
-            System.out.println("found room " + room);
+            //System.out.println("found room " + room);
             room.startFirstTurn();
             room.detachInitializedC();
             //room.notifyAllObserver(ObserverType.CONTROLLER, msg);
@@ -516,10 +516,7 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
-    @Override
-    public void receiveMsg(CChooseDiscardResponseMsg msg) {
 
-    }
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
@@ -527,6 +524,17 @@ public class Lobby extends Observable implements ControllerObserver {
         //send to TurnController by Room and then to ActionController and PPController
         try {
             Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
+        //send to TurnController by Room
+        try {
+            Room room = findUserRoom(msg.getUsernameAsking());
             room.notifyAllObserver(ObserverType.CONTROLLER, msg);
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();
@@ -543,6 +551,7 @@ public class Lobby extends Observable implements ControllerObserver {
             error.printStackTrace();
         }
     }
+
 
 
     /*----------------------------------------------------------------------------------------------------------------*/

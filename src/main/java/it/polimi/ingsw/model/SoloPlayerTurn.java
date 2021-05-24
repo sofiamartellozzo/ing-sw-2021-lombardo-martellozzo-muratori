@@ -19,24 +19,6 @@ public class SoloPlayerTurn extends PlayerTurn {
         return currentPlayer;
     }
 
-    public void choosePlay(TurnAction action) throws InvalidActionException {
-        //case to end the turn, and then invocate the getActionToken turnaction, only in the solo game
-
-        switch (action){
-            case BUY_CARD:
-                this.currentPlayer.buyCard(1,1, this.getBoardManager(), 1);
-            case BUY_FROM_MARKET:
-                //this.currentPlayer.buyFromMarket();
-            case ACTIVE_PRODUCTION_POWER:
-                //this.currentPlayer.invokesProductionPower();
-            case GET_ACTION_TOKEN:
-                //the player take the action token at the end of the turn
-                //get action token random
-                this.currentPlayer.getGameSpace().playActionToken(this.getBoardManager(), this.currentPlayer);
-            default:
-                this.currentPlayer.endTurn();
-        }
-    }
 
     @Override
     public void activeLeaderCard(int which) throws InvalidActionException {
