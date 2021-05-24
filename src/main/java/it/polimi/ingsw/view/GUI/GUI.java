@@ -24,8 +24,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.swing.text.View;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Queue;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class GUI extends Application implements ViewObserver {
@@ -38,14 +42,21 @@ public class GUI extends Application implements ViewObserver {
     private LobbySceneController lobbySceneController;
 
     private Scene roomScene;
-    private Stage roomStage;
     private RoomSceneController roomSceneController;
 
     private Scene initializeScene;
     private InitializeSceneController initializeSceneController;
 
     private Scene gameScene;
-    private GameSceneController gameSceneController;
+    private PersonalBoardSceneController personalBoardSceneController;
+
+    private Scene marketStructureScene;
+    private Stage marketStructureStage;
+    private MarketStructureSceneController marketStructureSceneController;
+
+    private Scene devCardTableScene;
+    private Stage devCardTableStage;
+    private DevCardTableSceneController devCardTableSceneController;
 
     private Scene endGameScene;
     private EndGameSceneController endGameSceneController;
@@ -68,7 +79,6 @@ public class GUI extends Application implements ViewObserver {
     private FaithTrack faithTrack;
     private ArrayList<CardSpace> cardSpaces;
 
-    private ReentrantLock lock=new ReentrantLock();
 
     public static void main(String[] args){ Application.launch(args);}
 
@@ -125,17 +135,12 @@ public class GUI extends Application implements ViewObserver {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/RoomScene.fxml"));
         roomScene = new Scene(loader.load());
         roomSceneController=loader.getController();
-        roomStage = new Stage();
-        roomStage.setResizable(false);
-        roomStage.setScene(roomScene);
-        roomStage.initOwner(stage);
-        roomStage.show();
+        changeScene(roomScene);
         roomSceneController.setGui(this);
         roomSceneController.setIdRoom(idRoom);
     }
 
     public void roomSizeResponse(int choice,String idRoom){
-        roomStage.close();
         CRoomSizeResponseMsg responseMsg = new CRoomSizeResponseMsg("Room size chosen: "+choice,choice,getUsername(),idRoom);
         client.sendMsg(responseMsg);
     }
@@ -144,6 +149,7 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VRoomInfoMsg vRoomInfoMsg) {
         Platform.runLater(()-> {
+            System.out.println(vRoomInfoMsg.toString());
             lobbySceneController.updateLobby(vRoomInfoMsg);
             changeScene(lobbyScene);
         });
@@ -157,7 +163,7 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(VSendPlayerDataMsg msg) {
+    public synchronized void receiveMsg(VSendPlayerDataMsg msg) {
         player = msg.getPlayer();
         boardManager = msg.getBoardManager();
         marketStructureData = msg.getBoardManager().getMarketStructure();
@@ -180,9 +186,9 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(VChooseResourceAndDepotMsg msg) {
+    public synchronized void receiveMsg(VChooseResourceAndDepotMsg msg) {
         if(msg.getUsername().equals(username)) {
-            initializeSceneController.chooseResource(msg);
+                initializeSceneController.chooseResource(msg);
         }
     }
 
@@ -200,12 +206,14 @@ public class GUI extends Application implements ViewObserver {
 
 
     @Override
-    public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
-        if (msg.getUsername().equals(username)) {
+    public synchronized void receiveMsg(VChooseLeaderCardRequestMsg msg) {
+        if(msg.getUsername().equals(username)) {
             if (msg.getWhatFor().equals("initialization")) {
                 initializeSceneController.chooseLeaderCard(msg);
+
             }
         }
+
     }
 
     @Override
@@ -234,8 +242,62 @@ public class GUI extends Application implements ViewObserver {
     public void setGameScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/GameScene.fxml"));
         gameScene = new Scene(loader.load());
-        gameSceneController=loader.getController();
-        gameSceneController.setGui(this);
+        personalBoardSceneController =loader.getController();
+        personalBoardSceneController.setGui(this);
+    }
+
+
+    public void startMarketStructureStage() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/MarketStructureScene.fxml"));
+        marketStructureScene=new Scene(loader.load());
+        marketStructureSceneController=loader.getController();
+        marketStructureStage = new Stage();
+        marketStructureStage.setScene(marketStructureScene);
+        marketStructureStage.setResizable(false);
+        marketStructureStage.initOwner(stage);
+        marketStructureStage.show();
+        marketStructureSceneController.setGui(this);
+    }
+
+
+    @Override
+    public void receiveMsg(VBuyFromMarketRequestMsg msg) {
+        if(msg.getUsername().equals(username)){
+            marketStructureSceneController.chooseRowColumn(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VUpdateMarketMsg msg) {
+        if(msg.getUsername().equals(username)){
+            marketStructureSceneController.update(msg.getMarketUpdate());
+        }
+    }
+
+    public void startDevCardTableStage() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/DevCardTableScene.fxml"));
+        devCardTableScene=new Scene(loader.load());
+        devCardTableSceneController = loader.getController();
+        devCardTableStage=new Stage();
+        devCardTableStage.setScene(devCardTableScene);
+        devCardTableStage.setResizable(false);
+        devCardTableStage.initOwner(stage);
+        devCardTableStage.show();
+        devCardTableSceneController.setGui(this);
+    }
+
+    @Override
+    public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
+        if(msg.getUsername().equals(username)){
+
+        }
+    }
+
+    @Override
+    public void receiveMsg(VUpdateDevTableMsg msg) {
+        if(msg.getUsername().equals(username)){
+
+        }
     }
 
     public void setEndGameScene() throws IOException {
@@ -290,10 +352,6 @@ public class GUI extends Application implements ViewObserver {
         return roomScene;
     }
 
-    public Stage getRoomStage() {
-        return roomStage;
-    }
-
     public RoomSceneController getRoomSceneController() {
         return roomSceneController;
     }
@@ -310,8 +368,8 @@ public class GUI extends Application implements ViewObserver {
         return gameScene;
     }
 
-    public GameSceneController getGameSceneController() {
-        return gameSceneController;
+    public PersonalBoardSceneController getGameSceneController() {
+        return personalBoardSceneController;
     }
 
     public Scene getEndGameScene() {
@@ -408,28 +466,15 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+
+
     @Override
     public void receiveMsg(CVStartInitializationMsg msg){
 
     }
 
     @Override
-    public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
-
-    }
-
-    @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(VBuyFromMarketRequestMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(VUpdateMarketMsg msg) {
 
     }
 
@@ -452,12 +497,6 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VUpdateStrongboxMsg msg) {
 
     }
-
-    @Override
-    public void receiveMsg(VUpdateDevTableMsg msg) {
-
-    }
-
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
@@ -496,5 +535,6 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
 
     }
+
 }
 

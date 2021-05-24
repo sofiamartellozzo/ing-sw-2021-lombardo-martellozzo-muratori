@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.MarketStructureSceneController">
    <children>
       <Pane layoutX="-5.0" layoutY="41.0" prefHeight="872.0" prefWidth="700.0">
          <children>
@@ -30,62 +29,62 @@
             <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="276.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
             <Pane layoutX="267.0" layoutY="200.0" prefHeight="174.0" prefWidth="231.0">
                <children>
-                  <ImageView fitHeight="71.0" fitWidth="58.0" layoutX="2.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble1_1" fitHeight="71.0" fitWidth="58.0" layoutX="2.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="79.0" fitWidth="62.0" layoutX="1.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble2_1" fitHeight="79.0" fitWidth="62.0" layoutX="1.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/grey_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="58.0" fitWidth="58.0" layoutX="2.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble3_1" fitHeight="58.0" fitWidth="58.0" layoutX="2.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/blue_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="58.0" fitWidth="58.0" layoutX="59.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble1_2" fitHeight="58.0" fitWidth="58.0" layoutX="59.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/red_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="86.0" fitWidth="62.0" layoutX="57.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble2_2" fitHeight="86.0" fitWidth="62.0" layoutX="57.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/yellow_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="58.0" fitWidth="58.0" layoutX="60.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble3_2" fitHeight="58.0" fitWidth="58.0" layoutX="60.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/blue_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="79.0" fitWidth="62.0" layoutX="118.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble1_3" fitHeight="79.0" fitWidth="62.0" layoutX="118.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/grey_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="116.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble2_3" fitHeight="67.0" fitWidth="62.0" layoutX="116.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/white_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="71.0" fitWidth="58.0" layoutX="117.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble3_3" fitHeight="71.0" fitWidth="58.0" layoutX="117.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="67.0" fitWidth="58.0" layoutX="172.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble1_4" fitHeight="67.0" fitWidth="58.0" layoutX="172.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/red_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="67.0" fitWidth="58.0" layoutX="173.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble2_4" fitHeight="67.0" fitWidth="58.0" layoutX="173.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="79.0" fitWidth="62.0" layoutX="174.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble3_4" fitHeight="79.0" fitWidth="62.0" layoutX="174.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/yellow_marble.png" />
                      </image>
@@ -107,7 +106,7 @@
             </Pane>
             <Pane layoutX="190.0" layoutY="124.0" prefHeight="79.0" prefWidth="366.0">
                <children>
-                  <ImageView fitHeight="70.0" fitWidth="62.0" layoutX="289.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="outMarble" fitHeight="70.0" fitWidth="62.0" layoutX="289.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/white_marble.png" />
                      </image>
@@ -116,17 +115,17 @@
             </Pane>
             <Pane layoutX="635.0" layoutY="114.0" prefHeight="270.0" prefWidth="62.0">
                <children>
-                  <Button alignment="CENTER" layoutX="7.0" layoutY="103.0" mnemonicParsing="false" text="Move" textFill="#0c1ee4">
+                  <Button fx:id="row1Button" alignment="CENTER" layoutX="7.0" layoutY="103.0" mnemonicParsing="false" onAction="#clickRow1" text="Move" textFill="#0c1ee4">
                      <effect>
                         <DropShadow />
                      </effect>
                   </Button>
-                  <Button layoutX="7.0" layoutY="162.0" mnemonicParsing="false" text="Move" textFill="#2f10e1">
+                  <Button fx:id="row2Button" layoutX="7.0" layoutY="162.0" mnemonicParsing="false" onAction="#clickRow2" text="Move" textFill="#2f10e1">
                      <effect>
                         <DropShadow />
                      </effect>
                   </Button>
-                  <Button layoutX="7.0" layoutY="223.0" mnemonicParsing="false" text="Move" textFill="#0a17d0">
+                  <Button fx:id="row3Button" layoutX="7.0" layoutY="223.0" mnemonicParsing="false" onAction="#clickRow3" text="Move" textFill="#0a17d0">
                      <effect>
                         <DropShadow />
                      </effect>
@@ -135,22 +134,22 @@
             </Pane>
             <Pane layoutX="259.0" layoutY="521.0" prefHeight="61.0" prefWidth="250.0">
                <children>
-                  <Button layoutX="1.0" layoutY="18.0" mnemonicParsing="false" text="Move" textFill="#1303eb">
+                  <Button fx:id="column1Button" layoutX="1.0" layoutY="18.0" mnemonicParsing="false" onAction="#clickColumn1" text="Move" textFill="#1303eb">
                      <effect>
                         <DropShadow />
                      </effect>
                   </Button>
-                  <Button layoutX="196.0" layoutY="18.0" mnemonicParsing="false" text="Move" textFill="#1207e1">
+                  <Button fx:id="column4Button" layoutX="196.0" layoutY="18.0" mnemonicParsing="false" onAction="#clickColumn4" text="Move" textFill="#1207e1">
                      <effect>
                         <DropShadow />
                      </effect>
                   </Button>
-                  <Button layoutX="65.0" layoutY="18.0" mnemonicParsing="false" text="Move" textFill="#0a13cf">
+                  <Button fx:id="column2Button" layoutX="65.0" layoutY="18.0" mnemonicParsing="false" onAction="#clickColumn2" text="Move" textFill="#0a13cf">
                      <effect>
                         <DropShadow />
                      </effect>
                   </Button>
-                  <Button layoutX="130.0" layoutY="18.0" mnemonicParsing="false" text="Move" textFill="#1809e1">
+                  <Button fx:id="column3Button" layoutX="130.0" layoutY="18.0" mnemonicParsing="false" onAction="#clickColumn3" text="Move" textFill="#1809e1">
                      <effect>
                         <DropShadow />
                      </effect>

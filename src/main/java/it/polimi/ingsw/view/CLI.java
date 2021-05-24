@@ -24,7 +24,6 @@ import it.polimi.ingsw.model.card.DevelopmentCardTable;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
 import it.polimi.ingsw.model.market.MarketStructure;
 import it.polimi.ingsw.network.client.ClientSocket;
-import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
@@ -1077,7 +1076,7 @@ public class CLI extends Observable implements ViewObserver {
         int countNotAvailable = 0;
         if (msg.getUsername().equals(username)) {
 
-            developmentCardTable = msg.getTableCard();
+            developmentCardTable = msg.getDevelopmentCardTable();
             printCLIMessage(msg.getMsgContent());
 
             in = new Scanner(System.in);
@@ -1132,7 +1131,7 @@ public class CLI extends Observable implements ViewObserver {
                 while (!correct) {
 
                     //check if the deck selected is not empty (and has at least one card) and if the client inserted a valid card space
-                    if (!(msg.getTableCard().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 0 || cardSpace == 1 || cardSpace == 2)) {
+                    if (!(msg.getDevelopmentCardTable().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 0 || cardSpace == 1 || cardSpace == 2)) {
                         if (msg.getCardAvailable()[row][column]) { //if the player can buy the card in that position of the table
 
                             //to update the local version of the variable of the client

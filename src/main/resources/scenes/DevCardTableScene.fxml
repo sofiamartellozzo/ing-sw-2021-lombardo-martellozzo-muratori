@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,18 +12,17 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.DevCardTableSceneController">
    <children>
       <Pane layoutY="-2.0" prefHeight="806.0" prefWidth="700.0">
          <children>
             <GridPane layoutX="5.0" layoutY="82.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="724.0" prefWidth="694.0">
               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
@@ -30,64 +31,64 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fitHeight="197.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <ImageView fx:id="devCard1_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(4).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="198.0" fitWidth="132.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <ImageView fx:id="devCard2_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(5).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="225.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <ImageView fx:id="devCard3_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(9).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="196.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <ImageView fx:id="devCard1_2" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(24).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="196.0" fitWidth="134.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <ImageView fx:id="devCard2_2" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(20).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="196.0" fitWidth="142.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <ImageView fx:id="devCard3_2" fitHeight="210.0" fitWidth="210.0" onMouseDragged="#clickDevCard3_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(13).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="194.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <ImageView fx:id="devCard1_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(36).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="195.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <ImageView fx:id="devCard2_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(30).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="195.0" fitWidth="134.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                  <ImageView fx:id="devCard3_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(26).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="198.0" fitWidth="137.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                  <ImageView fx:id="devCard1_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(46).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="198.0" fitWidth="138.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                  <ImageView fx:id="devCard2_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(42).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="195.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                  <ImageView fx:id="devCard3_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3">
                      <image>
-                        <Image url="@../../../ing-sw-2021-lombardo-martellozzo-muratori/src/main/resources/images/frontCards/DevelopmentCard%20(39).png" />
+                        <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="80.0" text="LEVEL III" GridPane.rowIndex="1">
@@ -127,11 +128,46 @@
                   </Label>
                </children>
             </GridPane>
-            <Label alignment="CENTER" layoutX="217.0" layoutY="27.0" prefHeight="27.0" prefWidth="304.0" text="DEVELOPMENT CARD TABLE" textFill="#0a5d5e">
+            <Label alignment="CENTER" layoutX="200.0" layoutY="27.0" prefHeight="27.0" prefWidth="304.0" text="DEVELOPMENT CARD TABLE" textFill="#0a5d5e">
                <font>
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Label>
+            <TitledPane fx:id="chooseCardSpacePane" animated="false" layoutX="152.5" layoutY="258.0" text="Choose Card Space">
+               <content>
+                  <GridPane prefHeight="283.0" prefWidth="394.0">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="217.19998779296876" minHeight="10.0" prefHeight="217.19998779296876" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="126.79996337890623" minHeight="10.0" prefHeight="47.60001220703123" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView fx:id="cardSpace1" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="cardSpace2" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                           <image>
+                              <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="cardSpace3" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                           <image>
+                              <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="cardSpace1Button" mnemonicParsing="false" onAction="#clickCardSpace1Button" text="Card Space 1" GridPane.rowIndex="1" />
+                        <Button fx:id="cardSpace3Button" mnemonicParsing="false" onAction="#clickCardSpace3Button" text="Card Space 3" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Button fx:id="cardSpace2Button" mnemonicParsing="false" onAction="#clickCardSpace2Button" text="Card Space 2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+               </content>
+            </TitledPane>
          </children>
       </Pane>
    </children>

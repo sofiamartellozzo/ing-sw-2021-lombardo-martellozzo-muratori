@@ -33,9 +33,6 @@ public class VChooseDevelopCardRequestMsg extends ViewGameMsg {
         return username;
     }
 
-
-    public DevelopmentCardTable getTableCard() { return developmentCardTable; }
-
     public DevelopmentCardTable getDevelopmentCardTable() {
         return developmentCardTable;
     }
