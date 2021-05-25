@@ -80,7 +80,7 @@ public class FaithTrack implements Serializable{
     public int checkInvokeVaticanReport() {
         for (PopeBox popebox: getPopeBoxes())
         {
-            if (faithMarker.getPosition() == popebox.getNumberBox() && popebox.isActivated())
+            if ((faithMarker.getPosition() == popebox.getNumberBox()) && !popebox.isActivated())
             {
                 return popebox.getWhichSection();
             }
@@ -133,9 +133,14 @@ public class FaithTrack implements Serializable{
      * Increase the position of the player's FaithMarker but before check if it is less than 24
      */
     public void increasePosition() {
-        if(faithMarker.getPosition() < 23 ){
-            this.faithMarker.increasePosition();
-        }
+
+            faithMarker.increasePosition();
+            int section = checkInvokeVaticanReport();
+            if (section != 0){
+                System.out.println("KKKKKK");
+                doVaticanReport(section);
+            }
+
     }
 
 }

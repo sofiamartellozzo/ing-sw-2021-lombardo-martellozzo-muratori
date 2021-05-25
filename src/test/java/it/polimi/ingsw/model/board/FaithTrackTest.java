@@ -17,13 +17,13 @@ public class FaithTrackTest extends TestCase {
         GoldBox box = new GoldBox(1,0,9);
         GoldBox box1 = new GoldBox(1,1,2);
         GoldBox box2 = new GoldBox(1,2,1);
-        PopeBox box4 = new PopeBox(1,3);
+        PopeBox box4 = new PopeBox(1,8);
         box4.setVictoryPoints(box2);
         box4.setActivated(true);
-        PopeBox pop = new PopeBox(1,4);
+        PopeBox pop = new PopeBox(2,16);
         pop.setVictoryPoints(box2);
         pop.setActivated(false);
-        GoldBox box5 = new GoldBox(2,5,3);
+        GoldBox box5 = new GoldBox(3,24,3);
 
         ArrayList<Box> boxes = new ArrayList<>();
         boxes.add(0,box);
@@ -92,16 +92,17 @@ public class FaithTrackTest extends TestCase {
     @Test
     public void testCheckInvokeVaticanReport() {
 
-        faithTrack.getFaithMarker().setPosition(4);
+        faithTrack.getFaithMarker().setPosition(8);
         int num = faithTrack.checkInvokeVaticanReport();
-        assertEquals(num,1);
+        assertEquals(1, num);
 
     }
 
     @Test
     public void testDoVaticanReport(){
 
-        faithTrack.getFaithMarker().setPosition(4);
+        faithTrack.getFaithMarker().setPosition(8);
         faithTrack.doVaticanReport(1);
+        assertEquals("Active", faithTrack.getPopesFavorTiles().get(0).getState().toString());
     }
 }

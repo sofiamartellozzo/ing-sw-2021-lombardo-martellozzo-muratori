@@ -535,9 +535,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
+        sendToClient(msg);
+        /*
         if (msg.getPlayerUsername().equals(this.username)) {
             sendToClient(msg);
-        }
+        }*/
     }
 
     /**

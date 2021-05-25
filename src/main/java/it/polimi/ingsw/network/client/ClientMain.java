@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.view.GUI.GUI;
 import javafx.application.Application;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -29,13 +30,20 @@ public class ClientMain {
         boolean setViewMode = false;
         while (!setViewMode) {
 
-            viewModeChoice = scanner.nextInt();
-            if (viewModeChoice != 1 && viewModeChoice != 2) {
-                //throw new InputInvalidException("Error! Plese insert a valid umber for the view mode..");
-                System.out.println("Error! Plese insert a valid umber for the view mode..");
-            } else {
-                setViewMode = true;
+            try {
+                viewModeChoice = scanner.nextInt();
+                if (viewModeChoice != 1 && viewModeChoice != 2) {
+                    //throw new InputInvalidException("Error! Plese insert a valid umber for the view mode..");
+                    System.out.println("Error! Plese insert a valid umber for the view mode..");
+                } else {
+                    setViewMode = true;
+                }
+            } catch (InputMismatchException eio) {
+                System.out.println("⚠️ERROR: You can only insert numbers, type again");
+                scanner.nextLine();
             }
+
+
         }
 
         System.out.println("You choose: "+viewModeChoice);

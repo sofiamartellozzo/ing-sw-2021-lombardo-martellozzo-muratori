@@ -239,7 +239,7 @@ public class Player implements PlayerInterface, Serializable {
         //sum of all points.. then set the attribute to it
         int points = 0;
         //get points from Development Card in Card Space
-        points += this.gameSpace.getVictoryPointsFromCardSpaces();
+        points += gameSpace.getVictoryPointsFromCardSpaces();
 
         //get points from Leader Card
         for (LeaderCard leaderCard: this.leaderCards){
@@ -247,12 +247,12 @@ public class Player implements PlayerInterface, Serializable {
         }
 
         //get points from PopesFavorTile and last Gold Box
-        points += this.gameSpace.getFaithTrack().getAllVictoryPoints();
+        points += gameSpace.getFaithTrack().getAllVictoryPoints();
 
         //get points from the count of the Resources owned by the player
-        points += this.gameSpace.getResourceManager().getVictoryPoints();
+        points += gameSpace.getResourceManager().getVictoryPoints();
 
-        this.victoryPoints = points;
+        victoryPoints = points;
         return points;
     }
 
@@ -515,7 +515,7 @@ public class Player implements PlayerInterface, Serializable {
      */
     @Override
     public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException{
-       this.buyCard.buyCard(row, column, boardManager, this,  selectedCardSpace);
+       buyCard.buyCard(row, column, boardManager, this,  selectedCardSpace);
     }
 
 
@@ -596,6 +596,7 @@ public class Player implements PlayerInterface, Serializable {
     @Override
     public void increasePosition() {
         this.gameSpace.getFaithTrack().increasePosition();
+        System.out.println(gameSpace.getFaithTrack().getPositionFaithMarker());
     }
 
 

@@ -92,7 +92,8 @@ public class EndGameController extends Observable implements ControllerObserver 
                 notifyAllObserver(ObserverType.VIEW, msg);
             }
             else if (result.equals("Looser")){
-                VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ","LorenzoIlMagnifico", soloPlayer.getVictoryPoints(),null);
+                System.out.println("inside end game controller LOOSER");
+                VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ",soloPlayer.getUsername(), soloPlayer.getVictoryPoints(),null);
                 notifyAllObserver(ObserverType.VIEW, msg);
             }
 

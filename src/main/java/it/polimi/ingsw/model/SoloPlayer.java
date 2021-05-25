@@ -34,6 +34,7 @@ public class SoloPlayer extends Player implements Serializable {
     @Override
     public void increasePosition() {
         gameSpace.getFaithTrack().increasePosition();
+        System.out.println(gameSpace.getFaithTrack().getPositionFaithMarker());
     }
 
     public void setGameSpace(SoloPersonalBoard gameSpace) {

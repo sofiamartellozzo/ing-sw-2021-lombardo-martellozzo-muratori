@@ -33,7 +33,11 @@ public class SoloFaithTrack extends FaithTrack implements Serializable {
      */
 
     public void increaseLorenzoPosition() {
-        this.lorenzoFaithMarker.increasePosition();
+        lorenzoFaithMarker.increasePosition();
+        int section = checkInvokeVaticanReport();
+        if (section != 0){
+            doVaticanReport(section);
+        }
     }
 
 }

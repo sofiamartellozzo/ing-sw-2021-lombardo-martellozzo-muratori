@@ -1131,7 +1131,7 @@ public class CLI extends Observable implements ViewObserver {
                 try {
                     fromDepot = in.nextInt();
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
                 System.out.println(" Write the depot in which you want to move it ");
@@ -1139,7 +1139,7 @@ public class CLI extends Observable implements ViewObserver {
                 try {
                     toDepot = in.nextInt();
                 } catch (InputMismatchException eio) {
-                    System.out.println("ERRORE Puoi inserire solo numeri");
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
 
@@ -1202,7 +1202,7 @@ public class CLI extends Observable implements ViewObserver {
             try {
                 number = in.nextInt();
             } catch (InputMismatchException eio) {
-                printCLIMessage(" ⚠️ ERRORE : Puoi inserire solo numeri");
+                printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                 in.nextLine();
             }
 
@@ -1219,7 +1219,7 @@ public class CLI extends Observable implements ViewObserver {
                     try {
                         number = in.nextInt();
                     } catch (InputMismatchException eio) {
-                        printCLIMessage("⚠️ ERRORE : Puoi inserire solo numeri");
+                        printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                         in.nextLine();
                     }
                 }
@@ -1258,7 +1258,7 @@ public class CLI extends Observable implements ViewObserver {
         try {
             depot = in.nextInt();
         } catch (InputMismatchException eio) {
-            printCLIMessage("⚠️ERRORE: Puoi inserire solo numeri");
+            printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
             in.nextLine();
         }
 
@@ -1454,7 +1454,7 @@ public class CLI extends Observable implements ViewObserver {
         if (msg.getWinnerUsername().equals(username)) {
             WriteMessageDisplay.endGame();
             WriteMessageDisplay.declareWinner();
-            printCLIMessage(" You totalize " + msg.getVictoryPoints() + "points");
+            printCLIMessage(" You totalize " + msg.getVictoryPoints() + " points");
         } else {
             WriteMessageDisplay.endGame();
             WriteMessageDisplay.declareLoser();

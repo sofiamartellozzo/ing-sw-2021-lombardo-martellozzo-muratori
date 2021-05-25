@@ -24,11 +24,12 @@ public class FaithMarker extends Resource implements Serializable {
      */
     public FaithMarker() {
         super(Color.RED);
-        this.position = 0;
+        this.position = 7;
     }
 
     /**
      * Getter method
+     *
      * @return -> The position
      */
     public int getPosition() {
@@ -37,6 +38,7 @@ public class FaithMarker extends Resource implements Serializable {
 
     /**
      * Setter Method
+     *
      * @param position -> The position you want to set
      */
     public void setPosition(int position) {
@@ -47,7 +49,9 @@ public class FaithMarker extends Resource implements Serializable {
      * Increase the position by one, so the player can go ahead in the FaithTrack.
      */
     public void increasePosition() {
-        this.position++;
+        if (position < 24) {
+            this.position++;
+        }
     }
 
 }

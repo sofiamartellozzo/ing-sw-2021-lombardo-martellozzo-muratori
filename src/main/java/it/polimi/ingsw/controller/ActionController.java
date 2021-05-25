@@ -381,16 +381,19 @@ public class ActionController extends Observable implements ControllerObserver {
                             /* the FAITHMARKER is not a real resources, it increased the position of the player in FT*/
                             if (!isSolo) {
                                 player.increasePosition();
+                                System.out.println(player.getGameSpace().getFaithTrack().getPositionFaithMarker());
                             } else {
                                 soloPlayerTurn.getCurrentPlayer().increasePosition();
+                                System.out.println(soloPlayerTurn.getCurrentPlayer().getGameSpace().getFaithTrack().getPositionFaithMarker());
                             }
 
                             VUpdateFaithTrackMsg notification1 = new VUpdateFaithTrackMsg("because of a red marble, this player increased his position",player.getUsername(),player.getGameSpace().getFaithTrack());
                             VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
                             Map<Integer, PlayerInterface> players = boardManager.getPlayers();
                             notification.setAllPlayerToNotify(getPlayerAsList(players));
-                            notifyAllObserver(ObserverType.VIEW, notification);
                             notifyAllObserver(ObserverType.VIEW, notification1);
+                            System.out.println(notification1.getFaithTrack().getPopesFavorTiles().get(0).getState());
+                            notifyAllObserver(ObserverType.VIEW, notification);
 
                         } else {
                             /* a normal resource*/
