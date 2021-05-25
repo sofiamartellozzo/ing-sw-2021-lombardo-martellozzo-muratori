@@ -57,6 +57,8 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VBuyFromMarketRequestMsg msg);
     /*msg with the update market after someone bought from it*/
     public void receiveMsg(VUpdateMarketMsg msg);
+    /*msg with the update faith track after something in it changed*/
+    public void receiveMsg(VUpdateFaithTrackMsg msg);
     /* from ActionC to the client, so send to the client asking which depot to store a resource */
     public void receiveMsg(VChooseDepotMsg msg);
     /* notify the client that lorenzo has increased his position of..*/

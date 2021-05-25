@@ -299,7 +299,7 @@ public class ActionController extends Observable implements ControllerObserver {
             try {
                 player.buyCard(msg.getRow(), msg.getColumn(), boardManager, msg.getCardSpaceToStoreIt());
 
-                VUpdateDevTableMsg update = new VUpdateDevTableMsg("new develop table", player.getUsername(), boardManager.getDevelopmentCardTable(), boardManager.getPlayers());
+                VUpdateDevTableMsg update = new VUpdateDevTableMsg("new develop table", player.getUsername(), player.getGameSpace().getCardSpaces(), boardManager.getDevelopmentCardTable(), boardManager.getPlayers());
                 notifyAllObserver(ObserverType.VIEW, update);
 
                 //remove tre 3 action from the able ones because can be made only once
@@ -385,10 +385,12 @@ public class ActionController extends Observable implements ControllerObserver {
                                 soloPlayerTurn.getCurrentPlayer().increasePosition();
                             }
 
+                            VUpdateFaithTrackMsg notification1 = new VUpdateFaithTrackMsg("because of a red marble, this player increased his position",player.getUsername(),player.getGameSpace().getFaithTrack());
                             VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
                             Map<Integer, PlayerInterface> players = boardManager.getPlayers();
                             notification.setAllPlayerToNotify(getPlayerAsList(players));
                             notifyAllObserver(ObserverType.VIEW, notification);
+                            notifyAllObserver(ObserverType.VIEW, notification1);
 
                         } else {
                             /* a normal resource*/

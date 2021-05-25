@@ -42,7 +42,7 @@ public class SoloPlayer extends Player implements Serializable {
 
 
     public String checkIfWin() {
-        if (super.checkEndGame()){
+        if ((gameSpace.getFaithTrack().getPositionFaithMarker()==24)||(gameSpace.getAllCards().size()==7)){
             result= Result.WINNER;
             return "Winner";
         }

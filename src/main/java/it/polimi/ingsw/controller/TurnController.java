@@ -217,10 +217,12 @@ public class TurnController extends Observable implements ControllerObserver {
 
                         VLorenzoIncreasedMsg notify2 = new VLorenzoIncreasedMsg("Lorenzo increased of 2 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 2);
                         notifyAllObserver(ObserverType.VIEW, notify2);}
+                        checkEndGame();
                 if (actionTokenActivated.getAbility().equals("Plus One And Shuffle Action Ability")) {
 
                     VLorenzoIncreasedMsg notify1 = new VLorenzoIncreasedMsg("Lorenzo increased of 1 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 1);
                     notifyAllObserver(ObserverType.VIEW, notify1);
+                    checkEndGame();
                 }
                 startSoloPlayerTurn(singlePlayer);
             } catch (InvalidActionException e) {
@@ -260,6 +262,13 @@ public class TurnController extends Observable implements ControllerObserver {
         else{
            if (singlePlayer.checkEndGame()){
                //single mode the game has ended ...
+               EndGameController endGameController = new EndGameController(singlePlayer, this, virtualView);
+               attachObserver(ObserverType.CONTROLLER,endGameController);
+               try {
+                   endGameController.startCounting();
+               } catch (InvalidActionException e) {
+                   e.printStackTrace();
+               }
            }
         }
     }
@@ -325,9 +334,9 @@ public class TurnController extends Observable implements ControllerObserver {
                     } else {                    // if the game is over EndGameController will be instantiated to count all the victory points
                         EndGameController endGameController = null;
                         if (!isSoloMode) {
-                            endGameController = new EndGameController(turnSequence, this);
+                            endGameController = new EndGameController(turnSequence, this, virtualView);
                         } else {
-                            endGameController = new EndGameController(singlePlayer, this);
+                            endGameController = new EndGameController(singlePlayer, this, virtualView);
                         }
 
                         try {

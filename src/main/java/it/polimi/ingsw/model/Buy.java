@@ -40,9 +40,10 @@ public class Buy implements BuyCard, Serializable {
         int i = 0;
         boolean find = false;
         for (Resource resource: requirements){
-            for (int r=0; (!resourcesOwned.isEmpty())&&(0<resourcesOwned.size())&&(!find); r++){
+            for (int r=0; (!find)&&(!resourcesOwned.isEmpty())&&(resourcesOwned.size()>0)&&(r< resourcesOwned.size()); r++){
 
                     if (resourcesOwned.get(r).getType().equals(resource.getType())){
+
                         resourcesOwned.remove(r);
                         i++;
                         find = true;

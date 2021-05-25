@@ -19,11 +19,11 @@ import java.util.ArrayList;
 public class CardSpaceDisplay {
 
     private ArrayList<CardSpace> cardSpaces;
-    private PlayerInterface player;
 
-    public CardSpaceDisplay(ArrayList<CardSpace> cardSpaces, PlayerInterface player){
+
+    public CardSpaceDisplay(ArrayList<CardSpace> cardSpaces){
         this.cardSpaces = cardSpaces;
-        this.player = player;
+
     }
 
     public void showCardSpaces(){
@@ -52,7 +52,7 @@ public class CardSpaceDisplay {
 
         System.out.println(AnsiColors.YELLOW_BOLD+"HERE ARE YOUR THREE CARD SPACES:\n"+AnsiColors.RESET);
         for(int i = 0; i < 3; i++) {
-            if(player.getGameSpace().getCardSpace(i).getCards().isEmpty()){
+            if(cardSpaces.get(i).getCards().isEmpty()){
                 System.out.print("Card Space"+(i+1)+": "+AnsiColors.RED_BOLD+"EMPTY CARD SPACE\n"+AnsiColors.RESET);
             }
             else {

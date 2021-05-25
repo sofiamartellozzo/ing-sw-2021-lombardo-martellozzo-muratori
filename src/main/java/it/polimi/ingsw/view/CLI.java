@@ -58,6 +58,8 @@ public class CLI extends Observable implements ViewObserver {
 
     /*-------------------------------------------------------------------------------------*/
 
+    private ConverterForCLI converter = new ConverterForCLI();   //used to do the conversion from Strings to ...
+
     //local variables used to save locally the dates about a player and his game space
 
     private Boolean soloMode;
@@ -393,89 +395,6 @@ public class CLI extends Observable implements ViewObserver {
      */
     private boolean checkDepotValidity(int depot) {
         return depot == 1 || depot == 2 || depot == 3 || depot == 4 || depot == 5;
-    }
-
-    /**
-     * because the player is asked to insert a string that represents the color of the resource he wants,
-     * this method converts the color written by the player to a real Color
-     *
-     * @param resourceColor
-     * @return
-     */
-    private Color getColorFromString(String resourceColor) {
-        switch (resourceColor) {
-            case "YELLOW":
-                return Color.YELLOW;
-            case "BLUE":
-                return Color.BLUE;
-            case "GREY":
-                return Color.GREY;
-            case "PURPLE":
-                return Color.PURPLE;
-        }
-
-        throw new IllegalArgumentException(" Error, color not valid ");
-    }
-
-    /**
-     * auxiliary method that creates the color basing on the type
-     *
-     * @param typeRes
-     * @return
-     */
-    private Color getColorFromType(String typeRes) {
-        switch (typeRes) {
-            case "SHIELD":
-                return Color.BLUE;
-            case "COIN":
-                return Color.YELLOW;
-            case "SERVANT":
-                return Color.PURPLE;
-            case "STONE":
-                return Color.GREY;
-        }
-        throw new IllegalArgumentException("Error, type not valid!");
-    }
-
-    /**
-     * auxiliary method used to create the type from the string
-     *
-     * @param type
-     * @return
-     */
-    private TypeResource getTypeFromString(String type) {
-
-        switch (type) {
-            case "COIN":
-                return TypeResource.COIN;
-            case "SHIELD":
-                return TypeResource.SHIELD;
-            case "STONE":
-                return TypeResource.STONE;
-            case "SERVANT":
-                return TypeResource.SERVANT;
-        }
-        throw new IllegalArgumentException("Error, type not valid!");
-    }
-
-    /**
-     * auxiliary method that creates the resource basing on the color
-     *
-     * @param color
-     * @return
-     */
-    private Resource getResourceFromColor(Color color) {
-        switch (color) {
-            case YELLOW:
-                return new Resource(Color.YELLOW);
-            case BLUE:
-                return new Resource(Color.BLUE);
-            case GREY:
-                return new Resource(Color.GREY);
-            case PURPLE:
-                return new Resource(Color.PURPLE);
-        }
-        throw new IllegalArgumentException("Error, color not valid! ");
     }
 
     /**
@@ -918,7 +837,7 @@ public class CLI extends Observable implements ViewObserver {
 
                 /* create the color starting from the string written by the player,
                 with the function toUpperCase we are sure that the input of the player will be in an upperCase mode */
-                    resColor = getColorFromString(resourceColor.toUpperCase());
+                    resColor = converter.getColorFromString(resourceColor.toUpperCase());
 
                 } else {
                     // if he has to chose from specific type because the White Marble ability is activated
@@ -950,7 +869,7 @@ public class CLI extends Observable implements ViewObserver {
                     }
 
                     /*creates the color of the resource basing on the Type of it, written by the player*/
-                    typeColor = getColorFromType(resourceType.toUpperCase());
+                    typeColor = converter.getColorFromType(resourceType.toUpperCase());
 
                 }
 
@@ -1014,8 +933,8 @@ public class CLI extends Observable implements ViewObserver {
         if (msg.getUsernameIncreased().equals(username)) {
             printCLIMessage("Congratulations, your faith Marker increased his position of " + msg.getNumberOfPositionIncreased() + " position!");
             // locally increasing the position of the faith Marker
-            faithTrack.getFaithMarker().increasePosition();
-            showFaithTrack(faithTrack);
+            //faithTrack.getFaithMarker().increasePosition();    //HEREEEEEEE
+            //showFaithTrack(faithTrack);
 
         } else if (msg.getAllPlayerToNotify().contains(username)) {
             System.out.println(AnsiColors.YELLOW_BOLD + msg.getUsernameIncreased() + AnsiColors.RESET + " increased his position of: " + msg.getNumberOfPositionIncreased() + " position");
@@ -1042,7 +961,7 @@ public class CLI extends Observable implements ViewObserver {
             showWarehouse(warehouse);
 
             System.out.print("\n");
-            printCLIMessage(" Please insert a new depot for this resource [number from 1 to 5] ");
+            printCLIMessage(" Please insert a new depot for this resource [number from 1 to 5] if you want to discard it send 0!");
             in = new Scanner(System.in);
             in.reset();
 
@@ -1053,8 +972,15 @@ public class CLI extends Observable implements ViewObserver {
                 in.nextLine();
             }
 
-            CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!", msg.getResourceChooseBefore(), newDepot, username);
-            sendMsg(response);
+            if(newDepot != 0) {
+                CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!", msg.getResourceChooseBefore(), newDepot, username);
+                sendMsg(response);
+            }
+            else{     //if he decides to discard the resource
+                CChooseDiscardResourceMsg response1 = new CChooseDiscardResourceMsg("I chose to discard this resource", username);
+                sendMsg(response1);
+            }
+
         }
 
     }
@@ -1134,26 +1060,10 @@ public class CLI extends Observable implements ViewObserver {
                     if (!(msg.getDevelopmentCardTable().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 0 || cardSpace == 1 || cardSpace == 2)) {
                         if (msg.getCardAvailable()[row][column]) { //if the player can buy the card in that position of the table
 
-                            //to update the local version of the variable of the client
-                            //developmentCardTable.takeCard(row,column);
-                            cardSpaces.get(cardSpace).addCard(developmentCardTable.takeCard(row, column));
-                            /*try {
-                                strongBox.removeResources(developmentCardTable.getTable()[row][column].getDevelopDeck().get(developmentCardTable.getTable()[row][column].getDevelopDeck().size()).getCost());
-                            } catch (InvalidActionException e) {
-                                e.printStackTrace();
-                            }*/
 
                             if (developmentCardTable.getTable()[row][column].getDevelopDeck().isEmpty()) {
                                 msg.getCardAvailable()[row][column] = false;
                             }
-                            //System.out.println("Here is the card Table Updated! ");
-                            //showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
-
-                            //System.out.println("Here is your StrongBox Updated! ");
-                            //showStrongBox(strongBox, player);
-
-                            printCLIMessage("Here are your card spaces updated");
-                            showCardSpaces(cardSpaces);
 
                             CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
                             sendMsg(response);
@@ -1172,11 +1082,6 @@ public class CLI extends Observable implements ViewObserver {
                 //in.reset();
                 CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.BUY_CARD);
                 sendMsg(change);
-                //String action = in.nextLine();
-                //TurnAction turnAction = returnActionFromString(action.toLowerCase());
-                //send a msg to change the action
-                //CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ", username, turnAction);
-                //this.client.sendMsg(request);
             }
 
         }
@@ -1184,10 +1089,13 @@ public class CLI extends Observable implements ViewObserver {
 
     @Override
     public void receiveMsg(VUpdateDevTableMsg msg) {
+
         developmentCardTable = msg.getUpdateTable();
         if (msg.getUsername().equals(username)) {
-            printCLIMessage(" That's the updated situation of the table of Develop cards ");
-            //showDevelopmentCardTable();
+
+            cardSpaces = msg.getUpdateCardSpace();
+            showCardSpaces(cardSpaces);
+
         }
     }
 
@@ -1326,6 +1234,15 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(VUpdateFaithTrackMsg msg) {
+        faithTrack = msg.getFaithTrack();
+        if(msg.getUsername().equals(username)){
+            printCLIMessage("That's the updated Faith Track");
+            showFaithTrack(faithTrack);
+        }
+    }
+
+    @Override
     public void receiveMsg(VChooseDepotMsg msg) {
         //...
         int depot = 0;
@@ -1445,8 +1362,8 @@ public class CLI extends Observable implements ViewObserver {
 
                         while(!correctResource) {
 
-                            choose1 = in.nextLine();
-                            choose2 = in.nextLine();
+                            choose1 = in.nextLine().toUpperCase();
+                            choose2 = in.nextLine().toUpperCase();
 
                             if(checkType(choose1) && checkType(choose2)){    // checking if the resources' Types are valid
                                 correctResource = true;
@@ -1456,15 +1373,15 @@ public class CLI extends Observable implements ViewObserver {
                             }
                         }
 
-                        resources.add(getTypeFromString(choose1.toUpperCase()));
-                        resources.add(getTypeFromString(choose2.toUpperCase()));
+                        resources.add(converter.getTypeFromString(choose1.toUpperCase()));
+                        resources.add(converter.getTypeFromString(choose2.toUpperCase()));
 
                         printCLIMessage("Insert the resource that you want, it will be put automatically in the StrongBox! ");
                         resourceToGet = in.nextLine();
 
                         CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
                         response.setResourcesToPay(resources);
-                        response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
+                        response.setResourceToGet(converter.getTypeFromString(resourceToGet.toUpperCase()));
                         sendMsg(response);
 
                     } else if (choice == 1 || choice == 2 || choice == 3) {
@@ -1493,7 +1410,7 @@ public class CLI extends Observable implements ViewObserver {
                             }
                         }
                         CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
-                        response.setResourceToGet(getTypeFromString(resourceToGet.toUpperCase()));
+                        response.setResourceToGet(converter.getTypeFromString(resourceToGet.toUpperCase()));
                         sendMsg(response);
                     }
 
@@ -1529,7 +1446,8 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         clearScreen();
 
-        if (msg.getWinnerUsername().contains(username)) {
+        if (msg.getWinnerUsername().equals(username)) {
+            WriteMessageDisplay.endGame();
             WriteMessageDisplay.declareWinner();
             printCLIMessage(" You totalize " + msg.getVictoryPoints() + "points");
         } else {
@@ -1606,6 +1524,9 @@ public class CLI extends Observable implements ViewObserver {
             for (String username : msg.getOtherPlayers()) {
                 printCLIMessage(username);
             }
+            printCLIMessage("Or if you want you can also see YOUR actual situation :)");
+            printCLIMessage("Your Username:"+ msg.getUsername());
+
             in = new Scanner(System.in);
             String userChosen = in.nextLine();
 
@@ -1698,7 +1619,7 @@ public class CLI extends Observable implements ViewObserver {
      * @param cardSpaces
      */
     private void showCardSpaces(ArrayList<CardSpace> cardSpaces) {
-        CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces, player);
+        CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces);
         cardSpaceDisplay.showCardSpaces();
     }
 
