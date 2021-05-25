@@ -438,11 +438,9 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VUpdateDevTableMsg msg) {
-        for (PlayerInterface player : msg.getAllPlayers().values()) {
-            if (player.getUsername().equals(this.username)) {
-                sendToClient(msg);
-            }
-        }
+        //sent it to all player
+        sendToClient(msg);
+
     }
 
 

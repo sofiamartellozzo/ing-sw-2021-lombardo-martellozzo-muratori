@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message.viewMsg;
 
+import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.model.Player;
 
 import java.util.List;
@@ -34,5 +35,10 @@ public class VShowEndGameResultsMsg extends ViewGameMsg {
 
     public List<Player> getLosersUsernames() {
         return losers;
+    }
+
+    @Override
+    public void notifyHandler(ViewObserver viewObserver) {
+        viewObserver.receiveMsg(this);
     }
 }

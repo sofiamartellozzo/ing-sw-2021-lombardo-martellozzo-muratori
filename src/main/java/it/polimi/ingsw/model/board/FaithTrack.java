@@ -130,10 +130,12 @@ public class FaithTrack implements Serializable{
     }
 
     /**
-     * Increase the position of the player's FaithMarker.
+     * Increase the position of the player's FaithMarker but before check if it is less than 24
      */
     public void increasePosition() {
-        this.faithMarker.increasePosition();
+        if(faithMarker.getPosition() < 23 ){
+            this.faithMarker.increasePosition();
+        }
     }
 
 }

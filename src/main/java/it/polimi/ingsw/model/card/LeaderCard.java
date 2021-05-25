@@ -144,16 +144,16 @@ public class LeaderCard extends Card implements Serializable {
                     String value = (String) values[j];
                     switch (value) {
                         case "GREEN":
-                            req += AnsiColors.GREEN_BOLD + " 🟦  level: "+values[j+1] + AnsiColors.RESET;
+                            req += AnsiColors.GREEN_BOLD + " \uD83D\uDFE9 level: "+values[j+1] + AnsiColors.RESET;
                             break; //Color -> Card
                         case "BLUE":
                             req += AnsiColors.BLUE_BOLD + " 🟦 level: "+values[j+1]+ AnsiColors.RESET;
                             break; //Color -> Card/Resource
                         case "YELLOW":
-                            req += AnsiColors.YELLOW_BOLD + " 🟦 level: "+values[j+1] +AnsiColors.RESET;
+                            req += AnsiColors.YELLOW_BOLD + " \uD83D\uDFE8 level: "+values[j+1] +AnsiColors.RESET;
                             break;//Color -> Card/Resource
                         case "PURPLE":
-                            req += AnsiColors.PURPLE_BOLD + " 🟦 level: "+values[j+1] +AnsiColors.RESET;
+                            req += AnsiColors.PURPLE_BOLD + "\uD83D\uDFEA level: "+values[j+1] +AnsiColors.RESET;
                             break;//Color -> Card/Resource
                     }
                 } else if(key.equals("color") && keys[j+1].equals("typeResource")){
@@ -161,16 +161,16 @@ public class LeaderCard extends Card implements Serializable {
                     //Adding the resource to count at the end
                     switch (value) {
                         case "SHIELD":
-                            req += AnsiColors.BLUE_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                            req += AnsiColors.BLUE_BOLD + "\uD83D\uDD35" + AnsiColors.RESET;
                             break;
                         case "COIN":
                             req += AnsiColors.YELLOW_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
                             break;
                         case "STONE":
-                            req += AnsiColors.BLACK_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                            req += AnsiColors.BLACK_BOLD + "⚫️" + AnsiColors.RESET;
                             break;
                         case "SERVANT":
-                            req += AnsiColors.PURPLE_BOLD + "\uD83D\uDFE1" + AnsiColors.RESET;
+                            req += AnsiColors.PURPLE_BOLD + "\uD83D\uDFE3" + AnsiColors.RESET;
                             break;
                     }
                 }

@@ -45,6 +45,7 @@ public class InitializedController extends Observable implements ControllerObser
     private Map<String, VirtualView> virtualView;
 
     private int counterPlayerInitialized = 0;
+    private int counterResourcesChosen = 0;
 
     /* Constructor of the class */
     public InitializedController(ArrayList<String> players, Map<String, VirtualView> virtualView) {
@@ -161,8 +162,6 @@ public class InitializedController extends Observable implements ControllerObser
             //then giving the resources initial to the players
             giveStartResources();
 
-            //call the msg to choose the leader card
-            chooseLeaderCard(false);
 
         }
     }
@@ -173,7 +172,7 @@ public class InitializedController extends Observable implements ControllerObser
      *
      * @param solo
      */
-    private void chooseLeaderCard(boolean solo) throws InvalidActionException {
+    private void chooseLeaderCard(boolean solo)  {
         //take the 4 leader card from all (stored in Board Manager)
         ArrayList<Integer> allLeaderCard = boardManager.getAllLeaderCard();  //all leader cards
         //select 4 randomly
@@ -362,6 +361,7 @@ public class InitializedController extends Observable implements ControllerObser
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //find the player by username
+        counterResourcesChosen++;
         Resource r = new Resource(msg.getResource());
         if (singlePlayer == null) {
             Player player = null;
@@ -380,6 +380,10 @@ public class InitializedController extends Observable implements ControllerObser
                 //create msg to send to client that he made an invalid action, so change the depot
                 VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());
                 notifyAllObserver(ObserverType.VIEW, msg1);
+            }
+            if ((numberOfPlayer==4 && counterResourcesChosen==4)||( counterResourcesChosen==(numberOfPlayer-1)&&(numberOfPlayer!=4))){
+                //call the msg to choose the leader card
+                chooseLeaderCard(false);
             }
         }
         else{

@@ -1135,26 +1135,10 @@ public class CLI extends Observable implements ViewObserver {
                     if (!(msg.getTableCard().getTable()[row][column].getDevelopDeck().isEmpty()) && (cardSpace == 0 || cardSpace == 1 || cardSpace == 2)) {
                         if (msg.getCardAvailable()[row][column]) { //if the player can buy the card in that position of the table
 
-                            //to update the local version of the variable of the client
-                            //developmentCardTable.takeCard(row,column);
-                            cardSpaces.get(cardSpace).addCard(developmentCardTable.takeCard(row, column));
-                            /*try {
-                                strongBox.removeResources(developmentCardTable.getTable()[row][column].getDevelopDeck().get(developmentCardTable.getTable()[row][column].getDevelopDeck().size()).getCost());
-                            } catch (InvalidActionException e) {
-                                e.printStackTrace();
-                            }*/
 
                             if (developmentCardTable.getTable()[row][column].getDevelopDeck().isEmpty()) {
                                 msg.getCardAvailable()[row][column] = false;
                             }
-                            //System.out.println("Here is the card Table Updated! ");
-                            //showDevelopmentCardTable(developmentCardTable, msg.getCardAvailable());
-
-                            //System.out.println("Here is your StrongBox Updated! ");
-                            //showStrongBox(strongBox, player);
-
-                            printCLIMessage("Here are your card spaces updated");
-                            showCardSpaces(cardSpaces);
 
                             CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, row, column, cardSpace);
                             sendMsg(response);
@@ -1173,11 +1157,6 @@ public class CLI extends Observable implements ViewObserver {
                 //in.reset();
                 CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.BUY_CARD);
                 sendMsg(change);
-                //String action = in.nextLine();
-                //TurnAction turnAction = returnActionFromString(action.toLowerCase());
-                //send a msg to change the action
-                //CChooseActionTurnResponseMsg request = new CChooseActionTurnResponseMsg("I chose another action ", username, turnAction);
-                //this.client.sendMsg(request);
             }
 
         }
@@ -1185,10 +1164,13 @@ public class CLI extends Observable implements ViewObserver {
 
     @Override
     public void receiveMsg(VUpdateDevTableMsg msg) {
+
         developmentCardTable = msg.getUpdateTable();
         if (msg.getUsername().equals(username)) {
-            printCLIMessage(" That's the updated situation of the table of Develop cards ");
-            //showDevelopmentCardTable();
+
+            cardSpaces = msg.getUpdateCardSpace();
+            showCardSpaces(cardSpaces);
+
         }
     }
 
@@ -1446,8 +1428,8 @@ public class CLI extends Observable implements ViewObserver {
 
                         while(!correctResource) {
 
-                            choose1 = in.nextLine();
-                            choose2 = in.nextLine();
+                            choose1 = in.nextLine().toUpperCase();
+                            choose2 = in.nextLine().toUpperCase();
 
                             if(checkType(choose1) && checkType(choose2)){    // checking if the resources' Types are valid
                                 correctResource = true;
@@ -1530,7 +1512,8 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         clearScreen();
 
-        if (msg.getWinnerUsername().contains(username)) {
+        if (msg.getWinnerUsername().equals(username)) {
+            WriteMessageDisplay.endGame();
             WriteMessageDisplay.declareWinner();
             printCLIMessage(" You totalize " + msg.getVictoryPoints() + "points");
         } else {
@@ -1699,7 +1682,7 @@ public class CLI extends Observable implements ViewObserver {
      * @param cardSpaces
      */
     private void showCardSpaces(ArrayList<CardSpace> cardSpaces) {
-        CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces, player);
+        CardSpaceDisplay cardSpaceDisplay = new CardSpaceDisplay(cardSpaces);
         cardSpaceDisplay.showCardSpaces();
     }
 
