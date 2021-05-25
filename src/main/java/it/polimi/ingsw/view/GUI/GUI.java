@@ -274,6 +274,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(VUpdateFaithTrackMsg msg) {
+
+    }
+
     public void startDevCardTableStage() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/DevCardTableScene.fxml"));
         devCardTableScene=new Scene(loader.load());

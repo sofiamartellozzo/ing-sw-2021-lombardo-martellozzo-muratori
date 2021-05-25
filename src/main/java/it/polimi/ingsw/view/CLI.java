@@ -622,7 +622,12 @@ public class CLI extends Observable implements ViewObserver {
             possibleActions = msg.getAvailableActions();
 
             printCLIMessage(msg.getMsgContent());
-            printCLIMessage(" The actions that you are allowed to do are: " + msg.getAvailableActions());
+            //printCLIMessage(" The actions that you are allowed to do are: " + msg.getAvailableActions());
+            printCLIMessage(" The actions that you are allowed to do are: ");
+            for (TurnAction action: msg.getAvailableActions()) {
+                printCLIMessage("- "+action.toString());
+            }
+            printCLIMessage("\n");
             printCLIMessage(" Write the action you chose with _ between every word!! ");
             boolean correct = false;
 
