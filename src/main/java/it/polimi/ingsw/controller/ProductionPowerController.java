@@ -5,10 +5,7 @@ import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.controllerMsg.*;
-import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
-import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
-import it.polimi.ingsw.message.updateMsg.VUpdateStrongboxMsg;
-import it.polimi.ingsw.message.updateMsg.VUpdateWarehouseMsg;
+import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
@@ -76,8 +73,10 @@ public class ProductionPowerController extends Observable implements ControllerO
         for (Resource resource : receivedResources) {
             if (resource.getType().equals(TypeResource.FAITHMARKER)) {
                 VNotifyPositionIncreasedByMsg requestMsg1 = new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(), 1);
+                VUpdateFaithTrackMsg requestMsg2 = new VUpdateFaithTrackMsg("updated faith Track", player.getUsername(), player.getGameSpace().getFaithTrack());
                 //put the player in the msg
                 notifyAllObserver(ObserverType.VIEW, requestMsg1);
+                notifyAllObserver(ObserverType.VIEW,requestMsg2);
             } else {
                 resourcesToStrongBox.add(resource);
             }

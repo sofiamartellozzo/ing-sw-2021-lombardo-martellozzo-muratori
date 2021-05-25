@@ -479,6 +479,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+    @Override
+    public void receiveMsg(VUpdateFaithTrackMsg msg) {
+        if(msg.getUsername().equals(this.username)){
+            sendToClient(msg);
+        }
+    }
+
     /**
      * in this msg (specific of one client) is after a request of the player to
      * buy from the market in the turn, so the server now need to know
@@ -528,7 +535,9 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
-
+        if (msg.getPlayerUsername().equals(this.username)) {
+            sendToClient(msg);
+        }
     }
 
     /**

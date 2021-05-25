@@ -12,9 +12,11 @@ import it.polimi.ingsw.message.viewMsg.VShowEndGameResultsMsg;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.model.SoloPlayer;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -26,23 +28,40 @@ public class EndGameController extends Observable implements ControllerObserver 
     private SoloPlayer soloPlayer;
     private final int numberOfPlayers;
     private TurnController turnController;
+    /* list of VV of the players*/
+    private Map<String, VirtualView> virtualView;
 
-    public EndGameController(HashMap<Integer, PlayerInterface> turnSequence, TurnController turnController) {
+
+    public EndGameController(HashMap<Integer, PlayerInterface> turnSequence, TurnController turnController, Map<String, VirtualView> virtualView) {
         this.turnSequence = turnSequence;
         this.numberOfPlayers = turnSequence.keySet().size();
         this.turnController = turnController;
+        this.virtualView = virtualView;
+        attachAllVV();
     }
 
-    public EndGameController(SoloPlayer soloPlayer, TurnController turnController){
+    public EndGameController(SoloPlayer soloPlayer, TurnController turnController, Map<String, VirtualView> virtualView){
         this.soloPlayer = soloPlayer;
         this.numberOfPlayers = 1;
         this.turnController = turnController;
+        this.virtualView = virtualView;
+        attachAllVV();
+    }
+
+    /**
+     * attach all VV of the players so this class can notify them
+     */
+    private void attachAllVV() {
+        for (String username : virtualView.keySet()) {
+            attachObserver(ObserverType.VIEW, virtualView.get(username));
+        }
     }
 
     public void startCounting() throws InvalidActionException {
 
         //for each player in the turn sequence it has to calculate all the victory points obtained
         int maxVPoints = 0;
+        if (numberOfPlayers>1){
         for (Integer num : turnSequence.keySet()) {
             //every time we found a player with a sum of victory points that is bigger, this become the new max
             if (calculateVPoints((Player) turnSequence.get(num)) > maxVPoints) {
@@ -64,7 +83,20 @@ public class EndGameController extends Observable implements ControllerObserver 
         //send msg containing the username of the winner, his points and the list of losers to CLI
         VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ",winnerPlayer.getUsername(), winnerPlayer.getVictoryPoints(),losersPlayers);
         notifyAllObserver(ObserverType.VIEW, msg);
-        System.out.println(winnerPlayer.getUsername()+" is the winner of the Game ");
+        System.out.println(winnerPlayer.getUsername()+" is the winner of the Game ");}
+        else{
+            System.out.println("inside end game controller");
+            String result = soloPlayer.checkIfWin();
+            if (result.equals("Winner")){
+                VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ",soloPlayer.getUsername(), soloPlayer.getVictoryPoints(),null);
+                notifyAllObserver(ObserverType.VIEW, msg);
+            }
+            else if (result.equals("Looser")){
+                VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ","LorenzoIlMagnifico", soloPlayer.getVictoryPoints(),null);
+                notifyAllObserver(ObserverType.VIEW, msg);
+            }
+
+        }
 
     }
 

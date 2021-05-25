@@ -385,10 +385,12 @@ public class ActionController extends Observable implements ControllerObserver {
                                 soloPlayerTurn.getCurrentPlayer().increasePosition();
                             }
 
+                            VUpdateFaithTrackMsg notification1 = new VUpdateFaithTrackMsg("because of a red marble, this player increased his position",player.getUsername(),player.getGameSpace().getFaithTrack());
                             VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
                             Map<Integer, PlayerInterface> players = boardManager.getPlayers();
                             notification.setAllPlayerToNotify(getPlayerAsList(players));
                             notifyAllObserver(ObserverType.VIEW, notification);
+                            notifyAllObserver(ObserverType.VIEW, notification1);
 
                         } else {
                             /* a normal resource*/
