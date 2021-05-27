@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.GUI;
 
 
+import it.polimi.ingsw.controller.MessageHandler;
+import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.updateMsg.*;
@@ -67,6 +69,7 @@ public class GUI extends Application implements ViewObserver {
 
     private String gameSize;
     private String[] args;
+    private boolean offline;
     boolean receiveMsg;
 
     private PlayerInterface player;
@@ -78,6 +81,9 @@ public class GUI extends Application implements ViewObserver {
     private StrongBox strongBox;
     private FaithTrack faithTrack;
     private ArrayList<CardSpace> cardSpaces;
+
+
+    private MessageHandler messageHandler;
 
 
     public static void main(String[] args){ Application.launch(args);}
@@ -175,6 +181,7 @@ public class GUI extends Application implements ViewObserver {
         cardSpaces = msg.getPlayer().getGameSpace().getCardSpaces();
             try {
                 setInitializeScene();
+                //SET PERSONALBOARD,MARKET,DEVCARDTABLE
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -188,7 +195,7 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public synchronized void receiveMsg(VChooseResourceAndDepotMsg msg) {
         if(msg.getUsername().equals(username)) {
-                initializeSceneController.chooseResource(msg);
+                initializeSceneController.chooseResource();
         }
     }
 
@@ -209,7 +216,7 @@ public class GUI extends Application implements ViewObserver {
     public synchronized void receiveMsg(VChooseLeaderCardRequestMsg msg) {
         if(msg.getUsername().equals(username)) {
             if (msg.getWhatFor().equals("initialization")) {
-                initializeSceneController.chooseLeaderCard(msg);
+                //initializeSceneController.chooseLeaderCard(msg);
 
             }
         }
@@ -264,6 +271,8 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
         if(msg.getUsername().equals(username)){
             marketStructureSceneController.chooseRowColumn(msg);
+            stage.hide();
+            devCardTableStage.hide();
         }
     }
 
@@ -276,7 +285,9 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VUpdateFaithTrackMsg msg) {
-
+        if(msg.getUsername().equals(username)){
+            personalBoardSceneController.updateFaithTrackView(msg.getFaithTrack());
+        }
     }
 
     public void startDevCardTableStage() throws IOException {
@@ -294,14 +305,17 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
         if(msg.getUsername().equals(username)){
-
+            stage.hide();
+            marketStructureStage.hide();
+            devCardTableSceneController.choose(msg);
         }
     }
 
     @Override
     public void receiveMsg(VUpdateDevTableMsg msg) {
         if(msg.getUsername().equals(username)){
-
+            devCardTableSceneController.update(msg.getUpdateTable());
+            personalBoardSceneController.updateCardSpacesView(msg.getUpdateCardSpace());
         }
     }
 
@@ -325,8 +339,16 @@ public class GUI extends Application implements ViewObserver {
         System.exit(0);
     }
 
-    public void sendMsg(ControllerGameMsg msg){
-        client.sendMsg(msg);
+    public void sendMsg(GameMsg msg){
+        if(!offline)
+            client.sendMsg(msg);
+        else
+            messageHandler.receiveMsgForVV(msg);
+    }
+
+
+    public void setMessageHandler(MessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
     }
 
     public void setClient(ClientSocket client){this.client=client;}
@@ -445,6 +467,48 @@ public class GUI extends Application implements ViewObserver {
         return cardSpaces;
     }
 
+    public void setOffline(boolean offline){this.offline=offline;}
+
+    public PersonalBoardSceneController getPersonalBoardSceneController() {
+        return personalBoardSceneController;
+    }
+
+    public Scene getMarketStructureScene() {
+        return marketStructureScene;
+    }
+
+    public Stage getMarketStructureStage() {
+        return marketStructureStage;
+    }
+
+    public MarketStructureSceneController getMarketStructureSceneController() {
+        return marketStructureSceneController;
+    }
+
+    public Scene getDevCardTableScene() {
+        return devCardTableScene;
+    }
+
+    public Stage getDevCardTableStage() {
+        return devCardTableStage;
+    }
+
+    public DevCardTableSceneController getDevCardTableSceneController() {
+        return devCardTableSceneController;
+    }
+
+    public boolean isOffline() {
+        return offline;
+    }
+
+    public boolean isReceiveMsg() {
+        return receiveMsg;
+    }
+
+    public MessageHandler getMessageHandler() {
+        return messageHandler;
+    }
+
     @Override
     public void receiveMsg(VNackConnectionRequestMsg msg) {
         switch(msg.getErrorInformation()){
@@ -495,12 +559,16 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
-
+        if(msg.getUsername().equals(username)){
+            personalBoardSceneController.choosePP(msg);
+        }
     }
 
     @Override
     public void receiveMsg(VUpdateStrongboxMsg msg) {
-
+        if(msg.getUsername().equals(username)){
+            personalBoardSceneController.updateStrongBoxView(msg.getStrongBox());
+        }
     }
 
     @Override
@@ -520,7 +588,9 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VChooseActionTurnRequestMsg msg) {
-
+        if(msg.getUsername().equals(username)){
+            personalBoardSceneController.chooseAction(msg);
+        }
     }
 
     @Override
@@ -528,12 +598,11 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
-
-
-
     @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {
-
+        if(msg.getUsername().equals(username)){
+            personalBoardSceneController.updateWarehouseView(msg.getWarehouse());
+        }
     }
 
     @Override

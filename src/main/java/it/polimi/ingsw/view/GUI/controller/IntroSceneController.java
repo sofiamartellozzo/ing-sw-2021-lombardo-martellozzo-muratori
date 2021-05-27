@@ -1,9 +1,10 @@
 package it.polimi.ingsw.view.GUI.controller;
 
+import it.polimi.ingsw.controller.MessageHandler;
+import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.view.GUI.GUI;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -30,35 +31,27 @@ public class IntroSceneController {
     @FXML
     private RadioButton customIPButton;
     @FXML
+    private RadioButton offlineButton;
+    @FXML
     private RadioButton singlePlayerModeButton;
     @FXML
     private RadioButton multiPlayerModeButton;
 
     private String selectedIP;
     private boolean customIP;
-    private boolean singleGameMode;
-
-    public String getSelectedIP() {
-        return selectedIP;
-    }
-
-    public boolean isCustomIP() {
-        return customIP;
-    }
-
-    public boolean getSingleGameMode() {
-        return singleGameMode;
-    }
 
     public void start(){
         selectedIP ="127.0.0.1";
 
-        localhostButton.selectedProperty().setValue(true);
+        localhostButton.selectedProperty().setValue(false);
         onlineServerButton.selectedProperty().setValue(false);
         customIPButton.selectedProperty().setValue(false);
+        offlineButton.selectedProperty().setValue(false);
 
         singlePlayerModeButton.selectedProperty().setValue(false);
-        multiPlayerModeButton.selectedProperty().setValue(true);
+        multiPlayerModeButton.selectedProperty().setValue(false);
+
+        playButton.setDisable(true);
     }
 
     public void setGui(GUI gui){ this.gui=gui;}
@@ -74,7 +67,8 @@ public class IntroSceneController {
         String getUsername = username.getText().toLowerCase();
         System.out.println("New username gotten: "+getUsername);
 
-        if(getUsername!=null && !getUsername.equals("") && selectedIP.length()>=7 && selectedIP.length()<=15) {
+        if(getUsername!=null && !getUsername.equals("") && selectedIP.length()>=7 && selectedIP.length()<=15 && !offlineButton.isSelected()) {
+            gui.setOffline(false);
             ClientSocket client = new ClientSocket(selectedIP, gui);
             client.beginConnection();
             System.out.println("Client connected");
@@ -90,6 +84,25 @@ public class IntroSceneController {
             client.sendMsg(requestMsg);
             new Thread(client).start();
             gui.setUsername(getUsername);
+        }else if(getUsername!=null && !getUsername.equals("") && selectedIP.length()>=7 && selectedIP.length()<=15 && offlineButton.isSelected()){
+            /*create the message handler, he work as Client Socket but not throw the net*/
+            gui.setOffline(true);
+            MessageHandler messageHandler = new MessageHandler();
+            gui.setMessageHandler(messageHandler);
+            /*generate a sort of Virtual View*/
+            messageHandler.generateVV(getUsername);
+            /*
+            offlineVirtualView = new VirtualView(username);
+            attachObserver(ObserverType.VIEW, offlineVirtualView);
+            attachObserver(ObserverType.CONTROLLER, offlineVirtualView);*/
+            //this.offlineVirtualView.attachObserver(ObserverType.VIEW, this);
+            messageHandler.attachObserver(ObserverType.VIEW, gui);
+            //printCLIMessage("before run");
+            new Thread(messageHandler).start();
+            //printCLIMessage("after run");
+            /* try to create the connection sending the username, port and ip */
+            VVConnectionRequestMsg request = new VVConnectionRequestMsg("OFFLINE", getUsername);
+            gui.sendMsg(request);
         }else{
             //ERROR MESSAGE Username or Ip not valid
             enableAllLoginFields();
@@ -120,17 +133,21 @@ public class IntroSceneController {
     }
 
     public void clickLocalHostButton(){
-        playButton.setDisable(false);
         selectedIP="127.0.0.1";
         customIP=false;
 
         ip.setDisable(true);
         onlineServerButton.selectedProperty().setValue(false);
         customIPButton.selectedProperty().setValue(false);
+        offlineButton.selectedProperty().setValue(false);
+        if(singlePlayerModeButton.isDisable()||multiPlayerModeButton.isDisable()) {
+            singlePlayerModeButton.setDisable(false);
+            multiPlayerModeButton.setDisable(false);
+        }
+        playButton.setDisable(!singlePlayerModeButton.isSelected() && !multiPlayerModeButton.isSelected());
     }
 
     public void clickOnlineServerButton(){
-        playButton.setDisable(false);
         customIP=false;
 
         try{
@@ -144,26 +161,47 @@ public class IntroSceneController {
         ip.setDisable(true);
         localhostButton.selectedProperty().setValue(false);
         customIPButton.selectedProperty().setValue(false);
+        offlineButton.selectedProperty().setValue(false);
+        if(singlePlayerModeButton.isDisable()||multiPlayerModeButton.isDisable()) {
+            singlePlayerModeButton.setDisable(false);
+            multiPlayerModeButton.setDisable(false);
+        }
+        playButton.setDisable(!singlePlayerModeButton.isSelected() && !multiPlayerModeButton.isSelected());
     }
 
     public void clickCustomIPButton(){
-        playButton.setDisable(false);
         customIP=true;
 
         ip.setDisable(false);
         localhostButton.selectedProperty().setValue(false);
         onlineServerButton.selectedProperty().setValue(false);
+        offlineButton.selectedProperty().setValue(false);
+        if(singlePlayerModeButton.isDisable()||multiPlayerModeButton.isDisable()) {
+            singlePlayerModeButton.setDisable(false);
+            multiPlayerModeButton.setDisable(false);
+        }
+        playButton.setDisable(!singlePlayerModeButton.isSelected() && !multiPlayerModeButton.isSelected());
+    }
+
+    public void clickOfflineButton(){
+        playButton.setDisable(false);
+        customIP=false;
+
+        ip.setDisable(true);
+        localhostButton.selectedProperty().setValue(false);
+        onlineServerButton.selectedProperty().setValue(false);
+        customIPButton.selectedProperty().setValue(false);
+        singlePlayerModeButton.setDisable(true);
+        multiPlayerModeButton.setDisable(true);
     }
 
     public void clickSinglePlayerModeButton(){
-        singleGameMode=true;
-
         multiPlayerModeButton.selectedProperty().setValue(false);
+        playButton.setDisable(!customIPButton.isSelected() && !onlineServerButton.isSelected() && !localhostButton.isSelected());
     }
 
     public void clickMultiPlayerModeButton(){
-        singleGameMode=false;
         singlePlayerModeButton.selectedProperty().setValue(false);
+        playButton.setDisable(!customIPButton.isSelected() && !onlineServerButton.isSelected() && !localhostButton.isSelected());
     }
-
 }

@@ -8,261 +8,175 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="776.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.InitializeSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.InitializeSceneController">
    <children>
-      <BorderPane prefHeight="776.0" prefWidth="1000.0" style="-fx-background-color: rgb(82, 44, 44);">
-         <center>
-            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="651.0" BorderPane.alignment="CENTER">
+      <ImageView fitHeight="481.0" fitWidth="662.0" layoutX="69.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/personalboard/PersonalBoardDisabled.png" />
+         </image>
+      </ImageView>
+      <TitledPane fx:id="chooseResourcePane" animated="false" layoutX="96.0" layoutY="184.0" text="Choose Resource">
+        <content>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <ImageView fitHeight="476.0" fitWidth="652.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/personalboard/PersonalBoardDisabled.png" />
-                     </image>
-                  </ImageView>
-                  <TitledPane fx:id="resource" layoutX="126.0" layoutY="133.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" text="Choose Resource">
-                     <content>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <Label text="Choose one resource or discard it" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="coin" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickCoin" onMouseEntered="#mouseEnteredCoin" onMouseExited="#mouseExitedCoin" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/coin.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="servant" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickServant" onMouseEntered="#mouseEnteredServant" onMouseExited="#mouseExitedServant" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/servant.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="shield" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickShield" onMouseEntered="#mouseEnteredShield" onMouseExited="#mouseExitedShield" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/shield.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="stone" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickStone" onMouseEntered="#mouseEnteredStone" onMouseExited="#mouseExitedStone" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/stone.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <Button fx:id="discardButton" mnemonicParsing="false" onAction="#clickDiscardButton" text="Discard" />
+               </children>
+            </VBox>
+        </content>
+      </TitledPane>
+      <TitledPane fx:id="chooseDepotPane" animated="false" layoutX="228.0" layoutY="163.0" prefHeight="274.0" prefWidth="318.0" text="Choose Depot">
+        <content>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="messageDepot" text="Message" />
+                        <ImageView fx:id="chosenResource" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/coin.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                        <Label fx:id="labelChosenResource" text="COIN" textFill="#a9a9a9">
+                           <font>
+                              <Font name="System Bold Italic" size="22.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="discardButton" mnemonicParsing="false" text="Discard" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="176.0">
                            <children>
-                              <ImageView fx:id="coin" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#coinMouseClick" onMouseEntered="#coinMouseEntered" onMouseExited="#coinMouseExited" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
+                              <ImageView fitHeight="221.0" fitWidth="176.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/punchboard/coin.png" />
+                                    <Image url="@../images/personalboard/Warehouse.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="servant" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#servantMouseClick" onMouseEntered="#servantMouseEntered" onMouseExited="#servantMouseExited" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                                 <image>
-                                    <Image url="@../images/punchboard/servant.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="shield" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#shieldMouseClick" onMouseEntered="#shieldMouseEntered" onMouseExited="#shieldMouseExited" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                                 <image>
-                                    <Image url="@../images/punchboard/shield.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="stone" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#stoneMouseClick" onMouseEntered="#stoneMouseEntered" onMouseExited="#stoneMouseExited" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                                 <image>
-                                    <Image url="@../images/punchboard/stone.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                     </content>
-                  </TitledPane>
-                  <TitledPane fx:id="depot" layoutX="26.0" layoutY="34.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" text="Choose Depot">
-                     <content>
-                        <Pane>
-                           <children>
-                              <VBox alignment="CENTER" layoutX="25.0" layoutY="10.0" prefHeight="350.0" prefWidth="269.0">
+                              <Pane fx:id="depot1Pane" layoutX="62.0" layoutY="33.0" onMouseClicked="#clickDepot1" onMouseEntered="#mouseEnteredDepot1" onMouseExited="#mouseExitedDepot1" prefHeight="48.0" prefWidth="78.0">
                                  <children>
-                                    <Label fx:id="depotMessage" text="Error Message. This is the resource chosen:">
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" />
-                                       </VBox.margin>
-                                       <font>
-                                          <Font name="System Italic" size="12.0" />
-                                       </font>
-                                    </Label>
-                                    <ImageView fx:id="resourceChosen" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="resource1_1" fitHeight="47.0" fitWidth="51.0" layoutX="16.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/punchboard/coin.png" />
                                        </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
                                     </ImageView>
-                                    <Label fx:id="resourceLabel" text="COIN" textAlignment="CENTER" textFill="#ffdd63" wrapText="true">
-                                       <font>
-                                          <Font name="System Bold Italic" size="30.0" />
-                                       </font>
-                                    </Label>
-                                    <Button fx:id="discardResource" mnemonicParsing="false" onAction="#clickDiscardResource" text="Discard">
-                                       <VBox.margin>
-                                          <Insets top="5.0" />
-                                       </VBox.margin>
-                                    </Button>
                                  </children>
-                              </VBox>
-                              <VBox alignment="CENTER" layoutX="299.0" layoutY="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="269.0">
+                              </Pane>
+                              <Pane fx:id="depot2Pane" layoutX="41.0" layoutY="78.0" onMouseClicked="#clickDepot2" onMouseEntered="#mouseEnteredDepot2" onMouseExited="#mouseExitedDepot2" prefHeight="51.0" prefWidth="113.0">
                                  <children>
-                                    <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="223.0" prefWidth="176.0">
-                                       <children>
-                                          <ImageView fitHeight="223.0" fitWidth="182.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/personalboard/Warehouse.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fx:id="resource1_1" fitHeight="50.0" fitWidth="50.0" layoutX="79.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/punchboard/coin.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fx:id="resource2_1" fitHeight="50.0" fitWidth="50.0" layoutX="49.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/punchboard/coin.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fx:id="resource2_2" fitHeight="50.0" fitWidth="50.0" layoutX="99.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/punchboard/coin.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fx:id="resource3_1" fitHeight="50.0" fitWidth="50.0" layoutX="25.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/punchboard/coin.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fx:id="resource3_2" fitHeight="50.0" fitWidth="50.0" layoutX="75.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/punchboard/coin.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fx:id="resource3_3" fitHeight="50.0" fitWidth="50.0" layoutX="123.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/punchboard/coin.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </Pane>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <Button fx:id="depot1" mnemonicParsing="false" onAction="#clickDepot1" text="Depot 1">
-                                             <HBox.margin>
-                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                                             </HBox.margin>
-                                          </Button>
-                                          <Button fx:id="depot2" mnemonicParsing="false" onAction="#clickDepot2" text="Depot 2">
-                                             <HBox.margin>
-                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                                             </HBox.margin>
-                                          </Button>
-                                          <Button fx:id="depot3" mnemonicParsing="false" onAction="#clickDepot3" text="Depot 3">
-                                             <HBox.margin>
-                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                                             </HBox.margin>
-                                          </Button>
-                                       </children>
-                                    </HBox>
+                                    <ImageView fx:id="resource2_1" fitHeight="47.0" fitWidth="51.0" layoutX="20.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource2_2" fitHeight="47.0" fitWidth="51.0" layoutX="49.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
                                  </children>
-                              </VBox>
+                              </Pane>
+                              <Pane fx:id="depot3Pane" layoutX="26.0" layoutY="131.0" onMouseClicked="#clickDepot3" onMouseEntered="#mouseEnteredDepot3" onMouseExited="#mouseExitedDepot3" prefHeight="51.0" prefWidth="143.0">
+                                 <children>
+                                    <ImageView fx:id="resource3_1" fitHeight="47.0" fitWidth="51.0" layoutX="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource3_2" fitHeight="47.0" fitWidth="51.0" layoutX="49.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource3_3" fitHeight="47.0" fitWidth="51.0" layoutX="79.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
                            </children>
                         </Pane>
-                     </content>
-                  </TitledPane>
-                  <TitledPane fx:id="leaderCard" layoutX="2.0" layoutY="57.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="353.0" prefWidth="649.0" text="Choose Leader Card">
-                     <content>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <ImageView fx:id="leaderCard1" fitHeight="223.0" fitWidth="166.0" onMouseClicked="#leaderCard1Click" onMouseEntered="#leaderCard1Entered" onMouseExited="#leaderCard1Exited" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                                 <image>
-                                    <Image url="@../images/frontCards/LeaderCard%20(16).png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="leaderCard2" fitHeight="223.0" fitWidth="166.0" onMouseClicked="#leaderCard2Click" onMouseEntered="#leaderCard2Entered" onMouseExited="#leaderCard2Exited" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                                 <image>
-                                    <Image url="@../images/frontCards/LeaderCard%20(16).png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="leaderCard3" fitHeight="223.0" fitWidth="166.0" onMouseClicked="#leaderCard3Click" onMouseEntered="#leaderCard3Entered" onMouseExited="#leaderCard3Exited" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                                 <image>
-                                    <Image url="@../images/frontCards/LeaderCard%20(16).png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="leaderCard4" fitHeight="223.0" fitWidth="166.0" onMouseClicked="#leaderCard4Click" onMouseEntered="#leaderCard4Entered" onMouseExited="#leaderCard4Exited" pickOnBounds="true" preserveRatio="true">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </HBox.margin>
-                                 <image>
-                                    <Image url="@../images/frontCards/LeaderCard%20(16).png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                     </content>
-                  </TitledPane>
-               </children>
-            </Pane>
-         </center>
-         <top>
-            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="1050.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Pane layoutX="-1.0" prefHeight="150.0" prefWidth="1050.0">
-                     <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #ebebeb; -fx-border-color: blagreyck; -fx-border-radius: 3; -fx-border-width: 2;">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Players" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                                 <effect>
-                                    <DropShadow />
-                                 </effect>
-                              </Label>
-                              <Label fx:id="player1" text="Player 1">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label fx:id="player2" text="Player 2">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label fx:id="player3" text="Player 3">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label fx:id="player4" text="Player 4">
-                                 <VBox.margin>
-                                    <Insets bottom="5.0" top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <Label fx:id="message" layoutX="272.0" layoutY="40.0" text="You're the first player!" textAlignment="CENTER" textFill="#e6a500">
-                           <font>
-                              <Font name="System Bold Italic" size="48.0" />
-                           </font>
-                        </Label>
                      </children>
-                  </Pane>
-               </children></Pane>
-         </top>
-         <left>
-            <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </left>
-         <right>
-            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </right>
-         <bottom>
-            <Pane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-         </bottom>
-      </BorderPane>
+                  </VBox>
+               </children>
+            </HBox>
+        </content>
+      </TitledPane>
    </children>
 </AnchorPane>

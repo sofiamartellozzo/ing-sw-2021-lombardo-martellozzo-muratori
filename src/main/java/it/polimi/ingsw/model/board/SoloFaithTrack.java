@@ -28,6 +28,8 @@ public class SoloFaithTrack extends FaithTrack implements Serializable {
         this.lorenzoFaithMarker = lorenzoFaithMarker;
     }
 
+    public LorenzoFaithMarker getLorenzoFaithMarker(){return lorenzoFaithMarker;}
+
     /**
      * method used to increase the position of Lorenzo's faithMarker
      */

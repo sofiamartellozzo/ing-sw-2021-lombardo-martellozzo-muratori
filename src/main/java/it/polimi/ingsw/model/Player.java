@@ -17,21 +17,21 @@ import java.util.HashMap;
 
 public class Player implements PlayerInterface, Serializable {
 
-    private String username;
-    private int number;
+    protected String username;
+    protected int number;
     private boolean inkpot;
 
     private boolean playing;
     private boolean disconnected;
 
-    private ArrayList<LeaderCard>  leaderCards;
-    private int victoryPoints;
+    protected ArrayList<LeaderCard>  leaderCards;
+    protected int victoryPoints;
     private PersonalBoard gameSpace;
 
-    private MarbleSpecial whiteSpecialMarble;
+    protected MarbleSpecial whiteSpecialMarble;
 
-    private BuyCard buyCard;//this class specify how the player can buy the card
-    private ArrayList<SpecialCard> specialCard;//addictional card created from an Leader Card ability
+    protected BuyCard buyCard;//this class specify how the player can buy the card
+    protected ArrayList<SpecialCard> specialCard;//addictional card created from an Leader Card ability
 
 
 

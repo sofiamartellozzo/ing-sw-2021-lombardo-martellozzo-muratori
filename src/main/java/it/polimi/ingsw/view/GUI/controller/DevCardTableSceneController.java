@@ -52,12 +52,11 @@ public class DevCardTableSceneController {
                     tableView[i][j].setDisable(false);
                 }else{
                     tableView[i][j].setEffect(colorAdjust);
-                    tableView[i][j].setDisable(false);
+                    tableView[i][j].setDisable(true);
                 }
             }
         }
     }
-
 
     public void update(DevelopmentCardTable developmentCardTable){
         DevelopmentCardDeck[][] table = developmentCardTable.getTable();
@@ -143,13 +142,19 @@ public class DevCardTableSceneController {
 
     public void clickCardSpace1Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,1));
+        gui.getMarketStructureStage().show();
+        gui.getStage().show();
     }
 
     public void clickCardSpace2Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,2));
+        gui.getMarketStructureStage().show();
+        gui.getStage().show();
     }
     public void clickCardSpace3Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,3));
+        gui.getMarketStructureStage().show();
+        gui.getStage().show();
     }
 
     public void setGui(GUI gui){this.gui=gui;}

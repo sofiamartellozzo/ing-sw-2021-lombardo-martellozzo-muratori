@@ -24,6 +24,7 @@ public class SoloPlayer extends Player implements Serializable {
      */
     public SoloPlayer(String username) {
         super(username);
+        this.number=1;
     }
 
     @Override

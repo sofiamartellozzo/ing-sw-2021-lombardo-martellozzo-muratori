@@ -6,20 +6,20 @@
     "requirements": [
       {
         "color": "GREEN",
-        "level": 2
+        "level": 1
       }
     ],
     "cardID": 1,
     "victoryPoints": 4
   },
   {
-      "typeAbility": "ADDITIONAL_POWER"
-    ,
+    "typeAbility": "ADDITIONAL_POWER"
+  ,
     "specialResource": "STONE",
     "requirements": [
       {
         "color": "PURPLE",
-        "level": 2
+        "level": 1
       }
     ],
 
@@ -28,13 +28,13 @@
   },
   {
 
-      "typeAbility": "ADDITIONAL_POWER"
-    ,
+    "typeAbility": "ADDITIONAL_POWER"
+  ,
     "specialResource": "SERVANT",
     "requirements": [
       {
         "color": "BLUE",
-        "level": 2
+        "level": 1
       }
     ],
 
@@ -43,13 +43,13 @@
   },
   {
 
-      "typeAbility": "ADDITIONAL_POWER"
-    ,
+    "typeAbility": "ADDITIONAL_POWER"
+  ,
     "specialResource": "SHIELD",
     "requirements": [
       {
         "color": "YELLOW",
-        "level": 2
+        "level": 1
       }
     ],
     "cardID": 4,
@@ -57,20 +57,12 @@
   },
   {
 
-      "typeAbility": "TRANSFORM_WHITE"
-    ,
+    "typeAbility": "TRANSFORM_WHITE"
+  ,
     "specialResource": "COIN",
     "requirements": [
       {
         "color": "PURPLE",
-        "level": 0
-      },
-      {
-        "color": "PURPLE",
-        "level": 0
-      },
-      {
-        "color": "GREEN",
         "level": 0
       }
     ],
@@ -79,20 +71,12 @@
   },
   {
 
-      "typeAbility": "TRANSFORM_WHITE"
-    ,
+    "typeAbility": "TRANSFORM_WHITE"
+  ,
     "specialResource": "STONE",
     "requirements": [
       {
         "color": "BLUE",
-        "level": 0
-      },
-      {
-        "color": "BLUE",
-        "level": 0
-      },
-      {
-        "color": "YELLOW",
         "level": 0
       }
     ],
@@ -100,20 +84,12 @@
     "victoryPoints": 5
   },
   {
-      "typeAbility": "TRANSFORM_WHITE"
-    ,
+    "typeAbility": "TRANSFORM_WHITE"
+  ,
     "specialResource": "SHIELD",
     "requirements": [
       {
         "color": "GREEN",
-        "level": 0
-      },
-      {
-        "color": "GREEN",
-        "level": 0
-      },
-      {
-        "color": "PURPLE",
         "level": 0
       }
     ],
@@ -122,20 +98,12 @@
   },
   {
 
-      "typeAbility": "TRANSFORM_WHITE"
-    ,
+    "typeAbility": "TRANSFORM_WHITE"
+  ,
     "specialResource": "SERVANT",
     "requirements": [
       {
         "color": "YELLOW",
-        "level": 0
-      },
-      {
-        "color": "YELLOW",
-        "level": 0
-      },
-      {
-        "color": "BLUE",
         "level": 0
       }
     ],
@@ -144,26 +112,10 @@
   },
   {
 
-      "typeAbility": "SPECIAL_DEPOT"
-    ,
+    "typeAbility": "SPECIAL_DEPOT"
+  ,
     "specialResource": "COIN",
     "requirements": [
-      {
-        "color": "BLUE",
-        "typeResource": "SHIELD"
-      },
-      {
-        "color": "BLUE",
-        "typeResource": "SHIELD"
-      },
-      {
-        "color": "BLUE",
-        "typeResource": "SHIELD"
-      },
-      {
-        "color": "BLUE",
-        "typeResource": "SHIELD"
-      },
       {
         "color": "BLUE",
         "typeResource": "SHIELD"
@@ -174,26 +126,10 @@
   },
   {
 
-      "typeAbility": "SPECIAL_DEPOT"
-    ,
+    "typeAbility": "SPECIAL_DEPOT"
+  ,
     "specialResource": "SHIELD",
     "requirements": [
-      {
-        "color": "PURPLE",
-        "typeResource": "SERVANT"
-      },
-      {
-        "color": "PURPLE",
-        "typeResource": "SERVANT"
-      },
-      {
-        "color": "PURPLE",
-        "typeResource": "SERVANT"
-      },
-      {
-        "color": "PURPLE",
-        "typeResource": "SERVANT"
-      },
       {
         "color": "PURPLE",
         "typeResource": "SERVANT"
@@ -204,26 +140,10 @@
   },
   {
 
-      "typeAbility": "SPECIAL_DEPOT"
-    ,
+    "typeAbility": "SPECIAL_DEPOT"
+  ,
     "specialResource": "SERVANT",
     "requirements": [
-      {
-        "color": "GREY",
-        "typeResource": "STONE"
-      },
-      {
-        "color": "GREY",
-        "typeResource": "STONE"
-      },
-      {
-        "color": "GREY",
-        "typeResource": "STONE"
-      },
-      {
-        "color": "GREY",
-        "typeResource": "STONE"
-      },
       {
         "color": "GREY",
         "typeResource": "STONE"
@@ -234,26 +154,10 @@
   },
   {
 
-      "typeAbility": "SPECIAL_DEPOT"
-    ,
+    "typeAbility": "SPECIAL_DEPOT"
+  ,
     "specialResource": "STONE",
     "requirements": [
-      {
-        "color": "YELLOW",
-        "typeResource": "COIN"
-      },
-      {
-        "color": "YELLOW",
-        "typeResource": "COIN"
-      },
-      {
-        "color": "YELLOW",
-        "typeResource": "COIN"
-      },
-      {
-        "color": "YELLOW",
-        "typeResource": "COIN"
-      },
       {
         "color": "YELLOW",
         "typeResource": "COIN"
@@ -264,16 +168,12 @@
   },
   {
 
-      "typeAbility": "DISCOUNT"
-    ,
+    "typeAbility": "DISCOUNT"
+  ,
     "specialResource": "COIN",
     "requirements": [
       {
         "color": "YELLOW",
-        "level": 0
-      },
-      {
-        "color": "PURPLE",
         "level": 0
       }
     ],
@@ -282,16 +182,12 @@
   },
   {
 
-      "typeAbility": "DISCOUNT"
-    ,
+    "typeAbility": "DISCOUNT"
+  ,
     "specialResource": "STONE",
     "requirements": [
       {
         "color": "GREEN",
-        "level": 0
-      },
-      {
-        "color": "BLUE",
         "level": 0
       }
     ],
@@ -300,16 +196,12 @@
   },
   {
 
-      "typeAbility": "DISCOUNT"
-    ,
+    "typeAbility": "DISCOUNT"
+  ,
     "specialResource": "SHIELD",
     "requirements": [
       {
         "color": "BLUE",
-        "level": 0
-      },
-      {
-        "color": "PURPLE",
         "level": 0
       }
     ],
@@ -318,16 +210,12 @@
   },
   {
 
-      "typeAbility": "DISCOUNT"
-    ,
+    "typeAbility": "DISCOUNT"
+  ,
     "specialResource": "SERVANT",
     "requirements": [
       {
         "color": "YELLOW",
-        "level": 0
-      },
-      {
-        "color": "GREEN",
         "level": 0
       }
     ],
