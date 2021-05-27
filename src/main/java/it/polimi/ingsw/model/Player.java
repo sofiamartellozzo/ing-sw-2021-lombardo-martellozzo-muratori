@@ -22,6 +22,7 @@ public class Player implements PlayerInterface, Serializable {
     private boolean inkpot;
 
     private boolean playing;
+    private boolean disconnected;
 
     private ArrayList<LeaderCard>  leaderCards;
     private int victoryPoints;
@@ -45,8 +46,11 @@ public class Player implements PlayerInterface, Serializable {
         this.inkpot = false;
         this.buyCard = new Buy();
         this.playing = false;
+        this.disconnected = false;
         this.leaderCards = new ArrayList<>();
     }
+
+
 
     @Override
     public String getUsername() {
@@ -530,6 +534,11 @@ public class Player implements PlayerInterface, Serializable {
         return playing;
     }
 
+    @Override
+    public boolean isDisconnected() {
+        return disconnected;
+    }
+
     /**
      * set the boolean paramether to see if the player is actually playing
      * or not
@@ -538,6 +547,11 @@ public class Player implements PlayerInterface, Serializable {
     @Override
     public void setPlaying(boolean playing) {
         this.playing = playing;
+    }
+
+    @Override
+    public void setDisconnected(boolean disconnected) {
+        this.disconnected = disconnected;
     }
 
     /**

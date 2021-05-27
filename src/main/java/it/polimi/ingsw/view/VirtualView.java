@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.controller.MessageHandler;
 import it.polimi.ingsw.controller.OfflineLobby;
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.model.PlayerInterface;
@@ -73,10 +74,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      * send a message to the client throw his Client Handler
      */
     private void sendToClient(GameMsg msg) {
-        if (offLobby == null) {
+        if (offLobby == null && userConnected.get()) {
             client.sendMsg(msg);
         }
-        else{
+        else if (messageHandler!=null){
             //notifyAllObserver(ObserverType.VIEW,msg);
             messageHandler.receivedMsgForView(msg);
         }
@@ -247,6 +248,17 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
+    public void receiveMsg(CClientDisconnectedMsg msg) {
+        connectionLock.lock();
+        userConnected.set(false);
+        connectionLock.unlock();
+        //fill the msg with the username associated to the client disconnected
+        msg.setUsername(username);
+        //now send it to the Lobby
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
         //send to Lobby(Room) and Action Controller
         notifyAllObserver(ObserverType.CONTROLLER, msg);
@@ -292,9 +304,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         if (msg.getUsername().equals(this.username)) {
             //the connection is not on yet so
 
+            /*
             connectionLock.lock();
             userConnected.set(false);
-            connectionLock.unlock();
+            connectionLock.unlock();*/
 
             //and then send the request to the client
             sendToClient(msg);
@@ -536,10 +549,6 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         sendToClient(msg);
-        /*
-        if (msg.getPlayerUsername().equals(this.username)) {
-            sendToClient(msg);
-        }*/
     }
 
     /**

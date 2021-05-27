@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.factory.ResourcesSupplyFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
@@ -448,6 +449,11 @@ public class InitializedController extends Observable implements ControllerObser
 
     @Override
     public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CClientDisconnectedMsg msg) {
 
     }
 

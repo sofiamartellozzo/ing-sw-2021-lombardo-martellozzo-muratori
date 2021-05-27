@@ -4,6 +4,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
@@ -103,6 +104,15 @@ public class TurnController extends Observable implements ControllerObserver {
         System.out.println("number of players " + numberOfPlayer + " index " + players.keySet());
     }
 
+    private Player getPlayerByUsername(String username) {
+        for (PlayerInterface p : turnSequence.values()) {
+            if (p.getUsername().equals(username)) {
+                return (Player) p;
+            }
+        }
+        return null;
+    }
+
     /**
      * at the initialization of the class set all vatican section to unchecked
      */
@@ -181,8 +191,8 @@ public class TurnController extends Observable implements ControllerObserver {
         //send the msg to the client, to choose the action he want to make
         VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
-        for (PlayerInterface p: turnSequence.values()) {
-            if (!p.getUsername().equals(player.getUsername())){
+        for (PlayerInterface p : turnSequence.values()) {
+            if (!p.getUsername().equals(player.getUsername())) {
                 VWaitYourTurnMsg wait = new VWaitYourTurnMsg("", p.getUsername());
                 notifyAllObserver(ObserverType.VIEW, wait);
             }
@@ -198,26 +208,34 @@ public class TurnController extends Observable implements ControllerObserver {
         this.currentTurnIndex++;
         if (!isSoloMode) {
             int playerIndex = currentPlayer.getNumber();
-            if (playerIndex == this.numberOfPlayer) {
+             if (playerIndex == this.numberOfPlayer) {
                 playerIndex = 1;
             } else {
                 playerIndex++;
             }
             Player nextPlayer = (Player) this.turnSequence.get(playerIndex);
-            startPlayerTurn(nextPlayer);
-        }
-        else {
+             if (nextPlayer.isDisconnected()){
+                currentPlayer = nextPlayer;
+                //if a player is disconnected, pass directly to the next turn
+                nextTurn();
+            }
+            else {
+                //if is connected start the turn
+                startPlayerTurn(nextPlayer);
+            }
+        } else {
             ActionToken actionTokenActivated = null;
             try {
 
                 actionTokenActivated = currentSoloTurnIstance.activateActionToken();
                 VActionTokenActivateMsg msg1 = new VActionTokenActivateMsg("an Action Token has been activated", singlePlayer.getUsername(), actionTokenActivated);
                 notifyAllObserver(ObserverType.VIEW, msg1);
-                if (actionTokenActivated.getAbility().equals("Plus Two Black Cross Action Ability")){
+                if (actionTokenActivated.getAbility().equals("Plus Two Black Cross Action Ability")) {
 
-                        VLorenzoIncreasedMsg notify2 = new VLorenzoIncreasedMsg("Lorenzo increased of 2 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 2);
-                        notifyAllObserver(ObserverType.VIEW, notify2);}
-                        checkEndGame();
+                    VLorenzoIncreasedMsg notify2 = new VLorenzoIncreasedMsg("Lorenzo increased of 2 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 2);
+                    notifyAllObserver(ObserverType.VIEW, notify2);
+                }
+                checkEndGame();
                 if (actionTokenActivated.getAbility().equals("Plus One And Shuffle Action Ability")) {
 
                     VLorenzoIncreasedMsg notify1 = new VLorenzoIncreasedMsg("Lorenzo increased of 1 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 1);
@@ -258,31 +276,27 @@ public class TurnController extends Observable implements ControllerObserver {
                 numberOfLastTurn = numberOfPlayer - keyCurrentP;      //it contains the number representing the total of last turn games
                 lastTurns = true;
             }
-        }
-        else{
-           if (singlePlayer.checkEndGame()){
-               //single mode the game has ended ...
-               EndGameController endGameController = new EndGameController(singlePlayer, this, virtualView);
-               attachObserver(ObserverType.CONTROLLER,endGameController);
-               try {
-                   endGameController.startCounting();
-               } catch (InvalidActionException e) {
-                   e.printStackTrace();
-               }
-           }
+        } else {
+            if (singlePlayer.checkEndGame()) {
+                //single mode the game has ended ...
+                EndGameController endGameController = new EndGameController(singlePlayer, this, virtualView);
+                attachObserver(ObserverType.CONTROLLER, endGameController);
+                try {
+                    endGameController.startCounting();
+                } catch (InvalidActionException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     private void checkIfFirstAction() {
-        //System.out.println("CHECK ActionController!!!!!");            DEBUGGING
-        if (actionController != null && actionController.endAction()) {
-            //System.out.println("ELIMINA ACTION CONTROLLER!!!!!");
+
+         if (actionController != null && actionController.endAction()) {
             detachObserver(ObserverType.CONTROLLER, actionController);
             actionController = null;
         }
     }
-
-    /*check if someone is in the pop's favor tile...*/
 
     private void printTurnCMesssage(String messageToPrint) {
         System.out.println(messageToPrint);
@@ -428,7 +442,6 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
 
-
     @Override
     public void receiveMsg(CStopPPMsg msg) {
         //to ACTIONCONTROLLER
@@ -439,6 +452,23 @@ public class TurnController extends Observable implements ControllerObserver {
     public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
         //to ActionController
         notifyAllObserver(ObserverType.CONTROLLER, msg);
+    }
+
+    @Override
+    public void receiveMsg(CClientDisconnectedMsg msg) {
+        Player playerDisconnected = getPlayerByUsername(msg.getUsername());
+        if (playerDisconnected != null) {
+            //check if the client disconnected is currently playing
+            if (playerDisconnected.isPlaying() && actionController != null) {
+                detachObserver(ObserverType.CONTROLLER, actionController);
+                actionController = null;
+                nextTurn();
+            }
+            /* even if is out of the if, so he should not be playing
+            * set his attribute to false, to be sure */
+            playerDisconnected.setPlaying(false);
+            playerDisconnected.setDisconnected(true);
+        }
     }
 
     @Override
@@ -482,7 +512,7 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     /*------------------------------------------------------*/
-                    //GETTER FOR TESTING
+    //GETTER FOR TESTING
 
 
     public HashMap<Integer, PlayerInterface> getTurnSequence() {

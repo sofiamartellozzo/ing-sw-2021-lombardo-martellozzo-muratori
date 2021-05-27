@@ -5,6 +5,7 @@ import it.polimi.ingsw.exception.NotFreeRoomAvailableError;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
@@ -535,6 +536,17 @@ public class Lobby extends Observable implements ControllerObserver {
         //send to TurnController by Room
         try {
             Room room = findUserRoom(msg.getUsernameAsking());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receiveMsg(CClientDisconnectedMsg msg) {
+        //send to TurnController by Room, to set him disconneced
+        try {
+            Room room = findUserRoom(msg.getUsername());
             room.notifyAllObserver(ObserverType.CONTROLLER, msg);
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();

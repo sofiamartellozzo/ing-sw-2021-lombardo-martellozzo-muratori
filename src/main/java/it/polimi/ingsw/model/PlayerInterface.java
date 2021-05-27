@@ -46,7 +46,9 @@ public interface PlayerInterface{
 
     public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException;
     public boolean isPlaying();
+    public boolean isDisconnected();
     public void setPlaying(boolean playing);
+    public void setDisconnected(boolean disconnected);
     public void endTurn();
     public void putResources(Resource resource) throws InvalidActionException;
     public void moveResource(int depot1, int depot2) throws InvalidActionException;

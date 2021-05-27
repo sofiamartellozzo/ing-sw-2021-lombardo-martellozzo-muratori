@@ -5,6 +5,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
@@ -462,6 +463,11 @@ public class ActionController extends Observable implements ControllerObserver {
         }
         endAction = true;
         nextAction();
+    }
+
+    @Override
+    public void receiveMsg(CClientDisconnectedMsg msg) {
+
     }
 
     /**

@@ -80,7 +80,7 @@ public class ClientSocket extends Observable implements Runnable {
 
 
             /* start the ping process */
-            // startPing();
+            startPing();
         }
     }
 

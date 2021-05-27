@@ -4,6 +4,7 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.PingMsg;
 import it.polimi.ingsw.message.connection.PongMsg;
 import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
@@ -65,7 +66,7 @@ public class ClientHandler extends Observable implements Runnable {
         }
 
         /* start the ping process */
-        //startPing();
+        startPing();
 
 
         /* now wait listening for a message (Event) */
@@ -107,7 +108,7 @@ public class ClientHandler extends Observable implements Runnable {
      * @param msgReceived
      */
     private void addMsgInQueue(GameMsg msgReceived) {
-        //System.out.println("adding in the queue");        DEBUGGING
+
         queue.add(msgReceived);
     }
 
@@ -136,7 +137,7 @@ public class ClientHandler extends Observable implements Runnable {
                     sendMsg(new PingMsg("Ping!"));
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 System.out.println("Ping disable");
             } finally {
                 Thread.currentThread().interrupt();
@@ -168,6 +169,11 @@ public class ClientHandler extends Observable implements Runnable {
     //at the end always disconnect so close the socket
     public void disconnect() {
         try {
+            if (ping.isAlive()){
+                stopPing();
+            }
+            CClientDisconnectedMsg notification = new CClientDisconnectedMsg("the client is not reachable anymore");
+            notifyAllObserver(ObserverType.CONTROLLER, notification);
             clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();

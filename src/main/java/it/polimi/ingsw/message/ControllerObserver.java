@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message;
 
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
@@ -53,5 +54,9 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CActivateProductionPowerResponseMsg msg);
     public void receiveMsg(CStopPPMsg msg);
 
+    /*another Action that a player can make in the game (see the info of himself or someone else)*/
     public void receiveMsg(CAskSeeSomeoneElseMsg msg);
+
+    /*from Client Handler to controller*/
+    public void receiveMsg(CClientDisconnectedMsg msg);
 }
