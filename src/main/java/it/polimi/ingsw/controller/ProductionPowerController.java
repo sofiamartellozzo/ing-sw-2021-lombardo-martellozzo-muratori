@@ -231,7 +231,7 @@ public class ProductionPowerController extends Observable implements ControllerO
     }
 
     @Override
-    public void receiveMsg(CGameCanStratMsg msg) {
+    public void receiveMsg(CGameCanStartMsg msg) {
 
     }
 

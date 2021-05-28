@@ -168,6 +168,7 @@
                   </GridPane>
                </content>
             </TitledPane>
+            <Button fx:id="backButton" layoutX="32.0" layoutY="28.0" mnemonicParsing="false" onAction="#clickBackButton" text="&lt;- BACK" />
          </children>
       </Pane>
    </children>

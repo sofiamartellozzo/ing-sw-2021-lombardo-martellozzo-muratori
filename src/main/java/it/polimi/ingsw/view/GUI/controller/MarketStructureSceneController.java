@@ -22,7 +22,7 @@ public class MarketStructureSceneController {
     private ImageView marble1_1,marble1_2,marble1_3,marble1_4,marble2_1,marble2_2,marble2_3,marble2_4,marble3_1,marble3_2,marble3_3,marble3_4,outMarble;
 
     @FXML
-    private Button row1Button,row2Button,row3Button,column1Button,column2Button,column3Button,column4Button;
+    private Button row1Button,row2Button,row3Button,column1Button,column2Button,column3Button,column4Button,backButton;
 
     public void start(){
         update(gui.getMarketStructureData());
@@ -69,50 +69,47 @@ public class MarketStructureSceneController {
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"row",1);
         gui.sendMsg(responseMsg);
         disableButtons();
-        gui.getDevCardTableStage().show();
-        gui.getStage().show();
+        gui.seePersonalBoard();
     }
     public void clickRow2(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"row",2);
         gui.sendMsg(responseMsg);
         disableButtons();
-        gui.getDevCardTableStage().show();
-        gui.getStage().show();
+        gui.seePersonalBoard();
     }
     public void clickRow3(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"row",3);
         gui.sendMsg(responseMsg);
         disableButtons();
-        gui.getDevCardTableStage().show();
-        gui.getStage().show();
+        gui.seePersonalBoard();
     }
     public void clickColumn1(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"column",1);
         gui.sendMsg(responseMsg);
         disableButtons();
-        gui.getDevCardTableStage().show();
-        gui.getStage().show();
+        gui.seePersonalBoard();
     }
     public void clickColumn2(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"column",2);
         gui.sendMsg(responseMsg);
         disableButtons();
-        gui.getDevCardTableStage().show();
-        gui.getStage().show();
+        gui.seePersonalBoard();
     }
     public void clickColumn3(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"column",3);
         gui.sendMsg(responseMsg);
         disableButtons();
-        gui.getDevCardTableStage().show();
-        gui.getStage().show();
+        gui.seePersonalBoard();
     }
     public void clickColumn4(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"column",4);
         gui.sendMsg(responseMsg);
         disableButtons();
-        gui.getDevCardTableStage().show();
-        gui.getStage().show();
+        gui.seePersonalBoard();
+    }
+
+    public void clickBackButton(){
+        gui.seePersonalBoard();
     }
 
     public void setGui(GUI gui){this.gui=gui;}

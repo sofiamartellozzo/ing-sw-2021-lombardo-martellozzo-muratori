@@ -529,7 +529,7 @@ public class ActionController extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(CGameCanStratMsg msg) {
+    public void receiveMsg(CGameCanStartMsg msg) {
 
     }
 

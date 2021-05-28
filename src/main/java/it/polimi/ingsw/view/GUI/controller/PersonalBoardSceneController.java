@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.view.GUI.GUI;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,6 +33,9 @@ public class PersonalBoardSceneController {
 
     @FXML
     private Button buyCardButton, buyFromMarketButton, moveResourceButton, endTurnButton, activePPButton, visitOtherBoardButton, activeLeaderCardButton, discardLeaderCardButton;
+
+    @FXML
+    private Label chooseActionMessage;
 
     @FXML
     private Pane backgroundBox0;
@@ -90,7 +94,11 @@ public class PersonalBoardSceneController {
 
     }
 
+    public void setChooseActionMessage(String content){
+        chooseActionMessage.setText(content);
+    }
     public void chooseAction(VChooseActionTurnRequestMsg msg){
+        setChooseActionMessage("These are your available actions.\nChoose one action:");
         actionButtons.setVisible(true);
         showActionButtons(msg.getAvailableActions());
     }
@@ -141,6 +149,12 @@ public class PersonalBoardSceneController {
         gui.sendMsg(msg);
         disableActionButtons();
         actionButtons.setVisible(false);
+    }
+    public void clickSeeMarketBoardButton(){
+        gui.seeMarketBoard();
+    }
+    public void clickSeeDevCardTableButton(){
+        gui.seeDevCardTable();
     }
 
     public void choosePP(VActivateProductionPowerRequestMsg msg){
@@ -205,30 +219,6 @@ public class PersonalBoardSceneController {
 
     //Update FXML Elements based on Model Elements
     public void updateFaithTrackView(FaithTrack faithTrack){
-        for(int i=0;i<25;i++){
-            if(faithTrack.getPositionFaithMarker()==i){
-                if(i==0){
-                    backgroundBox0.setVisible(true);
-                }else{
-                    backgroundBox0.setVisible(false);
-                }
-                getFaithMarkersView().get(i).setVisible(true);
-            }else{
-                if(i==0){
-                    backgroundBox0.setVisible(false);
-                }else{
-                    backgroundBox0.setVisible(true);
-                }
-                getFaithMarkersView().get(i).setVisible(false);
-            }
-        }
-        for(int i=0;i<3;i++){
-            if(faithTrack.getPopesFavorTiles().get(i).getState() instanceof Active){
-                getPopesFavorTilesView().get(i).setImage(new Image("/images/punchboard/pope's_tile"+(i+1)+"Active.png"));
-            }else{
-                getPopesFavorTilesView().get(i).setImage(new Image("/images/punchboard/pope's_tile"+(i+1)+"Inactive.png"));
-            }
-        }
         if(faithTrack instanceof SoloFaithTrack){
             SoloFaithTrack soloFaithTrack = (SoloFaithTrack) faithTrack;
             for(int i=0;i<25;i++){
@@ -247,8 +237,51 @@ public class PersonalBoardSceneController {
                     }
                     getBlackMarkersView().get(i).setVisible(false);
                 }
+                if (faithTrack.getPositionFaithMarker() == i) {
+                    if (i == 0) {
+                        backgroundBox0.setVisible(true);
+                    } else {
+                        backgroundBox0.setVisible(false);
+                    }
+                    getFaithMarkersView().get(i).setVisible(true);
+                } else {
+                    if (i == 0) {
+                        backgroundBox0.setVisible(false);
+                    } else {
+                        backgroundBox0.setVisible(true);
+                    }
+                    getFaithMarkersView().get(i).setVisible(false);
+                }
+            }
+        }else {
+            for (int i = 0; i < 25; i++) {
+                if (faithTrack.getPositionFaithMarker() == i) {
+                    if (i == 0) {
+                        backgroundBox0.setVisible(true);
+                    } else {
+                        backgroundBox0.setVisible(false);
+                    }
+                    getFaithMarkersView().get(i).setVisible(true);
+                } else {
+                    if (i == 0) {
+                        backgroundBox0.setVisible(false);
+                    } else {
+                        backgroundBox0.setVisible(true);
+                    }
+                    getFaithMarkersView().get(i).setVisible(false);
+                }
+                getBlackMarkersView().get(i).setVisible(false);
+            }
+
+        }
+        for (int i = 0; i < 3; i++) {
+            if (faithTrack.getPopesFavorTiles().get(i).getState() instanceof Active) {
+                getPopesFavorTilesView().get(i).setImage(new Image("/images/punchboard/pope's_tile" + (i + 1) + "Active.png"));
+            } else {
+                getPopesFavorTilesView().get(i).setImage(new Image("/images/punchboard/pope's_tile" + (i + 1) + "Inactive.png"));
             }
         }
+
     }
     public void updateResourceManagerView(ResourceManager resourceManager){
         updateWarehouseView(resourceManager.getWarehouse());
@@ -284,7 +317,7 @@ public class PersonalBoardSceneController {
                 getSpecialDepotsView().get(1).setVisible(false);
             }
             for(int j=0;j<depot.getSize();j++){
-                if(j<=depot.getNumberResources()){
+                if(j+1<=depot.getNumberResources()){
                     Resource resource= depot.getResources().get(j);
                     switch(resource.getType()){
                         case COIN: depotView.get(j).setImage(new Image("/images/punchboard/coin.png"));break;
@@ -294,6 +327,7 @@ public class PersonalBoardSceneController {
                     }
                     depotView.get(j).setVisible(true);
                 }else{
+                    depotView.get(j).setImage(null);
                     depotView.get(j).setVisible(false);
                 }
             }

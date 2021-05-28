@@ -10,7 +10,7 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
-import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
+import it.polimi.ingsw.message.updateMsg.CGameCanStartMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.view.VirtualView;
@@ -416,10 +416,10 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     @Override
-    public void receiveMsg(CGameCanStratMsg msg) {
+    public void receiveMsg(CGameCanStartMsg msg) {
         //System.out.println(" try found room ");
         try {
-            Room room = findUserRoom(msg.getOnePlayer());
+            Room room = findUserRoom(msg.getPlayers().get(0));
             //System.out.println("found room " + room);
             room.startFirstTurn();
             room.detachInitializedC();

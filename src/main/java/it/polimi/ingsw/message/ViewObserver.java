@@ -78,7 +78,7 @@ public interface ViewObserver extends Observer{
     /* from client Socket main to cli gui*/
     public void receiveMsg(VServerUnableMsg msg);
     public void receiveMsg(CVStartInitializationMsg msg);
-    void receiveMsg(CGameCanStratMsg msg);
+    void receiveMsg(CGameCanStartMsg msg);
 
     public void receiveMsg(VAnotherPlayerInfoMsg msg);
     public void receiveMsg(VWhichPlayerRequestMsg msg);

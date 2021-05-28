@@ -1508,7 +1508,7 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(CGameCanStratMsg msg) {
+    public void receiveMsg(CGameCanStartMsg msg) {
 
     }
 

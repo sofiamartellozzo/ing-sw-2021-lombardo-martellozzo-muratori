@@ -39,7 +39,7 @@ public class ClientSocket extends Observable implements Runnable {
     private ViewObserver clientView;
 
     /* create a queue to contains all the msg received from the server */
-    private ArrayList<ViewGameMsg> queue;
+    private ArrayList<GameMsg> queue;
 
     public ClientSocket(String IPAddress, ViewObserver view) {
         this.IP = IPAddress;
@@ -145,7 +145,7 @@ public class ClientSocket extends Observable implements Runnable {
      *
      * @param msgReceived
      */
-    private void addMsgInQueue(ViewGameMsg msgReceived) {
+    private void addMsgInQueue(GameMsg msgReceived) {
         //System.out.println("adding in the queue");        DEBUGGING
         queue.add(msgReceived);
     }
@@ -155,7 +155,7 @@ public class ClientSocket extends Observable implements Runnable {
      */
     private void handleMsg() {
         if (!queue.isEmpty()) {
-            ViewGameMsg msg = queue.remove(0);
+            GameMsg msg = queue.remove(0);
             //then notify all the observer (viewer) about the new message arrived from the Server
             notifyAllObserver(ObserverType.VIEW, msg);
             //System.out.println("send msg to view : " +msg.getMsgContent()+ "for ");       DEBUGGING
@@ -177,7 +177,7 @@ public class ClientSocket extends Observable implements Runnable {
                     sendMsg(new PongMsg("Pong!"));
                 } else {
                     //casting the msg because it is a ViewMsg type for sure
-                    ViewGameMsg msg = (ViewGameMsg) received;
+                    GameMsg msg = (GameMsg) received;
                     //adding the msg in the queue
                     addMsgInQueue(msg);
                 }

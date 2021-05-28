@@ -178,5 +178,50 @@
             </HBox>
         </content>
       </TitledPane>
+      <TitledPane fx:id="leaderCardPane" animated="false" layoutX="122.0" layoutY="168.0" text="Choose Leader Card">
+        <content>
+            <VBox alignment="CENTER">
+               <children>
+                  <Label text="Choose two leader cards:" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="leaderCard1" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#clickLeaderCard1" onMouseEntered="#mouseEnteredLeaderCard1" onMouseExited="#mouseExitedLeaderCard1" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/frontCards/LeaderCard%20(7).png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="leaderCard2" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#clickLeaderCard2" onMouseEntered="#mouseEnteredLeaderCard2" onMouseExited="#mouseExitedLeaderCard2" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/frontCards/LeaderCard%20(16).png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="leaderCard3" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#clickLeaderCard3" onMouseEntered="#mouseEnteredLeaderCard3" onMouseExited="#mouseExitedLeaderCard3" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/frontCards/LeaderCard%20(16).png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="leaderCard4" fitHeight="200.0" fitWidth="200.0" onMouseClicked="#clickLeaderCard4" onMouseEntered="#mouseEnteredLeaderCard4" onMouseExited="#mouseExitedLeaderCard4" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/frontCards/LeaderCard%20(16).png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+        </content>
+      </TitledPane>
    </children>
 </AnchorPane>

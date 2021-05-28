@@ -2,7 +2,7 @@ package it.polimi.ingsw.message;
 
 import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
-import it.polimi.ingsw.message.updateMsg.CGameCanStratMsg;
+import it.polimi.ingsw.message.updateMsg.CGameCanStartMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 
@@ -31,7 +31,7 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CChooseResourceAndDepotMsg msg);     //also in Action Controller
     public void receiveMsg(CChooseLeaderCardResponseMsg msg);   //this also to ActionController
 
-    public void receiveMsg(CGameCanStratMsg msg);
+    public void receiveMsg(CGameCanStartMsg msg);
 
     /* from CLI to TurnController*/
     public void receiveMsg(CChooseActionTurnResponseMsg msg);

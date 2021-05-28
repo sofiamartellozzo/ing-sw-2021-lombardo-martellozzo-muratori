@@ -160,11 +160,14 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
-    public void receiveMsg(CGameCanStratMsg msg) {
+    public void receiveMsg(CGameCanStartMsg msg) {
         //send to room to start the game
-        if (msg.getOnePlayer().equals(username)) {
+        if (msg.getPlayers().contains(username)) {
             //System.out.println("PASSING THROW VV for initialization");
-            notifyAllObserver(ObserverType.CONTROLLER, msg);
+            sendToClient(msg);
+            if(msg.getPlayers().get(0).equals(username)) {
+                notifyAllObserver(ObserverType.CONTROLLER, msg);
+            }
         }
     }
 

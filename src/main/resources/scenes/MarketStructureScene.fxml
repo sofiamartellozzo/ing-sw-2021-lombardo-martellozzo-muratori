@@ -158,5 +158,6 @@
             </Pane>
          </children>
       </Pane>
+      <Button layoutX="35.0" layoutY="29.0" mnemonicParsing="false" onAction="#clickBackButton" text="&lt;- BACK" />
    </children>
 </AnchorPane>

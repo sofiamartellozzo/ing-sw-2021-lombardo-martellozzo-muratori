@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
@@ -599,28 +600,40 @@
       </Pane>
       <TitledPane fx:id="actionButtons" animated="false" layoutX="314.0" layoutY="250.0" text="Choose Action">
         <content>
-            <GridPane>
-              <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <VBox alignment="CENTER">
                <children>
-                  <Button fx:id="buyCardButton" mnemonicParsing="false" onAction="#clickBuyCard" text="BUY CARD" />
-                  <Button fx:id="buyFromMarketButton" mnemonicParsing="false" onAction="#clickBuyFromMarket" text="BUY FROM MARKET" GridPane.columnIndex="1" />
-                  <Button fx:id="activePPButton" mnemonicParsing="false" onAction="#clickActivatePP" text="ACTIVATE PRODUCTION POWER" GridPane.rowIndex="1" />
-                  <Button fx:id="moveResourceButton" mnemonicParsing="false" onAction="#clickMoveResources" text="MOVE RESOURCES" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Button fx:id="activeLeaderCardButton" mnemonicParsing="false" onAction="#clickActivateLeaderCard" text="ACTIVATE LEADER CARD" GridPane.rowIndex="2" />
-                  <Button fx:id="discardLeaderCardButton" mnemonicParsing="false" onAction="#clickDiscardLeaderCard" text="DISCARD LEADER CARD" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Button fx:id="visitOtherBoardButton" mnemonicParsing="false" onAction="#clickVisitOtherPersonalBoard" text="VISIT OTHER PERSONAL BOARD" GridPane.rowIndex="3" />
-                  <Button fx:id="endTurnButton" mnemonicParsing="false" onAction="#clickEndTurn" text="END TURN" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="chooseActionMessage" text="Choose Action:" textFill="#990000">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Button fx:id="buyCardButton" mnemonicParsing="false" onAction="#clickBuyCard" text="BUY CARD" />
+                        <Button fx:id="buyFromMarketButton" mnemonicParsing="false" onAction="#clickBuyFromMarket" text="BUY FROM MARKET" GridPane.columnIndex="1" />
+                        <Button fx:id="activePPButton" mnemonicParsing="false" onAction="#clickActivatePP" text="ACTIVATE PRODUCTION POWER" GridPane.rowIndex="2" />
+                        <Button fx:id="moveResourceButton" mnemonicParsing="false" onAction="#clickMoveResources" text="MOVE RESOURCES" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button fx:id="activeLeaderCardButton" mnemonicParsing="false" onAction="#clickActivateLeaderCard" text="ACTIVATE LEADER CARD" GridPane.rowIndex="3" />
+                        <Button fx:id="discardLeaderCardButton" mnemonicParsing="false" onAction="#clickDiscardLeaderCard" text="DISCARD LEADER CARD" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button fx:id="visitOtherBoardButton" mnemonicParsing="false" onAction="#clickVisitOtherPersonalBoard" text="VISIT OTHER PERSONAL BOARD" GridPane.rowIndex="4" />
+                        <Button fx:id="endTurnButton" mnemonicParsing="false" onAction="#clickEndTurn" text="END TURN" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Button fx:id="seeDevCardTableButton" mnemonicParsing="false" onAction="#clickSeeDevCardTableButton" text="SEE DEVELOPMENT CARD TABLE" GridPane.rowIndex="1" />
+                        <Button fx:id="seeMarketBoardButton" mnemonicParsing="false" onAction="#clickSeeMarketBoardButton" text="SEE MARKET BOARD" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
                </children>
-            </GridPane>
+            </VBox>
         </content>
       </TitledPane>
       <Pane fx:id="standardPPPane" layoutX="304.0" layoutY="443.0" onMouseClicked="#chooseStandardPPPane" prefHeight="89.0" prefWidth="94.0" />

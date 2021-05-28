@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view.GUI.controller;
 
 import it.polimi.ingsw.message.controllerMsg.CBuyDevelopCardResponseMsg;
+import it.polimi.ingsw.message.controllerMsg.CChangeActionTurnMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseDevelopCardRequestMsg;
+import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.card.DevelopmentCardDeck;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
 import it.polimi.ingsw.view.GUI.GUI;
@@ -18,7 +20,7 @@ public class DevCardTableSceneController {
     private GUI gui;
 
     @FXML
-    private ImageView devCard1_1,devCard1_2,devCard1_3,devCard1_4,devCard2_1,devCard2_2,devCard2_3,devCard2_4,devCard3_1,devCard3_2,devCard3_3,devCard3_4;
+    private ImageView devCard1_1,devCard1_2,devCard1_3,devCard1_4,devCard2_1,devCard2_2,devCard2_3,devCard2_4,devCard3_1,devCard3_2,devCard3_3,devCard3_4,backButton;
 
     @FXML
     private TitledPane chooseCardSpacePane;
@@ -39,22 +41,30 @@ public class DevCardTableSceneController {
     }
 
     public void choose(VChooseDevelopCardRequestMsg msg){
+        backButton.setDisable(true);
         update(msg.getDevelopmentCardTable());
-        //MSG CONTIENE DUE TABLE???
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.5);
         ImageView[][] tableView = getDevCardTableView();
         boolean[][] availableCards = msg.getCardAvailable();
+        boolean atLeastOne=false;
         for(int i=0;i<3;i++){
             for(int j=0;j<4;j++){
                 if(availableCards[i][j]){
                     tableView[i][j].setEffect(null);
                     tableView[i][j].setDisable(false);
+                    atLeastOne=true;
                 }else{
                     tableView[i][j].setEffect(colorAdjust);
                     tableView[i][j].setDisable(true);
                 }
             }
+        }
+        if(!atLeastOne){
+            gui.getPersonalBoardSceneController().setChooseActionMessage("You can't buy any development card.\n Choose another action:");
+            gui.sendMsg(new CChangeActionTurnMsg("This action can't be executed",gui.getUsername(), TurnAction.BUY_CARD));
+            gui.seePersonalBoard();
+            backButton.setDisable(false);
         }
     }
 
@@ -73,15 +83,19 @@ public class DevCardTableSceneController {
     }
 
     public void clickDevCard1_1(){
-        chosenRow = 1;
-        chosenColumn=1;
-        chooseCardSpace();
+        if(!devCard1_1.isDisable()) {
+            chosenRow = 1;
+            chosenColumn = 1;
+            chooseCardSpace();
+        }
     }
 
     public void clickDevCard1_2(){
-        chosenRow = 1;
-        chosenColumn=2;
-        chooseCardSpace();
+        if(!devCard1_2.isDisable()) {
+            chosenRow = 1;
+            chosenColumn = 2;
+            chooseCardSpace();
+        }
     }
     public void clickDevCard1_3(){
         chosenRow = 1;
@@ -142,19 +156,22 @@ public class DevCardTableSceneController {
 
     public void clickCardSpace1Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,1));
-        gui.getMarketStructureStage().show();
-        gui.getStage().show();
+        chooseCardSpacePane.setVisible(false);
+        gui.seePersonalBoard();
     }
 
     public void clickCardSpace2Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,2));
-        gui.getMarketStructureStage().show();
-        gui.getStage().show();
+        chooseCardSpacePane.setVisible(false);
+        gui.seePersonalBoard();
     }
     public void clickCardSpace3Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,3));
-        gui.getMarketStructureStage().show();
-        gui.getStage().show();
+        chooseCardSpacePane.setVisible(false);
+        gui.seePersonalBoard();
+    }
+    public void clickBackButton(){
+        gui.seePersonalBoard();
     }
 
     public void setGui(GUI gui){this.gui=gui;}

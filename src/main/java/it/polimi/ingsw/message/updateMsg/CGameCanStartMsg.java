@@ -1,20 +1,24 @@
 package it.polimi.ingsw.message.updateMsg;
 
 import it.polimi.ingsw.message.ControllerObserver;
+import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.controllerMsg.ControllerGameMsg;
+import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 
-public class CGameCanStratMsg extends ControllerGameMsg {
+import java.util.List;
 
-    private String onePlayer;
+public class CGameCanStartMsg extends GameMsg {
 
-    public CGameCanStratMsg(String msgContent, String onePlayer) {
+    private List<String> players;
+
+    public CGameCanStartMsg(String msgContent, List<String> players) {
         super(msgContent);
-        this.onePlayer = onePlayer;
+        this.players = players;
     }
 
-    public String getOnePlayer() {
-        return onePlayer;
+    public List<String> getPlayers() {
+        return players;
     }
 
 
