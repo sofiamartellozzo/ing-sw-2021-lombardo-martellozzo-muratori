@@ -2,8 +2,11 @@ package it.polimi.ingsw.view.GUI.controller;
 
 import it.polimi.ingsw.message.controllerMsg.CActivateProductionPowerResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseActionTurnResponseMsg;
+import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.viewMsg.VActivateProductionPowerRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseActionTurnRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VMoveResourceRequestMsg;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.TypeResource;
@@ -14,12 +17,12 @@ import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.view.GUI.GUI;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -68,27 +71,32 @@ public class PersonalBoardSceneController {
     private Label specialDepotLabel;
 
     @FXML
+    private Pane depot1Pane,depot2Pane,depot3Pane,depot4Pane,depot5Pane;
+    @FXML
     private Label victoryPoints;
 
     @FXML
-    private TitledPane actionButtons;
+    private TitledPane actionButtons,errorMessagePane;
 
     @FXML
-    private Pane standardPPPane,cardSpace1PPPane,cardSpace2PPPane,cardSpace3PPPane,leaderCard1PPPane,leaderCard2PPPane,warehousePane,strongBoxPane;
+    private Pane standardPPPane,warehousePane,strongBoxPane;
 
+    private TurnAction action;
     private int chosenPP;
+    private HashMap<Integer,ImageView> leaderCardsView=new HashMap<>();
 
     public void start(){
         updateFaithTrackView(gui.getPlayer().getGameSpace().getFaithTrack());
         updateResourceManagerView(gui.getPlayer().getGameSpace().getResourceManager());
         updateCardSpacesView(gui.getPlayer().getGameSpace().getCardSpaces());
-        updateLeaderCardsView(gui.getPlayer().getLeaderCards());
         updateVictoryPointsView(gui.getPlayer().getVictoryPoints());
+        setAllLeaderDisable();
         disableActionButtons();
+        disableDepotPanes();
+        notVisibleDepotPanes();
+        standardPPPane.setVisible(false);
+        errorMessagePane.setVisible(false);
         actionButtons.setVisible(false);
-        disableAndHidePPPanes();
-        warehousePane.setVisible(false);
-        warehousePane.setDisable(true);
         strongBoxPane.setVisible(false);
         strongBoxPane.setDisable(true);
 
@@ -120,24 +128,107 @@ public class PersonalBoardSceneController {
         disableActionButtons();
         actionButtons.setVisible(false);
     }
+
+    //MOVE RESOURCES
     public void clickMoveResources(){
         CChooseActionTurnResponseMsg msg = new CChooseActionTurnResponseMsg("I choose the action",gui.getUsername(),TurnAction.MOVE_RESOURCE);
         gui.sendMsg(msg);
         disableActionButtons();
         actionButtons.setVisible(false);
+        action=TurnAction.MOVE_RESOURCE;
     }
+
+    public void chooseFromDepot(VMoveResourceRequestMsg msg){
+
+    }
+
+
+    //DISCARD LEADER CARD ACTION
     public void clickActivateLeaderCard(){
         CChooseActionTurnResponseMsg msg = new CChooseActionTurnResponseMsg("I choose the action",gui.getUsername(),TurnAction.ACTIVE_LEADER_CARD);
         gui.sendMsg(msg);
         disableActionButtons();
         actionButtons.setVisible(false);
+        action=TurnAction.ACTIVE_LEADER_CARD;
     }
     public void clickDiscardLeaderCard(){
         CChooseActionTurnResponseMsg msg = new CChooseActionTurnResponseMsg("I choose the action",gui.getUsername(),TurnAction.REMOVE_LEADER_CARD);
         gui.sendMsg(msg);
         disableActionButtons();
         actionButtons.setVisible(false);
+        action=TurnAction.REMOVE_LEADER_CARD;
     }
+
+    public void chooseLeaderCard(VChooseLeaderCardRequestMsg msg){
+        System.out.println("IN");
+        ArrayList<Integer> leaderCards=msg.getMiniDeckLeaderCardFour();
+        for(Integer key:leaderCardsView.keySet()){
+            System.out.println("LeaderCardsView: "+key);
+            for(Integer id:leaderCards){
+                System.out.println("Msg: "+id);
+                if(key.equals(id)){
+                    System.out.println("MATCH");
+                    leaderCardsView.get(id).setEffect(null);
+                    leaderCardsView.get(id).setDisable(false);
+                }
+            }
+        }
+    }
+
+    public void mouseEnteredLeaderCard1(){
+        if(!leaderCard1.isDisable()){
+            leaderCard1.setEffect(new Glow());
+        }
+    }
+    public void mouseExitedLeaderCard1(){
+        if(!leaderCard1.isDisable()){
+            leaderCard1.setEffect(null);
+        }
+    }
+    public void mouseEnteredLeaderCard2(){
+        if(!leaderCard2.isDisable()){
+            leaderCard2.setEffect(new Glow());
+        }
+    }
+    public void mouseExitedLeaderCard2(){
+        if(!leaderCard2.isDisable()){
+            leaderCard2.setEffect(null);
+        }
+
+    }
+
+    public void clickLeaderCard1(){
+        if(!leaderCard1.isDisable()){
+            if(this.action.equals(TurnAction.ACTIVE_LEADER_CARD)){
+                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",getIdFromLeaderCardView(leaderCard1),gui.getUsername(),"active"));
+                leaderCard1.setEffect(null);
+                leaderCard1.setDisable(true);
+            }else if(this.action.equals(TurnAction.REMOVE_LEADER_CARD)){
+                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",getIdFromLeaderCardView(leaderCard1),gui.getUsername(),"remove"));
+                leaderCard1.setEffect(null);
+                leaderCard1.setDisable(true);
+                leaderCard1.setImage(new Image("/images/backCards/LeaderCard (1).png"));
+            }
+            action=null;
+        }
+    }
+
+    public void clickLeaderCard2(){
+        if(!leaderCard2.isDisable()){
+            if(this.action.equals(TurnAction.ACTIVE_LEADER_CARD)){
+                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",getIdFromLeaderCardView(leaderCard2),gui.getUsername(),"active"));
+                leaderCard2.setEffect(null);
+                leaderCard2.setDisable(true);
+            }else if(this.action.equals(TurnAction.REMOVE_LEADER_CARD)){
+                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",getIdFromLeaderCardView(leaderCard2),gui.getUsername(),"remove"));
+                leaderCard2.setEffect(null);
+                leaderCard2.setDisable(true);
+                leaderCard2.setImage(new Image("/images/backCards/LeaderCard (1).png"));
+            }
+            action=null;
+        }
+    }
+
     public void clickVisitOtherPersonalBoard(){
         CChooseActionTurnResponseMsg msg = new CChooseActionTurnResponseMsg("I choose the action",gui.getUsername(),TurnAction.SEE_OTHER_PLAYER);
         gui.sendMsg(msg);
@@ -155,14 +246,12 @@ public class PersonalBoardSceneController {
     }
     public void clickSeeDevCardTableButton(){
         gui.seeDevCardTable();
+        gui.getDevCardTableSceneController().setAllCardNormal();
     }
 
+
+
     public void choosePP(VActivateProductionPowerRequestMsg msg){
-        ArrayList<Pane> panes=getPPPanes();
-        for(Integer i:msg.getActivatablePP()){
-            panes.get(i).setVisible(true);
-            panes.get(i).setDisable(false);
-        }
     }
     public void chooseFromWhere(){
         warehousePane.setDisable(false);
@@ -172,26 +261,6 @@ public class PersonalBoardSceneController {
     }
     public void chooseStandardPPPane(){
         chosenPP=0;
-        chooseFromWhere();
-    }
-    public void chooseCardSpace1PPPane(){
-        chosenPP=1;
-        chooseFromWhere();
-    }
-    public void chooseCardSpace2PPPane(){
-        chosenPP=2;
-        chooseFromWhere();
-    }
-    public void chooseCardSpace3PPPane(){
-        chosenPP=3;
-        chooseFromWhere();
-    }
-    public void chooseLeaderCard1PPPane(){
-        chosenPP=4;
-        chooseFromWhere();
-    }
-    public void chooseLeaderCard2PPPane(){
-        chosenPP=5;
         chooseFromWhere();
     }
     public void chooseWarehousePane(){
@@ -208,12 +277,6 @@ public class PersonalBoardSceneController {
     private void disableActionButtons(){
         for(Button button:getActionButtons()){
             button.setDisable(true);
-        }
-    }
-    private void disableAndHidePPPanes(){
-        for(Pane pane:getPPPanes()){
-            pane.setDisable(true);
-            pane.setVisible(false);
         }
     }
 
@@ -357,16 +420,17 @@ public class PersonalBoardSceneController {
             }
         }
     }
-    public void updateLeaderCardsView(ArrayList<LeaderCard> leaderCards){
+    public void updateLeaderCardsView(ArrayList<Integer> leaderCards){
         for(int i=0;i<leaderCards.size();i++){
-            getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+leaderCards.get(i).getCardID()+").png"));
-            getLeaderCardsView().get(i).setVisible(true);
-            if(leaderCards.get(i).getState() instanceof Inactive){
-                ColorAdjust colorAdjust = new ColorAdjust();
-                colorAdjust.setBrightness(-0.5);
+            getArrayListLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+leaderCards.get(i)+").png"));
 
-                getLeaderCardsView().get(i).setEffect(colorAdjust);
-            }
+            getArrayListLeaderCardsView().get(i).setVisible(true);
+            leaderCardsView.put(leaderCards.get(i), getArrayListLeaderCardsView().get(i));
+
+            ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setBrightness(-0.5);
+
+            getArrayListLeaderCardsView().get(i).setEffect(colorAdjust);
         }
     }
     public void updateVictoryPointsView(int victoryPoints){
@@ -507,14 +571,14 @@ public class PersonalBoardSceneController {
         strongboxLabel.put(TypeResource.STONE,stoneLabel);
         return strongboxLabel;
     }
-    private ArrayList<ImageView> getCardSpacesView(){
+    public ArrayList<ImageView> getCardSpacesView(){
         ArrayList<ImageView> cardSpaceView = new ArrayList<>();
         cardSpaceView.add(cardSpace1);
         cardSpaceView.add(cardSpace2);
         cardSpaceView.add(cardSpace3);
         return cardSpaceView;
     }
-    private ArrayList<ImageView> getLeaderCardsView(){
+    private ArrayList<ImageView> getArrayListLeaderCardsView(){
         ArrayList<ImageView> leaderCardsView = new ArrayList<>();
         leaderCardsView.add(leaderCard1);
         leaderCardsView.add(leaderCard2);
@@ -526,14 +590,37 @@ public class PersonalBoardSceneController {
         specialDepotsView.add(specialDepot2);
         return specialDepotsView;
     }
-    private ArrayList<Pane> getPPPanes(){
-        ArrayList<Pane> panes = new ArrayList<>();
-        panes.add(standardPPPane);
-        panes.add(cardSpace1PPPane);
-        panes.add(cardSpace2PPPane);
-        panes.add(cardSpace3PPPane);
-        panes.add(leaderCard1PPPane);
-        panes.add(leaderCard2PPPane);
-        return panes;
+    private ArrayList<Pane> getDepotPanes(){
+        ArrayList<Pane> depotPanes=new ArrayList<>();
+        depotPanes.add(depot1Pane);
+        depotPanes.add(depot2Pane);
+        depotPanes.add(depot3Pane);
+        depotPanes.add(depot4Pane);
+        depotPanes.add(depot5Pane);
+        return depotPanes;
+    }
+    private void disableDepotPanes(){
+        for(Pane pane:getDepotPanes()){
+            pane.setDisable(true);
+        }
+    }
+    private void notVisibleDepotPanes(){
+        for(int i=0;i<3;i++){
+            getDepotPanes().get(i).setVisible(false);
+        }
+    }
+    public void setTurnAction(TurnAction action){this.action =action;}
+    private Integer getIdFromLeaderCardView(ImageView image){
+        for(Integer id:leaderCardsView.keySet()){
+            if(leaderCardsView.get(id).equals(image)){
+                return id;
+            }
+        }
+        return 0;
+    }
+    private void setAllLeaderDisable(){
+        for(ImageView image:getArrayListLeaderCardsView()){
+            image.setDisable(true);
+        }
     }
 }

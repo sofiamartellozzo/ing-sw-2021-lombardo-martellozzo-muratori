@@ -240,6 +240,9 @@ public class GUI extends Application implements ViewObserver {
         if(msg.getUsername().equals(username)) {
             if (msg.getWhatFor().equals("initialization")) {
                 initializeSceneController.chooseLeaderCard(msg);
+            }else if(msg.getWhatFor().equals("active")||msg.getWhatFor().equals("remove")){
+                System.out.println(msg.getWhatFor());
+                personalBoardSceneController.chooseLeaderCard(msg);
             }
         }
 
@@ -558,6 +561,9 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
         System.out.println(msg.toString());
+        if(msg.getUsername().equals(getUsername())) {
+            personalBoardSceneController.chooseFromDepot(msg);
+        }
     }
 
     @Override
@@ -619,6 +625,9 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
         System.out.println(msg.toString());
+        if(msg.getMsgContent().contains(username)){
+
+        }
     }
 
 }

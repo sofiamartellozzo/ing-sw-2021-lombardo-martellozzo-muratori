@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TitledPane?>
@@ -10,6 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.DevCardTableSceneController">
@@ -31,62 +33,62 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="devCard1_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <ImageView fx:id="devCard1_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_1" onMouseEntered="#mouseEnteredDevCard1_1" onMouseExited="#mouseExitedDevCard1_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard2_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <ImageView fx:id="devCard2_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_1" onMouseEntered="#mouseEnteredDevCard2_1" onMouseExited="#mouseExitedDevCard2_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard3_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <ImageView fx:id="devCard3_1" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_1" onMouseEntered="#mouseEnteredDevCard3_1" onMouseExited="#mouseExitedDevCard3_1" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard1_2" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <ImageView fx:id="devCard1_2" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_2" onMouseEntered="#mouseEnteredDevCard1_2" onMouseExited="#mouseExitedDevCard1_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard2_2" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <ImageView fx:id="devCard2_2" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_2" onMouseEntered="#mouseEnteredDevCard2_2" onMouseExited="#mouseExitedDevCard2_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard3_2" fitHeight="210.0" fitWidth="210.0" onMouseDragged="#clickDevCard3_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <ImageView fx:id="devCard3_2" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_2" onMouseEntered="#mouseEnteredDevCard3_2" onMouseExited="#mouseExitedDevCard3_2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard1_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <ImageView fx:id="devCard1_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_3" onMouseEntered="#mouseEnteredDevCard1_3" onMouseExited="#mouseExitedDevCard1_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard2_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <ImageView fx:id="devCard2_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_3" onMouseEntered="#mouseEnteredDevCard2_3" onMouseExited="#mouseExitedDevCard2_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard3_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                  <ImageView fx:id="devCard3_3" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_3" onMouseEntered="#mouseEnteredDevCard3_3" onMouseExited="#mouseExitedDevCard3_3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard1_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                  <ImageView fx:id="devCard1_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard1_4" onMouseEntered="#mouseEnteredDevCard1_4" onMouseExited="#mouseExitedDevCard1_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard2_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                  <ImageView fx:id="devCard2_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard2_4" onMouseEntered="#mouseEnteredDevCard2_4" onMouseExited="#mouseExitedDevCard2_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="devCard3_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                  <ImageView fx:id="devCard3_4" fitHeight="210.0" fitWidth="210.0" onMouseClicked="#clickDevCard3_4" onMouseEntered="#mouseEnteredDevCard3_4" onMouseExited="#mouseExitedDevCard3_4" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3">
                      <image>
                         <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
                      </image>
@@ -167,6 +169,24 @@
                      </children>
                   </GridPane>
                </content>
+            </TitledPane>
+            <TitledPane fx:id="errorPopup" animated="false" layoutX="215.0" layoutY="364.0" prefHeight="94.0" prefWidth="253.0">
+              <content>
+                  <VBox alignment="CENTER">
+                     <children>
+                        <Label fx:id="errorMessage" alignment="CENTER" text="Error message" textFill="#b70000">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="backButton" mnemonicParsing="false" onAction="#clickBackButton" text="&lt;- BACK">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+              </content>
             </TitledPane>
             <Button fx:id="backButton" layoutX="32.0" layoutY="28.0" mnemonicParsing="false" onAction="#clickBackButton" text="&lt;- BACK" />
          </children>

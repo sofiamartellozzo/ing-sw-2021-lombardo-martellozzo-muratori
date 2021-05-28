@@ -272,6 +272,7 @@ public class InitializeSceneController {
             if(chosenLeaderCards.size()==2){
                 gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose my leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose"));
                 leaderCardPane.setVisible(false);
+                gui.getPersonalBoardSceneController().updateLeaderCardsView(chosenLeaderCards);
             }
         }
     }

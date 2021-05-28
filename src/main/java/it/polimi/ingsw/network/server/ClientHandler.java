@@ -66,7 +66,7 @@ public class ClientHandler extends Observable implements Runnable {
         }
 
         /* start the ping process */
-        //startPing();
+        startPing();
 
 
         /* now wait listening for a message (Event) */

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -17,6 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="992.0" style="-fx-background-image: url(/images/personalboard/PersonalBoard.png);" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.PersonalBoardSceneController">
    <children>
@@ -423,7 +424,9 @@
                   <DropShadow />
                </effect>
             </ImageView>
-            <Pane fx:id="warehousePane" layoutX="-6.0" layoutY="-7.0" onMouseClicked="#chooseWarehousePane" prefHeight="168.0" prefWidth="120.0" />
+            <Pane fx:id="depot1Pane" layoutX="38.0" layoutY="11.0" prefHeight="35.0" prefWidth="44.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
+            <Pane fx:id="depot2Pane" layoutX="10.0" layoutY="51.0" prefHeight="45.0" prefWidth="94.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
+            <Pane fx:id="depot3Pane" layoutX="7.0" layoutY="102.0" prefHeight="45.0" prefWidth="105.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
          </children>
       </Pane>
       <Pane layoutX="150.0" layoutY="465.0" prefHeight="113.0" prefWidth="128.0">
@@ -533,9 +536,6 @@
                   <Image url="@../images/frontCards/DevelopmentCard%20(37).png" />
                </image>
             </ImageView>
-            <Pane fx:id="cardSpace1PPPane" layoutY="71.0" onMouseClicked="#chooseCardSpace1PPPane" prefHeight="203.0" prefWidth="134.0" />
-            <Pane fx:id="cardSpace2PPPane" layoutX="147.0" layoutY="74.0" onMouseClicked="#chooseCardSpace2PPPane" prefHeight="203.0" prefWidth="128.0" />
-            <Pane fx:id="cardSpace3PPPane" layoutX="280.0" layoutY="67.0" onMouseClicked="#chooseCardSpace3PPPane" prefHeight="209.0" prefWidth="134.0" />
          </children>
       </Pane>
       <Pane layoutX="4.0" layoutY="17.0" prefHeight="81.0" prefWidth="354.0">
@@ -554,12 +554,12 @@
       </Pane>
       <Pane layoutX="856.0" layoutY="93.0" prefHeight="548.0" prefWidth="134.0">
          <children>
-            <ImageView fx:id="leaderCard1" fitHeight="194.0" fitWidth="128.0" layoutX="3.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="leaderCard1" fitHeight="194.0" fitWidth="128.0" layoutX="3.0" layoutY="132.0" onMouseClicked="#clickLeaderCard1" onMouseEntered="#mouseEnteredLeaderCard1" onMouseExited="#mouseExitedLeaderCard1" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/backCards/LeaderCard%20(12).png" />
                </image>
             </ImageView>
-            <ImageView fx:id="leaderCard2" fitHeight="188.0" fitWidth="134.0" layoutX="3.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="leaderCard2" fitHeight="188.0" fitWidth="134.0" layoutX="3.0" layoutY="333.0" onMouseClicked="#clickLeaderCard2" onMouseEntered="#mouseEnteredLeaderCard2" onMouseExited="#mouseExitedLeaderCard2" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/backCards/LeaderCard%20(13).png" />
                </image>
@@ -569,40 +569,72 @@
                   <Font name="Yu Gothic Bold" size="11.0" />
                </font>
             </Label>
-            <Pane fx:id="leaderCard1PPPane" layoutY="136.0" onMouseClicked="#chooseLeaderCard1PPPane" prefHeight="188.0" prefWidth="134.0" />
-            <Pane fx:id="leaderCard2PPPane" layoutY="327.0" onMouseClicked="#chooseLeaderCard2PPPane" prefHeight="200.0" prefWidth="142.0" />
          </children>
       </Pane>
-      <Pane layoutX="3.0" layoutY="280.0" prefHeight="200.0" prefWidth="121.0">
+      <VBox layoutX="1.0" layoutY="332.0">
          <children>
-            <ImageView fx:id="specialDepot1" fitHeight="55.0" fitWidth="121.0" layoutY="77.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../ilaria/Desktop/Depot.PNG" />
-               </image>
-               <effect>
-                  <BoxBlur />
-               </effect>
-            </ImageView>
-            <ImageView fx:id="specialDepot2" fitHeight="45.0" fitWidth="134.0" layoutX="1.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../Users/ilaria/Desktop/Depot.PNG" />
-               </image>
-               <effect>
-                  <BoxBlur />
-               </effect>
-            </ImageView>
-            <Label fx:id="specialDepotLabel" alignment="CENTER" layoutX="1.0" layoutY="52.0" prefHeight="17.0" prefWidth="120.0" text="SPECIAL DEPOT:" textFill="#1b0de4">
+            <Label fx:id="specialDepotLabel" alignment="CENTER" prefHeight="17.0" prefWidth="120.0" text="SPECIAL DEPOT:" textFill="#1b0de4">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
+            <Pane fx:id="depot4Pane">
+               <children>
+                  <ImageView fx:id="specialDepot1" fitHeight="55.0" fitWidth="121.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/personalboard/SpecialDepotCoin.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resource4_1" fitHeight="37.0" fitWidth="46.0" layoutX="23.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/punchboard/coin.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </ImageView>
+                  <ImageView fx:id="resource4_2" fitHeight="37.0" fitWidth="46.0" layoutX="68.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/punchboard/coin.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane fx:id="depot5Pane">
+               <children>
+                  <ImageView fx:id="specialDepot2" fitHeight="55.0" fitWidth="121.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/personalboard/SpecialDepotShield.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="resource5_1" fitHeight="37.0" fitWidth="46.0" layoutX="27.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/punchboard/shield.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </ImageView>
+                  <ImageView fx:id="resource5_2" fitHeight="37.0" fitWidth="46.0" layoutX="71.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/punchboard/shield.png" />
+                     </image>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </ImageView>
+               </children>
+            </Pane>
          </children>
-      </Pane>
+      </VBox>
       <TitledPane fx:id="actionButtons" animated="false" layoutX="314.0" layoutY="250.0" text="Choose Action">
         <content>
             <VBox alignment="CENTER">
                <children>
-                  <Label fx:id="chooseActionMessage" text="Choose Action:" textFill="#990000">
+                  <Label fx:id="chooseActionMessage" alignment="CENTER" text="Choose Action:" textAlignment="CENTER" textFill="#990000">
                      <font>
                         <Font name="System Bold Italic" size="12.0" />
                      </font>
@@ -636,6 +668,24 @@
             </VBox>
         </content>
       </TitledPane>
-      <Pane fx:id="standardPPPane" layoutX="304.0" layoutY="443.0" onMouseClicked="#chooseStandardPPPane" prefHeight="89.0" prefWidth="94.0" />
+      <Pane fx:id="standardPPPane" layoutX="306.0" layoutY="443.0" onMouseClicked="#chooseStandardPPPane" prefHeight="89.0" prefWidth="94.0" style="-fx-background-color: rgba(255, 255, 255,0.1); -fx-border-color: grey;" />
+      <TitledPane fx:id="errorMessagePane" animated="false" layoutX="389.0" layoutY="551.0">
+        <content>
+            <VBox alignment="CENTER" prefHeight="0.0" prefWidth="175.0">
+               <children>
+                  <Text fx:id="errorMessageText" fill="#b10000" strokeType="OUTSIDE" strokeWidth="0.0" text="Error Message" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="okButton" mnemonicParsing="false" text="OK">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+        </content>
+      </TitledPane>
    </children>
 </AnchorPane>
