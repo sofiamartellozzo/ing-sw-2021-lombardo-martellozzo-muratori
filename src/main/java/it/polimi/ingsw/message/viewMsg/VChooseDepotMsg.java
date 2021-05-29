@@ -3,6 +3,8 @@ package it.polimi.ingsw.message.viewMsg;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.model.TypeResource;
 
+import java.util.ArrayList;
+
 /**
  * ActionController ---> VV ---> CLI
  *
@@ -11,9 +13,9 @@ import it.polimi.ingsw.model.TypeResource;
 public class VChooseDepotMsg extends ViewGameMsg{
 
     private final String username;
-    private TypeResource resourceToStore;
+    private ArrayList<TypeResource> resourceToStore;
 
-    public VChooseDepotMsg(String msgContent, String username, TypeResource resourceToStore) {
+    public VChooseDepotMsg(String msgContent, String username, ArrayList<TypeResource> resourceToStore) {
         super(msgContent);
         this.username = username;
         this.resourceToStore = resourceToStore;
@@ -23,7 +25,7 @@ public class VChooseDepotMsg extends ViewGameMsg{
         return username;
     }
 
-    public TypeResource getResourceToStore() {
+    public ArrayList<TypeResource> getResourceToStore() {
         return resourceToStore;
     }
 

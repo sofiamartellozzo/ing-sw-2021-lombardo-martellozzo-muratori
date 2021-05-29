@@ -1,6 +1,8 @@
 package it.polimi.ingsw.message.controllerMsg;
 
 import it.polimi.ingsw.message.ControllerObserver;
+import it.polimi.ingsw.model.TypeResource;
+import it.polimi.ingsw.model.cardAbility.SpecialAbility;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,7 @@ public class CChooseLeaderCardResponseMsg extends ControllerGameMsg {
         this.username = username;
         this.action = action;
     }
+
 
     public String getAction() {
         return action;

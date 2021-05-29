@@ -267,6 +267,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
+    @Override
+    public void receiveMsg(CStopMarketMsg msg) {
+        notifyAllObserver(ObserverType.CONTROLLER,msg);
+    }
+
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {

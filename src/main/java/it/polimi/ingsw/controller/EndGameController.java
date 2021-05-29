@@ -209,6 +209,11 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
+    public void receiveMsg(CStopMarketMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
         //NOT IMPLEMENTED HERE

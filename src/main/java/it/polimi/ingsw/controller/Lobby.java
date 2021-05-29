@@ -564,6 +564,17 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(CStopMarketMsg msg) {
+        //send to TurnController by Room and then to ActionController
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
+        }
+    }
+
 
 
     /*----------------------------------------------------------------------------------------------------------------*/

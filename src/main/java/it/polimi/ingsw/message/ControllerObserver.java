@@ -49,6 +49,8 @@ public interface ControllerObserver extends Observer{
     public void receiveMsg(CBuyFromMarketInfoMsg msg);
     /*if the player discard a resources from the market*/
     public void receiveMsg(CChooseDiscardResourceMsg msg);
+    /*msg used to stop the buying from the market*/
+    public void receiveMsg(CStopMarketMsg msg);
 
     /*from client (CLI) to the PPController, to activate it*/
     public void receiveMsg(CActivateProductionPowerResponseMsg msg);

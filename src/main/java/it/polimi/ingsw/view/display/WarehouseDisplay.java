@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.board.resourceManagement.Depot;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
+import it.polimi.ingsw.model.cardAbility.SpecialAbility;
 import it.polimi.ingsw.utility.AnsiColors;
 
 import java.util.ArrayList;
@@ -17,11 +18,11 @@ import java.util.ArrayList;
 public class WarehouseDisplay {
 
     private Warehouse warehouse;
-    private PlayerInterface player;
+    private TypeResource specialResource;
 
-    public WarehouseDisplay(Warehouse warehouse, PlayerInterface player){
+    public WarehouseDisplay(Warehouse warehouse, TypeResource specialResource){
         this.warehouse = warehouse;
-        this.player = player;
+        this.specialResource = specialResource;
     }
 
     /*public static void main(String[] args) throws InvalidActionException {
@@ -45,12 +46,22 @@ public class WarehouseDisplay {
         for (int i = 0; i < warehouse.getDepots().size(); i++) {
             Depot depot = warehouse.getDepots().get(i);
             if (depot.isEmpty()) {
-                System.out.print("DEPOT" + (i+1) + ":" + AnsiColors.RED_BOLD + " IS EMPTY\n" + AnsiColors.RESET);
+                if (i < 3 ) {
+                    System.out.print("DEPOT" + (i + 1) + ":" + AnsiColors.RED_BOLD + " IS EMPTY\n" + AnsiColors.RESET);
+                } else {
+                    System.out.print("SPECIAL DEPOT" + (i + 1) + ":(" + specialResource.toString() + ")" + AnsiColors.RED_BOLD + " IS EMPTY\n" + AnsiColors.RESET);
+                }
             } else {
-                System.out.print("DEPOT" + (i+1) + ":");
-                for (Resource res : depot.getResources()) {
-                    System.out.print(createResForCli(res));
-
+                if (i < 3) {
+                    System.out.print("DEPOT" + (i + 1) + ":");
+                    for (Resource res : depot.getResources()) {
+                        System.out.print(createResForCli(res));
+                    }
+                }else{
+                    System.out.print("SPECIAL DEPOT" + (i + 1) + ":(" + specialResource.toString() + ")");
+                    for (Resource res : depot.getResources()) {
+                        System.out.print(createResForCli(res));
+                    }
                 }
                 System.out.print("\n");
             }

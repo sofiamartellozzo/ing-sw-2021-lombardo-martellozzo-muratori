@@ -14,17 +14,23 @@ public class CMoveResourceInfoMsg extends ControllerGameMsg{
     private int fromDepot;
     private int toDepot;
     private TurnAction action;
+    private boolean nextA;
 
-    public CMoveResourceInfoMsg(String msgContent, String username, int fromDepot, int toDepot) {
+    public CMoveResourceInfoMsg(String msgContent, String username, int fromDepot, int toDepot, boolean nextA) {
         super(msgContent);
         this.username = username;
         this.fromDepot = fromDepot;
         this.toDepot = toDepot;
         this.action = TurnAction.MOVE_RESOURCE;
+        this.nextA = nextA;
     }
 
     public TurnAction getActionChose(){
         return action;
+    }
+
+    public boolean isNextA() {
+        return nextA;
     }
 
     public String getUsername() {

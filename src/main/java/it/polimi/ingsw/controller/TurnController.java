@@ -416,7 +416,7 @@ public class TurnController extends Observable implements ControllerObserver {
                 if (!turnSequence.get(key).getUsername().equals(msg.getUsername())) {
                     //not the player that discarded the resource
                     turnSequence.get(key).increasePosition();
-                    actionController.decrementNumberResourcesFromM();
+                    //actionController.decrementNumberResourcesFromM();
                     VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
                     //remember to set all the other players!!!!
                     notifyAllObserver(ObserverType.VIEW, notify);
@@ -424,7 +424,7 @@ public class TurnController extends Observable implements ControllerObserver {
             }
         } else {
             singlePlayer.getGameSpace().increaseLorenzoIlMagnifico();
-            actionController.decrementNumberResourcesFromM();
+            //actionController.decrementNumberResourcesFromM();
             VLorenzoIncreasedMsg notify = new VLorenzoIncreasedMsg("Lorenzo incresed his position", singlePlayer.getUsername(), singlePlayer, 1);
             notifyAllObserver(ObserverType.VIEW, notify);
 
@@ -432,6 +432,12 @@ public class TurnController extends Observable implements ControllerObserver {
 
         //check end game (because all player has increased their position of 1
         checkEndGame();
+    }
+
+    @Override
+    public void receiveMsg(CStopMarketMsg msg) {
+        //to ACTIONCONTROLLER
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
 

@@ -22,6 +22,8 @@ import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
+import it.polimi.ingsw.model.cardAbility.SpecialAbility;
+import it.polimi.ingsw.model.cardAbility.SpecialDepot;
 import it.polimi.ingsw.model.market.MarketStructure;
 import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.message.ViewObserver;
@@ -62,6 +64,10 @@ public class CLI extends Observable implements ViewObserver {
 
     //local variables used to save locally the dates about a player and his game space
 
+    private MarketCLI marketCLI;
+
+    private TypeResource specialResource;
+
     private Boolean soloMode;
     private BoardManager boardManager;
     private MarketStructure marketStructureData; //contains the data about the market
@@ -85,6 +91,12 @@ public class CLI extends Observable implements ViewObserver {
     private Map<String, Integer> antagonistLeaderCards;
     /* local info of opponent position on Fait Track */
     private Map<String, Integer> antagonistFaithMarkers;
+
+
+    public String getUsername() {
+        return username;
+    }
+
 
     public CLI(String[] args) {
 
@@ -160,8 +172,7 @@ public class CLI extends Observable implements ViewObserver {
                     connectionOFF = true;
                 }
             }
-        }
-        else{
+        } else {
             //write offline status!!!!
             WriteMessageDisplay.writeOfflineStatus();
             /*ask to set the username*/
@@ -264,7 +275,7 @@ public class CLI extends Observable implements ViewObserver {
             if (username.length() < 1) {
                 System.out.println("!! Invalid Usernam, insert a new one ");
 
-            }else{
+            } else {
                 correct = true;
             }
         }
@@ -296,12 +307,11 @@ public class CLI extends Observable implements ViewObserver {
         return size;
     }
 
-    private void sendMsg(GameMsg msg){
-        if (!offline){
+    private void sendMsg(GameMsg msg) {
+        if (!offline) {
             //send it throw the net
             client.sendMsg(msg);
-        }
-        else{
+        } else {
             //send to the VV
             //offlineVirtualView.notifyAllObserver(ObserverType.CONTROLLER,msg);
             //msg.notifyHandler((ControllerObserver) offlineVirtualView);
@@ -504,6 +514,85 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+
+    public void buyFromMarket(TypeResource resource) {
+
+        in = new Scanner(System.in);
+        in.reset();
+        int choice = 0;
+        int depot = 0;
+        int fromDepot = 0;
+        int toDepot = 0;
+
+        printCLIMessage("Resource " + resource.toString()+": \n" + " 0 --> move depots \n" +
+                " 1 --> keep resource \n" +
+                " 2 --> discard resource \n");
+
+        try {
+            choice = in.nextInt();
+        } catch (InputMismatchException eio) {
+            printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
+            in.nextLine();
+        }
+        if (choice == 0) {
+            // if the player before chooses to move the depots
+            //MarketCLI marketCLI = new MarketCLI(msg.getResourceToStore(), this);
+            showWarehouse(warehouse,specialResource);
+            printCLIMessage("You choose to move two depots, now type the two depot that you want to move, pressing ENTER between them");
+
+            in = new Scanner(System.in);
+            in.reset();
+            try {
+                fromDepot = in.nextInt();
+                toDepot = in.nextInt();
+
+            } catch (InputMismatchException eio) {
+                printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
+                in.nextLine();
+            }
+
+            //resourcePut = false;
+            //arrived = false;
+            marketCLI.setWaitMove(true);
+            CMoveResourceInfoMsg move = new CMoveResourceInfoMsg("I choose to move two depots", username, fromDepot, toDepot, false);
+            sendMsg(move);
+
+
+        } else if (choice == 1 || choice == 2) {
+                if (choice == 1) {
+                printCLIMessage("You decided to keep the resource ! ");
+                printCLIMessage("Choose the depot [1,2,3] where to store this resource: ");
+                try {
+                    depot = in.nextInt();
+                } catch (InputMismatchException eio) {
+                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
+                    in.nextLine();
+                }
+
+                Color rC = resource.getThisColor();
+                CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("the choice of the player for a resources received", rC, depot, username);
+                sendMsg(response);
+                marketCLI.setResourceStored(false);
+
+                } else {
+
+                CChooseDiscardResourceMsg discard = new CChooseDiscardResourceMsg("the player choose to discard the resources", username);
+                sendMsg(discard);
+                marketCLI.setResourceStored(true);
+                marketCLI.handleResources();
+
+            }
+        }
+    }
+
+    public void endMarket(){
+
+        if(marketCLI != null) {
+            marketCLI = null;
+            CStopMarketMsg msg = new CStopMarketMsg("I finished buying from market", username, TurnAction.BUY_FROM_MARKET);
+            sendMsg(msg);
+        }
+    }
     /*---------------------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
@@ -624,8 +713,8 @@ public class CLI extends Observable implements ViewObserver {
             printCLIMessage(msg.getMsgContent());
             //printCLIMessage(" The actions that you are allowed to do are: " + msg.getAvailableActions());
             printCLIMessage(" The actions that you are allowed to do are: ");
-            for (TurnAction action: msg.getAvailableActions()) {
-                printCLIMessage("- "+action.toString());
+            for (TurnAction action : msg.getAvailableActions()) {
+                printCLIMessage("- " + action.toString());
             }
             printCLIMessage("\n");
             printCLIMessage(" Write the action you chose with _ between every word!! ");
@@ -741,6 +830,7 @@ public class CLI extends Observable implements ViewObserver {
             chosenCards.add(cardId1);
             chosenCards.add(cardId2);
 
+
             /* put the remaining cards not chosen by the player in another ArrayList*/
             for (Integer card : msg.getMiniDeckLeaderCardFour()) {
                 if (!card.equals(cardId1) && card != cardId2) {
@@ -762,8 +852,16 @@ public class CLI extends Observable implements ViewObserver {
                 in.reset();
 
                 int cardToRemoveOrActivate = in.nextInt();
-                CChooseLeaderCardResponseMsg response2 = new CChooseLeaderCardResponseMsg(" chosen cards ", cardToRemoveOrActivate, msg.getUsername(), msg.getWhatFor());
-                sendMsg(response2);
+                if( leaderCards.getLeaderCardById(cardToRemoveOrActivate).getSpecialAbility() instanceof SpecialDepot){
+                    specialResource = leaderCards.getLeaderCardById(cardToRemoveOrActivate).getSpecialResource();
+                }
+                //debugging
+                if(specialResource!= null){
+                    System.out.println(specialResource.toString());
+                }
+                    CChooseLeaderCardResponseMsg response2 = new CChooseLeaderCardResponseMsg(" chosen cards ", cardToRemoveOrActivate, msg.getUsername(), msg.getWhatFor());
+                    sendMsg(response2);
+
 
             } else {
                 printCLIMessage("Sorry you cannot " + msg.getWhatFor() + " any Leader Card!");
@@ -919,9 +1017,18 @@ public class CLI extends Observable implements ViewObserver {
 
     @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {
+
+        //System.out.println("here in update");
         warehouse = msg.getWarehouse();
-        //System.out.println(" Here is your Warehouse updated ");
-        //showWarehouse(warehouse, player);
+
+        if(marketCLI != null) {
+            if (!marketCLI.isWaitMove()) {
+                marketCLI.setResourceStored(true);
+            } else {
+                marketCLI.setWaitMove(false);
+            }
+            marketCLI.handleResources();
+        }
     }
 
 
@@ -937,9 +1044,6 @@ public class CLI extends Observable implements ViewObserver {
 
         if (msg.getUsernameIncreased().equals(username)) {
             printCLIMessage("Congratulations, your faith Marker increased his position of " + msg.getNumberOfPositionIncreased() + " position!");
-            // locally increasing the position of the faith Marker
-            //faithTrack.getFaithMarker().increasePosition();    //HEREEEEEEE
-            //showFaithTrack(faithTrack);
 
         } else if (msg.getAllPlayerToNotify().contains(username)) {
             System.out.println(AnsiColors.YELLOW_BOLD + msg.getUsernameIncreased() + AnsiColors.RESET + " increased his position of: " + msg.getNumberOfPositionIncreased() + " position");
@@ -963,7 +1067,7 @@ public class CLI extends Observable implements ViewObserver {
             printCLIMessage("You can't put in Depot " + msg.getUnableDepot() + "the resource (identified by color) --> " + msg.getResourceChooseBefore() + " that you choose before! ");
 
             printCLIMessage("Here is your actual situation! ");
-            showWarehouse(warehouse);
+            showWarehouse(warehouse,specialResource);
 
             System.out.print("\n");
             printCLIMessage(" Please insert a new depot for this resource [number from 1 to 5] if you want to discard it send 0!");
@@ -977,11 +1081,11 @@ public class CLI extends Observable implements ViewObserver {
                 in.nextLine();
             }
 
-            if(newDepot != 0) {
+            if (newDepot != 0) {
                 CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("I made my choice!", msg.getResourceChooseBefore(), newDepot, username);
                 sendMsg(response);
-            }
-            else{     //if he decides to discard the resource
+            } else {
+                //if he decides to discard the resource
                 CChooseDiscardResourceMsg response1 = new CChooseDiscardResourceMsg("I chose to discard this resource", username);
                 sendMsg(response1);
             }
@@ -1057,7 +1161,7 @@ public class CLI extends Observable implements ViewObserver {
                     in.nextLine();
                 }
 
-                cardSpace = cardSpace1-1;
+                cardSpace = cardSpace1 - 1;
 
                 while (!correct) {
 
@@ -1125,7 +1229,7 @@ public class CLI extends Observable implements ViewObserver {
                 in = new Scanner(System.in);
                 in.reset();
 
-                showWarehouse(warehouse);
+                showWarehouse(warehouse,specialResource);
                 System.out.println(" Write the origin depot from where you want to move: ");
 
                 try {
@@ -1145,7 +1249,7 @@ public class CLI extends Observable implements ViewObserver {
 
                 if (msg.getDepotsActualSituation().containsKey(fromDepot) && msg.getDepotsActualSituation().containsKey(toDepot)) {
 
-                    CMoveResourceInfoMsg response = new CMoveResourceInfoMsg(" I choose from where and to where I want to put my resource ", username, fromDepot, toDepot);
+                    CMoveResourceInfoMsg response = new CMoveResourceInfoMsg(" I choose from where and to where I want to put my resource ", username, fromDepot, toDepot, true);
                     sendMsg(response);
                     correct = true;
 
@@ -1177,6 +1281,7 @@ public class CLI extends Observable implements ViewObserver {
 
             // show the player the current market situation
             showMarketStructure(marketStructureData);
+            showWarehouse(warehouse,specialResource);
 
             boolean valid = false;
 
@@ -1234,46 +1339,36 @@ public class CLI extends Observable implements ViewObserver {
         if (msg.getUsername().equals(username)) {
             printCLIMessage(" That's the updated situation of your market! ");
             showMarketStructure(marketStructureData);
-            showWarehouse(warehouse);
+            //showWarehouse(warehouse,specialResource);
         }
     }
 
     @Override
     public void receiveMsg(VUpdateFaithTrackMsg msg) {
         faithTrack = msg.getFaithTrack();
-        if(msg.getUsername().equals(username)){
+        if (msg.getUsername().equals(username)) {
             printCLIMessage("That's the updated Faith Track");
             showFaithTrack(faithTrack);
         }
     }
 
+    /**
+     * msg received from the market when the player has to choose for each resources the depot where to put it
+     *
+     * @param msg
+     */
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
-        //...
-        int depot = 0;
-        printCLIMessage("Choose where to store this resource: " + msg.getResourceToStore() + " if you want to discard it send 0");
-        //showWarehouse(this.warehouse, this.player);
-        in = new Scanner(System.in);
-        in.reset();
-        try {
-            depot = in.nextInt();
-        } catch (InputMismatchException eio) {
-            printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
-            in.nextLine();
-        }
 
-        Color rC = msg.getResourceToStore().getThisColor();
+        printCLIMessage(msg.getMsgContent());
+            marketCLI = new MarketCLI(msg.getResourceToStore(), this);
+            marketCLI.setResourceStored(false);
+            marketCLI.handleResources();
 
-        if (depot != 0) {
-            CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("the choice of the player for a resources recived", rC, depot, msg.getUsername());
-            sendMsg(response);
-
-        } else {
-            CChooseDiscardResourceMsg discard = new CChooseDiscardResourceMsg("the player choose to discard the resources", msg.getUsername());
-            sendMsg(discard);
-        }
 
     }
+
+
 
     @Override
     public void receiveMsg(VLorenzoIncreasedMsg msg) {
@@ -1332,7 +1427,7 @@ public class CLI extends Observable implements ViewObserver {
                     in.reset();
                     printCLIMessage("Insert from where you want to take the resources to pay the production (strongBox or wareHouse) ");
                     showStrongBox(strongBox);
-                    showWarehouse(warehouse);
+                    showWarehouse(warehouse,specialResource);
                     correct = false;
 
                     while (!correct) {
@@ -1352,7 +1447,7 @@ public class CLI extends Observable implements ViewObserver {
 
                     if(where.toLowerCase().equals("warehouse")){
                         System.out.println("HERE IS YOUR WAREHOUSE! ");
-                        showWarehouse(warehouse);
+                        showWarehouse(warehouse,specialResource);
                     }else{
                         System.out.println("HERE IS YOUR STRONGBOX! ");
                         showStrongBox(strongBox);
@@ -1361,6 +1456,10 @@ public class CLI extends Observable implements ViewObserver {
 
                         printCLIMessage("Good, you activated the base Production Power! ");
                         printCLIMessage("Choose the two resources that you want to pay to activate the PP! ");
+                        printCLIMessage("- COIN 💰\n" +
+                                "- SERVANT 👾\n" +
+                                "- SHIELD 🥏\n" +
+                                "- STONE 🗿\n");
 
                         in = new Scanner(System.in);
                         in.reset();
@@ -1515,9 +1614,9 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VAnotherPlayerInfoMsg msg) {
         PlayerInterface otherPlayer = msg.getPlayer();
-        printCLIMessage("you asked to see the " + otherPlayer.getUsername() + " stuff: ");
+        printCLIMessage("you asked to see the " + AnsiColors.BLUE_BOLD+ otherPlayer.getUsername()+AnsiColors.RESET + " stuff: ");
         showFaithTrack(otherPlayer.getGameSpace().getFaithTrack());
-        showWarehouse(otherPlayer.getGameSpace().getWarehouse());
+        showWarehouse(otherPlayer.getGameSpace().getWarehouse(),null);
         showStrongBox(otherPlayer.getGameSpace().getStrongbox());
         showCardSpaces(otherPlayer.getGameSpace().getCardSpaces());
     }
@@ -1525,12 +1624,12 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VWhichPlayerRequestMsg msg) {
         if (username.equals(msg.getUsername())) {
-            printCLIMessage("You ask to see the information of another player, please insert the username of which one:");
+            printCLIMessage("You asked to see the information of another player, please insert his username from this below:");
             for (String username : msg.getOtherPlayers()) {
-                printCLIMessage(username);
+                printCLIMessage(AnsiColors.BLUE_BOLD+username+AnsiColors.RESET);
             }
-            printCLIMessage("Or if you want you can also see YOUR actual situation :)");
-            printCLIMessage("Your Username:"+ msg.getUsername());
+            printCLIMessage("Or if you want you can also see YOUR actual situation typing your username :)");
+            printCLIMessage("your Username: \n"+AnsiColors.BLUE_BOLD+msg.getUsername()+AnsiColors.RESET);
 
             in = new Scanner(System.in);
             String userChosen = in.nextLine();
@@ -1613,8 +1712,8 @@ public class CLI extends Observable implements ViewObserver {
      *
      * @param warehouse
      */
-    private void showWarehouse(Warehouse warehouse) {
-        WarehouseDisplay warehouseDisplay = new WarehouseDisplay(warehouse, player);
+    private void showWarehouse(Warehouse warehouse,TypeResource specialResource) {
+        WarehouseDisplay warehouseDisplay = new WarehouseDisplay(warehouse,specialResource);
         warehouseDisplay.displayWarehouse();
     }
 

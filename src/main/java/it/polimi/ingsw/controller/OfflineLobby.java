@@ -122,6 +122,11 @@ public class OfflineLobby extends Observable implements ControllerObserver {
     }
 
     @Override
+    public void receiveMsg(CStopMarketMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
         offlineRoom.notifyAllObserver(ObserverType.CONTROLLER, msg);
     }

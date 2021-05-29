@@ -434,6 +434,11 @@ public class InitializedController extends Observable implements ControllerObser
 
     }
 
+    @Override
+    public void receiveMsg(CStopMarketMsg msg) {
+
+    }
+
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {

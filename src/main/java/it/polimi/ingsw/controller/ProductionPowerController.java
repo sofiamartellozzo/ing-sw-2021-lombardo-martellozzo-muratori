@@ -271,6 +271,10 @@ public class ProductionPowerController extends Observable implements ControllerO
         //not here
     }
 
+    @Override
+    public void receiveMsg(CStopMarketMsg msg) {
+
+    }
 
 
 }
