@@ -117,6 +117,7 @@ public class InitializeSceneController {
 
     public void clickDiscardButton(){
         chooseResourcePane.setVisible(false);
+        chooseDepotPane.setVisible(false);
         discardButton.setDisable(true);
         gui.sendMsg(new CChooseDiscardResourceMsg("I want to discard this resource",gui.getUsername()));
     }

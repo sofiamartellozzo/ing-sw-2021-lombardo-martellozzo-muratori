@@ -125,7 +125,12 @@ public abstract class Warehouse implements Serializable {
                     }
                 }
             } else {
-                throw new InvalidActionException("There's no resource to be moved!");
+                //Check if to is also empty
+                if(!to.isEmpty()){
+                    //if not re-call the method but with the depot exchanged
+                    moveResource(toDepot,fromDepot);
+                }
+                //else if both the depot are empty don't do anything
             }
 
         }

@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="992.0" style="-fx-background-image: url(/images/personalboard/PersonalBoard.png);" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.PersonalBoardSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.PersonalBoardSceneController">
    <children>
       <ImageView fitHeight="518.0" fitWidth="746.0" layoutX="130.21" layoutY="96.0" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="130.21" AnchorPane.rightAnchor="137.0094213867187" AnchorPane.topAnchor="96.0">
          <image>
@@ -424,9 +424,9 @@
                   <DropShadow />
                </effect>
             </ImageView>
-            <Pane fx:id="depot1Pane" layoutX="38.0" layoutY="11.0" prefHeight="35.0" prefWidth="44.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
-            <Pane fx:id="depot2Pane" layoutX="10.0" layoutY="51.0" prefHeight="45.0" prefWidth="94.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
-            <Pane fx:id="depot3Pane" layoutX="7.0" layoutY="102.0" prefHeight="45.0" prefWidth="105.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
+            <Pane fx:id="depot1Pane" layoutX="38.0" layoutY="11.0" onMouseClicked="#clickDepot1Pane" onMouseEntered="#mouseEnteredDepot1Pane" onMouseExited="#mouseExitedDepot1Pane" prefHeight="35.0" prefWidth="44.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
+            <Pane fx:id="depot2Pane" layoutX="10.0" layoutY="51.0" onMouseClicked="#clickDepot2Pane" onMouseEntered="#mouseEnteredDepot2Pane" onMouseExited="#mouseExitedDepot2Pane" prefHeight="45.0" prefWidth="94.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
+            <Pane fx:id="depot3Pane" layoutX="7.0" layoutY="102.0" onMouseClicked="#clickDepot3Pane" onMouseEntered="#mouseEnteredDepot3Pane" onMouseExited="#mouseExitedDepot3Pane" prefHeight="45.0" prefWidth="105.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-radius: 50; -fx-border-color: grey;" />
          </children>
       </Pane>
       <Pane layoutX="150.0" layoutY="465.0" prefHeight="113.0" prefWidth="128.0">
@@ -516,24 +516,24 @@
                   </HBox>
                </children>
             </GridPane>
-            <Pane fx:id="strongBoxPane" layoutX="-2.0" layoutY="-6.0" onMouseClicked="#chooseStrongBoxPane" prefHeight="126.0" prefWidth="134.0" />
+            <Pane fx:id="strongBoxPane" layoutX="-2.0" layoutY="-6.0" onMouseClicked="#clickStrongBoxPane" onMouseEntered="#mouseEnteredStrongBoxPane" onMouseExited="#mouseExitedStrongBoxPane" prefHeight="126.0" prefWidth="134.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-color: grey; -fx-border-radius: 20;" />
          </children>
       </Pane>
       <Pane layoutX="407.0" layoutY="281.0" prefHeight="325.0" prefWidth="427.0">
          <children>
-            <ImageView fx:id="cardSpace1" fitHeight="203.0" fitWidth="135.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cardSpace1" fitHeight="203.0" fitWidth="135.0" layoutY="69.0" onMouseClicked="#clickCardSpace1" onMouseEntered="#mouseEnteredCardSpace1" onMouseExited="#mouseExitedCardSpace1" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/frontCards/DevelopmentCard%20(1).png" />
+                  <Image url="@../images/frontCards/DevelopmentCard (1).png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cardSpace2" fitHeight="203.0" fitWidth="135.0" layoutX="141.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cardSpace2" fitHeight="203.0" fitWidth="135.0" layoutX="141.0" layoutY="70.0" onMouseClicked="#clickCardSpace2" onMouseEntered="#mouseEnteredCardSpace2" onMouseExited="#mouseExitedCardSpace2" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/frontCards/DevelopmentCard%20(15).png" />
+                  <Image url="@../images/frontCards/DevelopmentCard (15).png" />
                </image>
             </ImageView>
-            <ImageView fx:id="cardSpace3" fitHeight="203.0" fitWidth="135.0" layoutX="283.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cardSpace3" fitHeight="203.0" fitWidth="135.0" layoutX="283.0" layoutY="70.0" onMouseClicked="#clickCardSpace3" onMouseEntered="#mouseEnteredCardSpace3" onMouseExited="#mouseExitedCardSpace3" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/frontCards/DevelopmentCard%20(37).png" />
+                  <Image url="@../images/frontCards/DevelopmentCard (37).png" />
                </image>
             </ImageView>
          </children>
@@ -556,12 +556,12 @@
          <children>
             <ImageView fx:id="leaderCard1" fitHeight="194.0" fitWidth="128.0" layoutX="3.0" layoutY="132.0" onMouseClicked="#clickLeaderCard1" onMouseEntered="#mouseEnteredLeaderCard1" onMouseExited="#mouseExitedLeaderCard1" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/backCards/LeaderCard%20(12).png" />
+                  <Image url="@../images/backCards/LeaderCard (12).png" />
                </image>
             </ImageView>
             <ImageView fx:id="leaderCard2" fitHeight="188.0" fitWidth="134.0" layoutX="3.0" layoutY="333.0" onMouseClicked="#clickLeaderCard2" onMouseEntered="#mouseEnteredLeaderCard2" onMouseExited="#mouseExitedLeaderCard2" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/backCards/LeaderCard%20(13).png" />
+                  <Image url="@../images/backCards/LeaderCard (13).png" />
                </image>
             </ImageView>
             <Label alignment="CENTER" layoutX="3.0" layoutY="97.0" prefHeight="35.0" prefWidth="128.0" text="YOUR LEADER CARDS:" textFill="#1806b9">
@@ -578,7 +578,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Pane fx:id="depot4Pane">
+            <Pane fx:id="depot4Pane" onMouseClicked="#clickDepot4Pane" onMouseEntered="#mouseEnteredDepot4Pane" onMouseExited="#mouseExitedDepot4Pane">
                <children>
                   <ImageView fx:id="specialDepot1" fitHeight="55.0" fitWidth="121.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -603,7 +603,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane fx:id="depot5Pane">
+            <Pane fx:id="depot5Pane" onMouseClicked="#clickDepot5Pane" onMouseEntered="#mouseEnteredDepot5Pane" onMouseExited="#mouseExitedDepot5Pane">
                <children>
                   <ImageView fx:id="specialDepot2" fitHeight="55.0" fitWidth="121.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -668,7 +668,7 @@
             </VBox>
         </content>
       </TitledPane>
-      <Pane fx:id="standardPPPane" layoutX="306.0" layoutY="443.0" onMouseClicked="#chooseStandardPPPane" prefHeight="89.0" prefWidth="94.0" style="-fx-background-color: rgba(255, 255, 255,0.1); -fx-border-color: grey;" />
+      <Pane fx:id="standardPPPane" layoutX="306.0" layoutY="443.0" onMouseClicked="#clickStandardPPPane" onMouseEntered="#mouseEnteredStandardPPPane" onMouseExited="#mouseExitedStandardPPPane" prefHeight="89.0" prefWidth="94.0" style="-fx-background-color: rgba(255, 255, 255,0.1); -fx-border-color: grey;" />
       <TitledPane fx:id="errorMessagePane" animated="false" layoutX="389.0" layoutY="551.0">
         <content>
             <VBox alignment="CENTER" prefHeight="0.0" prefWidth="175.0">
@@ -678,7 +678,7 @@
                         <Font name="System Bold Italic" size="12.0" />
                      </font>
                   </Text>
-                  <Button fx:id="okButton" mnemonicParsing="false" text="OK">
+                  <Button fx:id="okButton" mnemonicParsing="false" onAction="#clickOKButton" text="OK">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>

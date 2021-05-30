@@ -218,7 +218,11 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VChooseResourceAndDepotMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
+            if(stage.getScene().equals(initializeScene)) {
                 initializeSceneController.chooseResource();
+            }else if(stage.getScene().equals(marketStructureScene)){
+                marketStructureSceneController.chooseResource();
+            }
         }
     }
 
@@ -562,13 +566,17 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VMoveResourceRequestMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(getUsername())) {
-            personalBoardSceneController.chooseFromDepot(msg);
+            personalBoardSceneController.chooseDepots();
         }
     }
 
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
         System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)){
+            marketStructureSceneController.setResourcesToStore(msg.getResourceToStore());
+            marketStructureSceneController.chooseDepot();
+        }
     }
 
     @Override

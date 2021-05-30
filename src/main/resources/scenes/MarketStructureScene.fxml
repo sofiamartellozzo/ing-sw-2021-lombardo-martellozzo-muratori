@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="833.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.MarketStructureSceneController">
@@ -27,70 +34,81 @@
             <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="266.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="266.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fitHeight="67.0" fitWidth="62.0" layoutX="276.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
-            <Pane layoutX="267.0" layoutY="200.0" prefHeight="174.0" prefWidth="231.0">
+            <GridPane layoutX="267.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="225.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="72.8000244140625" minWidth="10.0" prefWidth="50.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="72.79998779296875" minWidth="10.0" prefWidth="50.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="59.19998779296875" minHeight="10.0" prefHeight="59.19998779296875" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.80002441406249" minHeight="10.0" prefHeight="60.80002441406249" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="45.600012207031256" minHeight="10.0" prefHeight="35.999975585937506" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <ImageView fx:id="marble1_1" fitHeight="71.0" fitWidth="58.0" layoutX="2.0" layoutY="-3.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble1_1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble2_1" fitHeight="79.0" fitWidth="62.0" layoutX="1.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble2_1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/market/grey_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble3_1" fitHeight="58.0" fitWidth="58.0" layoutX="2.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble3_1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/market/blue_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble1_2" fitHeight="58.0" fitWidth="58.0" layoutX="59.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble1_2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                      <image>
                         <Image url="@../images/market/red_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble2_2" fitHeight="86.0" fitWidth="62.0" layoutX="57.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble2_2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/market/yellow_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble3_2" fitHeight="58.0" fitWidth="58.0" layoutX="60.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble3_2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/market/blue_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble1_3" fitHeight="79.0" fitWidth="62.0" layoutX="118.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble1_3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                      <image>
                         <Image url="@../images/market/grey_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble2_3" fitHeight="67.0" fitWidth="62.0" layoutX="116.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble2_3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/market/white_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble3_3" fitHeight="71.0" fitWidth="58.0" layoutX="117.0" layoutY="109.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble3_3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble1_4" fitHeight="67.0" fitWidth="58.0" layoutX="172.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble1_4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                      <image>
                         <Image url="@../images/market/red_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble2_4" fitHeight="67.0" fitWidth="58.0" layoutX="173.0" layoutY="55.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble2_4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble3_4" fitHeight="79.0" fitWidth="62.0" layoutX="174.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="marble3_4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/market/yellow_marble.png" />
                      </image>
                   </ImageView>
                </children>
-            </Pane>
+            </GridPane>
             <Pane layoutX="155.0" layoutY="-41.0" prefHeight="85.0" prefWidth="382.0">
                <children>
                   <Label alignment="CENTER" layoutX="-1.0" layoutY="29.0" prefHeight="27.0" prefWidth="382.0" text="HERE IS THE MARKET TABLE: " textFill="#3a07c9">
@@ -106,7 +124,7 @@
             </Pane>
             <Pane layoutX="190.0" layoutY="124.0" prefHeight="79.0" prefWidth="366.0">
                <children>
-                  <ImageView fx:id="outMarble" fitHeight="70.0" fitWidth="62.0" layoutX="289.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="outMarble" fitHeight="50.0" fitWidth="50.0" layoutX="293.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/white_marble.png" />
                      </image>
@@ -158,6 +176,162 @@
             </Pane>
          </children>
       </Pane>
-      <Button layoutX="35.0" layoutY="29.0" mnemonicParsing="false" onAction="#clickBackButton" text="&lt;- BACK" />
+      <TitledPane fx:id="chooseDepotPane" animated="false" layoutX="142.0" layoutY="141.0" prefHeight="473.0" prefWidth="414.0" text="Choose Depot">
+        <content>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="message" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="150.0" text="Choose a depot&#10;where to store this resource:" textAlignment="CENTER" />
+                        <ImageView fx:id="resource" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/coin.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="resourceLabel" text="COIN">
+                           <font>
+                              <Font name="System Bold Italic" size="22.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="moveResourceButton" mnemonicParsing="false" onAction="#clickMoveResourceButton" text="Move Resources">
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button fx:id="discardButton" mnemonicParsing="false" onAction="#clickDiscardButton" text="Discard">
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="310.0" prefWidth="230.0">
+                     <children>
+                        <Pane prefHeight="424.0" prefWidth="230.0">
+                           <children>
+                              <ImageView fitHeight="224.0" fitWidth="256.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/personalboard/Warehouse.png" />
+                                 </image>
+                              </ImageView>
+                              <Pane fx:id="depot4" layoutX="15.0" layoutY="234.0" onMouseClicked="#clickDepot4" onMouseEntered="#mouseEnteredDepot4" onMouseExited="#mouseExitedDepot4">
+                                 <children>
+                                    <ImageView fx:id="specialDepot1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/personalboard/SpecialDepotCoin.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="resource4_1" fitHeight="67.0" fitWidth="62.0" layoutX="32.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource4_2" fitHeight="67.0" fitWidth="62.0" layoutX="107.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="depot5" layoutX="15.0" layoutY="322.0" onMouseClicked="#clickDepot5" onMouseEntered="#mouseEnteredDepot5" onMouseExited="#mouseExitedDepot5">
+                                 <children>
+                                    <ImageView fx:id="specialDepot2" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/personalboard/SpecialDepotServant.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fx:id="resource5_1" fitHeight="67.0" fitWidth="62.0" layoutX="31.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource5_2" fitHeight="67.0" fitWidth="62.0" layoutX="108.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="depot1" layoutX="87.0" layoutY="39.0" onMouseClicked="#clickDepot1" onMouseEntered="#mouseEnteredDepot1" onMouseExited="#mouseExitedDepot1" prefHeight="49.0" prefWidth="83.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-color: grey; -fx-border-radius: 50;">
+                                 <children>
+                                    <ImageView fx:id="resource1_1" fitHeight="67.0" fitWidth="62.0" layoutX="11.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="depot2" layoutX="64.0" layoutY="95.0" onMouseClicked="#clickDepot2" onMouseEntered="#mouseEnteredDepot2" onMouseExited="#mouseExitedDepot2" prefHeight="50.0" prefWidth="126.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-color: grey; -fx-border-radius: 50;">
+                                 <children>
+                                    <ImageView fx:id="resource2_1" fitHeight="67.0" fitWidth="62.0" layoutX="9.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource2_2" fitHeight="67.0" fitWidth="62.0" layoutX="51.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="depot3" layoutX="44.0" layoutY="153.0" onMouseClicked="#clickDepot3" onMouseEntered="#mouseEnteredDepot3" onMouseExited="#mouseExitedDepot3" prefHeight="50.0" prefWidth="155.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-color: grey; -fx-border-radius: 50;">
+                                 <children>
+                                    <ImageView fx:id="resource3_1" fitHeight="67.0" fitWidth="62.0" layoutX="9.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource3_2" fitHeight="67.0" fitWidth="62.0" layoutX="49.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource3_3" fitHeight="67.0" fitWidth="62.0" layoutX="91.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+        </content>
+      </TitledPane>
+      <Button fx:id="backButton" layoutX="35.0" layoutY="29.0" mnemonicParsing="false" onAction="#clickBackButton" text="&lt;- BACK" />
    </children>
 </AnchorPane>

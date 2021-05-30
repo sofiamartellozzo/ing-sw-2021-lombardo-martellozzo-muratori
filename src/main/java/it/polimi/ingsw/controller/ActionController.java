@@ -539,7 +539,7 @@ public class ActionController extends Observable implements ControllerObserver {
                         notifyAllObserver(ObserverType.VIEW, notification);
                         notifyAllObserver(ObserverType.VIEW, msg1);
 
-
+                        endAction=true;
                         nextAction();
                     } catch (InvalidActionException e) {
                         e.printStackTrace();

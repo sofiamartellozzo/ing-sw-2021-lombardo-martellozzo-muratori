@@ -6,10 +6,7 @@ import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
-import it.polimi.ingsw.message.updateMsg.CGameCanStartMsg;
-import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
-import it.polimi.ingsw.message.updateMsg.VLorenzoIncreasedMsg;
-import it.polimi.ingsw.message.updateMsg.VWaitYourTurnMsg;
+import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.VirtualView;
@@ -420,6 +417,8 @@ public class TurnController extends Observable implements ControllerObserver {
                     VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
                     //remember to set all the other players!!!!
                     notifyAllObserver(ObserverType.VIEW, notify);
+                    VUpdateFaithTrackMsg update = new VUpdateFaithTrackMsg("This is the new situation of your faithtrack",turnSequence.get(key).getUsername(),turnSequence.get(key).getGameSpace().getFaithTrack());
+                    notifyAllObserver(ObserverType.VIEW,update);
                 }
             }
         } else {
