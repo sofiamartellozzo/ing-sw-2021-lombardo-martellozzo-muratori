@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import com.google.gson.internal.LinkedTreeMap;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.card.DevelopmentCard;
@@ -518,7 +519,7 @@ public class Player implements PlayerInterface, Serializable {
      * @throws InvalidActionException
      */
     @Override
-    public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException{
+    public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException, CardSpaceException {
        buyCard.buyCard(row, column, boardManager, this,  selectedCardSpace);
     }
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.factory.BoardManagerFactory;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
@@ -70,7 +71,7 @@ public class BuyDiscountTest extends TestCase {
         player1.setBuyCard(buyDiscount);
         try{
             buyDiscount.buyCard(1,1,boardManager,player1,1);
-        }catch (InvalidActionException e){
+        }catch (InvalidActionException | CardSpaceException e){
             thrown = true;
         }
         assertTrue(!thrown);

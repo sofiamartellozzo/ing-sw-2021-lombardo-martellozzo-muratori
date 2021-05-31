@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import com.google.gson.internal.LinkedTreeMap;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.Observable;
@@ -298,10 +299,15 @@ public class ActionController extends Observable implements ControllerObserver {
 
         if (player.getUsername().equals(msg.getUsername())) {
             try {
+
                 player.buyCard(msg.getRow(), msg.getColumn(), boardManager, msg.getCardSpaceToStoreIt());
 
-                VUpdateDevTableMsg update = new VUpdateDevTableMsg("new develop table", player.getUsername(), player.getGameSpace().getCardSpaces(), boardManager.getDevelopmentCardTable(), boardManager.getPlayers());
+                VUpdateDevTableMsg update = new VUpdateDevTableMsg("new develop table", player.getUsername(), player.calculateVictoryPoints(), player.getGameSpace().getCardSpaces(), boardManager.getDevelopmentCardTable(), boardManager.getPlayers());
                 notifyAllObserver(ObserverType.VIEW, update);
+                VUpdateWarehouseMsg secondUpdate = new VUpdateWarehouseMsg("update the warehose", player.getUsername(), player.getGameSpace().getWarehouse());
+                notifyAllObserver(ObserverType.VIEW, secondUpdate);
+                VUpdateStrongboxMsg thirdUpdate = new VUpdateStrongboxMsg("update the strongbox", player.getUsername(), player.getGameSpace().getStrongbox());
+                notifyAllObserver(ObserverType.VIEW, thirdUpdate);
 
                 //remove tre 3 action from the able ones because can be made only once
                 removeAction(msg.getActionChose());
@@ -311,6 +317,18 @@ public class ActionController extends Observable implements ControllerObserver {
             } catch (InvalidActionException e) {
                 System.out.println("Cannot buy this card, sorry!");
                 e.printStackTrace();
+            }catch (CardSpaceException e) {
+                //e.printStackTrace();
+                //restore the warehouse before the bought
+
+                //player.getGameSpace().getResourceManager().setStrongBox(msg.getStrongBox());
+
+                //player.getGameSpace().getResourceManager().setWarehouse(msg.getWarehouseBeforeCost());
+
+                //boardManager.setDevelopmentCardTable(msg.getDevelopmentCardTableBeforeCost());
+
+                VNotValidCardSpaceMsg notification = new VNotValidCardSpaceMsg("you choose a card space not valid", player.getUsername(), msg.getRow(), msg.getColumn());
+                notifyAllObserver(ObserverType.VIEW, notification);
             }
         }
     }
@@ -398,7 +416,7 @@ public class ActionController extends Observable implements ControllerObserver {
                             }
 
                             VUpdateFaithTrackMsg notification1 = new VUpdateFaithTrackMsg("because of a red marble, this player increased his position",player.getUsername(),player.getGameSpace().getFaithTrack());
-                            VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), 1);
+                            VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), player.calculateVictoryPoints(), 1);
                             Map<Integer, PlayerInterface> players = boardManager.getPlayers();
                             notification.setAllPlayerToNotify(getPlayerAsList(players));
                             notifyAllObserver(ObserverType.VIEW, notification1);
@@ -496,6 +514,23 @@ public class ActionController extends Observable implements ControllerObserver {
 
     }
 
+
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNotStartAgainMsg msg) {
+
+    }
+
     /**
      * this msg from the client is for active a Leader Card or Discard it
      *
@@ -510,11 +545,16 @@ public class ActionController extends Observable implements ControllerObserver {
                     try {
                         if (!isSolo) {
                             turn.activeLeaderCard(msg.getLeaderCards().get(0));
+                            VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("activating a Leader Card your Victory points has changed", player.getUsername(), player.calculateVictoryPoints());
+                            notifyAllObserver(ObserverType.VIEW, update);
                         } else {
                             System.out.println(" in active1 ");
                             soloPlayerTurn.activeLeaderCard(msg.getLeaderCards().get(0));
+                            VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("activating a Leader Card your Victory points has changed", soloPlayerTurn.getCurrentPlayer().getUsername(), soloPlayerTurn.getCurrentPlayer().calculateVictoryPoints());
+                            notifyAllObserver(ObserverType.VIEW, update);
                         }
 
+                        endAction = true;
                         nextAction();
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
@@ -534,12 +574,13 @@ public class ActionController extends Observable implements ControllerObserver {
                         }
 
                         //and then notify everyone that this player increase the position
-                        VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("Someone increased his position: ", player.getUsername(), 1);
+                        VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("Someone increased his position: ", player.getUsername(), player.calculateVictoryPoints(), 1);
                         VUpdateFaithTrackMsg msg1 = new VUpdateFaithTrackMsg("Increase yhe faith marker position", msg.getUsername(),player.getGameSpace().getFaithTrack());
                         notifyAllObserver(ObserverType.VIEW, notification);
                         notifyAllObserver(ObserverType.VIEW, msg1);
 
-                        endAction=true;
+
+                        endAction = true;
                         nextAction();
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
@@ -560,7 +601,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-
+        //in Lobby (Room)
     }
 
     /**
@@ -624,6 +665,8 @@ public class ActionController extends Observable implements ControllerObserver {
     private void nextAction() {
         if (endAction == true) {
             //send the msg to the client, to choose the next action he want to make
+            VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("You're actual amount of Victory Points is: ", player.getUsername(), player.calculateVictoryPoints());
+            notifyAllObserver(ObserverType.VIEW, update);
             if (!isSolo) {
                 VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), turn.getAvailableAction());
                 notifyAllObserver(ObserverType.VIEW, msg);

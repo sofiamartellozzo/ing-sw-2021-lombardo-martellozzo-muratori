@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.DevelopmentCard;
@@ -31,7 +32,7 @@ public class BuyDiscount implements BuyCard, Serializable {
     }
 
     @Override
-    public void buyCard(int row, int column, BoardManager boardManager, Player player, int selectedCardSpace) throws InvalidActionException {
+    public void buyCard(int row, int column, BoardManager boardManager, Player player, int selectedCardSpace) throws InvalidActionException, CardSpaceException {
         //same as buy card but with discount
         /* take the payment for the card, applicate the discount, then remove it from the table*/
         DevelopmentCard cardBought = boardManager.getDevelopmentCardTable().takeCard(row,column);

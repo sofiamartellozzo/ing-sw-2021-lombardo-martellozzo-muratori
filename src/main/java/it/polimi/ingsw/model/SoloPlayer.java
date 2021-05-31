@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.board.SoloPersonalBoard;
+import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.io.Serializable;
 
@@ -42,6 +43,27 @@ public class SoloPlayer extends Player implements Serializable {
         this.gameSpace = gameSpace;
     }
 
+    @Override
+    public int calculateVictoryPoints() {
+        //sum of all points.. then set the attribute to it
+        int points = 0;
+        //get points from Development Card in Card Space
+        points += gameSpace.getVictoryPointsFromCardSpaces();
+
+        //get points from Leader Card
+        for (LeaderCard leaderCard: this.leaderCards){
+            points += leaderCard.getVictoryPoints();
+        }
+
+        //get points from PopesFavorTile and last Gold Box
+        points += gameSpace.getFaithTrack().getAllVictoryPoints();
+
+        //get points from the count of the Resources owned by the player
+        points += gameSpace.getResourceManager().getVictoryPoints();
+
+        victoryPoints = points;
+        return points;
+    }
 
     public String checkIfWin() {
         if ((gameSpace.getFaithTrack().getPositionFaithMarker()==24)||(gameSpace.getAllCards().size()==7)){

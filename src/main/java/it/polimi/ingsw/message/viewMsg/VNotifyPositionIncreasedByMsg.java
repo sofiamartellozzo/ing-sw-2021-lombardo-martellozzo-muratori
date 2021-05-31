@@ -12,19 +12,25 @@ import java.util.List;
  */
 public class VNotifyPositionIncreasedByMsg extends ViewGameMsg{
     private final String usernameIncreased;
+    private int updateVictoryPoints;
     private int numberOfPositionIncreased;
     private List<String> allPlayerToNotify;
 
 
-    public VNotifyPositionIncreasedByMsg(String msgContent, String usernameIncreased, int numberOfPositionIncreased) {
+    public VNotifyPositionIncreasedByMsg(String msgContent, String usernameIncreased,int updateVictoryPoints, int numberOfPositionIncreased) {
         super(msgContent);
         this.usernameIncreased = usernameIncreased;
+        this.updateVictoryPoints = updateVictoryPoints;
         this.numberOfPositionIncreased = numberOfPositionIncreased;
         this.allPlayerToNotify = new ArrayList<>();
     }
 
     public String getUsernameIncreased() {
         return usernameIncreased;
+    }
+
+    public int getUpdateVictoryPoints() {
+        return updateVictoryPoints;
     }
 
     public int getNumberOfPositionIncreased() {

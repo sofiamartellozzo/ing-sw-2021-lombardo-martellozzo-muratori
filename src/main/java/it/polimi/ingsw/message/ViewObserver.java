@@ -1,6 +1,7 @@
 package it.polimi.ingsw.message;
 
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
+import it.polimi.ingsw.message.controllerMsg.VStartWaitReconnectionMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.*;
@@ -31,6 +32,8 @@ public interface ViewObserver extends Observer{
     /* send to all player to notify this action of one*/
     public void receiveMsg(VNotifyPositionIncreasedByMsg msg);
 
+    public void receiveMsg(VUpdateVictoryPointsMsg msg);
+
     /* send to the player after try to initialized the game*/
     public void receiveMsg(VNackConnectionRequestMsg msg);
 
@@ -47,6 +50,8 @@ public interface ViewObserver extends Observer{
 
     /* fist (only in code order) of action chosen in ActionController, so send this msg to client for asking which card to buy */
     public void receiveMsg(VChooseDevelopCardRequestMsg msg);
+    /*notify the client that the card space choosen is not valid*/
+    public void receiveMsg(VNotValidCardSpaceMsg msg);
     /*notify all player the new situation of the DevTable after someone bougth a card*/
     public void receiveMsg(VUpdateDevTableMsg msg);
 
@@ -68,7 +73,6 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VActivateProductionPowerRequestMsg msg);
     public void receiveMsg(VUpdateStrongboxMsg msg);
 
-    public void receiveMsg(VShowEndGameResultsMsg msg);
 
     /* only SOLO mode, after the player end the turn (is Lorenzo playing) */
     public void receiveMsg(VActionTokenActivateMsg msg);
@@ -82,4 +86,13 @@ public interface ViewObserver extends Observer{
 
     public void receiveMsg(VAnotherPlayerInfoMsg msg);
     public void receiveMsg(VWhichPlayerRequestMsg msg);
+
+    /*notify the View with the result of the game*/
+    public void receiveMsg(VShowEndGameResultsMsg msg);
+    /*ask the client if wants to play again or not*/
+    public void receiveMsg(VAskNewGameMsg msg);
+
+
+    /*ge game stops waiting the client to reconnect*/
+    public void receiveMsg(VStartWaitReconnectionMsg msg);
 }

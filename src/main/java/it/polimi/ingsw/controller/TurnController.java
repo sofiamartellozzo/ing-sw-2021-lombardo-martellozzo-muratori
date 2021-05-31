@@ -14,6 +14,7 @@ import it.polimi.ingsw.view.VirtualView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /*
  * SOFI*/
@@ -53,7 +54,7 @@ public class TurnController extends Observable implements ControllerObserver {
     /* list of VV of the players*/
     private Map<String, VirtualView> virtualView;
 
-    /*refereces to Action Controller if is on*/
+    /*references to Action Controller if is on*/
     private ActionController actionController;
 
     /* Constructor of the class */
@@ -102,10 +103,14 @@ public class TurnController extends Observable implements ControllerObserver {
     }
 
     private Player getPlayerByUsername(String username) {
-        for (PlayerInterface p : turnSequence.values()) {
-            if (p.getUsername().equals(username)) {
-                return (Player) p;
+        if (!isSoloMode) {
+            for (PlayerInterface p : turnSequence.values()) {
+                if (p.getUsername().equals(username)) {
+                    return (Player) p;
+                }
             }
+        } else {
+            return currentSoloTurnIstance.getCurrentPlayer();
         }
         return null;
     }
@@ -138,6 +143,10 @@ public class TurnController extends Observable implements ControllerObserver {
         for (String username : virtualView.keySet()) {
             attachObserver(ObserverType.VIEW, virtualView.get(username));
         }
+    }
+
+    public void addVV(String username, VirtualView VV) {
+        virtualView.put(username, VV);
     }
 
     /**
@@ -205,18 +214,17 @@ public class TurnController extends Observable implements ControllerObserver {
         this.currentTurnIndex++;
         if (!isSoloMode) {
             int playerIndex = currentPlayer.getNumber();
-             if (playerIndex == this.numberOfPlayer) {
+            if (playerIndex == this.numberOfPlayer) {
                 playerIndex = 1;
             } else {
                 playerIndex++;
             }
             Player nextPlayer = (Player) this.turnSequence.get(playerIndex);
-             if (nextPlayer.isDisconnected()){
+            if (nextPlayer.isDisconnected()) {
                 currentPlayer = nextPlayer;
                 //if a player is disconnected, pass directly to the next turn
                 nextTurn();
-            }
-            else {
+            } else {
                 //if is connected start the turn
                 startPlayerTurn(nextPlayer);
             }
@@ -289,7 +297,7 @@ public class TurnController extends Observable implements ControllerObserver {
 
     private void checkIfFirstAction() {
 
-         if (actionController != null && actionController.endAction()) {
+        if (actionController != null && actionController.endAction()) {
             detachObserver(ObserverType.CONTROLLER, actionController);
             actionController = null;
         }
@@ -414,11 +422,11 @@ public class TurnController extends Observable implements ControllerObserver {
                     //not the player that discarded the resource
                     turnSequence.get(key).increasePosition();
                     //actionController.decrementNumberResourcesFromM();
-                    VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), 1);
+                    VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), turnSequence.get(key).calculateVictoryPoints(), 1);
                     //remember to set all the other players!!!!
                     notifyAllObserver(ObserverType.VIEW, notify);
-                    VUpdateFaithTrackMsg update = new VUpdateFaithTrackMsg("This is the new situation of your faithtrack",turnSequence.get(key).getUsername(),turnSequence.get(key).getGameSpace().getFaithTrack());
-                    notifyAllObserver(ObserverType.VIEW,update);
+                    VUpdateFaithTrackMsg update = new VUpdateFaithTrackMsg("This is the new situation of your faithtrack", turnSequence.get(key).getUsername(), turnSequence.get(key).getGameSpace().getFaithTrack());
+                    notifyAllObserver(ObserverType.VIEW, update);
                 }
             }
         } else {
@@ -461,19 +469,47 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-        Player playerDisconnected = getPlayerByUsername(msg.getUsername());
+        PlayerInterface playerDisconnected = getPlayerByUsername(msg.getUsername());
+        System.out.println("IN TURN CONTROLLER: received disconn Msg ");
         if (playerDisconnected != null) {
             //check if the client disconnected is currently playing
+            System.out.println("NAME disconnectied: " + playerDisconnected.getUsername());
+            playerDisconnected.setDisconnected(true);
             if (playerDisconnected.isPlaying() && actionController != null) {
+                System.out.println("not here.......$$$$$");
                 detachObserver(ObserverType.CONTROLLER, actionController);
                 actionController = null;
-                nextTurn();
+                playerDisconnected.setPlaying(false);
+                System.out.println(isSoloMode);
+                if (!isSoloMode) {
+                    System.out.println("SSSSSSSSSSSSS");
+                    detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
+                    nextTurn();
+                } else {
+                    //solo mode, wait until a reconnection
+                    System.out.println("WWWWWWWWWWWWWWW");
+                    VStartWaitReconnectionMsg wait = new VStartWaitReconnectionMsg("a client disconnected so wait until a reconnection", singlePlayer.getUsername());
+                    notifyAllObserver(ObserverType.VIEW, wait);
+                }
             }
             /* even if is out of the if, so he should not be playing
-            * set his attribute to false, to be sure */
-            playerDisconnected.setPlaying(false);
-            playerDisconnected.setDisconnected(true);
+             * set his attribute to false, to be sure */
+            //playerDisconnected.setPlaying(false);
+            //playerDisconnected.setDisconnected(true);
+            System.out.println(virtualView);
         }
+    }
+
+
+
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNotStartAgainMsg msg) {
+
     }
 
     @Override
@@ -484,7 +520,7 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-
+        //in Lobby (Room)
     }
 
 
@@ -506,6 +542,11 @@ public class TurnController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CVStartInitializationMsg msg) {
 
+    }
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+        //in VV
     }
 
 

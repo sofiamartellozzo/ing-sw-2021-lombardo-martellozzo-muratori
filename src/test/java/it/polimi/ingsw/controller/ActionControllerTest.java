@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import com.google.gson.internal.LinkedTreeMap;
 import it.polimi.ingsw.controller.factory.BoardManagerFactory;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.*;
@@ -68,7 +69,7 @@ public class ActionControllerTest extends TestCase {
     }
 
     //TO PRIVATE METHOD
-    public void testCardActivatableForPlayer() throws InvalidActionException {
+    public void testCardActivatableForPlayer() throws InvalidActionException, CardSpaceException {
         //Start the method should return an empty list
         ArrayList<Integer> expected = new ArrayList<>();
         assertEquals(expected,actionController.cardActivatableForPlayer());

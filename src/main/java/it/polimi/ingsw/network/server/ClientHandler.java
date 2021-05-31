@@ -7,6 +7,7 @@ import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.PingMsg;
 import it.polimi.ingsw.message.connection.PongMsg;
+import it.polimi.ingsw.message.controllerMsg.CCloseRoomMsg;
 import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -14,6 +15,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,6 +38,10 @@ public class ClientHandler extends Observable implements Runnable {
     /* create a queue to contains all the msg received from the server */
     private ArrayList<GameMsg> queue;
 
+    /* timer of 10 seconds waiting a reconnection */
+    private Timer notifyDisconnectionTimer;
+    private static final int TIMER = 50000;
+
     public ClientHandler(Socket client, String threadId) {
         clientSocket = client;
         this.threadId = threadId;
@@ -44,6 +50,7 @@ public class ClientHandler extends Observable implements Runnable {
         //attach it to the Observable, because is an Observer
         attachObserver(ObserverType.CONTROLLER, virtualView);
         queue = new ArrayList<>();
+        notifyDisconnectionTimer = new Timer();
     }
 
     @Override
@@ -67,7 +74,6 @@ public class ClientHandler extends Observable implements Runnable {
 
         /* start the ping process */
         startPing();
-
 
         /* now wait listening for a message (Event) */
         try {
@@ -152,6 +158,29 @@ public class ClientHandler extends Observable implements Runnable {
     }
 
     /**
+     * because a reconnection of the client stop the timer and only close this thread
+     */
+    private void resetTimer(){
+        notifyDisconnectionTimer.cancel();
+        //notifyDisconnectionTimer = new Timer();
+        //notifyDisconnectionTimer.schedule(new DisconnectHandler(this), TIMER);
+
+    }
+
+    public void startWaitReconnection(){
+        notifyDisconnectionTimer.schedule(new DisconnectHandler(this), TIMER);
+    }
+
+    public void stopWaitReconnection(){
+        //waitReconnection.interrupt();
+        CCloseRoomMsg msg1 = new CCloseRoomMsg("close the room with..", virtualView.getUsername());
+        notifyAllObserver(ObserverType.CONTROLLER, msg1);
+        detachObserver(ObserverType.CONTROLLER, virtualView);
+        notifyDisconnectionTimer.cancel();
+        Thread.currentThread().interrupt();
+    }
+
+    /**
      * method called to send a msg from the server to the client
      *
      * @param msg
@@ -168,6 +197,7 @@ public class ClientHandler extends Observable implements Runnable {
 
     //at the end always disconnect so close the socket
     public void disconnect() {
+
         try {
             if (ping.isAlive()){
                 stopPing();

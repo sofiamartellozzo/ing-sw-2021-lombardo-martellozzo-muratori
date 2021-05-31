@@ -52,6 +52,10 @@ public class DevelopmentCardTable implements Serializable {
        else return this.table[rowPosition][columnPosition].takeCard();
     }
 
+    public void removeCard(int row, int column){
+        table[row][column].removeCard();
+    }
+
     /**
      * method used in the solo player to remove the last card available in a specific deck
      * identified by the color, if the three decks of the color indicated are empty,

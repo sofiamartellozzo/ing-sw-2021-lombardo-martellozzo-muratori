@@ -8,6 +8,7 @@ import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.updateMsg.CGameCanStartMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
+import it.polimi.ingsw.message.viewMsg.VShowEndGameResultsMsg;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 
 import javax.naming.LimitExceededException;
@@ -123,7 +124,7 @@ public class OfflineLobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CStopMarketMsg msg) {
-
+        offlineRoom.notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
@@ -143,6 +144,23 @@ public class OfflineLobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
+
+    }
+
+
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNotStartAgainMsg msg) {
 
     }
 

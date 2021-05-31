@@ -187,4 +187,5 @@ public class PersonalBoard implements PersonalBoardInterface,Serializable {
         }
         return activatableCardSpace;
     }
+
 }

@@ -73,7 +73,7 @@ public class ProductionPowerController extends Observable implements ControllerO
         ArrayList<Resource> resourcesToStrongBox = new ArrayList<>();
         for (Resource resource : receivedResources) {
             if (resource.getType().equals(TypeResource.FAITHMARKER)) {
-                VNotifyPositionIncreasedByMsg requestMsg1 = new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(), 1);
+                VNotifyPositionIncreasedByMsg requestMsg1 = new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(), player.calculateVictoryPoints(), 1);
                 VUpdateFaithTrackMsg requestMsg2 = new VUpdateFaithTrackMsg("updated faith Track", player.getUsername(), player.getGameSpace().getFaithTrack());
                 //put the player in the msg
                 notifyAllObserver(ObserverType.VIEW, requestMsg1);
@@ -199,6 +199,23 @@ public class ProductionPowerController extends Observable implements ControllerO
 
 
 
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNotStartAgainMsg msg) {
+
+    }
+
+
+
 
 
     /*-----------------------------------------------------------------------------------------------------------------------------------*/
@@ -232,7 +249,7 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-
+        //in Lobby (Room)
     }
 
     @Override

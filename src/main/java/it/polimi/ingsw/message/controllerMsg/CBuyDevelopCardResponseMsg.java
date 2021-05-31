@@ -2,6 +2,9 @@ package it.polimi.ingsw.message.controllerMsg;
 
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.model.TurnAction;
+import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
+import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
+import it.polimi.ingsw.model.card.DevelopmentCardTable;
 
 /**
  * CLI ---> ActionController
@@ -16,6 +19,7 @@ public class CBuyDevelopCardResponseMsg  extends ControllerGameMsg{
     private int cardSpaceToStoreIt;
     private TurnAction action;
 
+
     public CBuyDevelopCardResponseMsg(String msgContent, String username, int row, int column, int cardSpaceToStoreIt) {
         super(msgContent);
         this.username = username;
@@ -23,7 +27,10 @@ public class CBuyDevelopCardResponseMsg  extends ControllerGameMsg{
         this.column = column;
         this.cardSpaceToStoreIt = cardSpaceToStoreIt;
         this.action = TurnAction.BUY_CARD;
+
     }
+
+
 
     public TurnAction getActionChose(){
         return action;
@@ -44,6 +51,7 @@ public class CBuyDevelopCardResponseMsg  extends ControllerGameMsg{
     public int getCardSpaceToStoreIt() {
         return cardSpaceToStoreIt;
     }
+
 
     @Override
     public void notifyHandler(ControllerObserver controllerObserver) {

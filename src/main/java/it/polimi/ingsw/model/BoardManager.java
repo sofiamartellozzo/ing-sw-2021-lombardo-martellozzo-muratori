@@ -55,6 +55,12 @@ public class BoardManager implements Serializable {
         return resourcesSupply;
     }
 
+
+
+    public void setDevelopmentCardTable(DevelopmentCardTable developmentCardTable) {
+        this.developmentCardTable = developmentCardTable;
+    }
+
     /**
      * get all the id of the card contained in the Leader Card Deck
      * @return ArrayList of Integer, referred to the Leader Card Id

@@ -12,13 +12,15 @@ import java.util.Map;
 
 public class VUpdateDevTableMsg extends ViewGameMsg {
     private String username;
+    private int updateVictoryPoints;
     private ArrayList<CardSpace> updateCardSpace;
     private DevelopmentCardTable updateTable;
     private Map<Integer, PlayerInterface> allPlayers;
 
-    public VUpdateDevTableMsg(String msgContent, String username,ArrayList<CardSpace> updateCardSpace, DevelopmentCardTable updateTable, Map<Integer, PlayerInterface> allPlayers) {
+    public VUpdateDevTableMsg(String msgContent, String username,int updateVictoryPoints, ArrayList<CardSpace> updateCardSpace, DevelopmentCardTable updateTable, Map<Integer, PlayerInterface> allPlayers) {
         super(msgContent);
         this.username = username;
+        this.updateVictoryPoints = updateVictoryPoints;
         this.updateCardSpace = updateCardSpace;
         this.updateTable = updateTable;
         this.allPlayers = allPlayers;
@@ -38,6 +40,10 @@ public class VUpdateDevTableMsg extends ViewGameMsg {
 
     public ArrayList<CardSpace> getUpdateCardSpace() {
         return updateCardSpace;
+    }
+
+    public int getUpdateVictoryPoints() {
+        return updateVictoryPoints;
     }
 
     @Override

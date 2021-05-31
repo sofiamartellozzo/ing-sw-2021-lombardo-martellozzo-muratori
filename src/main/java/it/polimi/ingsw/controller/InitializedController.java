@@ -130,7 +130,7 @@ public class InitializedController extends Observable implements ControllerObser
         //create the board manager
         BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
         boardManager = boardManagerFactory.createBoardManager(turnSequence);
-        System.out.println("in INITIALIZEDC " +boardManager.toString());
+        System.out.println("in INITIALIZEDC " + boardManager.toString());
 
         if (numberOfPlayer == 1) {
             /*initialized solo Mode*/
@@ -147,7 +147,7 @@ public class InitializedController extends Observable implements ControllerObser
             chooseLeaderCard(true);
 
             //now the came can start... Create the turn controller
-           // canStart = true;
+            // canStart = true;
         } else {
             /*initialized multiplayer Mode*/
             //creating the Personal Board for each player
@@ -173,7 +173,7 @@ public class InitializedController extends Observable implements ControllerObser
      *
      * @param solo
      */
-    private void chooseLeaderCard(boolean solo)  {
+    private void chooseLeaderCard(boolean solo) {
         //take the 4 leader card from all (stored in Board Manager)
         ArrayList<Integer> allLeaderCard = boardManager.getAllLeaderCard();  //all leader cards
         //select 4 randomly
@@ -240,7 +240,7 @@ public class InitializedController extends Observable implements ControllerObser
 
                 this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
                 /* notify all palyers that this one increase his position */
-                VNotifyPositionIncreasedByMsg notify1 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(3).getUsername(), 1);
+                VNotifyPositionIncreasedByMsg notify1 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(3).getUsername(), turnSequence.get(3).calculateVictoryPoints(), 1);
                 notify1.setAllPlayerToNotify(getPlayersAsList());
                 notifyAllObserver(ObserverType.VIEW, notify1);
 
@@ -253,7 +253,7 @@ public class InitializedController extends Observable implements ControllerObser
 
                     this.turnSequence.get(4).getGameSpace().getFaithTrack().increasePosition();
                     /* notify all palyers that this one increase his position */
-                    VNotifyPositionIncreasedByMsg notify2 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(4).getUsername(), 1);
+                    VNotifyPositionIncreasedByMsg notify2 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(4).getUsername(), turnSequence.get(4).calculateVictoryPoints(), 1);
                     notify2.setAllPlayerToNotify(getPlayersAsList());
                     notifyAllObserver(ObserverType.VIEW, notify2);
                 }
@@ -283,15 +283,20 @@ public class InitializedController extends Observable implements ControllerObser
      */
     private List<String> getPlayersAsList() {
         List<String> players = new ArrayList<>();
-        for (Integer i : turnSequence.keySet()) {
-            players.add(turnSequence.get(i).getUsername());
+        if (numberOfPlayer > 1) {
+            for (Integer i : turnSequence.keySet()) {
+                players.add(turnSequence.get(i).getUsername());
+            }
+        }
+        else{
+            players.add(singlePlayer.getUsername());
         }
         return players;
     }
 
     /*--------------------------------------------------------------------------------------------------------------------*/
 
-                //HANDLE EVENT OF THE GAME
+    //HANDLE EVENT OF THE GAME
 
     /**
      * this msg contains the list of Leader Cards the user choose and
@@ -334,15 +339,15 @@ public class InitializedController extends Observable implements ControllerObser
 
             //now remove the card from the deck
             boardManager.getLeaderCardDeck().remove(chosenCards);
-            if (counterPlayerInitialized==numberOfPlayer){
-                //System.out.println("enter in can start!!!!");
+            if (counterPlayerInitialized == numberOfPlayer) {
+                System.out.println("enter in can start!!!!");
                 //now the came can start... Create the turn controller
                 canStart = true;
-                CGameCanStartMsg startGame = new CGameCanStartMsg("",getPlayersAsList());
+                System.out.println(getPlayersAsList());
+                CGameCanStartMsg startGame = new CGameCanStartMsg("", getPlayersAsList());
                 notifyAllObserver(ObserverType.VIEW, startGame);
                 //System.out.println(startGame);
-            }
-            else{
+            } else {
                 VWaitOtherPlayerInitMsg wait = new VWaitOtherPlayerInitMsg("", msg.getUsername());
                 notifyAllObserver(ObserverType.VIEW, wait);
             }
@@ -382,14 +387,13 @@ public class InitializedController extends Observable implements ControllerObser
                 VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());
                 notifyAllObserver(ObserverType.VIEW, msg1);
             }
-            if ((numberOfPlayer==4 && counterResourcesChosen==4)||( counterResourcesChosen==(numberOfPlayer-1)&&(numberOfPlayer!=4))){
+            if ((numberOfPlayer == 4 && counterResourcesChosen == 4) || (counterResourcesChosen == (numberOfPlayer - 1) && (numberOfPlayer != 4))) {
                 //call the msg to choose the leader card
                 chooseLeaderCard(false);
             }
-        }
-        else{
+        } else {
             try {
-                singlePlayer.getGameSpace().getResourceManager().addResourceToWarehouse(r,msg.getDepot());
+                singlePlayer.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
                 VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", singlePlayer.getUsername(), singlePlayer.getGameSpace().getWarehouse());
                 notifyAllObserver(ObserverType.VIEW, notification);
             } catch (InvalidActionException e) {
@@ -446,7 +450,6 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
 
-
     @Override
     public void receiveMsg(CStopPPMsg msg) {
 
@@ -459,6 +462,23 @@ public class InitializedController extends Observable implements ControllerObser
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
+
+    }
+
+
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNotStartAgainMsg msg) {
 
     }
 

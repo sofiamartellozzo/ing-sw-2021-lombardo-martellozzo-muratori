@@ -34,9 +34,7 @@ public class CVStartInitializationMsg extends GameMsg {
 
     @Override
     public void notifyHandler(ViewObserver viewObserver) {
-
         viewObserver.receiveMsg(this);
-
     }
 
     @Override

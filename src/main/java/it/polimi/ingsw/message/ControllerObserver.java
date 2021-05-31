@@ -4,6 +4,7 @@ import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.updateMsg.CGameCanStartMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
+import it.polimi.ingsw.message.viewMsg.VShowEndGameResultsMsg;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 
 /**
@@ -16,7 +17,6 @@ public interface ControllerObserver extends Observer{
 
     /* received from VV, the first msg*/
     public void receiveMsg(VVConnectionRequestMsg msg);
-
 
     /* form VV to Lobby*/
     public void receiveMsg(CConnectionRequestMsg msg);
@@ -54,6 +54,7 @@ public interface ControllerObserver extends Observer{
 
     /*from client (CLI) to the PPController, to activate it*/
     public void receiveMsg(CActivateProductionPowerResponseMsg msg);
+    /*send to PPController when the client finished the actions of activate a PP*/
     public void receiveMsg(CStopPPMsg msg);
 
     /*another Action that a player can make in the game (see the info of himself or someone else)*/
@@ -61,4 +62,10 @@ public interface ControllerObserver extends Observer{
 
     /*from Client Handler to controller*/
     public void receiveMsg(CClientDisconnectedMsg msg);
+    /*msg send if a single player reconnected on time*/
+    public void receiveMsg(CCloseRoomMsg msg);
+
+    /*end of a game situation*/
+    public void receiveMsg(VShowEndGameResultsMsg msg);
+    public void receiveMsg(CNotStartAgainMsg msg);
 }

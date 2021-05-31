@@ -33,8 +33,6 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     private MessageHandler messageHandler;      //for offline mode
 
-    //private ViewObserver viewMode;
-
     /**
      * {@link AtomicBoolean} for the first connection, is true if the connection has been accepted and, after the disconnection, Lobby has to be clean.
      */
@@ -92,6 +90,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      */
     public void receiveMsg(VVConnectionRequestMsg msg) {
 
+        System.out.println("ARRIVED VVConnection REQUEST in VV");
         //save the username of the client associated to this virtual view
         username = msg.getUsername();
         //save the mode the client choose
@@ -162,10 +161,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
         //send to room to start the game
+        System.out.println("PASSING THROW VV for initialization");
         if (msg.getPlayers().contains(username)) {
-            //System.out.println("PASSING THROW VV for initialization");
+            System.out.println("PASSING THROW VV for initialization");
             sendToClient(msg);
-            if(msg.getPlayers().get(0).equals(username)) {
+            if (msg.getPlayers().get(0).equals(username)){
                 notifyAllObserver(ObserverType.CONTROLLER, msg);
             }
         }
@@ -259,6 +259,21 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         msg.setUsername(username);
         //now send it to the Lobby
         notifyAllObserver(ObserverType.CONTROLLER, msg);
+        lobby.detachObserver(ObserverType.VIEW, this);
+    }
+
+    @Override
+    public void receiveMsg(VStartWaitReconnectionMsg msg) {
+        System.out.println("POPOPOPOPOPOPOPO");
+        client.startWaitReconnection();
+    }
+
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+        //ask to lobby to close the room of this client
+        System.out.println("POPOPOPOPOPOPOPOSSS");
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
@@ -291,13 +306,17 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         /* send this message (notify) to the client */
         if (msg.getUserIp().equals(client.getUserIP()) && msg.getUserPort() == client.getUserPort() && msg.getUsername().equals(this.username)) {
             //set the boolean that specify if the user is waiting in the lobby to false
+
+            System.out.println("in VV!!!!!!!!!!!");
             inLobby = false;
 
             connectionLock.lock();
             userConnected.set(false);
             connectionLock.lock();
 
-            sendToClient(msg);
+            //sendToClient(msg);
+            //always online
+            client.sendMsg(msg);
         }
     }
 
@@ -312,13 +331,14 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         if (msg.getUsername().equals(this.username)) {
             //the connection is not on yet so
 
-            /*
+
             connectionLock.lock();
             userConnected.set(false);
-            connectionLock.unlock();*/
+            connectionLock.unlock();
 
             //and then send the request to the client
-            sendToClient(msg);
+            //for sure online
+            client.sendMsg(msg);
         }
     }
 
@@ -444,6 +464,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+    @Override
+    public void receiveMsg(VUpdateVictoryPointsMsg msg) {
+        if (msg.getUsername().equals(username)){
+            sendToClient(msg);
+        }
+    }
+
     /**
      * send to the client this msg to ask which development card wants to buy
      *
@@ -455,6 +482,18 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             sendToClient(msg);
         }
 
+    }
+
+    /**
+     * send to client to notify that the card space chosen to store the develop card is not valid to store it
+     *
+     * @param msg-> contains the row and column chosen in the table
+     */
+    @Override
+    public void receiveMsg(VNotValidCardSpaceMsg msg) {
+        if (msg.getUsername().equals(this.username)) {
+            sendToClient(msg);
+        }
     }
 
     @Override
@@ -557,6 +596,20 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         sendToClient(msg);
+        if (offLobby != null){
+            offLobby = null;
+        }
+    }
+
+    @Override
+    public void receiveMsg(CNotStartAgainMsg msg) {
+        //the client don't want to play again so close the connection
+        client.disconnect();
+    }
+
+    @Override
+    public void receiveMsg(VAskNewGameMsg msg) {
+        sendToClient(msg);
     }
 
     /**
@@ -586,10 +639,12 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      */
     private void tryToStartGame() {
         if (offLobby == null) {
+            System.out.println("TRY TO START GAME IN VV");
             connectionLock.lock();
             try {
                 //check if the connection is ON and ask to the Lobby if the Game can start
                 if (userConnected.get() && lobby.canInitializeGameFor(this.username)) {
+                    System.out.println("TRY TO START GAME IN VV, CREAtE MSG to con e view");
                     CVStartInitializationMsg msg = new CVStartInitializationMsg("A room is full so starting the initialization", username);
                     notifyAllObserver(ObserverType.CONTROLLER, msg);
                     lobby.startInitializationOfTheGame(username);
@@ -603,5 +658,9 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             //lobby.startInitializationOfTheGame(username);
         }
 
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

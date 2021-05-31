@@ -1,6 +1,7 @@
 package it.polimi.ingsw.message.viewMsg;
 
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.util.ArrayList;
 import java.util.List;

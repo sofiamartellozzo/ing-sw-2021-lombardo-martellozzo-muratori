@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.board;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.card.DevelopmentCard;
@@ -88,7 +89,7 @@ public class CardSpace implements Serializable{
      * @param newCard -> The new card which you want to insert
      * @throws IllegalArgumentException -> If one of the conditions is not respected
      */
-    public void addCard(DevelopmentCard newCard) throws IllegalArgumentException {
+    public void addCard(DevelopmentCard newCard) throws CardSpaceException {
         if(newCard==null) throw new IllegalArgumentException("Error, card not valid!");
 
         /*if you don't have any card you can add it without controls, but it has to be level 1 !! */
@@ -101,7 +102,7 @@ public class CardSpace implements Serializable{
             this.cards.add(newCard);
             setNumberOfCards(this.cards.size());
         }
-        else throw new IllegalArgumentException("Error, You can't put the Card here!");
+        else throw new CardSpaceException("Error, You can't put the Card here!");
     }
 
     /**

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.card;
 
 import it.polimi.ingsw.controller.factory.DevelopmentCardFactory;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
@@ -243,7 +244,7 @@ public class DevelopmentCardTableTest extends TestCase {
     }
 
     @Test
-    public void testGetAvailable() throws FileNotFoundException, InvalidActionException {
+    public void testGetAvailable() throws FileNotFoundException, InvalidActionException, CardSpaceException {
         developmentCardTable.setSquare(new DevelopmentCardFactory().createTable());
         boolean[][] expected = new boolean[3][4];
         //Creating player

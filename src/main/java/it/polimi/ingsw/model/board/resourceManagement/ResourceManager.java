@@ -12,8 +12,8 @@ import java.util.ArrayList;
  */
 public class ResourceManager implements Serializable {
 
-    private final StrongBox strongBox;
-    private final Warehouse warehouse;
+    private StrongBox strongBox;
+    private Warehouse warehouse;
 
     /**
      * Constructor
@@ -41,6 +41,13 @@ public class ResourceManager implements Serializable {
         return warehouse;
     }
 
+    public void setStrongBox(StrongBox strongBox){
+        this.strongBox = strongBox;
+    }
+
+    public void setWarehouse(Warehouse warehouse) {
+        this.warehouse = warehouse;
+    }
 
     /**
      * When the game ends, calculates Victory Points:
@@ -78,6 +85,7 @@ public class ResourceManager implements Serializable {
      * @throws InvalidActionException -> If one of the conditions is not respected
      */
     public void removeResourcesFromBoth(ArrayList<Resource> resources) throws InvalidActionException {
+        System.out.println("XXX");
         if(!resources.isEmpty()){
 
             if(!checkEnoughResources(resources)) throw new InvalidActionException("The warehouse or the strongbox don't contain some resources!");

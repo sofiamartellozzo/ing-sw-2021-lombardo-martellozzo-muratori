@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
@@ -27,7 +28,7 @@ public class CardSpaceTest extends TestCase {
     }
 
     @Test
-    public void testGetNumberOfCards() {
+    public void testGetNumberOfCards() throws CardSpaceException {
         Resource res1 = new Resource(Color.GREY);
         ArrayList<Resource> resTot = new ArrayList<>();
         resTot.add(res1);
@@ -41,7 +42,7 @@ public class CardSpaceTest extends TestCase {
     }
 
     @Test
-    public void testGetCards() {
+    public void testGetCards() throws CardSpaceException {
 
         Resource res1 = new Resource(Color.GREY);
         ArrayList<Resource> resTot = new ArrayList<>();
@@ -66,7 +67,7 @@ public class CardSpaceTest extends TestCase {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void testGetUpperCard() {
+    public void testGetUpperCard() throws CardSpaceException {
 
         //boolean thrown = false;
         Resource res1 = new Resource(Color.GREY);
@@ -87,7 +88,7 @@ public class CardSpaceTest extends TestCase {
     }
 
     @Test
-    public void testAddCard() {
+    public void testAddCard() throws CardSpaceException {
         Resource res1 = new Resource(Color.GREY);
         ArrayList<Resource> resTot = new ArrayList<>();
         resTot.add(res1);
@@ -107,8 +108,7 @@ public class CardSpaceTest extends TestCase {
 
 
     @Test
-    public void testGetTotVictoryPoints()
-    {
+    public void testGetTotVictoryPoints() throws CardSpaceException {
         Resource res1 = new Resource(Color.GREY);
         ArrayList<Resource> resTot = new ArrayList<>();
         resTot.add(res1);
@@ -125,7 +125,7 @@ public class CardSpaceTest extends TestCase {
     }
 
     @Test
-    public void testGetCostPPTypeUpperCard(){
+    public void testGetCostPPTypeUpperCard() throws CardSpaceException {
         ArrayList<Resource> cost1 = new ArrayList<>();
         ArrayList<TypeResource> expected1 = new ArrayList<>();
         cost1.add(new Resource(TypeResource.SHIELD));
@@ -155,7 +155,7 @@ public class CardSpaceTest extends TestCase {
     }
 
     @Test
-    public void testGetNumberCostPP(){
+    public void testGetNumberCostPP() throws CardSpaceException {
         ArrayList<Resource> cost1 = new ArrayList<>();
         cost1.add(new Resource(TypeResource.SHIELD));
         cost1.add(new Resource(TypeResource.STONE));

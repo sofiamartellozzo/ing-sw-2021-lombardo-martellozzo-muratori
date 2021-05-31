@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.DevelopmentCard;
@@ -44,7 +45,7 @@ public interface PlayerInterface{
     public ArrayList<TypeResource> buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException;
     public ArrayList<TypeResource> getWhiteSpecialResources();
 
-    public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException;
+    public void buyCard(int row, int column, BoardManager boardManager, int selectedCardSpace) throws InvalidActionException, CardSpaceException;
     public boolean isPlaying();
     public boolean isDisconnected();
     public void setPlaying(boolean playing);

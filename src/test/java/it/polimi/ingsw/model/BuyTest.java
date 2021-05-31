@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.controller.factory.BoardManagerFactory;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
@@ -44,7 +45,7 @@ public class BuyTest extends TestCase {
         BoardManager boardManager = boardManagerFactory.createBoardManager(players);
         try{
             buy.buyCard(1,1,boardManager,player1,1);
-        }catch (InvalidActionException e){
+        }catch (InvalidActionException | CardSpaceException e){
             thrown = true;
         }
         assertTrue(thrown);
@@ -72,7 +73,7 @@ public class BuyTest extends TestCase {
         player1.getGameSpace().getResourceManager().addResourcesToStrongBox(cost);
         try{
             buy.buyCard(2,1,boardManager,player1,0);
-        }catch (InvalidActionException e){
+        }catch (InvalidActionException | CardSpaceException e){
             thrown = true;
         }
         //assertTrue(thrown);

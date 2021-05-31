@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
@@ -82,7 +83,7 @@ public class PersonalBoardTest extends TestCase {
     }
 
     @Test
-    public void testGetActivatableCardSpace() throws InvalidActionException {
+    public void testGetActivatableCardSpace() throws InvalidActionException, CardSpaceException {
         Player player = new Player("player");
         Warehouse warehouse= personalBoard.getWarehouse();
         StrongBox strongBox= personalBoard.getStrongbox();

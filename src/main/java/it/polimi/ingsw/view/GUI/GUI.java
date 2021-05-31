@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.MessageHandler;
 import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
+import it.polimi.ingsw.message.controllerMsg.VStartWaitReconnectionMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CRoomSizeResponseMsg;
 import it.polimi.ingsw.message.viewMsg.*;
@@ -337,6 +338,11 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(VNotValidCardSpaceMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VUpdateDevTableMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
@@ -606,6 +612,16 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(VAskNewGameMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VStartWaitReconnectionMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VActionTokenActivateMsg msg) {
         System.out.println(msg.toString());
     }
@@ -636,6 +652,11 @@ public class GUI extends Application implements ViewObserver {
         if(msg.getMsgContent().contains(username)){
 
         }
+    }
+
+    @Override
+    public void receiveMsg(VUpdateVictoryPointsMsg msg) {
+
     }
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.card.DevelopmentCard;
@@ -12,16 +13,21 @@ import java.util.ArrayList;
 
 public class Buy implements BuyCard, Serializable {
     @Override
-    public void buyCard(int row, int column, BoardManager boardManager, Player player, int selectedCardSpace) throws InvalidActionException{
+    public void buyCard(int row, int column, BoardManager boardManager, Player player, int selectedCardSpace) throws InvalidActionException, CardSpaceException {
         //when the player decides to puy a card
         /* took the card payment.. then remove the card from the table ecc..*/
         DevelopmentCard cardBought = boardManager.getDevelopmentCardTable().takeCard(row,column);
         ArrayList<Resource> cost = cardBought.getCost();
         PersonalBoard playerBoard = player.getGameSpace();
         if (checkBeforeBuy(cardBought, player)){
-            playerBoard.getResourceManager().removeResourcesFromBoth(cost);
-            //playerBoard.removeResource(cost.get(1), new RealDepot(1,1));
-            playerBoard.getCardSpaces().get(selectedCardSpace).addCard(cardBought);
+            try {
+                playerBoard.getCardSpaces().get(selectedCardSpace).addCard(cardBought);
+                playerBoard.getResourceManager().removeResourcesFromBoth(cost);
+                boardManager.getDevelopmentCardTable().removeCard(row, column);
+            } catch (CardSpaceException e) {
+                throw new CardSpaceException("");
+            }
+
         }
         else{
             throw new InvalidActionException("Not enought resources for buy this Development Card!");

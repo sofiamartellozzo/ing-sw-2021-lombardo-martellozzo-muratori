@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Room extends Observable {
 
@@ -111,6 +113,17 @@ public class Room extends Observable {
 
     public boolean isGameCanStart() {
         return initializedController.canStart();
+    }
+
+    public int getIntId(){
+        int number= 0;
+        //number = roomID.charAt(roomID.length()-2) + roomID.charAt(roomID.length()-1);
+        //Pattern p = Pattern.compile("\\d+");
+        //Matcher m = p.matcher(roomID);
+        String str = roomID;
+        str = str.replaceAll("[^-?0-9]+", "");
+        number = Integer.parseInt(str);
+        return number;
     }
 
     public void addVV(String userVV, VirtualView vV) {
@@ -241,14 +254,21 @@ public class Room extends Observable {
         throw new IllegalArgumentException(" Error, not found any player with that username!");
     }
 
-    /**
-     * attach all VV of the players so this class can notify them
-     */
-    private void attachAllVV() {
-        for (String username : listOfVirtualView.keySet()) {
-            attachObserver(ObserverType.VIEW, listOfVirtualView.get(username));
+    public PlayerInterface getPlayerByUsername(String username) {
+        if (numberOfPlayer > 1) {
+            //multiplayer mode
+            for (PlayerInterface player : turnSequence.values()) {
+                if (player.getUsername().equals(username)) {
+                    return player;
+                }
+            }
+        } else {
+            //single player
+            return this.singlePlayer;
         }
+        return null;
     }
+
 
     public void detachInitializedC() {
         if (initializedController != null && isGameCanStart()) {
@@ -257,20 +277,37 @@ public class Room extends Observable {
         }
     }
 
+
     /**
      * method used to manage the disconnection of a single player from a game, and delete his network
      * with the virtual view
      *
      * @param username
      */
-    private void disconnectPlayer(String username) {
+    public void disconnectPlayer(String username) {
 
-        playersId.remove(username);       //remove the name of the player disconnected from the list
+        getPlayerByUsername(username).setDisconnected(true);
+        System.out.println("DISCONNECT IN ROOM");
+        System.out.println(getPlayerByUsername(username).isDisconnected());
+        System.out.println(listOfVirtualView);
 
         VirtualView playerVirtualView = listOfVirtualView.get(username);     //get the virtual view of the player disconnected
+
         playerVirtualView.detachObserver(ObserverType.CONTROLLER, turnController);
-        turnController.detachObserver(ObserverType.VIEW, playerVirtualView);
+        //turnController.detachObserver(ObserverType.VIEW, playerVirtualView);
         listOfVirtualView.remove(username); //remove the username from the map in which every player is associated to his virtual view
+    }
+
+    public void reconnectPlayer(String username, VirtualView VV) {
+        getPlayerByUsername(username).setDisconnected(false);
+        addVV(username, VV);
+        printRoomMessage("player " + username + " reconnected to the game");
+        //send to the player his Data
+        VSendPlayerDataMsg msg = new VSendPlayerDataMsg("these is the actual condiction of your game after reconnected", getPlayerByUsername(username), boardManager, false);
+        notifyAllObserver(ObserverType.VIEW, msg);
+        VV.attachObserver(ObserverType.CONTROLLER, turnController);
+        turnController.attachObserver(ObserverType.VIEW, VV);
+        turnController.addVV(username, VV);
     }
 
 
