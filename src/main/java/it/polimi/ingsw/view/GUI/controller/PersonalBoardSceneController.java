@@ -1,11 +1,9 @@
 package it.polimi.ingsw.view.GUI.controller;
 
-import it.polimi.ingsw.controller.ProductionPowerController;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.VActivateProductionPowerRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseActionTurnRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
-import it.polimi.ingsw.message.viewMsg.VMoveResourceRequestMsg;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.TypeResource;
@@ -18,6 +16,7 @@ import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
 import it.polimi.ingsw.model.cardAbility.TypeAbility;
 import it.polimi.ingsw.view.GUI.GUI;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,7 +26,6 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,8 +82,19 @@ public class PersonalBoardSceneController {
     private Pane standardPPPane,strongBoxPane;
 
     @FXML
-    private Text errorMessageText;
+    private Label errorMessage;
 
+    @FXML
+    private Button stopPPPowerButton;
+
+    @FXML
+    private TitledPane chooseResourcePane;
+
+    @FXML
+    private Label chooseResourceLabel;
+
+    @FXML
+    private ImageView coin,servant,shield,stone;
 
 
     private boolean returnToMarket;
@@ -93,9 +102,10 @@ public class PersonalBoardSceneController {
     private TurnAction action;
     private ArrayList<Integer> activatablePP;
     private String where;
+    private Integer whichPP;
     private CActivateProductionPowerResponseMsg response;
+    private ArrayList<TypeResource> resourcesToRemove=new ArrayList<>();
 
-    private HashMap<Integer,ImageView> leaderCardsView=new HashMap<>();
     private ArrayList<Integer> chosenDepots=new ArrayList<>();
 
     public void start(){
@@ -113,11 +123,14 @@ public class PersonalBoardSceneController {
         strongBoxPane.setVisible(false);
         strongBoxPane.setDisable(true);
         disablePP();
-
+        disableCardSpaces();
+        stopPPPowerButton.setVisible(false);
+        stopPPPowerButton.setDisable(true);
+        chooseResourcePane.setVisible(false);
     }
 
     public void setChooseActionMessage(String content){
-        chooseActionMessage.setText(content);
+        setLabelText(chooseActionMessage,content);
     }
     public void chooseAction(VChooseActionTurnRequestMsg msg){
         if(!returnToMarket) {
@@ -157,9 +170,17 @@ public class PersonalBoardSceneController {
 
     public void choosePP(VActivateProductionPowerRequestMsg msg){
         activatablePP=msg.getActivatablePP();
-        chooseDepots();
-        strongBoxPane.setVisible(true);
-        strongBoxPane.setDisable(false);
+        if(activatablePP.size()>0) {
+            chooseDepots();
+            strongBoxPane.setVisible(true);
+            strongBoxPane.setDisable(false);
+            stopPPPowerButton.setVisible(true);
+            stopPPPowerButton.setDisable(false);
+        }else{
+            okButton.setDisable(false);
+            errorMessagePane.setVisible(true);
+            setLabelText(errorMessage,"No available Production Power");
+        }
     }
 
     private void activatePP(){
@@ -171,15 +192,23 @@ public class PersonalBoardSceneController {
                 standardPPPane.setDisable(false);
             }else if(i>=1 && i<=3){
                 cardSpacesView.get(i-1).setDisable(false);
+                cardSpacesView.get(i-1).setEffect(null);
             }else if(i>=4 && i<=5){
-                for(Integer id:leaderCardsView.keySet()){
-                    LeaderCard leaderCard = searchLeaderCardInDeckById(id);
-                    if(leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility().getTypeAbility().equals(TypeAbility.ADDITIONAL_POWER)){
-                        leaderCardsView.get(id).setDisable(false);
+                for(int j=0;j<gui.getLeaderCards().size();j++){
+                    LeaderCard leaderCard= gui.getLeaderCards().get(j);
+                    if(j==i-4 && leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility().getTypeAbility().equals(TypeAbility.ADDITIONAL_POWER)){
+                        //RIVEDI DOPO
                     }
                 }
             }
         }
+    }
+
+    public void clickStopPPPowerButton(){
+        gui.sendMsg(new CStopPPMsg("I don't want to activate any production power anymore",gui.getUsername()));
+        stopPPPowerButton.setDisable(true);
+        stopPPPowerButton.setVisible(false);
+        action=null;
     }
 
     public void mouseEnteredStrongBoxPane(){
@@ -199,6 +228,9 @@ public class PersonalBoardSceneController {
             strongBoxPane.setVisible(false);
             strongBoxPane.setDisable(true);
             activatePP();
+            strongBoxPane.setDisable(true);
+            strongBoxPane.setVisible(false);
+            disableDepotPanes();
         }
     }
 
@@ -214,9 +246,169 @@ public class PersonalBoardSceneController {
     }
     public void clickStandardPPPane(){
         if(!standardPPPane.isDisable()){
-            response = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,0);
+            whichPP=0;
             disablePP();
-            //CHOOSE RESOURCE TO GET AND TO REMOVE
+            setLabelText(chooseResourceLabel,"Choose first resource to remove");
+            chooseResourcePane.setVisible(true);
+        }
+    }
+
+    public void mouseEnteredCoin(){
+        if(!coin.isDisable()){
+            coin.setEffect(new Glow());
+        }
+    }
+    public void mouseEnteredShield(){
+        if(!shield.isDisable()){
+            shield.setEffect(new Glow());
+        }
+    }
+    public void mouseEnteredStone(){
+        if(!stone.isDisable()){
+            stone.setEffect(new Glow());
+        }
+    }
+    public void mouseEnteredServant(){
+        if(!servant.isDisable()){
+            servant.setEffect(new Glow());
+        }
+    }
+
+    public void mouseExitedCoin(){
+        if(!coin.isDisable()){
+            coin.setEffect(null);
+        }
+    }
+    public void mouseExitedShield(){
+        if(!shield.isDisable()){
+            shield.setEffect(null);
+        }
+    }
+    public void mouseExitedStone(){
+        if(!stone.isDisable()){
+            stone.setEffect(null);
+        }
+    }
+    public void mouseExitedServant(){
+        if(!servant.isDisable()){
+            servant.setEffect(null);
+        }
+    }
+
+    public void clickCoin(){
+        if(!coin.isDisable()){
+            if(whichPP==0 && resourcesToRemove.size()==0){
+                resourcesToRemove.add(TypeResource.COIN);
+                setLabelText(chooseResourceLabel,"Choose second resource to remove");
+            }else if(whichPP==0 && resourcesToRemove.size()==1){
+                resourcesToRemove.add(TypeResource.COIN);
+                setLabelText(chooseResourceLabel,"Choose the resource you want to receive");
+            }else if(whichPP==0 && resourcesToRemove.size()==2){
+                CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                responseMsg.setResourcesToPay(resourcesToRemove);
+                responseMsg.setResourceToGet(TypeResource.COIN);
+                disableCardSpaces();
+                standardPPPane.setVisible(false);
+                standardPPPane.setDisable(true);
+                resourcesToRemove=new ArrayList<>();
+                chooseResourcePane.setVisible(false);
+                gui.sendMsg(responseMsg);
+            }else if((whichPP>=4 && whichPP<=5)){
+                CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                responseMsg.setResourceToGet(TypeResource.COIN);
+                disableCardSpaces();
+                standardPPPane.setVisible(false);
+                standardPPPane.setDisable(true);
+                chooseResourcePane.setVisible(false);
+                gui.sendMsg(responseMsg);
+            }
+        }
+    }
+    public void clickShield(){
+        if(!shield.isDisable()){
+            if(whichPP==0 && resourcesToRemove.size()==0){
+                resourcesToRemove.add(TypeResource.SHIELD);
+                setLabelText(chooseResourceLabel,"Choose second resource to remove");
+            }else if(whichPP==0 && resourcesToRemove.size()==1){
+                resourcesToRemove.add(TypeResource.SHIELD);
+                setLabelText(chooseResourceLabel,"Choose the resource you want to receive");
+            }else if(whichPP==0 && resourcesToRemove.size()==2){
+                CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                responseMsg.setResourcesToPay(resourcesToRemove);
+                responseMsg.setResourceToGet(TypeResource.SHIELD);
+                disableCardSpaces();
+                standardPPPane.setVisible(false);
+                standardPPPane.setDisable(true);
+                resourcesToRemove=new ArrayList<>();
+                chooseResourcePane.setVisible(false);
+                gui.sendMsg(responseMsg);
+            }else if((whichPP>=4 && whichPP<=5)){
+                CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                responseMsg.setResourceToGet(TypeResource.SHIELD);
+                disableCardSpaces();
+                standardPPPane.setVisible(false);
+                standardPPPane.setDisable(true);
+                chooseResourcePane.setVisible(false);
+                gui.sendMsg(responseMsg);
+            }
+        }
+    }
+    public void clickStone(){
+        if(!stone.isDisable()){
+            if(whichPP==0 && resourcesToRemove.size()==0){
+                resourcesToRemove.add(TypeResource.STONE);
+                setLabelText(chooseResourceLabel,"Choose second resource to remove");
+            }else if(whichPP==0 && resourcesToRemove.size()==1){
+                resourcesToRemove.add(TypeResource.STONE);
+                setLabelText(chooseResourceLabel,"Choose the resource you want to receive");
+            }else if(whichPP==0 && resourcesToRemove.size()==2){
+                CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                responseMsg.setResourcesToPay(resourcesToRemove);
+                responseMsg.setResourceToGet(TypeResource.STONE);
+                disableCardSpaces();
+                standardPPPane.setVisible(false);
+                standardPPPane.setDisable(true);
+                resourcesToRemove=new ArrayList<>();
+                chooseResourcePane.setVisible(false);
+                gui.sendMsg(responseMsg);
+            }else if((whichPP>=4 && whichPP<=5)){
+                CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                responseMsg.setResourceToGet(TypeResource.STONE);
+                disableCardSpaces();
+                standardPPPane.setVisible(false);
+                standardPPPane.setDisable(true);
+                chooseResourcePane.setVisible(false);
+                gui.sendMsg(responseMsg);
+            }
+        }
+    }
+    public void clickServant(){
+        if(!servant.isDisable()){
+            if(whichPP==0 && resourcesToRemove.size()==0){
+                resourcesToRemove.add(TypeResource.SERVANT);
+                setLabelText(chooseResourceLabel,"Choose second resource to remove");
+            }else if(whichPP==0 && resourcesToRemove.size()==1){
+                resourcesToRemove.add(TypeResource.SERVANT);
+                setLabelText(chooseResourceLabel,"Choose the resource you want to receive");
+            }else if(whichPP==0 && resourcesToRemove.size()==2){
+                CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                responseMsg.setResourcesToPay(resourcesToRemove);
+                responseMsg.setResourceToGet(TypeResource.SERVANT);
+                disableCardSpaces();
+                standardPPPane.setVisible(false);
+                standardPPPane.setDisable(true);
+                resourcesToRemove=new ArrayList<>();
+                chooseResourcePane.setVisible(false);
+                gui.sendMsg(responseMsg);
+            }else if((whichPP>=4 && whichPP<=5)){
+                CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                responseMsg.setResourceToGet(TypeResource.SERVANT);
+                disableCardSpaces();
+                standardPPPane.setVisible(false);
+                standardPPPane.setDisable(true);
+                chooseResourcePane.setVisible(false);
+                gui.sendMsg(responseMsg);
+            }
         }
     }
 
@@ -281,7 +473,7 @@ public class PersonalBoardSceneController {
         for(ImageView cardSpaceView:getCardSpacesView()){
             cardSpaceView.setDisable(true);
         }
-        for(ImageView leaderCardView:getArrayListLeaderCardsView()){
+        for(ImageView leaderCardView: getLeaderCardsView()){
             leaderCardView.setDisable(true);
         }
     }
@@ -299,7 +491,7 @@ public class PersonalBoardSceneController {
         ArrayList<ImageView> specialDepotView = getSpecialDepotsView();
         ArrayList<Pane> depotPanes=getDepotPanes();
         for(int i=0;i<5;i++){
-            if((i+1==4||i+1==5)&&specialDepotView.get(i-3).isVisible()){
+            if((i+1==4||i+1==5) && specialDepotView.get(i-3).isVisible()){
                 depotPanes.get(i).setDisable(false);
             }else{
                 depotPanes.get(i).setDisable(false);
@@ -368,17 +560,25 @@ public class PersonalBoardSceneController {
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
+                    chosenDepots=new ArrayList<>();
+                    action=null;
                     if(returnToMarket){
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        action=TurnAction.BUY_FROM_MARKET;
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
+                action=null;
                 where="warehouse";
                 disableDepotPanes();
                 strongBoxPane.setVisible(false);
                 strongBoxPane.setDisable(true);
                 activatePP();
+                strongBoxPane.setDisable(true);
+                strongBoxPane.setVisible(false);
+                disableDepotPanes();
+                notVisibleDepotPanes();
             }
         }
     }
@@ -390,9 +590,12 @@ public class PersonalBoardSceneController {
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
+                    chosenDepots=new ArrayList<>();
+                    action=null;
                     if(returnToMarket){
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        action=TurnAction.BUY_FROM_MARKET;
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -401,6 +604,10 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 strongBoxPane.setDisable(true);
                 activatePP();
+                strongBoxPane.setDisable(true);
+                strongBoxPane.setVisible(false);
+                disableDepotPanes();
+                notVisibleDepotPanes();
             }
         }
     }
@@ -412,9 +619,12 @@ public class PersonalBoardSceneController {
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
+                    chosenDepots=new ArrayList<>();
+                    action=null;
                     if(returnToMarket){
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        action=TurnAction.BUY_FROM_MARKET;
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -423,6 +633,10 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 strongBoxPane.setDisable(true);
                 activatePP();
+                strongBoxPane.setDisable(true);
+                strongBoxPane.setVisible(false);
+                disableDepotPanes();
+                notVisibleDepotPanes();
             }
         }
     }
@@ -434,9 +648,12 @@ public class PersonalBoardSceneController {
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
+                    chosenDepots=new ArrayList<>();
+                    action=null;
                     if(returnToMarket){
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        action=TurnAction.BUY_FROM_MARKET;
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -445,6 +662,10 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 strongBoxPane.setDisable(true);
                 activatePP();
+                strongBoxPane.setDisable(true);
+                strongBoxPane.setVisible(false);
+                disableDepotPanes();
+                notVisibleDepotPanes();
             }
         }
     }
@@ -456,9 +677,12 @@ public class PersonalBoardSceneController {
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
+                    chosenDepots=new ArrayList<>();
+                    action=null;
                     if(returnToMarket){
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        action=TurnAction.BUY_FROM_MARKET;
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -467,6 +691,10 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 strongBoxPane.setDisable(true);
                 activatePP();
+                strongBoxPane.setDisable(true);
+                strongBoxPane.setVisible(false);
+                disableDepotPanes();
+                notVisibleDepotPanes();
             }
         }
     }
@@ -492,27 +720,28 @@ public class PersonalBoardSceneController {
     public void chooseLeaderCard(VChooseLeaderCardRequestMsg msg){
         ArrayList<Integer> leaderCards=msg.getMiniDeckLeaderCardFour();
         if(msg.getMiniDeckLeaderCardFour().size()>0) {
-            for (Integer key : leaderCardsView.keySet()) {
-                System.out.println("LeaderCardsView: " + key);
-                for (Integer id : leaderCards) {
-                    if (key.equals(id)) {
-                        leaderCardsView.get(id).setEffect(null);
-                        leaderCardsView.get(id).setDisable(false);
-                    }
-                }
+            for(int i=0;i<leaderCards.size();i++){
+                System.out.println("LeaderCardsView: "+leaderCards.get(i));
+                getLeaderCardsView().get(i).setDisable(false);
+                getLeaderCardsView().get(i).setEffect(null);
             }
         }else{
-            errorMessageText.setText("No card to "+msg.getWhatFor());
+            setLabelText(errorMessage,"No card to"+msg.getWhatFor());
             okButton.setDisable(false);
             errorMessagePane.setVisible(true);
         }
     }
 
     public void clickOKButton(){
-        gui.sendMsg(new CChangeActionTurnMsg("Not possible to do action, I want to change action",gui.getUsername(),action));
-        action=null;
+        if(action==TurnAction.ACTIVE_LEADER_CARD||action==TurnAction.REMOVE_LEADER_CARD) {
+            gui.sendMsg(new CChangeActionTurnMsg("Not possible to do action, I want to change action", gui.getUsername(), action));
+        }else if(action==TurnAction.ACTIVE_PRODUCTION_POWER){
+            gui.sendMsg(new CStopPPMsg("No Production Power Available",gui.getUsername()));
+        }
+        action = null;
         okButton.setDisable(true);
         errorMessagePane.setVisible(false);
+        action=null;
     }
 
     public void mouseEnteredLeaderCard1(){
@@ -541,11 +770,11 @@ public class PersonalBoardSceneController {
     public void clickLeaderCard1(){
         if(!leaderCard1.isDisable()){
             if(this.action.equals(TurnAction.ACTIVE_LEADER_CARD)){
-                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",getIdFromLeaderCardView(leaderCard1),gui.getUsername(),"active"));
+                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",gui.getLeaderCards().get(0).getCardID(),gui.getUsername(),"active"));
                 leaderCard1.setEffect(null);
                 leaderCard1.setDisable(true);
             }else if(this.action.equals(TurnAction.REMOVE_LEADER_CARD)){
-                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",getIdFromLeaderCardView(leaderCard1),gui.getUsername(),"remove"));
+                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",gui.getLeaderCards().get(0).getCardID(),gui.getUsername(),"remove"));
                 leaderCard1.setEffect(null);
                 leaderCard1.setDisable(true);
                 leaderCard1.setImage(new Image("/images/backCards/LeaderCard (1).png"));
@@ -556,11 +785,11 @@ public class PersonalBoardSceneController {
     public void clickLeaderCard2(){
         if(!leaderCard2.isDisable()){
             if(this.action.equals(TurnAction.ACTIVE_LEADER_CARD)){
-                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",getIdFromLeaderCardView(leaderCard2),gui.getUsername(),"active"));
+                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",gui.getLeaderCards().get(1).getCardID(),gui.getUsername(),"active"));
                 leaderCard2.setEffect(null);
                 leaderCard2.setDisable(true);
             }else if(this.action.equals(TurnAction.REMOVE_LEADER_CARD)){
-                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",getIdFromLeaderCardView(leaderCard2),gui.getUsername(),"remove"));
+                gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose the leader card",gui.getLeaderCards().get(1).getCardID(),gui.getUsername(),"remove"));
                 leaderCard2.setEffect(null);
                 leaderCard2.setDisable(true);
                 leaderCard2.setImage(new Image("/images/backCards/LeaderCard (1).png"));
@@ -603,6 +832,26 @@ public class PersonalBoardSceneController {
     }
 
     //Update FXML Elements based on Model Elements
+    public void updateLeaderCards(ArrayList<LeaderCard> leaderCards){
+        for(int i=0;i<2;i++){
+            if(i+1<=leaderCards.size()){
+                getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+leaderCards.get(i).getCardID()+").png"));
+            }else{
+                getLeaderCardsView().get(i).setImage(new Image("/images/backCards/LeaderCard (1).png"));
+            }
+        }
+    }
+    public void updateCardSpace(ArrayList<CardSpace> cardSpaces){
+        for(int i=0;i<cardSpaces.size();i++){
+            if(!cardSpaces.get(i).getCards().isEmpty()){
+                getCardSpacesView().get(i).setImage(new Image("/images/frontCards/DevelopmentCard ("+cardSpaces.get(i).getUpperCard().getId()+").png"));
+                getCardSpacesView().get(i).setVisible(true);
+            }else{
+                getCardSpacesView().get(i).setImage(null);
+                getCardSpacesView().get(i).setVisible(false);
+            }
+        }
+    }
     public void updateFaithTrackView(FaithTrack faithTrack){
         if(faithTrack instanceof SoloFaithTrack){
             SoloFaithTrack soloFaithTrack = (SoloFaithTrack) faithTrack;
@@ -726,17 +975,22 @@ public class PersonalBoardSceneController {
     }
     public void updateStrongBoxView(StrongBox strongBox){
         HashMap<TypeResource,Integer> countResourcesInStrongBox=new HashMap<>();
-        countResourcesInStrongBox.put(TypeResource.SERVANT,0);
-        countResourcesInStrongBox.put(TypeResource.SHIELD,0);
-        countResourcesInStrongBox.put(TypeResource.COIN,0);
-        countResourcesInStrongBox.put(TypeResource.STONE,0);
+        int servant=0;
+        int shield=0;
+        int coin=0;
+        int stone=0;
         for(Resource resource:strongBox.getContent()){
-            Integer countType=countResourcesInStrongBox.get(resource.getType());
-            countType++;
+            switch(resource.getType()){
+                case COIN:coin++;break;
+                case SHIELD:shield++;break;
+                case STONE:stone++;break;
+                case SERVANT:servant++;break;
+            }
         }
-        for(TypeResource key:countResourcesInStrongBox.keySet()){
-            getStrongboxLabelsView().get(key).setText(""+countResourcesInStrongBox.get(key));
-        }
+        setLabelText(getStrongboxLabelsView().get(TypeResource.COIN),""+coin);
+        setLabelText(getStrongboxLabelsView().get(TypeResource.SHIELD),""+shield);
+        setLabelText(getStrongboxLabelsView().get(TypeResource.SERVANT),""+servant);
+        setLabelText(getStrongboxLabelsView().get(TypeResource.STONE),""+stone);
     }
     public void updateCardSpacesView(ArrayList<CardSpace> cardSpaces){
         for(int i=0;i<cardSpaces.size();i++){
@@ -744,25 +998,25 @@ public class PersonalBoardSceneController {
                 getCardSpacesView().get(i).setImage(new Image("/images/frontCards/DevelopmentCard ("+cardSpaces.get(i).getUpperCard().getId()+").png"));
                 getCardSpacesView().get(i).setVisible(true);
             }else{
+                getCardSpacesView().get(i).setImage(null);
                 getCardSpacesView().get(i).setVisible(false);
             }
         }
     }
     public void updateLeaderCardsView(ArrayList<Integer> leaderCards){
         for(int i=0;i<leaderCards.size();i++){
-            getArrayListLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+leaderCards.get(i)+").png"));
+            getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+leaderCards.get(i)+").png"));
 
-            getArrayListLeaderCardsView().get(i).setVisible(true);
-            leaderCardsView.put(leaderCards.get(i), getArrayListLeaderCardsView().get(i));
+            getLeaderCardsView().get(i).setVisible(true);
 
             ColorAdjust colorAdjust = new ColorAdjust();
             colorAdjust.setBrightness(-0.5);
 
-            getArrayListLeaderCardsView().get(i).setEffect(colorAdjust);
+            getLeaderCardsView().get(i).setEffect(colorAdjust);
         }
     }
     public void updateVictoryPointsView(int victoryPoints){
-        this.victoryPoints.setText(""+victoryPoints);
+        setLabelText(this.victoryPoints,""+victoryPoints);
     }
 
     private void showActionButtons(ArrayList<TurnAction> activatableActions){
@@ -906,7 +1160,7 @@ public class PersonalBoardSceneController {
         cardSpaceView.add(cardSpace3);
         return cardSpaceView;
     }
-    private ArrayList<ImageView> getArrayListLeaderCardsView(){
+    private ArrayList<ImageView> getLeaderCardsView(){
         ArrayList<ImageView> leaderCardsView = new ArrayList<>();
         leaderCardsView.add(leaderCard1);
         leaderCardsView.add(leaderCard2);
@@ -938,16 +1192,8 @@ public class PersonalBoardSceneController {
         }
     }
     public void setTurnAction(TurnAction action){this.action =action;}
-    private Integer getIdFromLeaderCardView(ImageView image){
-        for(Integer id:leaderCardsView.keySet()){
-            if(leaderCardsView.get(id).equals(image)){
-                return id;
-            }
-        }
-        return 0;
-    }
     private void setAllLeaderDisable(){
-        for(ImageView image:getArrayListLeaderCardsView()){
+        for(ImageView image: getLeaderCardsView()){
             image.setDisable(true);
         }
     }
@@ -957,7 +1203,7 @@ public class PersonalBoardSceneController {
     public void setAction(TurnAction action){this.action=action;}
     private LeaderCard searchLeaderCardInDeckById(int id){
         if(id>=1 && id<=16) {
-            LeaderCardDeck leaderCardDeck = gui.getLeaderCards();
+            LeaderCardDeck leaderCardDeck = gui.getLeaderCardsDeck();
             for (LeaderCard leaderCard : leaderCardDeck.getCards()) {
                 if (id == leaderCard.getCardID()) {
                     return leaderCard;
@@ -965,5 +1211,20 @@ public class PersonalBoardSceneController {
             }
         }
         return null;
+    }
+
+    private void disableCardSpaces(){
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
+        for(ImageView imageView: getCardSpacesView()){
+            imageView.setDisable(true);
+            imageView.setEffect(colorAdjust);
+        }
+    }
+
+    private void setLabelText(Label label,String content){
+        Platform.runLater(()->{
+            label.setText(content);
+        });
     }
 }

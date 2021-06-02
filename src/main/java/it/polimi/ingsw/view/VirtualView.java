@@ -268,6 +268,20 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         client.startWaitReconnection();
     }
 
+    @Override
+    public void receiveMsg(VUpdateLeaderCards msg) {
+        if(msg.getUsername().equals(username)) {
+            sendToClient(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VUpdateCardSpaces msg) {
+        if(msg.getUsername().equals(username)) {
+            sendToClient(msg);
+        }
+    }
+
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {

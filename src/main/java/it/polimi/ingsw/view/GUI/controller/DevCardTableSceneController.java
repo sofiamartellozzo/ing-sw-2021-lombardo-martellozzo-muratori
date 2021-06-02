@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.card.DevelopmentCardDeck;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
 import it.polimi.ingsw.view.GUI.GUI;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -71,7 +72,7 @@ public class DevCardTableSceneController {
             }
         }
         if(!atLeastOne){
-            errorMessage.setText("You can't buy any development card. Choose another action!");
+            setLabelText(errorMessage,"You can't buy any development card.\n Choose another action!");
             backButton.setDisable(false);
             backButton.setVisible(true);
             errorPopup.setVisible(true);
@@ -94,86 +95,86 @@ public class DevCardTableSceneController {
 
     public void clickDevCard1_1(){
         if(!devCard1_1.isDisable() && !justSee) {
-            chosenRow = 1;
-            chosenColumn = 1;
+            chosenRow = 0;
+            chosenColumn = 0;
             chooseCardSpace();
         }
     }
 
     public void clickDevCard1_2(){
         if(!devCard1_2.isDisable() && !justSee) {
-            chosenRow = 1;
-            chosenColumn = 2;
+            chosenRow = 0;
+            chosenColumn = 1;
             chooseCardSpace();
         }
     }
     public void clickDevCard1_3(){
         if(!devCard1_3.isDisable() && !justSee) {
-            chosenRow = 1;
-            chosenColumn = 3;
+            chosenRow = 0;
+            chosenColumn = 2;
             chooseCardSpace();
         }
     }
     public void clickDevCard1_4(){
         if(!devCard1_4.isDisable() && !justSee) {
-            chosenRow = 1;
-            chosenColumn = 4;
+            chosenRow = 0;
+            chosenColumn = 3;
             chooseCardSpace();
         }
     }
     public void clickDevCard2_1(){
         if(!devCard2_1.isDisable() && !justSee) {
-            chosenRow = 2;
-            chosenColumn = 1;
+            chosenRow = 1;
+            chosenColumn = 0;
             chooseCardSpace();
         }
     }
     public void clickDevCard2_2(){
         if(!devCard2_2.isDisable() && !justSee) {
-            chosenRow = 2;
-            chosenColumn = 2;
+            chosenRow = 1;
+            chosenColumn = 1;
             chooseCardSpace();
         }
     }
     public void clickDevCard2_3(){
         if(!devCard2_3.isDisable() && !justSee) {
-            chosenRow = 2;
-            chosenColumn = 3;
+            chosenRow = 1;
+            chosenColumn = 2;
             chooseCardSpace();
         }
     }
     public void clickDevCard2_4(){
         if(!devCard2_4.isDisable() && !justSee) {
-            chosenRow = 2;
-            chosenColumn = 4;
+            chosenRow = 1;
+            chosenColumn = 3;
             chooseCardSpace();
         }
     }
     public void clickDevCard3_1(){
         if(!devCard3_1.isDisable() && !justSee) {
-            chosenRow = 3;
-            chosenColumn = 1;
+            chosenRow = 2;
+            chosenColumn = 0;
             chooseCardSpace();
         }
     }
     public void clickDevCard3_2(){
         if(!devCard3_2.isDisable() && !justSee) {
-            chosenRow = 3;
-            chosenColumn = 2;
+            chosenRow = 2;
+            chosenColumn = 1;
             chooseCardSpace();
         }
     }
     public void clickDevCard3_3(){
         if(!devCard3_3.isDisable() && !justSee) {
-            chosenRow = 3;
-            chosenColumn = 3;
+            chosenRow = 2;
+            chosenColumn = 2;
             chooseCardSpace();
         }
     }
     public void clickDevCard3_4(){
         if(!devCard3_4.isDisable() && !justSee) {
-            chosenRow = 3;
-            chosenColumn = 4;
+            chosenRow = 2;
+            chosenColumn = 3;
             chooseCardSpace();
         }
     }
@@ -307,7 +308,7 @@ public class DevCardTableSceneController {
     }
 
     public void clickCardSpace1Button(){
-        gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,1));
+        gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,0));
         chooseCardSpacePane.setVisible(false);
         gui.seePersonalBoard();
         backButton.setVisible(true);
@@ -315,14 +316,14 @@ public class DevCardTableSceneController {
     }
 
     public void clickCardSpace2Button(){
-        gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,2));
+        gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,1));
         chooseCardSpacePane.setVisible(false);
         gui.seePersonalBoard();
         backButton.setVisible(true);
         backButton.setDisable(false);
     }
     public void clickCardSpace3Button(){
-        gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,3));
+        gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,2));
         chooseCardSpacePane.setVisible(false);
         gui.seePersonalBoard();
         backButton.setVisible(true);
@@ -414,6 +415,12 @@ public class DevCardTableSceneController {
                 devCardTableView[i][j].setEffect(null);
             }
         }
+    }
+
+    private void setLabelText(Label label,String content){
+        Platform.runLater(()->{
+            label.setText(content);
+        });
     }
 
 }

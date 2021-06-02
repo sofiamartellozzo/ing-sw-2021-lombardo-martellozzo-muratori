@@ -97,7 +97,7 @@ public class ClientSocket extends Observable implements Runnable {
             ping = new Thread(() -> {
                 try {
                     while (true) {
-                        Thread.sleep(5000);
+                        Thread.sleep(10000);
                         out.writeObject(new PongMsg("Pong!"));
                     }
                 } catch (InterruptedException e) {

@@ -15,6 +15,7 @@ import it.polimi.ingsw.model.board.FaithTrack;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
+import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
 import it.polimi.ingsw.model.market.MarketStructure;
 import it.polimi.ingsw.network.client.ClientSocket;
@@ -66,7 +67,11 @@ public class GUI extends Application implements ViewObserver {
 
     private PlayerInterface player;
     private BoardManager boardManager;
-    private LeaderCardDeck leaderCards;
+    private LeaderCardDeck leaderCardsDeck;
+
+
+
+    private ArrayList<LeaderCard> leaderCards;
     private MarketStructure marketStructureData;
     private DevelopmentCardTable developmentCardTable;
     private Warehouse warehouse;
@@ -190,7 +195,7 @@ public class GUI extends Application implements ViewObserver {
         player = msg.getPlayer();
         boardManager = msg.getBoardManager();
         marketStructureData = msg.getBoardManager().getMarketStructure();
-        leaderCards = msg.getBoardManager().getLeaderCardDeck();
+        leaderCardsDeck = msg.getBoardManager().getLeaderCardDeck();
         developmentCardTable = msg.getBoardManager().getDevelopmentCardTable();
         warehouse = msg.getPlayer().getGameSpace().getResourceManager().getWarehouse();
         strongBox = msg.getPlayer().getGameSpace().getResourceManager().getStrongBox();
@@ -316,6 +321,7 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VUpdateMarketMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
+            marketStructureData=msg.getMarketUpdate();
             marketStructureSceneController.update(msg.getMarketUpdate());
         }
     }
@@ -324,6 +330,7 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VUpdateFaithTrackMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
+            faithTrack=msg.getFaithTrack();
             personalBoardSceneController.updateFaithTrackView(msg.getFaithTrack());
         }
     }
@@ -346,16 +353,138 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VUpdateDevTableMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
+            developmentCardTable=msg.getUpdateTable();
             devCardTableSceneController.update(msg.getUpdateTable());
             personalBoardSceneController.updateCardSpacesView(msg.getUpdateCardSpace());
         }
     }
 
-    public void setEndGameScene() throws IOException {
+    public void setEndGsameScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/EndGameScene.fxml"));
         endGameScene = new Scene(loader.load());
         endGameSceneController=loader.getController();
         endGameSceneController.setGui(this);
+    }
+
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg){
+        System.out.println(msg.toString());
+    }
+
+    @Override
+    public void receiveMsg(VMoveResourceRequestMsg msg) {
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(getUsername())) {
+            personalBoardSceneController.chooseDepots();
+        }
+    }
+
+    @Override
+    public void receiveMsg(VChooseDepotMsg msg) {
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)){
+            marketStructureSceneController.setResourcesToStore(msg.getResourceToStore());
+            marketStructureSceneController.chooseDepot();
+        }
+    }
+
+    @Override
+    public void receiveMsg(VLorenzoIncreasedMsg msg) {
+        System.out.println(msg.toString());
+    }
+
+    @Override
+    public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)){
+            personalBoardSceneController.choosePP(msg);
+        }
+    }
+
+    @Override
+    public void receiveMsg(VUpdateStrongboxMsg msg) {
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)){
+            strongBox=msg.getStrongBox();
+            personalBoardSceneController.updateStrongBoxView(msg.getStrongBox());
+        }
+    }
+
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+        System.out.println(msg.toString());
+    }
+
+    @Override
+    public void receiveMsg(VAskNewGameMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VStartWaitReconnectionMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VUpdateLeaderCards msg) {
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)){
+            leaderCards=msg.getLeaderCards();
+            for(LeaderCard leaderCard:leaderCards) {
+                System.out.println(leaderCard.getCardID());
+            }
+            personalBoardSceneController.updateLeaderCards(msg.getLeaderCards());
+        }
+    }
+
+    @Override
+    public void receiveMsg(VUpdateCardSpaces msg) {
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)){
+            cardSpaces=msg.getCardSpaces();
+            personalBoardSceneController.updateCardSpace(msg.getCardSpaces());
+        }
+    }
+
+    @Override
+    public void receiveMsg(VActionTokenActivateMsg msg) {
+        System.out.println(msg.toString());
+        //SHOW ACTION TOKEN
+    }
+
+    @Override
+    public void receiveMsg(VServerUnableMsg msg) {
+        System.out.println(msg.toString());
+        //SHOW MESSAGE SERVER IS NOT RUNNING
+    }
+
+
+
+    @Override
+    public void receiveMsg(VWaitYourTurnMsg msg) {
+        System.out.println(msg.toString());
+        //SHOW MESSAGE TO WAIT
+    }
+
+    @Override
+    public void receiveMsg(VUpdateWarehouseMsg msg) {
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)){
+            warehouse=msg.getWarehouse();
+            personalBoardSceneController.updateWarehouseView(msg.getWarehouse());
+        }
+    }
+
+    @Override
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
+        System.out.println(msg.toString());
+    }
+
+    @Override
+    public void receiveMsg(VUpdateVictoryPointsMsg msg) {
+        if(msg.getUsername().equals(username)){
+            personalBoardSceneController.updateVictoryPointsView(msg.getUpdateVictoryPoints());
+        }
     }
 
     public void changeScene(Scene scene){
@@ -471,8 +600,8 @@ public class GUI extends Application implements ViewObserver {
         return boardManager;
     }
 
-    public LeaderCardDeck getLeaderCards() {
-        return leaderCards;
+    public LeaderCardDeck getLeaderCardsDeck() {
+        return leaderCardsDeck;
     }
 
     public MarketStructure getMarketStructureData() {
@@ -561,102 +690,8 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
-
-
-    @Override
-    public void receiveMsg(CVStartInitializationMsg msg){
-        System.out.println(msg.toString());
-    }
-
-    @Override
-    public void receiveMsg(VMoveResourceRequestMsg msg) {
-        System.out.println(msg.toString());
-        if(msg.getUsername().equals(getUsername())) {
-            personalBoardSceneController.chooseDepots();
-        }
-    }
-
-    @Override
-    public void receiveMsg(VChooseDepotMsg msg) {
-        System.out.println(msg.toString());
-        if(msg.getUsername().equals(username)){
-            marketStructureSceneController.setResourcesToStore(msg.getResourceToStore());
-            marketStructureSceneController.chooseDepot();
-        }
-    }
-
-    @Override
-    public void receiveMsg(VLorenzoIncreasedMsg msg) {
-        System.out.println(msg.toString());
-    }
-
-    @Override
-    public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
-        System.out.println(msg.toString());
-        if(msg.getUsername().equals(username)){
-            personalBoardSceneController.choosePP(msg);
-        }
-    }
-
-    @Override
-    public void receiveMsg(VUpdateStrongboxMsg msg) {
-        System.out.println(msg.toString());
-        if(msg.getUsername().equals(username)){
-            personalBoardSceneController.updateStrongBoxView(msg.getStrongBox());
-        }
-    }
-
-    @Override
-    public void receiveMsg(VShowEndGameResultsMsg msg) {
-        System.out.println(msg.toString());
-    }
-
-    @Override
-    public void receiveMsg(VAskNewGameMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(VStartWaitReconnectionMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(VActionTokenActivateMsg msg) {
-        System.out.println(msg.toString());
-    }
-
-    @Override
-    public void receiveMsg(VServerUnableMsg msg) {
-        System.out.println(msg.toString());
-    }
-
-
-
-    @Override
-    public void receiveMsg(VWaitYourTurnMsg msg) {
-        System.out.println(msg.toString());
-    }
-
-    @Override
-    public void receiveMsg(VUpdateWarehouseMsg msg) {
-        System.out.println(msg.toString());
-        if(msg.getUsername().equals(username)){
-            personalBoardSceneController.updateWarehouseView(msg.getWarehouse());
-        }
-    }
-
-    @Override
-    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
-        System.out.println(msg.toString());
-        if(msg.getMsgContent().contains(username)){
-
-        }
-    }
-
-    @Override
-    public void receiveMsg(VUpdateVictoryPointsMsg msg) {
-
+    public ArrayList<LeaderCard> getLeaderCards() {
+        return leaderCards;
     }
 
 }

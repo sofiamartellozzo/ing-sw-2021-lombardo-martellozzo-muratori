@@ -308,7 +308,8 @@ public class ActionController extends Observable implements ControllerObserver {
                 notifyAllObserver(ObserverType.VIEW, secondUpdate);
                 VUpdateStrongboxMsg thirdUpdate = new VUpdateStrongboxMsg("update the strongbox", player.getUsername(), player.getGameSpace().getStrongbox());
                 notifyAllObserver(ObserverType.VIEW, thirdUpdate);
-
+                VUpdateCardSpaces fourthUpdate=new VUpdateCardSpaces("update card spaces",player.getUsername(),player.getGameSpace().getCardSpaces());
+                notifyAllObserver(ObserverType.VIEW,fourthUpdate);
                 //remove tre 3 action from the able ones because can be made only once
                 removeAction(msg.getActionChose());
                 endAction = true;
@@ -595,6 +596,8 @@ public class ActionController extends Observable implements ControllerObserver {
                     System.out.println("error, action not valid in the msg!");
                     break;
             }
+            VUpdateLeaderCards request = new VUpdateLeaderCards("Update leader cards",player.getUsername(),player.getLeaderCards());
+            notifyAllObserver(ObserverType.VIEW,request);
 
         }
     }

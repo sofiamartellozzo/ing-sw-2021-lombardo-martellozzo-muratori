@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -17,7 +16,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.PersonalBoardSceneController">
    <children>
@@ -538,20 +536,6 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane layoutX="4.0" layoutY="17.0" prefHeight="81.0" prefWidth="354.0">
-         <children>
-            <TextArea layoutX="4.0" prefHeight="55.0" prefWidth="260.0" text="YOUR ACTUAL VICTORY POINTS: ">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font>
-            </TextArea>
-            <Label fx:id="victoryPoints" layoutX="216.0" layoutY="3.0" text="10" textFill="#edca0c">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
       <Pane layoutX="856.0" layoutY="93.0" prefHeight="548.0" prefWidth="134.0">
          <children>
             <ImageView fx:id="leaderCard1" fitHeight="194.0" fitWidth="128.0" layoutX="3.0" layoutY="132.0" onMouseClicked="#clickLeaderCard1" onMouseEntered="#mouseEnteredLeaderCard1" onMouseExited="#mouseExitedLeaderCard1" pickOnBounds="true" preserveRatio="true">
@@ -571,7 +555,7 @@
             </Label>
          </children>
       </Pane>
-      <VBox layoutX="1.0" layoutY="332.0">
+      <VBox layoutX="1.0" layoutY="332.0" style="-fx-background-color: rgba(200,200,200,0.1);">
          <children>
             <Label fx:id="specialDepotLabel" alignment="CENTER" prefHeight="17.0" prefWidth="120.0" text="SPECIAL DEPOT:" textFill="#1b0de4">
                <font>
@@ -673,11 +657,7 @@
         <content>
             <VBox alignment="CENTER" prefHeight="0.0" prefWidth="175.0">
                <children>
-                  <Text fx:id="errorMessageText" fill="#b10000" strokeType="OUTSIDE" strokeWidth="0.0" text="Error Message" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold Italic" size="12.0" />
-                     </font>
-                  </Text>
+                  <Label fx:id="errorMessage" text="Label" />
                   <Button fx:id="okButton" mnemonicParsing="false" onAction="#clickOKButton" text="OK">
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -687,5 +667,66 @@
             </VBox>
         </content>
       </TitledPane>
+      <Button fx:id="stopPPPowerButton" layoutX="897.0" layoutY="45.0" mnemonicParsing="false" onAction="#clickStopPPPowerButton" text="STOP" />
+      <TitledPane fx:id="chooseResourcePane" animated="false" layoutX="282.0" layoutY="218.0" text="Choose Resource">
+        <content>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="chooseResourceLabel" text="Label">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <HBox>
+                     <children>
+                        <ImageView fx:id="coin" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickCoin" onMouseEntered="#mouseEnteredCoin" onMouseExited="#mouseExitedCoin" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/coin.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                        <ImageView fx:id="servant" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickServant" onMouseEntered="#mouseEnteredServant" onMouseExited="#mouseExitedServant" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/servant.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                        <ImageView fx:id="shield" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickShield" onMouseEntered="#mouseEnteredShield" onMouseExited="#mouseExitedShield" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/shield.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                        <ImageView fx:id="stone" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickStone" onMouseEntered="#mouseEnteredStone" onMouseExited="#mouseExitedStone" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/stone.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+        </content>
+      </TitledPane>
+      <VBox alignment="CENTER" layoutX="343.0" layoutY="19.0" prefHeight="55.0" prefWidth="350.0">
+         <children>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label text="Your Victory Points: " />
+                  <Label fx:id="victoryPoints" text="0" />
+               </children>
+            </HBox>
+            <Label fx:id="actionLabel" text="Action Sentence" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

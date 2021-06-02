@@ -95,4 +95,7 @@ public interface ViewObserver extends Observer{
 
     /*ge game stops waiting the client to reconnect*/
     public void receiveMsg(VStartWaitReconnectionMsg msg);
+
+    void receiveMsg(VUpdateLeaderCards msg);
+    void receiveMsg(VUpdateCardSpaces msg);
 }

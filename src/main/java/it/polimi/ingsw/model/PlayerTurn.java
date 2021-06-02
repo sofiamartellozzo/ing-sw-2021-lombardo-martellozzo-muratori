@@ -89,7 +89,6 @@ public class PlayerTurn implements PlayerTurnInterface {
         LeaderCard card =  this.currentPlayer.selectLeaderCard(which);
         if (card!=null){
             currentPlayer.removeLeaderCard(card);
-
         }
     }
 

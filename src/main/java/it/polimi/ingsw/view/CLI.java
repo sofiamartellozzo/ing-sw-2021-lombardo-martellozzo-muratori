@@ -1645,6 +1645,16 @@ public class CLI extends Observable implements ViewObserver {
 
     }
 
+    @Override
+    public void receiveMsg(VUpdateLeaderCards msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VUpdateCardSpaces msg) {
+
+    }
+
 
     /**
      * msg used to show to the player which action token is been activated at the end of the turn

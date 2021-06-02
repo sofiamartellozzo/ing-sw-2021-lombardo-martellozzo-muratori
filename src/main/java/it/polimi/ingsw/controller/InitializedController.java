@@ -7,10 +7,7 @@ import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
-import it.polimi.ingsw.message.updateMsg.CGameCanStartMsg;
-import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
-import it.polimi.ingsw.message.updateMsg.VUpdateWarehouseMsg;
-import it.polimi.ingsw.message.updateMsg.VWaitOtherPlayerInitMsg;
+import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.message.ControllerObserver;
@@ -325,6 +322,8 @@ public class InitializedController extends Observable implements ControllerObser
             //take the player that choose the cards
             if (this.getNumberOfPlayer() == 1) {
                 singlePlayer.setLeaderCards(chosenCards);
+                VUpdateLeaderCards request = new VUpdateLeaderCards("Update leader cards",singlePlayer.getUsername(), singlePlayer.getLeaderCards());
+                notifyAllObserver(ObserverType.VIEW,request);
                 //System.out.println("the 2 cards chosen now in player " + singlePlayer.getLeaderCards());
             } else {
                 PlayerInterface player = null;
@@ -334,6 +333,8 @@ public class InitializedController extends Observable implements ControllerObser
                     e.printStackTrace();
                 }
                 player.setLeaderCards(chosenCards);
+                VUpdateLeaderCards request = new VUpdateLeaderCards("Update leader cards",player.getUsername(), player.getLeaderCards());
+                notifyAllObserver(ObserverType.VIEW,request);
                 //System.out.println("the 2 cards chosen now in player " + player.getLeaderCards());
             }
 
@@ -351,6 +352,7 @@ public class InitializedController extends Observable implements ControllerObser
                 VWaitOtherPlayerInitMsg wait = new VWaitOtherPlayerInitMsg("", msg.getUsername());
                 notifyAllObserver(ObserverType.VIEW, wait);
             }
+
         }
     }
 
