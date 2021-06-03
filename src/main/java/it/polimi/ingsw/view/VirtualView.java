@@ -600,6 +600,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
+    public void receiveMsg(VResourcesNotValidMsg msg) {
+        if (msg.getUsername().equals(this.username)) {
+            sendToClient(msg);
+        }
+    }
+
+    @Override
     public void receiveMsg(VUpdateStrongboxMsg msg) {
         if (msg.getUsername().equals(this.username)) {
             sendToClient(msg);

@@ -32,6 +32,9 @@ import java.util.ArrayList;
 public class GUI extends Application implements ViewObserver {
     private Stage stage;
 
+    private Scene startScene;
+    private StartGameController startGameController;
+
     private Scene introScene;
     private IntroSceneController introSceneController;
 
@@ -91,14 +94,24 @@ public class GUI extends Application implements ViewObserver {
         this.stage = stage;
         stage.setResizable(false);
 
+        setStartScene();
         setIntroScene();
         setLobbyScene();
 
         stage.setTitle("Masters of Renaissance");
-        stage.setScene(introScene);
+        //stage.setScene(introScene);
+        stage.setScene(startScene);
         stage.show();
         stage.setOnCloseRequest(e -> close());
 
+    }
+
+    private void setStartScene() throws IOException {
+        FXMLLoader loaderStartScene = new FXMLLoader(getClass().getResource("/scenes/InitWindowScene.fxml"));
+        startScene = new Scene(loaderStartScene.load());
+        startGameController = loaderStartScene.getController();
+        startGameController.setGui(this);
+        //startGameController.start();
     }
 
     private void setIntroScene() throws IOException {
@@ -106,16 +119,18 @@ public class GUI extends Application implements ViewObserver {
         introScene = new Scene(loaderIntroScene.load());
         introSceneController = loaderIntroScene.getController();
         introSceneController.setGui(this);
-        introSceneController.start();
+        //introSceneController.start();
     }
 
     private void restartIntroScene() {
         try {
             setIntroScene();
+            setStartScene();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        changeScene(introScene);
+        //changeScene(introScene);
+        changeScene(startScene);
     }
 
     public void setLobbyScene() throws IOException {
@@ -402,6 +417,11 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(VResourcesNotValidMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VUpdateStrongboxMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
@@ -518,6 +538,14 @@ public class GUI extends Application implements ViewObserver {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public StartGameController getStartGameController() {
+        return startGameController;
+    }
+
+    public void setStartGameController(StartGameController startGameController) {
+        this.startGameController = startGameController;
     }
 
     public Scene getIntroScene() {

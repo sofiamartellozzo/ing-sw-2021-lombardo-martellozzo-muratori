@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.display;
+package it.polimi.ingsw.view.CLI.display;
 
 import it.polimi.ingsw.utility.AnsiColors;
 

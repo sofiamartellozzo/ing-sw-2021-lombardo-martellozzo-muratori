@@ -1,15 +1,10 @@
-package it.polimi.ingsw.view.display;
+package it.polimi.ingsw.view.CLI.display;
 
-import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
-import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.board.resourceManagement.Depot;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
-import it.polimi.ingsw.model.cardAbility.SpecialAbility;
+import it.polimi.ingsw.model.cardAbility.SpecialDepot;
 import it.polimi.ingsw.utility.AnsiColors;
-
-import java.util.ArrayList;
 
 /**
  * this class shows to the player his warehouse, so the three depots
@@ -42,14 +37,15 @@ public class WarehouseDisplay {
         public void displayWarehouse() {
 
 
-        System.out.print(AnsiColors.YELLOW_BOLD+"\nHERE IS YOUR WAREHOUSE:\n"+AnsiColors.RESET);
+        System.out.print(AnsiColors.BLUE_BOLD+"\nHERE IS YOUR WAREHOUSE:\n"+AnsiColors.RESET);
         for (int i = 0; i < warehouse.getDepots().size(); i++) {
             Depot depot = warehouse.getDepots().get(i);
             if (depot.isEmpty()) {
                 if (i < 3 ) {
                     System.out.print("DEPOT" + (i + 1) + ":" + AnsiColors.RED_BOLD + " IS EMPTY\n" + AnsiColors.RESET);
                 } else {
-                    System.out.print("SPECIAL DEPOT" + (i + 1) + ":(" + specialResource.toString() + ")" + AnsiColors.RED_BOLD + " IS EMPTY\n" + AnsiColors.RESET);
+
+                    System.out.print("SPECIAL DEPOT" + (i + 1) + ":(" + depot.getType().toString() + ")" + AnsiColors.RED_BOLD + " IS EMPTY\n" + AnsiColors.RESET);
                 }
             } else {
                 if (i < 3) {
@@ -58,7 +54,7 @@ public class WarehouseDisplay {
                         System.out.print(createResForCli(res));
                     }
                 }else{
-                    System.out.print("SPECIAL DEPOT" + (i + 1) + ":(" + specialResource.toString() + ")");
+                    System.out.print("SPECIAL DEPOT" + (i + 1) + ":(" + depot.getType().toString() + ")");
                     for (Resource res : depot.getResources()) {
                         System.out.print(createResForCli(res));
                     }

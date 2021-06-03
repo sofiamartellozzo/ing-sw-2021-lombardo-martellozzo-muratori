@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.control.RadioButton?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="718.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.StartGameController">
+   <children>
+      <Pane layoutY="1.0" prefHeight="481.0" prefWidth="718.0">
+         <children>
+            <ImageView fitHeight="481.0" fitWidth="718.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/BackgroundInitScene.jpg" />
+               </image>
+            </ImageView>
+            <Pane layoutX="82.0" layoutY="28.0" prefHeight="251.0" prefWidth="533.0">
+               <children>
+                  <ImageView fitHeight="192.0" fitWidth="527.0" layoutY="1.0" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/logo.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane layoutX="82.0" layoutY="191.0" prefHeight="192.0" prefWidth="533.0">
+               <children>
+                  <Button fx:id="onlineServerButton" layoutX="87.0" layoutY="123.0" mnemonicParsing="false" onAction="#clickOnlineServerButton" prefHeight="48.0" prefWidth="118.0" text="ONLINE " textFill="#1409eb">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Button fx:id="offlineButton" layoutX="339.0" layoutY="123.0" mnemonicParsing="false" onAction="#clickOfflineButton" prefHeight="48.0" prefWidth="112.0" text="OFFLINE" textFill="#140ada">
+                     <font>
+                        <Font name="System Bold Italic" size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Label alignment="CENTER" layoutX="170.0" layoutY="42.0" prefHeight="48.0" prefWidth="223.0" text="Choose your game mode" textFill="#0742a1">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="2.0" layoutY="80.0" text="⚠ Remember: if you choose to play OFFLINE the game will be in Solo Mode!" textFill="#0743a4">
+                     <font>
+                        <Font name="System Bold Italic" size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+      <ImageView fitHeight="71.0" fitWidth="354.0" layoutX="367.0" layoutY="406.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="329.0" layoutY="433.0" text="Created By: Gianluca Lombardo, Sofia Martellozzo, Ilaria Muratori" textFill="#0447b2">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="552.0" layoutY="450.0" text="Politecnico di Milano 2021" textFill="#0b43d0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

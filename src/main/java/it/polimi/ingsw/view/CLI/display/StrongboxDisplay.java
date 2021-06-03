@@ -1,13 +1,8 @@
-package it.polimi.ingsw.view.display;
+package it.polimi.ingsw.view.CLI.display;
 
-import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
-import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.utility.AnsiColors;
-
-import java.util.ArrayList;
 
 /**
  * this class shows to the player his Strongbox with Resources
@@ -57,12 +52,12 @@ public class StrongboxDisplay {
 
         }
         System.out.print("\n");
-        System.out.println(AnsiColors.RED_BOLD+"HERE IS YOUR STRONGBOX"+AnsiColors.RESET);
-        System.out.print(AnsiColors.WHITE_BOLD +" |--------------------| ");
+        System.out.println(AnsiColors.BLUE_BOLD+"HERE IS YOUR STRONGBOX"+AnsiColors.RESET);
+        System.out.print(AnsiColors.WHITE_BOLD +" ┌--------------------┐ ");
         System.out.print("\n");
-        System.out.print("        ");
-        System.out.print(AnsiColors.BLACK_BOLD+"\u26AB"+AnsiColors.RESET+":"+stoneInStrong+AnsiColors.RESET+" "+AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET+":"+servantInStrong+" "+"\n        "+AnsiColors.YELLOW_BOLD+"\uD83D\uDFE1"+AnsiColors.RESET+":"+coinInStrong+" "+AnsiColors.BLUE_BOLD+"\uD83D\uDD35"+AnsiColors.RESET+":"+shieldInStrong+" ");
-        System.out.print(AnsiColors.WHITE_BOLD + "\n |--------------------| ");
+        System.out.print(" │      ");
+        System.out.print(AnsiColors.BLACK_BOLD+"\u26AB"+AnsiColors.RESET+":"+stoneInStrong+AnsiColors.RESET+" "+AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET+":"+servantInStrong+"     │"+"\n │      "+AnsiColors.YELLOW_BOLD+"\uD83D\uDFE1"+AnsiColors.RESET+":"+coinInStrong+" "+AnsiColors.BLUE_BOLD+"\uD83D\uDD35"+AnsiColors.RESET+":"+shieldInStrong+"     │");
+        System.out.print(AnsiColors.WHITE_BOLD + "\n └--------------------┘ ");
         System.out.print("\n");
 
     }

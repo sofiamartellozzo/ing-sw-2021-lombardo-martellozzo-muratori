@@ -74,7 +74,7 @@ public class ProductionPowerController extends Observable implements ControllerO
         for (Resource resource : receivedResources) {
             if (resource.getType().equals(TypeResource.FAITHMARKER)) {
                 player.getGameSpace().getFaithTrack().increasePosition();
-                VNotifyPositionIncreasedByMsg requestMsg1 = new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(), player.getVictoryPoints(),1);
+                VNotifyPositionIncreasedByMsg requestMsg1 = new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(), player.calculateVictoryPoints(), 1);
                 VUpdateFaithTrackMsg requestMsg2 = new VUpdateFaithTrackMsg("updated faith Track", player.getUsername(), player.getGameSpace().getFaithTrack());
                 //put the player in the msg
                 notifyAllObserver(ObserverType.VIEW, requestMsg1);
@@ -87,6 +87,7 @@ public class ProductionPowerController extends Observable implements ControllerO
         try {
             if (resourcesToStrongBox != null && resourcesToStrongBox.size() > 0) {
                 player.getGameSpace().getStrongbox().addResources(resourcesToStrongBox);
+
             }
             VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("remove resources from strong box", player.getUsername(), player.getGameSpace().getStrongbox());
             notifyAllObserver(ObserverType.VIEW, update);
@@ -98,6 +99,8 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
+
+        boolean putResource = false;
         //System.out.println("Receiving REQUEST OF WITCH PP");
         if (msg.getUsername().equals(player.getUsername())) {
             if (msg.getWhich() == 0) {
@@ -109,27 +112,42 @@ public class ProductionPowerController extends Observable implements ControllerO
                     resourcesToRemove.add(new Resource(r.getThisColor()));
                 }
                 if (msg.getWhere().equals("warehouse")) {
-                    //System.out.println("TRY WWWW");
+                    //System.out.println("TRY WWWW1");
                     Warehouse warehouse = player.getGameSpace().getWarehouse();
                     try {
+                        //System.out.println("TRY WWWWWWWWWWW2");
                         warehouse.removeResources(resourcesToRemove);
+                        putResource = true;
                         VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("removed resources from warehouse", player.getUsername(), warehouse);
                         notifyAllObserver(ObserverType.VIEW, update);
                     } catch (InvalidActionException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        //if the player doesn't have the resources
+                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        notifyAllObserver(ObserverType.VIEW, msg1);
+
                     }
 
                 } else if (msg.getWhere().equals("strongbox")) {
+                    //System.out.println("TRY SSSSSSS1");
                     StrongBox strongBox = player.getGameSpace().getStrongbox();
                     try {
+                        //System.out.println("TRY SSSSSSSSS2");
                         strongBox.removeResources(resourcesToRemove);
                         VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("remove resources from strong box", player.getUsername(), strongBox);
                         notifyAllObserver(ObserverType.VIEW, update);
+                        putResource = true;
                     } catch (InvalidActionException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }
-                receivedResources.add(new Resource(msg.getResourceToGet().getThisColor()));
+                if(putResource) {
+                    receivedResources.add(new Resource(msg.getResourceToGet().getThisColor()));
+                    VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(),player.getGameSpace().getStrongbox());
+                    notifyAllObserver(ObserverType.VIEW,msg1);
+                }
 
             } else if (msg.getWhich() >= 1 && msg.getWhich() <= 3) {
                 Warehouse warehouse = player.getGameSpace().getWarehouse();
@@ -138,17 +156,32 @@ public class ProductionPowerController extends Observable implements ControllerO
                 if (warehouse.checkEnoughResources(developmentCard.showCostProductionPower())) {
                     try {
                         warehouse.removeResources(developmentCard.showCostProductionPower());
+                        VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getWarehouse());
+                        notifyAllObserver(ObserverType.VIEW, update);
+                        putResource = true;
                     } catch (InvalidActionException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 } else if (strongBox.checkEnoughResources(developmentCard.showCostProductionPower())) {
                     try {
                         strongBox.removeResources(developmentCard.showCostProductionPower());
+                        VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getStrongbox());
+                        notifyAllObserver(ObserverType.VIEW, update);
+                        putResource = true;
+
                     } catch (InvalidActionException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }
-                receivedResources.addAll(developmentCard.showProceedsProductionPower());
+                if(putResource) {
+                    receivedResources.addAll(developmentCard.showProceedsProductionPower());
+                    VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(), player.getGameSpace().getStrongbox());
+                    notifyAllObserver(ObserverType.VIEW, msg1);
+                }
 
             } else if (msg.getWhich() >= 4 && msg.getWhich() <= 5) {
                 int choose = 4 - msg.getWhich();
@@ -159,19 +192,33 @@ public class ProductionPowerController extends Observable implements ControllerO
                     for (Resource resource : specialCard.getCostProductionPower()) {
                         try {
                             warehouse.removeResource(warehouse.searchResource(resource));
+                            VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getWarehouse());
+                            notifyAllObserver(ObserverType.VIEW, update);
+                            putResource = true;
                         } catch (InvalidActionException e) {
-                            e.printStackTrace();
+                            //e.printStackTrace();
+                            VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                            notifyAllObserver(ObserverType.VIEW, msg1);
                         }
                     }
                 } else if (strongBox.checkEnoughResources(specialCard.getCostProductionPower())) {
                     try {
                         strongBox.removeResources(specialCard.getCostProductionPower());
+                        VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getStrongbox());
+                        notifyAllObserver(ObserverType.VIEW, update);
+                        putResource = true;
                     } catch (InvalidActionException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }
-                receivedResources.add(new Resource(msg.getResourceToGet()));
-                receivedResources.add(new Resource(Color.RED));
+                if(putResource) {
+                    receivedResources.add(new Resource(msg.getResourceToGet()));
+                    receivedResources.add(new Resource(Color.RED));
+                    VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(), player.getGameSpace().getStrongbox());
+                    notifyAllObserver(ObserverType.VIEW, msg1);
+                }
             }
             start();
         }

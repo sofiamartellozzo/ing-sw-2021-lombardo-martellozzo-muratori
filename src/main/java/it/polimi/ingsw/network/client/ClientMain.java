@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.exception.InputInvalidException;
-import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.CLI.CLI;
 import it.polimi.ingsw.view.GUI.GUI;
 import javafx.application.Application;
 

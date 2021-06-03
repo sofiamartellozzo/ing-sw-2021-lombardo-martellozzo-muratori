@@ -1,13 +1,6 @@
-package it.polimi.ingsw.view.display;
+package it.polimi.ingsw.view.CLI.display;
 
-import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.PlayerInterface;
-import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.board.CardSpace;
-import it.polimi.ingsw.model.board.PersonalBoard;
-import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.utility.AnsiColors;
 
 import java.util.ArrayList;
@@ -50,7 +43,7 @@ public class CardSpaceDisplay {
         player.getGameSpace().getCardSpace(1).addCard(card1);
         player.getGameSpace().getCardSpace(2).addCard(card2);*/
 
-        System.out.println(AnsiColors.YELLOW_BOLD+"HERE ARE YOUR THREE CARD SPACES:\n"+AnsiColors.RESET);
+        System.out.println(AnsiColors.BLUE_BOLD+"HERE ARE YOUR THREE CARD SPACES:\n"+AnsiColors.RESET);
         for(int i = 0; i < 3; i++) {
             if(cardSpaces.get(i).getCards().isEmpty()){
                 System.out.print("Card Space"+(i+1)+": "+AnsiColors.RED_BOLD+"EMPTY CARD SPACE\n"+AnsiColors.RESET);

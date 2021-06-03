@@ -1,13 +1,8 @@
-package it.polimi.ingsw.view.display;
+package it.polimi.ingsw.view.CLI.display;
 
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.TypeResource;
-import it.polimi.ingsw.model.market.ColoredMarble;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarketStructure;
-import it.polimi.ingsw.model.market.RedMarble;
 import it.polimi.ingsw.utility.AnsiColors;
-import it.polimi.ingsw.utility.MarketStructureCopy;
 
 /**
  * this class shows the market updated situation during the Game
@@ -22,7 +17,7 @@ public class MarketDisplay {
 
     public void displayMarket() {
 
-        System.out.println(AnsiColors.RED_BOLD+"HERE IS THE MARKET: \n"+AnsiColors.WHITE_BOLD);
+        System.out.println(AnsiColors.BLUE_BOLD+"HERE IS THE MARKET: \n"+AnsiColors.WHITE_BOLD);
         System.out.print(" Slide Marble: ");
         createMarbleForCli(marketStructure.getSlide());
         System.out.print("\n\n");

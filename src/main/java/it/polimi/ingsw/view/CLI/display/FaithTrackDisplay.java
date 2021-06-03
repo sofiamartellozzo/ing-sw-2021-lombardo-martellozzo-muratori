@@ -1,11 +1,8 @@
-package it.polimi.ingsw.view.display;
+package it.polimi.ingsw.view.CLI.display;
 
-import it.polimi.ingsw.model.board.Active;
 import it.polimi.ingsw.model.board.FaithTrack;
 import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.utility.AnsiColors;
-
-import java.awt.*;
 
 /**
  * this class show to the player his faith Track with the updated position of his FaithMarker on it
@@ -28,7 +25,7 @@ public class FaithTrackDisplay {
     public void showFaithTrack() {
         //public static void main(String[] args) {
 
-        System.out.println(AnsiColors.RED_BOLD + "HERE IS YOUR FAITHTRACK: " + AnsiColors.RESET);
+        System.out.println(AnsiColors.BLUE_BOLD + "HERE IS YOUR FAITHTRACK: " + AnsiColors.RESET);
         System.out.println("LEGEND:");
         System.out.print(AnsiColors.YELLOW_BOLD + "[ ] " + AnsiColors.RESET + "Gold Boxes with victory points\n");
         System.out.print(AnsiColors.ANSI_WHITE + "[ ] " + AnsiColors.RESET + "Simple Boxes\n");

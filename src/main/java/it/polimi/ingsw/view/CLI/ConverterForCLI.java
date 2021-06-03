@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.CLI;
 
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Resource;
@@ -77,16 +77,16 @@ public class ConverterForCLI {
      * @param color
      * @return
      */
-    public Resource getResourceFromColor(Color color) {
+    public TypeResource getResourceFromColor(Color color) {
         switch (color) {
             case YELLOW:
-                return new Resource(Color.YELLOW);
+                return TypeResource.COIN;
             case BLUE:
-                return new Resource(Color.BLUE);
+                return TypeResource.SHIELD;
             case GREY:
-                return new Resource(Color.GREY);
+                return TypeResource.STONE;
             case PURPLE:
-                return new Resource(Color.PURPLE);
+                return TypeResource.SERVANT;
         }
         throw new IllegalArgumentException("Error, color not valid! ");
     }

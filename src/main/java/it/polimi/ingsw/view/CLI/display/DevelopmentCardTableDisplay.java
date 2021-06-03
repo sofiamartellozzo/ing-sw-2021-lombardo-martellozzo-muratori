@@ -1,14 +1,7 @@
-package it.polimi.ingsw.view.display;
+package it.polimi.ingsw.view.CLI.display;
 
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Resource;
-import it.polimi.ingsw.model.card.DevelopmentCard;
-import it.polimi.ingsw.model.card.DevelopmentCardDeck;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
 import it.polimi.ingsw.utility.AnsiColors;
-import it.polimi.ingsw.utility.TableCardCopy;
-
-import java.util.ArrayList;
 
 /**
  * this class show to the player the development card table, in particular every last card of a Development Card Deck
@@ -185,7 +178,7 @@ public class DevelopmentCardTableDisplay {
 
         DevelopmentCardTable developmentCardTable = new DevelopmentCardTable(squareCards);*/
 
-        System.out.println(AnsiColors.RED_BOLD + "HERE IS THE DEVELOPMENT CARD TABLE:\n" + AnsiColors.RESET);
+        System.out.println(AnsiColors.BLUE_BOLD + "HERE IS THE DEVELOPMENT CARD TABLE:\n" + AnsiColors.RESET);
 
 
         String row0 = "";

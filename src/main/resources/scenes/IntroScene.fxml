@@ -56,9 +56,9 @@
                         <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="201.0" rowValignment="BOTTOM">
                            <children>
                               <RadioButton fx:id="localhostButton" mnemonicParsing="false" onAction="#clickLocalHostButton" text="Localhost" />
-                              <RadioButton fx:id="onlineServerButton" mnemonicParsing="false" onAction="#clickOnlineServerButton" text="Online Server" />
+                              <!--RadioButton fx:id="onlineServerButton" mnemonicParsing="false" onAction="#clickOnlineServerButton" text="Online Server" /-->
                               <RadioButton fx:id="customIPButton" mnemonicParsing="false" onAction="#clickCustomIPButton" text="Custom IP" />
-                              <RadioButton fx:id="offlineButton" mnemonicParsing="false" onAction="#clickOfflineButton" text="Offline" />
+                              <!--RadioButton fx:id="offlineButton" mnemonicParsing="false" onAction="#clickOfflineButton" text="Offline" /-->
                            </children>
                         </FlowPane>
                      </children>

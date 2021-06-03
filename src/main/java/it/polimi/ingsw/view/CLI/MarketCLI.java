@@ -1,5 +1,6 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.CLI;
 import it.polimi.ingsw.model.TypeResource;
+import it.polimi.ingsw.view.CLI.CLI;
 
 import java.util.ArrayList;
 
@@ -61,7 +62,6 @@ public class MarketCLI {
      * manage the resources
      */
     public void handleResources() {
-        //int size = resources.size();
 
         if (resourceStored) {
             removeResource();
@@ -74,8 +74,6 @@ public class MarketCLI {
         if (resources.size() == 0 && !doEndMarket) {
             doEndMarket = true;
             cli.endMarket();
-
-
         }
     }
 
