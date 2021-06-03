@@ -139,7 +139,7 @@ public class ClientHandler extends Observable implements Runnable {
         ping = new Thread(() -> {
             try {
                 while (true) {
-                    Thread.sleep(5000);
+                    Thread.sleep(10000);
                     sendMsg(new PingMsg("Ping!"));
                 }
             } catch (InterruptedException e) {
@@ -160,8 +160,9 @@ public class ClientHandler extends Observable implements Runnable {
     /**
      * because a reconnection of the client stop the timer and only close this thread
      */
-    private void resetTimer(){
+    public void resetTimer(){
         notifyDisconnectionTimer.cancel();
+        Thread.currentThread().interrupt();
         //notifyDisconnectionTimer = new Timer();
         //notifyDisconnectionTimer.schedule(new DisconnectHandler(this), TIMER);
 
@@ -173,10 +174,10 @@ public class ClientHandler extends Observable implements Runnable {
 
     public void stopWaitReconnection(){
         //waitReconnection.interrupt();
+        notifyDisconnectionTimer.cancel();
         CCloseRoomMsg msg1 = new CCloseRoomMsg("close the room with..", virtualView.getUsername());
         notifyAllObserver(ObserverType.CONTROLLER, msg1);
         detachObserver(ObserverType.CONTROLLER, virtualView);
-        notifyDisconnectionTimer.cancel();
         Thread.currentThread().interrupt();
     }
 
@@ -202,7 +203,7 @@ public class ClientHandler extends Observable implements Runnable {
             if (ping.isAlive()){
                 stopPing();
             }
-            CClientDisconnectedMsg notification = new CClientDisconnectedMsg("the client is not reachable anymore");
+            CClientDisconnectedMsg notification = new CClientDisconnectedMsg("the client is not reachable anymore", virtualView.getUsername());
             notifyAllObserver(ObserverType.CONTROLLER, notification);
             clientSocket.close();
         } catch (IOException e) {

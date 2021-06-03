@@ -271,7 +271,7 @@ public class Lobby extends Observable implements ControllerObserver {
             }
             //send to the client the number of players in his room and ask if it's ok to start
             //VRoomSizeRequestMsg request = new VRoomSizeRequestMsg()
-            if (userRoom != null && userRoom.isFull()) {
+            if (userRoom != null && userRoom.isFull() && !userRoom.isWaiting()) {
                 return true;
             }
         }
@@ -336,6 +336,7 @@ public class Lobby extends Observable implements ControllerObserver {
                 Room room = findUserRoom(msg.getUsername());
                 if (room.getPlayerByUsername(msg.getUsername()).isDisconnected()) {
                     room.reconnectPlayer(msg.getUsername(), msg.getVV());
+                    detachObserver(ObserverType.VIEW, room.getListOfVirtualView().get(msg.getUsername()));
                 } else {
                     //username used yet
                     sendNackConnectionRequest(msg, "USER_NOT_VALID");
@@ -379,6 +380,16 @@ public class Lobby extends Observable implements ControllerObserver {
                 sendNackConnectionRequest(msg, "WAIT");
                 System.out.println("Error: someone else is creating a room, please wait a few seconds!");
             }
+        }
+    }
+
+    @Override
+    public void receiveMsg(CResumeGameMsg msg) {
+        try {
+            Room room = findUserRoom(msg.getUsername());
+            room.notifyAllObserver(ObserverType.CONTROLLER, msg);
+        } catch (NotFreeRoomAvailableError error) {
+            error.printStackTrace();
         }
     }
 
@@ -574,7 +585,6 @@ public class Lobby extends Observable implements ControllerObserver {
         //send to TurnController by Room, to set him disconnected
         try {
             Room room = findUserRoom(msg.getUsername());
-            room.disconnectPlayer(msg.getUsername());
             room.notifyAllObserver(ObserverType.CONTROLLER, msg);
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();
@@ -587,6 +597,7 @@ public class Lobby extends Observable implements ControllerObserver {
         creatingRoomLock.lock();
         try {
             Room room = findUserRoom(msg.getUsername());
+            room.removeVV();
             //remove the room from the not empty ones
             idRoomToUse.add(room.getIntId());
             System.out.println("Remove this Room in LOBBY: " +room);

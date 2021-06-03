@@ -318,7 +318,7 @@ public class ActionController extends Observable implements ControllerObserver {
             } catch (InvalidActionException e) {
                 System.out.println("Cannot buy this card, sorry!");
                 e.printStackTrace();
-            }catch (CardSpaceException e) {
+            } catch (CardSpaceException e) {
                 //e.printStackTrace();
                 //restore the warehouse before the bought
 
@@ -355,7 +355,7 @@ public class ActionController extends Observable implements ControllerObserver {
                 notifyAllObserver(ObserverType.VIEW, notification);
                 System.out.println(notification);
 
-                if (msg.isNextA()){
+                if (msg.isNextA()) {
                     endAction = true;
                     nextAction();
                 }
@@ -395,57 +395,67 @@ public class ActionController extends Observable implements ControllerObserver {
                     notifyAllObserver(ObserverType.VIEW, update);
                 }
 
-                for (TypeResource resource: resourcesFromMarket) {
-                    if(!resource.equals(TypeResource.FAITHMARKER)){
-                    resourcesToStore.add(resource);}
+                for (TypeResource resource : resourcesFromMarket) {
+                    if (!resource.equals(TypeResource.FAITHMARKER)) {
+                        resourcesToStore.add(resource);
+                    }
                 }
 
+                ArrayList<TypeResource> whiteSpecialResource = new ArrayList<>();
+                int numberWhiteSpecial = 0;
                 /*check for each resources returned from the market...*/
                 for (TypeResource resource : resourcesFromMarket) {
 
                     /* BLANK is the special type, set from the white marble if the player has two Special White Marble Ability activated*/
-                    if (!resource.equals(TypeResource.BLANK)) {
 
-                        if (resource.equals(TypeResource.FAITHMARKER)) {
-                            /* the FAITHMARKER is not a real resources, it increased the position of the player in FT*/
-                            if (!isSolo) {
-                                player.increasePosition();
-                                System.out.println(player.getGameSpace().getFaithTrack().getPositionFaithMarker());
-                            } else {
-                                soloPlayerTurn.getCurrentPlayer().increasePosition();
-                                System.out.println(soloPlayerTurn.getCurrentPlayer().getGameSpace().getFaithTrack().getPositionFaithMarker());
-                            }
 
-                            VUpdateFaithTrackMsg notification1 = new VUpdateFaithTrackMsg("because of a red marble, this player increased his position",player.getUsername(),player.getGameSpace().getFaithTrack());
-                            VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), player.calculateVictoryPoints(), 1);
-                            Map<Integer, PlayerInterface> players = boardManager.getPlayers();
-                            notification.setAllPlayerToNotify(getPlayerAsList(players));
-                            notifyAllObserver(ObserverType.VIEW, notification1);
-                            System.out.println(notification1.getFaithTrack().getPopesFavorTiles().get(0).getState());
-                            notifyAllObserver(ObserverType.VIEW, notification);
-
-                            if (numberResourcesFromM == resourcesToStore.size()&& !sent ) {
-                                VChooseDepotMsg request = new VChooseDepotMsg("Now choose the depots where to store that resources: "+ resourcesToStore.toString(), this.player.getUsername(), resourcesToStore);
-                                sent = true;
-                                notifyAllObserver(ObserverType.VIEW, request);
-                            }
-
+                    if (resource.equals(TypeResource.FAITHMARKER)) {
+                        /* the FAITHMARKER is not a real resources, it increased the position of the player in FT*/
+                        if (!isSolo) {
+                            player.increasePosition();
+                            System.out.println(player.getGameSpace().getFaithTrack().getPositionFaithMarker());
                         } else {
-                            /* a normal resource*/
-                            numberResourcesFromM++;
-                            if (numberResourcesFromM == resourcesToStore.size() && !sent) {
-                                VChooseDepotMsg request = new VChooseDepotMsg("Now choose the depots where to store that resources: "+ resourcesToStore.toString(), this.player.getUsername(), resourcesToStore);
-                                sent = true;
-                                notifyAllObserver(ObserverType.VIEW, request);
-                            }
+                            soloPlayerTurn.getCurrentPlayer().increasePosition();
+                            System.out.println(soloPlayerTurn.getCurrentPlayer().getGameSpace().getFaithTrack().getPositionFaithMarker());
                         }
+
+                        VUpdateFaithTrackMsg notification1 = new VUpdateFaithTrackMsg("because of a red marble, this player increased his position", player.getUsername(), player.getGameSpace().getFaithTrack());
+                        VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("because of a red marble, this player increased his position", player.getUsername(), player.calculateVictoryPoints(), 1);
+                        Map<Integer, PlayerInterface> players = boardManager.getPlayers();
+                        notification.setAllPlayerToNotify(getPlayerAsList(players));
+                        notifyAllObserver(ObserverType.VIEW, notification1);
+                        System.out.println(notification1.getFaithTrack().getPopesFavorTiles().get(0).getState());
+                        notifyAllObserver(ObserverType.VIEW, notification);
+
+                        if (numberResourcesFromM == resourcesToStore.size() && !sent) {
+                            VChooseDepotMsg request = new VChooseDepotMsg("Now choose the depots where to store that resources: " + resourcesToStore.toString(), this.player.getUsername(), resourcesToStore);
+                            sent = true;
+                            notifyAllObserver(ObserverType.VIEW, request);
+                        }
+
                     } else {
-                        //the player has 2 whiteSpecialMarble
+                        /* a normal resource*/
                         numberResourcesFromM++;
-                        VChooseResourceAndDepotMsg request = new VChooseResourceAndDepotMsg("Buying from the market gave you a white marble, you also have two WhiteSpecialMarble Ability activated so choose which one to use from...", player.getUsername(), player.getWhiteSpecialResources());
-                        notifyAllObserver(ObserverType.VIEW, request);
+                        if (resource.equals(TypeResource.BLANK)) {
+                            //the player has 2 whiteSpecialMarble
+                            numberWhiteSpecial++;
+                            if (!isSolo) {
+                                whiteSpecialResource = player.getWhiteSpecialResources();
+                            } else {
+                                whiteSpecialResource = soloPlayerTurn.getCurrentPlayer().getWhiteSpecialResources();
+                            }
+
+                        }
+                        if (numberResourcesFromM == resourcesToStore.size() && !sent) {
+                            VChooseDepotMsg request = new VChooseDepotMsg("Now choose the depots where to store that resources: " + resourcesToStore.toString(), this.player.getUsername(), resourcesToStore);
+                            request.setWhiteSpecialResources(whiteSpecialResource);
+                            request.setNumberWhiteMarbleSpecial(numberWhiteSpecial);
+                            sent = true;
+                            notifyAllObserver(ObserverType.VIEW, request);
+                        }
                     }
                 }
+
 
                 /*we suppose that the action ended, if one depot is not valid the boolean will turn false and the next action wait*/
                 endAction = true;
@@ -497,9 +507,9 @@ public class ActionController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
-        if (this.player.getUsername().equals(msg.getUsernameAsking())){
-            for (PlayerInterface p:boardManager.getPlayers().values()) {
-                if (p.getUsername().equals(msg.getUsernameAsked())){
+        if (this.player.getUsername().equals(msg.getUsernameAsking())) {
+            for (PlayerInterface p : boardManager.getPlayers().values()) {
+                if (p.getUsername().equals(msg.getUsernameAsked())) {
                     VAnotherPlayerInfoMsg info = new VAnotherPlayerInfoMsg("", p, boardManager, player.getUsername());
                     System.out.println(info);
                     notifyAllObserver(ObserverType.VIEW, info);
@@ -514,7 +524,6 @@ public class ActionController extends Observable implements ControllerObserver {
     public void receiveMsg(CClientDisconnectedMsg msg) {
 
     }
-
 
 
     @Override
@@ -545,14 +554,23 @@ public class ActionController extends Observable implements ControllerObserver {
                     //if the player ask to active it
                     try {
                         if (!isSolo) {
+                            System.out.println(" in active multiplayer ");
                             turn.activeLeaderCard(msg.getLeaderCards().get(0));
                             VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("activating a Leader Card your Victory points has changed", player.getUsername(), player.calculateVictoryPoints());
                             notifyAllObserver(ObserverType.VIEW, update);
+                            VUpdateWarehouseMsg secondUpdate = new VUpdateWarehouseMsg("update warehouse", player.getUsername(), player.getGameSpace().getWarehouse());
+                            notifyAllObserver(ObserverType.VIEW, secondUpdate);
+                            VSendPlayerDataMsg allData = new VSendPlayerDataMsg("all new info", player, boardManager, false);
+                            notifyAllObserver(ObserverType.VIEW, allData);
                         } else {
                             System.out.println(" in active1 ");
                             soloPlayerTurn.activeLeaderCard(msg.getLeaderCards().get(0));
                             VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("activating a Leader Card your Victory points has changed", soloPlayerTurn.getCurrentPlayer().getUsername(), soloPlayerTurn.getCurrentPlayer().calculateVictoryPoints());
                             notifyAllObserver(ObserverType.VIEW, update);
+                            VUpdateWarehouseMsg secondUpdate = new VUpdateWarehouseMsg("update warehouse", soloPlayerTurn.getCurrentPlayer().getUsername(), soloPlayerTurn.getCurrentPlayer().getGameSpace().getWarehouse());
+                            notifyAllObserver(ObserverType.VIEW, secondUpdate);
+                            VSendPlayerDataMsg allData = new VSendPlayerDataMsg("all new info", soloPlayerTurn.getCurrentPlayer(), boardManager, true);
+                            notifyAllObserver(ObserverType.VIEW, allData);
                         }
 
                         endAction = true;
@@ -576,7 +594,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
                         //and then notify everyone that this player increase the position
                         VNotifyPositionIncreasedByMsg notification = new VNotifyPositionIncreasedByMsg("Someone increased his position: ", player.getUsername(), player.calculateVictoryPoints(), 1);
-                        VUpdateFaithTrackMsg msg1 = new VUpdateFaithTrackMsg("Increase yhe faith marker position", msg.getUsername(),player.getGameSpace().getFaithTrack());
+                        VUpdateFaithTrackMsg msg1 = new VUpdateFaithTrackMsg("Increase yhe faith marker position", msg.getUsername(), player.getGameSpace().getFaithTrack());
                         notifyAllObserver(ObserverType.VIEW, notification);
                         notifyAllObserver(ObserverType.VIEW, msg1);
 
@@ -646,6 +664,11 @@ public class ActionController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CResumeGameMsg msg) {
 
     }
 

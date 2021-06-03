@@ -141,6 +141,11 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     @Override
+    public void receiveMsg(CResumeGameMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
 
         //NOT IMPLEMENTED HERE

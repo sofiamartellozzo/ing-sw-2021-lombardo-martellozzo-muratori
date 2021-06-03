@@ -1,4 +1,5 @@
 package it.polimi.ingsw.view.CLI;
+
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.view.CLI.CLI;
 
@@ -25,6 +26,7 @@ public class MarketCLI {
 
     /**
      * used to wait the update of the Warehouse
+     *
      * @return
      */
     public boolean isWaitMove() {
@@ -41,6 +43,7 @@ public class MarketCLI {
 
     /**
      * used to "wait" that the resource is stored in the warehouse
+     *
      * @param resourceStored
      */
     public void setResourceStored(boolean resourceStored) {
@@ -68,7 +71,11 @@ public class MarketCLI {
         }
 
         if (!waitMove && resources.size() > 0) {
-            cli.buyFromMarket(resources.get(0));
+            if (!resources.get(0).equals(TypeResource.BLANK)) {
+                cli.buyFromMarket(resources.get(0));
+            } else {
+                cli.choseAndBuyFromMarket();
+            }
         }
 
         if (resources.size() == 0 && !doEndMarket) {

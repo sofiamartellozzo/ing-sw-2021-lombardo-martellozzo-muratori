@@ -1,5 +1,6 @@
 package it.polimi.ingsw.message;
 
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.controllerMsg.VStartWaitReconnectionMsg;
 import it.polimi.ingsw.message.updateMsg.*;
@@ -84,7 +85,7 @@ public interface ViewObserver extends Observer{
     /* from client Socket main to cli gui*/
     public void receiveMsg(VServerUnableMsg msg);
     public void receiveMsg(CVStartInitializationMsg msg);
-    void receiveMsg(CGameCanStartMsg msg);
+    public void receiveMsg(CGameCanStartMsg msg);
 
     public void receiveMsg(VAnotherPlayerInfoMsg msg);
     public void receiveMsg(VWhichPlayerRequestMsg msg);
@@ -95,9 +96,13 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VAskNewGameMsg msg);
 
 
+    /*notification to all players in a room about one disconnected*/
+    public void receiveMsg(CClientDisconnectedMsg msg);
     /*ge game stops waiting the client to reconnect*/
     public void receiveMsg(VStartWaitReconnectionMsg msg);
+    /*msg if a client reconnect to the room*/
+    public void receiveMsg(VStopWaitReconnectionMsg msg);
 
-    void receiveMsg(VUpdateLeaderCards msg);
-    void receiveMsg(VUpdateCardSpaces msg);
+    public void receiveMsg(VUpdateLeaderCards msg);
+    public void receiveMsg(VUpdateCardSpaces msg);
 }

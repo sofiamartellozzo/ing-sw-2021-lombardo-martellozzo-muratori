@@ -42,6 +42,8 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
      */
     private final ReentrantLock connectionLock = new ReentrantLock();
 
+    private boolean reconnected;
+
 
     public VirtualView(ClientHandler client) {
         this.client = client;    //specific for this VV
@@ -51,6 +53,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         lobby.attachObserver(ObserverType.VIEW, this); //listening each other, the VV is like a View observer too
 
         userConnected = new AtomicBoolean(false);
+        reconnected = false;
     }
 
     /* the constructor for the offline mode*/
@@ -74,8 +77,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     private void sendToClient(GameMsg msg) {
         if (offLobby == null && userConnected.get()) {
             client.sendMsg(msg);
-        }
-        else if (messageHandler!=null){
+        } else if (messageHandler != null) {
             //notifyAllObserver(ObserverType.VIEW,msg);
             messageHandler.receivedMsgForView(msg);
         }
@@ -118,6 +120,9 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             // "send" the message to the controller
             notifyAllObserver(ObserverType.CONTROLLER, requestToController);
         }
+
+        tryToStartGame();
+
 
         tryToStartGame();
     }
@@ -165,7 +170,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         if (msg.getPlayers().contains(username)) {
             System.out.println("PASSING THROW VV for initialization");
             sendToClient(msg);
-            if (msg.getPlayers().get(0).equals(username)){
+            if (msg.getPlayers().get(0).equals(username)) {
                 notifyAllObserver(ObserverType.CONTROLLER, msg);
             }
         }
@@ -252,14 +257,22 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-        connectionLock.lock();
-        userConnected.set(false);
-        connectionLock.unlock();
-        //fill the msg with the username associated to the client disconnected
-        msg.setUsername(username);
-        //now send it to the Lobby
-        notifyAllObserver(ObserverType.CONTROLLER, msg);
-        lobby.detachObserver(ObserverType.VIEW, this);
+        if (msg.getUsername().equals(username) && userConnected.get()) {
+            /* VV as controller of client disconnected
+                so this msg is from client Handler,
+                but stop it the second time from the Turn Controller*/
+            connectionLock.lock();
+            userConnected.set(false);
+            reconnected = true;
+            connectionLock.unlock();
+            //now send it to the Lobby
+            notifyAllObserver(ObserverType.CONTROLLER, msg);
+            lobby.detachObserver(ObserverType.VIEW, this);
+        } else if (!msg.getUsername().equals(username)) {
+            /* VV as a View so msg from Turn controller to notify all
+                other player about a disconnection */
+            sendToClient(msg);
+        }
     }
 
     @Override
@@ -282,6 +295,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+    @Override
+    public void receiveMsg(VStopWaitReconnectionMsg msg) {
+        client.resetTimer();
+    }
+
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
@@ -298,13 +316,18 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CStopMarketMsg msg) {
-        notifyAllObserver(ObserverType.CONTROLLER,msg);
+        notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
         //not implemented here (in Lobby)
+    }
+
+    @Override
+    public void receiveMsg(CResumeGameMsg msg) {
+        //send from this
     }
 
     /**
@@ -480,7 +503,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VUpdateVictoryPointsMsg msg) {
-        if (msg.getUsername().equals(username)){
+        if (msg.getUsername().equals(username)) {
             sendToClient(msg);
         }
     }
@@ -555,7 +578,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VUpdateFaithTrackMsg msg) {
-        if(msg.getUsername().equals(this.username)){
+        if (msg.getUsername().equals(this.username)) {
             sendToClient(msg);
         }
     }
@@ -617,7 +640,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         sendToClient(msg);
-        if (offLobby != null){
+        if (offLobby != null) {
             offLobby = null;
         }
     }
@@ -669,6 +692,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
                     CVStartInitializationMsg msg = new CVStartInitializationMsg("A room is full so starting the initialization", username);
                     notifyAllObserver(ObserverType.CONTROLLER, msg);
                     lobby.startInitializationOfTheGame(username);
+                } else {
+                    System.out.println("RESUME GAME IN VV");
+                    CResumeGameMsg msg1 = new CResumeGameMsg("resume a game that was waoiting a reconnection", username);
+                    notifyAllObserver(ObserverType.CONTROLLER, msg1);
                 }
             } finally {
                 connectionLock.unlock();

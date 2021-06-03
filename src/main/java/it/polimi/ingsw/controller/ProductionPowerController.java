@@ -279,6 +279,11 @@ public class ProductionPowerController extends Observable implements ControllerO
     }
 
     @Override
+    public void receiveMsg(CResumeGameMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
 
     }

@@ -14,6 +14,8 @@ public class VChooseDepotMsg extends ViewGameMsg{
 
     private final String username;
     private ArrayList<TypeResource> resourceToStore;
+    private ArrayList<TypeResource> whiteSpecialResources;
+    private int numberWhiteMarbleSpecial;
 
     public VChooseDepotMsg(String msgContent, String username, ArrayList<TypeResource> resourceToStore) {
         super(msgContent);
@@ -27,6 +29,22 @@ public class VChooseDepotMsg extends ViewGameMsg{
 
     public ArrayList<TypeResource> getResourceToStore() {
         return resourceToStore;
+    }
+
+    public ArrayList<TypeResource> getWhiteSpecialResources() {
+        return whiteSpecialResources;
+    }
+
+    public void setWhiteSpecialResources(ArrayList<TypeResource> whiteSpecialResources) {
+        this.whiteSpecialResources = whiteSpecialResources;
+    }
+
+    public int getNumberWhiteMarbleSpecial() {
+        return numberWhiteMarbleSpecial;
+    }
+
+    public void setNumberWhiteMarbleSpecial(int numberWhiteMarbleSpecial) {
+        this.numberWhiteMarbleSpecial = numberWhiteMarbleSpecial;
     }
 
     @Override

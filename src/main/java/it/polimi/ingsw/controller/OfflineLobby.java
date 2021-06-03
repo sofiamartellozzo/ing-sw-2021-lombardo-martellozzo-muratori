@@ -56,6 +56,11 @@ public class OfflineLobby extends Observable implements ControllerObserver {
     }
 
     @Override
+    public void receiveMsg(CResumeGameMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
         //offline only solo, so the client don't chose the Room SIZE
     }

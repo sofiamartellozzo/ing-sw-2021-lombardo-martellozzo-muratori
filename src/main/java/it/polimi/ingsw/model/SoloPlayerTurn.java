@@ -55,7 +55,7 @@ public class SoloPlayerTurn extends PlayerTurn {
      * method called at the end of each Solo Turn
      */
     public ActionToken activateActionToken() throws InvalidActionException {
-        ActionToken actionTokenActivated = this.currentPlayer.getGameSpace().playActionToken(this.getBoardManager(), this.currentPlayer);
+        ActionToken actionTokenActivated = this.currentPlayer.getGameSpace().playActionToken(getBoardManager(), this.currentPlayer);
         return actionTokenActivated;
     }
 }

@@ -491,6 +491,11 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     @Override
+    public void receiveMsg(CResumeGameMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
         //not here
     }

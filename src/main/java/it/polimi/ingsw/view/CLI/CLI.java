@@ -4,6 +4,7 @@ import it.polimi.ingsw.controller.MessageHandler;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.*;
 import it.polimi.ingsw.message.Observable;
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.model.*;
@@ -21,6 +22,7 @@ import it.polimi.ingsw.model.board.SoloPersonalBoard;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
+import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
 import it.polimi.ingsw.model.market.MarketStructure;
 import it.polimi.ingsw.network.client.ClientSocket;
@@ -72,6 +74,7 @@ public class CLI extends Observable implements ViewObserver {
     private MarketStructure marketStructureData; //contains the data about the market
     private PlayerInterface player;
     private LeaderCardDeck leaderCards;
+    private ArrayList<LeaderCard> myLeaderCards;
     private DevelopmentCardTable developmentCardTable;
     private StrongBox strongBox;
     private Warehouse warehouse;
@@ -83,7 +86,7 @@ public class CLI extends Observable implements ViewObserver {
     /*-------------------------------------------------------------------------------------*/
 
     /* create a cache of the Leader Card chosen by this client */
-    private List<Integer> myLeaderCards = new ArrayList<>();
+    //private List<Integer> myLeaderCards = new ArrayList<>();
     /* local info about the client position of faith marker */
     private int positionOnFaithTrack;
 
@@ -585,6 +588,30 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    public void choseAndBuyFromMarket(){
+        printCLIMessage("You have tro White Special Ability Activate and you have received a white marble from the market");
+        printCLIMessage("Choose one of these two resource");
+        printCLIMessage(player.getWhiteSpecialResources().get(0).toString());
+        printCLIMessage(player.getWhiteSpecialResources().get(1).toString());
+        System.out.println("COIN 💰\n" +
+                             "SERVANT 👾\n" +
+                            "SHIELD 🥏\n" +
+                            "STONE 🗿\n");
+        in = new Scanner(System.in);
+        in.reset();
+        String resourceColor = null;
+        resourceColor = in.nextLine().toUpperCase();
+
+        // check if the color exist
+        while (!checkType(resourceColor)|| !player.getWhiteSpecialResources().contains(converter.getTypeFromString(resourceColor))) {
+
+            printCLIMessage(" Error, please insert a valid resource! ");
+            resourceColor = in.nextLine().toUpperCase();
+        }
+
+        buyFromMarket(converter.getTypeFromString(resourceColor));
+    }
+
     public void endMarket() {
 
         if (marketCLI != null) {
@@ -670,6 +697,7 @@ public class CLI extends Observable implements ViewObserver {
         boardManager = msg.getBoardManager();
         marketStructureData = msg.getBoardManager().getMarketStructure();
         leaderCards = msg.getBoardManager().getLeaderCardDeck();
+        myLeaderCards = msg.getPlayer().getLeaderCards();
         developmentCardTable = msg.getBoardManager().getDevelopmentCardTable();
         warehouse = msg.getPlayer().getGameSpace().getResourceManager().getWarehouse();
         strongBox = msg.getPlayer().getGameSpace().getResourceManager().getStrongBox();
@@ -841,8 +869,6 @@ public class CLI extends Observable implements ViewObserver {
                 }
             }
 
-            myLeaderCards.add(cardId1);
-            myLeaderCards.add(cardId2);
             CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ", chosenCards, msg.getUsername(), "firstChoose");
             //client.sendMsg(response);
             sendMsg(response);
@@ -850,9 +876,13 @@ public class CLI extends Observable implements ViewObserver {
             //discard or activate
             if (!msg.getMiniDeckLeaderCardFour().isEmpty()) {
                 printCLIMessage("Choose which card you want to \"" + msg.getWhatFor() + "\"  from:");
-                for (Integer i : msg.getMiniDeckLeaderCardFour()) {
-                    System.out.print(leaderCards.getLeaderCardById(i).toString());
+                for (LeaderCard card: myLeaderCards) {
+                    printCLIMessage(myLeaderCards.toString());
+                    if (msg.getMiniDeckLeaderCardFour().contains(card.getCardID())) {
+                        System.out.print(card.toString());
+                    }
                 }
+
                 in = new Scanner(System.in);
                 in.reset();
 
@@ -1657,7 +1687,17 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(CClientDisconnectedMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VStartWaitReconnectionMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VStopWaitReconnectionMsg msg) {
 
     }
 
@@ -1729,8 +1769,8 @@ public class CLI extends Observable implements ViewObserver {
         showCardSpaces(otherPlayer.getGameSpace().getCardSpaces());
         if(otherPlayer.getUsername().equals(username)){
             printCLIMessage(AnsiColors.BLUE_BOLD+"HERE ARE YOUR LEADER CARDS\n"+AnsiColors.RESET);
-            for (Integer i: myLeaderCards) {
-                System.out.print(leaderCards.getLeaderCardById(i).toString());
+            for (LeaderCard card: myLeaderCards) {
+                System.out.print(card.toString());
             }
 
         }

@@ -77,8 +77,6 @@ public class ClientSocket extends Observable implements Runnable {
                 System.out.println("The Socket cannot open the connection!");
             }
 
-
-
             /* start the ping process */
             startPing();
         }

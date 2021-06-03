@@ -27,8 +27,8 @@ public class CardActionAbility implements ActionAbility, Serializable {
      */
     public void activeAbility(BoardManager boardManager, SoloPlayer player) throws InvalidActionException {
         /* remove two card of this.color */
-        boardManager.getDevelopmentCardTable().getSquare(this.color);
-        boardManager.getDevelopmentCardTable().getSquare(this.color);
+        boardManager.getDevelopmentCardTable().removeCardByColor(this.color);
+        boardManager.getDevelopmentCardTable().removeCardByColor(this.color);
     }
 
     @Override

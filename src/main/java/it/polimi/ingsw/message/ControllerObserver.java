@@ -21,6 +21,9 @@ public interface ControllerObserver extends Observer{
     /* form VV to Lobby*/
     public void receiveMsg(CConnectionRequestMsg msg);
 
+    /*after a reconnection say it to the Turn Controller*/
+    public void receiveMsg(CResumeGameMsg msg);
+
     /* from cli, then VV and finally to Lobby---> set room size*/
     public void receiveMsg(CRoomSizeResponseMsg msg);
 

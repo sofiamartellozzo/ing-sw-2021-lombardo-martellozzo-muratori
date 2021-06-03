@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.controller.MessageHandler;
 import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.ViewObserver;
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.controllerMsg.VStartWaitReconnectionMsg;
 import it.polimi.ingsw.message.updateMsg.*;
@@ -441,7 +442,17 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
+    public void receiveMsg(CClientDisconnectedMsg msg) {
+
+    }
+
+    @Override
     public void receiveMsg(VStartWaitReconnectionMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VStopWaitReconnectionMsg msg) {
 
     }
 

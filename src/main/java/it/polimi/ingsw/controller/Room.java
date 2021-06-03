@@ -2,26 +2,18 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ObserverType;
-import it.polimi.ingsw.message.ViewObserver;
-import it.polimi.ingsw.message.viewMsg.VRoomInfoMsg;
 import it.polimi.ingsw.message.viewMsg.VSendPlayerDataMsg;
-import it.polimi.ingsw.message.viewMsg.VNotifyPositionIncreasedByMsg;
+import it.polimi.ingsw.message.viewMsg.VStopWaitReconnectionMsg;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.message.Observable;
 import it.polimi.ingsw.model.SoloPlayer;
-import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.model.board.PersonalBoardInterface;
 import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 public class Room extends Observable {
 
@@ -63,6 +55,8 @@ public class Room extends Observable {
     /* boolean set true when a game end and the room must be cleaned */
     private boolean cleanRoom;
 
+    private boolean waiting;
+
     public Room(String roomID) {
         this.roomID = roomID;
         playersId = new ArrayList<>();
@@ -72,6 +66,7 @@ public class Room extends Observable {
         gameCanStart = false;
         turnSequence = new HashMap<>();
         cleanRoom = false;
+        waiting = false;
         printRoomMessage("Room created");
     }
 
@@ -115,8 +110,16 @@ public class Room extends Observable {
         return initializedController.canStart();
     }
 
-    public int getIntId(){
-        int number= 0;
+    public Map<String, VirtualView> getListOfVirtualView() {
+        return listOfVirtualView;
+    }
+
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    public int getIntId() {
+        int number = 0;
         //number = roomID.charAt(roomID.length()-2) + roomID.charAt(roomID.length()-1);
         //Pattern p = Pattern.compile("\\d+");
         //Matcher m = p.matcher(roomID);
@@ -212,6 +215,8 @@ public class Room extends Observable {
 
         gameCanStart = true;
 
+        waiting = true;
+
         //startFirstTurn();
 
 
@@ -277,37 +282,44 @@ public class Room extends Observable {
         }
     }
 
-
-    /**
-     * method used to manage the disconnection of a single player from a game, and delete his network
-     * with the virtual view
-     *
-     * @param username
-     */
-    public void disconnectPlayer(String username) {
-
-        getPlayerByUsername(username).setDisconnected(true);
-        System.out.println("DISCONNECT IN ROOM");
-        System.out.println(getPlayerByUsername(username).isDisconnected());
-        System.out.println(listOfVirtualView);
-
-        VirtualView playerVirtualView = listOfVirtualView.get(username);     //get the virtual view of the player disconnected
-
-        playerVirtualView.detachObserver(ObserverType.CONTROLLER, turnController);
-        //turnController.detachObserver(ObserverType.VIEW, playerVirtualView);
-        listOfVirtualView.remove(username); //remove the username from the map in which every player is associated to his virtual view
+    public void removeVV() {
+        Set<String> usermanes = listOfVirtualView.keySet();
+        for (String user : usermanes) {
+            listOfVirtualView.remove(user);
+        }
     }
 
+
     public void reconnectPlayer(String username, VirtualView VV) {
+        VStopWaitReconnectionMsg stop = new VStopWaitReconnectionMsg("The client reconnected so stop the timer");
+        notifyAllObserver(ObserverType.VIEW, stop);
+
+        if (listOfVirtualView.get(username)!=null) {
+            //detach the old one
+            detachObserver(ObserverType.VIEW, listOfVirtualView.get(username));
+            //and then eliminate it
+            listOfVirtualView.remove(username);
+        }
+        //now set the "new" player
         getPlayerByUsername(username).setDisconnected(false);
         addVV(username, VV);
+        printRoomMessage(listOfVirtualView.toString());
         printRoomMessage("player " + username + " reconnected to the game");
         //send to the player his Data
         VSendPlayerDataMsg msg = new VSendPlayerDataMsg("these is the actual condiction of your game after reconnected", getPlayerByUsername(username), boardManager, false);
         notifyAllObserver(ObserverType.VIEW, msg);
-        VV.attachObserver(ObserverType.CONTROLLER, turnController);
+        //VV.attachObserver(ObserverType.CONTROLLER, turnController);
         turnController.attachObserver(ObserverType.VIEW, VV);
         turnController.addVV(username, VV);
+    }
+
+    private boolean inWaiting(){
+        for (PlayerInterface p: turnSequence.values()) {
+            if (!p.isDisconnected()){
+                return false;
+            }
+        }
+        return true;
     }
 
 

@@ -239,14 +239,19 @@ public class TurnController extends Observable implements ControllerObserver {
 
                     VLorenzoIncreasedMsg notify2 = new VLorenzoIncreasedMsg("Lorenzo increased of 2 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 2);
                     notifyAllObserver(ObserverType.VIEW, notify2);
-                }
-                checkEndGame();
-                if (actionTokenActivated.getAbility().equals("Plus One And Shuffle Action Ability")) {
+
+                } else if (actionTokenActivated.getAbility().equals("Plus One And Shuffle Action Ability")) {
 
                     VLorenzoIncreasedMsg notify1 = new VLorenzoIncreasedMsg("Lorenzo increased of 1 his position because of a Action Token", singlePlayer.getUsername(), singlePlayer, 1);
                     notifyAllObserver(ObserverType.VIEW, notify1);
-                    checkEndGame();
+
+                } else {
+                    Map<Integer, PlayerInterface> allPlayers = new HashMap<>();
+                    allPlayers.put(1, singlePlayer);
+                    VUpdateDevTableMsg notify3 = new VUpdateDevTableMsg("The table has changed because of a Action Token", singlePlayer.getUsername(), singlePlayer.calculateVictoryPoints(), singlePlayer.getGameSpace().getCardSpaces(), boardManager.getDevelopmentCardTable(), allPlayers);
+                    notifyAllObserver(ObserverType.VIEW, notify3);
                 }
+                checkEndGame();
                 startSoloPlayerTurn(singlePlayer);
             } catch (InvalidActionException e) {
                 e.printStackTrace();
@@ -475,31 +480,64 @@ public class TurnController extends Observable implements ControllerObserver {
             //check if the client disconnected is currently playing
             System.out.println("NAME disconnectied: " + playerDisconnected.getUsername());
             playerDisconnected.setDisconnected(true);
+            if (!isSoloMode) {
+                //notify all players about one disconnected
+                notifyAllObserver(ObserverType.VIEW, msg);
+            }
+            System.out.println(playerDisconnected.isDisconnected());
             if (playerDisconnected.isPlaying() && actionController != null) {
                 System.out.println("not here.......$$$$$");
                 detachObserver(ObserverType.CONTROLLER, actionController);
                 actionController = null;
                 playerDisconnected.setPlaying(false);
                 System.out.println(isSoloMode);
-                if (!isSoloMode) {
-                    System.out.println("SSSSSSSSSSSSS");
-                    detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
-                    nextTurn();
-                } else {
+                if (isSoloMode) {
                     //solo mode, wait until a reconnection
-                    System.out.println("WWWWWWWWWWWWWWW");
+                    System.out.println("Disconnect SOLO MODE");
                     VStartWaitReconnectionMsg wait = new VStartWaitReconnectionMsg("a client disconnected so wait until a reconnection", singlePlayer.getUsername());
                     notifyAllObserver(ObserverType.VIEW, wait);
+                } else if (!isSoloMode && allDisconnected()) {
+                    System.out.println("ALL PLAYERS DISCONNECTED");
+                    VStartWaitReconnectionMsg wait = new VStartWaitReconnectionMsg("all client disconnected so wait until one (or more) reconnection", playerDisconnected.getUsername());
+                    notifyAllObserver(ObserverType.VIEW, wait);
+                } else {
+                    System.out.println("Only one disconnected, game still ON");
+                    detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
+                    virtualView.remove(playerDisconnected.getUsername());
+                    nextTurn();
                 }
+            } else {
+                detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
             }
+
+
             /* even if is out of the if, so he should not be playing
              * set his attribute to false, to be sure */
             //playerDisconnected.setPlaying(false);
             //playerDisconnected.setDisconnected(true);
+
             System.out.println(virtualView);
+            System.out.println(playerDisconnected.isDisconnected());
         }
     }
 
+    /**
+     * method to check if in this room there is at least one player
+     * not disconnected playing
+     * if not the server have to start the timer counting 10 seconds
+     * if it expire the room will be closed
+     *
+     * @return true= all disconnected, false= one still connected
+     */
+    private boolean allDisconnected() {
+        for (PlayerInterface p : turnSequence.values()) {
+            if (!p.isDisconnected()) {
+                //one player in the room not disconnected is enough
+                return false;
+            }
+        }
+        return true;
+    }
 
 
     @Override
@@ -527,6 +565,13 @@ public class TurnController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
         //not here
+    }
+
+    @Override
+    public void receiveMsg(CResumeGameMsg msg) {
+        if (isSoloMode || !currentPlayer.isPlaying()) {
+            nextTurn();
+        }
     }
 
     @Override
