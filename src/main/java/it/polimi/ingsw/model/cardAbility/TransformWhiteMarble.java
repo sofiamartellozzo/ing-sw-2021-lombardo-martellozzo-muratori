@@ -34,6 +34,7 @@ public class TransformWhiteMarble extends SpecialAbility implements Serializable
      */
     @Override
     public void activeAbility(Player player) throws InvalidActionException {
+
         super.activeAbility(player);
         Ability ability = new Ability(getResource());
         MarbleSpecial marbleSpecial = player.getWhiteSpecialMarble();

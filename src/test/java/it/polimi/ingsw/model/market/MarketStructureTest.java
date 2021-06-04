@@ -3,9 +3,12 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
+import it.polimi.ingsw.model.card.LeaderCard;
+import it.polimi.ingsw.model.cardAbility.TransformWhiteMarble;
 import junit.framework.TestCase;
 import org.junit.*;
 
@@ -62,6 +65,8 @@ public class MarketStructureTest extends TestCase {
         assertEquals(TypeResource.COIN, resources.get(0));
         assertEquals(TypeResource.FAITHMARKER, resources.get(1));
         assertEquals(TypeResource.COIN, resources.get(2));
+        //LeaderCard card = new LeaderCard(1, 2, new TransformWhiteMarble(new Resource(Color.BLUE)), )
+        //player.setLeaderCards();
 
     }
 

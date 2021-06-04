@@ -1059,6 +1059,7 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VUpdateWarehouseMsg msg) {
 
         warehouse = msg.getWarehouse();
+        showWarehouse(warehouse,specialResource);
 
         if (marketCLI != null) {
             if (!marketCLI.isWaitMove()) {
@@ -1068,7 +1069,7 @@ public class CLI extends Observable implements ViewObserver {
             }
             marketCLI.handleResources();
         }
-        showWarehouse(warehouse,specialResource);
+
     }
 
 

@@ -217,13 +217,9 @@ public class Player implements PlayerInterface, Serializable {
     @Override
     public void setWhiteSpecialMarble(MarbleSpecial whiteSpecialMarble) {
         this.whiteSpecialMarble = whiteSpecialMarble;
+        System.out.println("set the white special marble");
     }
 
-    @Override
-    public int chooseSpecialWhiteMarble(){
-        //we decided he choose the second one, this method is called only if there are 2 special marble
-        return 1;
-    }
 
     /**
      * method for when is asked to the player to choose a resource
@@ -382,6 +378,7 @@ public class Player implements PlayerInterface, Serializable {
      */
     @Override
     public void activeLeaderCardAbility(LeaderCard card) throws InvalidActionException {
+        System.out.println("debug2");
         ArrayList<DevelopmentCard> allDevelopmentCards = this.getGameSpace().getAllCards();
         //verify the cost
         if(card.getState() instanceof Inactive){
@@ -449,6 +446,7 @@ public class Player implements PlayerInterface, Serializable {
                 counter = 0;
             }
             if(counter==0){
+                System.out.println("debug3");
                 card.activeCard(this);
             }else{
                 throw new InvalidActionException("This leader card can't be activated!");
@@ -486,9 +484,11 @@ public class Player implements PlayerInterface, Serializable {
         ArrayList<TypeResource> resourcesFromMarket = null;
         if (wich.equals("row")){
             resourcesFromMarket = boardManager.getMarketStructure().rowMoveMarble(position, this);
+
         }
         else if (wich.equals("column")){
             resourcesFromMarket = boardManager.getMarketStructure().columnMoveMarble(position, this);
+
         }
         else
             throw new IllegalArgumentException("invalid action of buy from market!");

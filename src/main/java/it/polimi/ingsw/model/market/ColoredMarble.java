@@ -31,9 +31,11 @@ public class ColoredMarble extends Marble implements Serializable {
             //player.putResources(resource);
         }
         else if (this.getColor() == Color.WHITE){
+
             if(player.getWhiteSpecialMarble() != null){
+
                 //call the special ability of the special Marble
-                player.getWhiteSpecialMarble().choose(player);
+                return player.getWhiteSpecialMarble().choose(player);
             }
         }
         return null;

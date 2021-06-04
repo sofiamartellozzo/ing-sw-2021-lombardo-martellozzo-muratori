@@ -77,6 +77,7 @@ public class PlayerTurn implements PlayerTurnInterface {
     public void activeLeaderCard(int which) throws InvalidActionException {
         LeaderCard card =  this.currentPlayer.selectLeaderCard(which);
         if(card!=null){
+
             this.currentPlayer.activeLeaderCardAbility(card);
         }else{
             throw new InvalidActionException("Card not valid!");

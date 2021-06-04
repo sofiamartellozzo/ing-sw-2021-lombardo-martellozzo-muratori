@@ -115,6 +115,7 @@ public class LeaderCard extends Card implements Serializable {
      * @throws InvalidActionException
      */
     public void activeCard(Player player) throws InvalidActionException {
+
         if(player == null) throw new InvalidActionException("Error, not valid!");
         state = new Active();
         this.specialAbility.activeAbility(player);

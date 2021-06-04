@@ -30,8 +30,6 @@ public interface PlayerInterface{
     public void setWhiteSpecialMarble(MarbleSpecial whiteSpecialMarble);
 
 
-    public int chooseSpecialWhiteMarble();//INUTILE
-
 
     public Resource chooseResource();
     public int calculateVictoryPoints();

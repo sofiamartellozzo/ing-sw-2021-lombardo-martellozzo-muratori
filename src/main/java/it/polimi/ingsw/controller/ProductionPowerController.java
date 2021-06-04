@@ -78,7 +78,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                 VUpdateFaithTrackMsg requestMsg2 = new VUpdateFaithTrackMsg("updated faith Track", player.getUsername(), player.getGameSpace().getFaithTrack());
                 //put the player in the msg
                 notifyAllObserver(ObserverType.VIEW, requestMsg1);
-                notifyAllObserver(ObserverType.VIEW,requestMsg2);
+                notifyAllObserver(ObserverType.VIEW, requestMsg2);
             } else {
                 resourcesToStrongBox.add(resource);
             }
@@ -143,10 +143,10 @@ public class ProductionPowerController extends Observable implements ControllerO
                         notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }
-                if(putResource) {
+                if (putResource) {
                     receivedResources.add(new Resource(msg.getResourceToGet().getThisColor()));
-                    VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(),player.getGameSpace().getStrongbox());
-                    notifyAllObserver(ObserverType.VIEW,msg1);
+                    VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(), player.getGameSpace().getStrongbox());
+                    notifyAllObserver(ObserverType.VIEW, msg1);
                 }
 
             } else if (msg.getWhich() >= 1 && msg.getWhich() <= 3) {
@@ -156,7 +156,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                 if (warehouse.checkEnoughResources(developmentCard.showCostProductionPower())) {
                     try {
                         warehouse.removeResources(developmentCard.showCostProductionPower());
-                        VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getWarehouse());
+                        VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("here is your warehouse updated", player.getUsername(), player.getGameSpace().getWarehouse());
                         notifyAllObserver(ObserverType.VIEW, update);
                         putResource = true;
                     } catch (InvalidActionException e) {
@@ -167,7 +167,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                 } else if (strongBox.checkEnoughResources(developmentCard.showCostProductionPower())) {
                     try {
                         strongBox.removeResources(developmentCard.showCostProductionPower());
-                        VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getStrongbox());
+                        VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated", player.getUsername(), player.getGameSpace().getStrongbox());
                         notifyAllObserver(ObserverType.VIEW, update);
                         putResource = true;
 
@@ -177,7 +177,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                         notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }
-                if(putResource) {
+                if (putResource) {
                     receivedResources.addAll(developmentCard.showProceedsProductionPower());
                     VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(), player.getGameSpace().getStrongbox());
                     notifyAllObserver(ObserverType.VIEW, msg1);
@@ -188,11 +188,26 @@ public class ProductionPowerController extends Observable implements ControllerO
                 Warehouse warehouse = player.getGameSpace().getWarehouse();
                 StrongBox strongBox = player.getGameSpace().getStrongbox();
                 SpecialCard specialCard = player.getSpecialCard().get(choose);
-                if (warehouse.checkEnoughResources(specialCard.getCostProductionPower())) {
-                    for (Resource resource : specialCard.getCostProductionPower()) {
+                if (msg.getWhere().equals("warehouse")) {
+                    if (warehouse.checkEnoughResources(specialCard.getCostProductionPower())) {
+                        for (Resource resource : specialCard.getCostProductionPower()) {
+                            try {
+                                warehouse.removeResource(warehouse.searchResource(resource));
+                                VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("here is your warehouse updated", player.getUsername(), player.getGameSpace().getWarehouse());
+                                notifyAllObserver(ObserverType.VIEW, update);
+                                putResource = true;
+                            } catch (InvalidActionException e) {
+                                //e.printStackTrace();
+                                VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                                notifyAllObserver(ObserverType.VIEW, msg1);
+                            }
+                        }
+                    }
+                } else if (msg.getWhere().equals("strongbox")){
+                    if (strongBox.checkEnoughResources(specialCard.getCostProductionPower())) {
                         try {
-                            warehouse.removeResource(warehouse.searchResource(resource));
-                            VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getWarehouse());
+                            strongBox.removeResources(specialCard.getCostProductionPower());
+                            VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated", player.getUsername(), player.getGameSpace().getStrongbox());
                             notifyAllObserver(ObserverType.VIEW, update);
                             putResource = true;
                         } catch (InvalidActionException e) {
@@ -201,19 +216,8 @@ public class ProductionPowerController extends Observable implements ControllerO
                             notifyAllObserver(ObserverType.VIEW, msg1);
                         }
                     }
-                } else if (strongBox.checkEnoughResources(specialCard.getCostProductionPower())) {
-                    try {
-                        strongBox.removeResources(specialCard.getCostProductionPower());
-                        VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getStrongbox());
-                        notifyAllObserver(ObserverType.VIEW, update);
-                        putResource = true;
-                    } catch (InvalidActionException e) {
-                        //e.printStackTrace();
-                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
-                        notifyAllObserver(ObserverType.VIEW, msg1);
-                    }
                 }
-                if(putResource) {
+                if (putResource) {
                     receivedResources.add(new Resource(msg.getResourceToGet()));
                     receivedResources.add(new Resource(Color.RED));
                     VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(), player.getGameSpace().getStrongbox());
@@ -244,7 +248,6 @@ public class ProductionPowerController extends Observable implements ControllerO
     public void receiveMsg(CClientDisconnectedMsg msg) {
 
     }
-
 
 
     @Override

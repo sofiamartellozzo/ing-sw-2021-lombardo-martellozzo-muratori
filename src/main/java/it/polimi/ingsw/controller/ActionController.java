@@ -382,7 +382,6 @@ public class ActionController extends Observable implements ControllerObserver {
 
         if (player.getUsername().equals(msg.getUsername())) {
             try {
-
                 /*get the resources returned buy the market with the choice of the player*/
                 resourcesFromMarket = player.buyFromMarket(msg.getWhichRorC(), msg.getRowOrColumn(), boardManager);
                 if (!isSolo) {

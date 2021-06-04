@@ -1,5 +1,8 @@
 package it.polimi.ingsw.controller.factory;
 
+import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.board.*;
 import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
@@ -30,6 +33,49 @@ public class PersonalBoardFactory {
 
         //create the faith trak whit all his components
         FaithTrack faithTrack = createFaithTrack();
+
+        //FOR debug add a lot resources to the player
+        ArrayList<Resource> resources = new ArrayList<>();
+        resources.add(new Resource(Color.BLUE));
+        resources.add(new Resource(Color.BLUE));
+        resources.add(new Resource(Color.BLUE));
+        resources.add(new Resource(Color.BLUE));
+        resources.add(new Resource(Color.BLUE));
+        resources.add(new Resource(Color.BLUE));
+        resources.add(new Resource(Color.YELLOW));
+        resources.add(new Resource(Color.YELLOW));
+        resources.add(new Resource(Color.YELLOW));
+        resources.add(new Resource(Color.YELLOW));
+        resources.add(new Resource(Color.YELLOW));
+        resources.add(new Resource(Color.YELLOW));
+        resources.add(new Resource(Color.YELLOW));
+        resources.add(new Resource(Color.YELLOW));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.PURPLE));
+        resources.add(new Resource(Color.GREY));
+        resources.add(new Resource(Color.GREY));
+        resources.add(new Resource(Color.GREY));
+        resources.add(new Resource(Color.GREY));
+        resources.add(new Resource(Color.GREY));
+        resources.add(new Resource(Color.GREY));
+        resources.add(new Resource(Color.GREY));
+        resources.add(new Resource(Color.GREY));
+        resources.add(new Resource(Color.GREY));
+        try {
+            strongBox.addResources(resources);
+        } catch (InvalidActionException e) {
+            e.printStackTrace();
+        }
 
         return new PersonalBoard(faithTrack, resourceManager, allCardSpace);
     }

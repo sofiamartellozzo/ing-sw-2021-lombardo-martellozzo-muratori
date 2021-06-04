@@ -51,6 +51,7 @@ public class MarketStructure implements Serializable {
             resource = this.structure[row][i].choose(player);
             if (resource!=null){
                 resourceFromMarket.add(resource);
+
             }
         }
         Marble newSlide = this.structure[row][0];
@@ -71,6 +72,7 @@ public class MarketStructure implements Serializable {
             resource = this.structure[i][column].choose(player);
             if (resource!=null){
                 resourceFromMarket.add(resource);
+
             }
         }
         Marble newSlide = this.structure[0][column];
