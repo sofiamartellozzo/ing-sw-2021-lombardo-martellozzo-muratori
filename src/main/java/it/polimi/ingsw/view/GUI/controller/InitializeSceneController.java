@@ -7,6 +7,7 @@ import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VNotValidDepotMsg;
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.view.GUI.GUI;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -50,11 +51,19 @@ public class InitializeSceneController {
     @FXML
     private ImageView leaderCard1,leaderCard2,leaderCard3,leaderCard4;
 
+    @FXML
+    private Label playerLabel;
+
+    @FXML
+    private TitledPane waitPane;
+
     private TypeResource chosenType;
     private ArrayList<Integer> possibleLeaderCards;
     private ArrayList<Integer> chosenLeaderCards;
 
     public void start(){
+        waitPane.setVisible(true);
+        setLabelText(playerLabel,"You're the player "+gui.getPlayer().getNumber());
         chooseResourcePane.setVisible(false);
         discardButton.setDisable(true);
         chooseDepotPane.setVisible(false);
@@ -68,6 +77,7 @@ public class InitializeSceneController {
     }
 
     public void chooseResource(){
+        waitPane.setVisible(false);
         discardButton.setDisable(false);
         chooseResourcePane.setVisible(true);
     }
@@ -159,18 +169,21 @@ public class InitializeSceneController {
     public void mouseExitedDepot2(){depot2Pane.setEffect(null);}
     public void mouseExitedDepot3(){depot3Pane.setEffect(null);}
     public void clickDepot1(){
+        waitPane.setVisible(true);
         disableDepotPanes();
         discardButton.setDisable(true);
         chooseDepotPane.setVisible(false);
         gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),1,gui.getUsername()));
     }
     public void clickDepot2(){
+        waitPane.setVisible(true);
         disableDepotPanes();
         discardButton.setDisable(true);
         chooseDepotPane.setVisible(false);
         gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),2,gui.getUsername()));
     }
     public void clickDepot3(){
+        waitPane.setVisible(true);
         disableDepotPanes();
         discardButton.setDisable(true);
         chooseDepotPane.setVisible(false);
@@ -209,6 +222,7 @@ public class InitializeSceneController {
     }
 
     public void chooseLeaderCard(VChooseLeaderCardRequestMsg msg){
+        waitPane.setVisible(false);
         for(int i=0;i<4;i++){
             getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+msg.getMiniDeckLeaderCardFour().get(i)+").png"));
             getLeaderCardsView().get(i).setDisable(false);
@@ -273,7 +287,6 @@ public class InitializeSceneController {
             if(chosenLeaderCards.size()==2){
                 gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose my leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose"));
                 leaderCardPane.setVisible(false);
-                gui.getPersonalBoardSceneController().updateLeaderCardsView(chosenLeaderCards);
             }
         }
     }
@@ -377,5 +390,14 @@ public class InitializeSceneController {
         leaderCardsView.add(leaderCard3);
         leaderCardsView.add(leaderCard4);
         return leaderCardsView;
+    }
+
+    private void setLabelText(Label label,String content){
+        Platform.runLater(()->{
+            label.setText(content);
+        });
+    }
+    public void showWaitPane(){
+        waitPane.setVisible(true);
     }
 }

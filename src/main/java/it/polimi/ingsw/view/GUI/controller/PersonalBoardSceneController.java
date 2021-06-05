@@ -4,6 +4,7 @@ import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.VActivateProductionPowerRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseActionTurnRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.TypeResource;
@@ -68,9 +69,6 @@ public class PersonalBoardSceneController {
     private ImageView specialDepot1,specialDepot2;
 
     @FXML
-    private Label specialDepotLabel;
-
-    @FXML
     private Pane depot1Pane,depot2Pane,depot3Pane,depot4Pane,depot5Pane;
     @FXML
     private Label victoryPoints;
@@ -96,6 +94,14 @@ public class PersonalBoardSceneController {
     @FXML
     private ImageView coin,servant,shield,stone;
 
+    @FXML
+    private TitledPane chooseOtherPlayerPane;
+
+    @FXML
+    private Button player1Button, player2Button, player3Button;
+
+    @FXML
+    private TitledPane waitPane;
 
     private boolean returnToMarket;
 
@@ -107,6 +113,7 @@ public class PersonalBoardSceneController {
     private ArrayList<TypeResource> resourcesToRemove=new ArrayList<>();
 
     private ArrayList<Integer> chosenDepots=new ArrayList<>();
+    private ArrayList<String> otherPlayers=new ArrayList<>();
 
     public void start(){
         updateFaithTrackView(gui.getPlayer().getGameSpace().getFaithTrack());
@@ -127,12 +134,15 @@ public class PersonalBoardSceneController {
         stopPPPowerButton.setVisible(false);
         stopPPPowerButton.setDisable(true);
         chooseResourcePane.setVisible(false);
+        chooseOtherPlayerPane.setVisible(false);
+        disableOtherPlayersButtons();
     }
 
     public void setChooseActionMessage(String content){
         setLabelText(chooseActionMessage,content);
     }
     public void chooseAction(VChooseActionTurnRequestMsg msg){
+        waitPane.setVisible(false);
         if(!returnToMarket) {
             setChooseActionMessage("These are your available actions.\nChoose one action:");
 
@@ -806,6 +816,40 @@ public class PersonalBoardSceneController {
         actionButtons.setVisible(false);
     }
 
+    public void chooseOtherPlayer(ArrayList<String> players){
+        otherPlayers=players;
+        for(int i=0;i<players.size();i++){
+            setButtonText(getOtherPlayersButtons().get(i),"Player "+(i+1)+": "+players.get(i));
+            getOtherPlayersButtons().get(i).setDisable(false);
+        }
+        chooseOtherPlayerPane.setVisible(true);
+    }
+
+    public void clickPlayer1Button(){
+        if(!player1Button.isDisable()){
+            gui.sendMsg(new CAskSeeSomeoneElseMsg("I want to see player",gui.getUsername(),otherPlayers.get(0)));
+            otherPlayers=new ArrayList<>();
+            chooseOtherPlayerPane.setVisible(false);
+            disableOtherPlayersButtons();
+        }
+    }
+    public void clickPlayer2Button(){
+        if(!player2Button.isDisable()){
+            gui.sendMsg(new CAskSeeSomeoneElseMsg("I want to see player",gui.getUsername(),otherPlayers.get(1)));
+            otherPlayers=new ArrayList<>();
+            chooseOtherPlayerPane.setVisible(false);
+            disableOtherPlayersButtons();
+        }
+    }
+    public void clickPlayer3Button(){
+        if(!player3Button.isDisable()){
+            gui.sendMsg(new CAskSeeSomeoneElseMsg("I want to see player",gui.getUsername(),otherPlayers.get(2)));
+            otherPlayers=new ArrayList<>();
+            chooseOtherPlayerPane.setVisible(false);
+            disableOtherPlayersButtons();
+        }
+    }
+
     //END TURN
     public void clickEndTurn(){
         CChooseActionTurnResponseMsg msg = new CChooseActionTurnResponseMsg("I choose the action",gui.getUsername(),TurnAction.END_TURN);
@@ -937,6 +981,7 @@ public class PersonalBoardSceneController {
                             getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotShield.png"));
                             break;
                     }
+                    getDepotPanes().get(i).setVisible(true);
                     getSpecialDepotsView().get(i-4).setVisible(true);
                 }
                 for (int j = 0; j < depot.getSize(); j++) {
@@ -1003,16 +1048,22 @@ public class PersonalBoardSceneController {
             }
         }
     }
-    public void updateLeaderCardsView(ArrayList<Integer> leaderCards){
-        for(int i=0;i<leaderCards.size();i++){
-            getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+leaderCards.get(i)+").png"));
+    public void updateLeaderCardsView(ArrayList<LeaderCard> leaderCards){
+        for(int i=0;i<2;i++) {
+            if (i <= leaderCards.size()) {
+                getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard (" + leaderCards.get(i).getCardID() + ").png"));
+                getLeaderCardsView().get(i).setVisible(true);
+                if (leaderCards.get(i).getState() instanceof Inactive) {
+                    ColorAdjust colorAdjust = new ColorAdjust();
+                    colorAdjust.setBrightness(-0.5);
 
-            getLeaderCardsView().get(i).setVisible(true);
-
-            ColorAdjust colorAdjust = new ColorAdjust();
-            colorAdjust.setBrightness(-0.5);
-
-            getLeaderCardsView().get(i).setEffect(colorAdjust);
+                    getLeaderCardsView().get(i).setEffect(colorAdjust);
+                }
+            } else {
+                getLeaderCardsView().get(i).setImage(new Image(("/images/backCards/LeaderCard (0).png")));
+                getLeaderCardsView().get(i).setVisible(true);
+            }
+            getLeaderCardsView().get(i).setDisable(true);
         }
     }
     public void updateVictoryPointsView(int victoryPoints){
@@ -1226,5 +1277,27 @@ public class PersonalBoardSceneController {
         Platform.runLater(()->{
             label.setText(content);
         });
+    }
+    private ArrayList<Button> getOtherPlayersButtons(){
+        ArrayList<Button> otherPlayersButtons=new ArrayList<>();
+        otherPlayersButtons.add(player1Button);
+        otherPlayersButtons.add(player2Button);
+        otherPlayersButtons.add(player3Button);
+        return otherPlayersButtons;
+    }
+
+    private void disableOtherPlayersButtons(){
+        for(Button button:getOtherPlayersButtons()){
+            button.setDisable(true);
+        }
+    }
+    private void setButtonText(Button button,String content){
+        Platform.runLater(()->{
+            button.setText(content);
+        });
+    }
+
+    public void showWaitPane(){
+        waitPane.setVisible(true);
     }
 }
