@@ -17,6 +17,7 @@ import java.util.ArrayList;
 /**
  * Pattern: FACTORY
  * this class is made to create the Personal Board of each Player
+ * So the 3 Card spaces, the Resource manager containing Warehouse and Strongbox and the Faith track
  */
 public class PersonalBoardFactory {
 

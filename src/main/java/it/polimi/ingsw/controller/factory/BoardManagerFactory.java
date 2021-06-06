@@ -21,7 +21,7 @@ import java.util.Random;
 /* ILA */
 
 /**
- * FACTORY
+ * Pattern: FACTORY
  * this class is used to create the board manager at the initialization of the game
  */
 
@@ -43,6 +43,10 @@ public class BoardManagerFactory {
         return new BoardManager(turnSequence, marketStructure, developmentCardTable, leaderCardDeck, resourcesSupply);
     }
 
+    /**
+     * this method creates the market of the game (3 rows x 4 columns) composed by 4 white marbles, 2 blue, 2 yellow, 2 purple and 1 red
+     * @return
+     */
     protected MarketStructure createStructure() {
         Marble[][] marbles = new Marble[3][4];
         ArrayList<Marble> possibleMarbles = new ArrayList<>();
@@ -83,6 +87,11 @@ public class BoardManagerFactory {
     }
 
 
+    /**
+     *  method implemented in the DevelopmentCardFactory that creates the card Table composed by decks of Development Cards (3 rows x 4 columns)
+     * @return
+     */
+
     private DevelopmentCardDeck[][] createDevelopmentDeckTable() {
 
         //method implemented in the DevelopmentCardFactory that creates the card Table composed by decks
@@ -98,15 +107,19 @@ public class BoardManagerFactory {
         return table;
     }
 
-
-    private ArrayList<LeaderCard> createLeaderCardDeck() {
-        ArrayList<LeaderCard> cards = new ArrayList<>();
-        LeaderCardFactory leaderCardFactory = new LeaderCardFactory();
-        try {
-            cards = leaderCardFactory.createLeaderCardDeck();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    /**
+     * this method creates the Leader Card Deck composed by 16 cards using the Leader Card Factory
+     * @return
+     */
+        private ArrayList<LeaderCard> createLeaderCardDeck ()
+        {
+            ArrayList<LeaderCard> cards = new ArrayList<>();
+            LeaderCardFactory leaderCardFactory = new LeaderCardFactory();
+            try {
+                cards = leaderCardFactory.createLeaderCardDeck();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return cards;
         }
-        return cards;
-    }
 }

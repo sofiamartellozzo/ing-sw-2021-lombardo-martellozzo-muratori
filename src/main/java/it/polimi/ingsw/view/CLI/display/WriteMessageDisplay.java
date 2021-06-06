@@ -27,7 +27,7 @@ public class WriteMessageDisplay {
                 "██║  ██║███████╗██║ ╚████║██║  ██║██║███████║███████║██║  ██║██║ ╚████║╚██████╗███████╗\n" +
                 "╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝\n" +
                 "" +AnsiColors.RESET+
-                "                        Created By: Gianluca Lombardo, Sofia Martellozzo, Ilaria Muratori\n" +
+                "                       ©Created By: Gianluca Lombardo, Sofia Martellozzo, Ilaria Muratori\n" +
                 "                                                               Politecnico di Milano 2021\n" +
                 "                                                                                       ");
     }
@@ -126,5 +126,10 @@ public class WriteMessageDisplay {
                 "| | (_) \\__ \\  __/ |   \n" +
                 "|_|\\___/|___/\\___|_|   \n" +
                 "                      "+AnsiColors.RED_BOLD);
+    }
+
+    public static void showRanking(){
+        System.out.println(" HERE IS THE FINAL RANKING OF THE GAME: ");
+        System.out.println(" ►►►►►►►►►►►►►►►►");
     }
 }

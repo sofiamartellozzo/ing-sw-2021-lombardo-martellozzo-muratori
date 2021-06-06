@@ -861,6 +861,8 @@ public class CLI extends Observable implements ViewObserver {
             chosenCards.add(cardId1);
             chosenCards.add(cardId2);
 
+            myLeaderCards.add(leaderCards.getLeaderCardById(cardId1));
+            myLeaderCards.add(leaderCards.getLeaderCardById(cardId2));
 
             /* put the remaining cards not chosen by the player in another ArrayList*/
             for (Integer card : msg.getMiniDeckLeaderCardFour()) {
@@ -875,9 +877,9 @@ public class CLI extends Observable implements ViewObserver {
         } else {
             //discard or activate
             if (!msg.getMiniDeckLeaderCardFour().isEmpty()) {
-                printCLIMessage("Choose which card you want to \"" + msg.getWhatFor() + "\"  from:");
+                printCLIMessage(AnsiColors.BLUE_BOLD+"Choose which card you want to \"" + msg.getWhatFor() + "\"  from:"+AnsiColors.RESET);
                 for (LeaderCard card: myLeaderCards) {
-                    printCLIMessage(myLeaderCards.toString());
+                    //printCLIMessage(myLeaderCards.toString());
                     if (msg.getMiniDeckLeaderCardFour().contains(card.getCardID())) {
                         System.out.print(card.toString());
                     }
@@ -1662,10 +1664,19 @@ public class CLI extends Observable implements ViewObserver {
         if (msg.getWinnerUsername().equals(username)) {
             WriteMessageDisplay.endGame();
             WriteMessageDisplay.declareWinner();
-            printCLIMessage(" You totalize " + msg.getVictoryPoints() + " points");
+            WriteMessageDisplay.showRanking();
+            printCLIMessage("- You totalize " + msg.getVictoryPoints() + " points");
+            for (PlayerInterface player:msg.getLosersUsernames()) {
+                printCLIMessage("- "+player.getUsername()+ " Victory Points: "+AnsiColors.YELLOW_BOLD+player.getVictoryPoints()+AnsiColors.RESET);
+            }
         } else {
             WriteMessageDisplay.endGame();
             WriteMessageDisplay.declareLoser();
+            WriteMessageDisplay.showRanking();
+            printCLIMessage("- "+msg.getWinnerUsername()+" Victory Points: "+ AnsiColors.YELLOW_BOLD+msg.getVictoryPoints()+AnsiColors.RESET);
+            for (PlayerInterface player:msg.getLosersUsernames()) {
+                printCLIMessage("- "+player.getUsername()+ " Victory Points: "+AnsiColors.YELLOW_BOLD+player.getVictoryPoints()+AnsiColors.RESET);
+            }
         }
 
         in.reset();

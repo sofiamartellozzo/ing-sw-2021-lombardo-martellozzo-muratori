@@ -153,7 +153,8 @@ public class ProductionPowerController extends Observable implements ControllerO
                 Warehouse warehouse = player.getGameSpace().getWarehouse();
                 StrongBox strongBox = player.getGameSpace().getStrongbox();
                 DevelopmentCard developmentCard = player.getGameSpace().getCardSpace(msg.getWhich() - 1).getUpperCard();
-                if (warehouse.checkEnoughResources(developmentCard.showCostProductionPower())) {
+                if (msg.getWhere().equals("warehouse")) {
+                //if (warehouse.checkEnoughResources(developmentCard.showCostProductionPower())) {
                     try {
                         warehouse.removeResources(developmentCard.showCostProductionPower());
                         VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("here is your warehouse updated", player.getUsername(), player.getGameSpace().getWarehouse());
@@ -164,7 +165,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                         VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
                         notifyAllObserver(ObserverType.VIEW, msg1);
                     }
-                } else if (strongBox.checkEnoughResources(developmentCard.showCostProductionPower())) {
+                } else if (msg.getWhere().equals("strongbox")) {
                     try {
                         strongBox.removeResources(developmentCard.showCostProductionPower());
                         VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated", player.getUsername(), player.getGameSpace().getStrongbox());
@@ -203,18 +204,17 @@ public class ProductionPowerController extends Observable implements ControllerO
                             }
                         }
                     }
-                } else if (msg.getWhere().equals("strongbox")){
-                    if (strongBox.checkEnoughResources(specialCard.getCostProductionPower())) {
-                        try {
-                            strongBox.removeResources(specialCard.getCostProductionPower());
-                            VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated", player.getUsername(), player.getGameSpace().getStrongbox());
-                            notifyAllObserver(ObserverType.VIEW, update);
-                            putResource = true;
-                        } catch (InvalidActionException e) {
-                            //e.printStackTrace();
-                            VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
-                            notifyAllObserver(ObserverType.VIEW, msg1);
-                        }
+                //} else if (strongBox.checkEnoughResources(specialCard.getCostProductionPower())) {
+                } else if (msg.getWhere().equals("strongbox")) {
+                    try {
+                        strongBox.removeResources(specialCard.getCostProductionPower());
+                        VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("here is your warehouse updated",player.getUsername(),player.getGameSpace().getStrongbox());
+                        notifyAllObserver(ObserverType.VIEW, update);
+                        putResource = true;
+                    } catch (InvalidActionException e) {
+                        //e.printStackTrace();
+                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }
                 if (putResource) {
@@ -248,6 +248,7 @@ public class ProductionPowerController extends Observable implements ControllerO
     public void receiveMsg(CClientDisconnectedMsg msg) {
 
     }
+
 
 
     @Override

@@ -15,8 +15,7 @@ import java.util.ArrayList;
  */
 public class ResourcesSupplyFactory {
     public ResourcesSupply createTheResourcesSupply(){
-        //before I have to create an array of resources, and his cell
-        //this 4 times and then put all in the constructor of the Resources Supply
+
         Cell cell1 = new Cell(TypeResource.COIN);
         Cell cell2 = new Cell(TypeResource.SERVANT);
         Cell cell3 = new Cell(TypeResource.STONE);

@@ -24,7 +24,7 @@ public class FaithMarker extends Resource implements Serializable {
      */
     public FaithMarker() {
         super(Color.RED);
-        this.position = 0;
+        this.position = 23;
     }
 
     /**

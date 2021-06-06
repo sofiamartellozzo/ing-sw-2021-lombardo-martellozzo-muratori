@@ -24,6 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * this class is a part of the Controller that manages all the actions of the game,
+ * so it sends to the client the msgs containing the possible choices
+ * and receives/manages the client responses
+ */
 public class ActionController extends Observable implements ControllerObserver {
 
     public PlayerInterface getPlayer() {
@@ -35,7 +40,6 @@ public class ActionController extends Observable implements ControllerObserver {
 
     private PlayerTurn turn;
 
-    //private SoloPlayer soloPlayer;
     private SoloPlayerTurn soloPlayerTurn;
 
     private BoardManager boardManager;
@@ -49,6 +53,13 @@ public class ActionController extends Observable implements ControllerObserver {
     /* list of VV of the players*/
     private Map<String, VirtualView> virtualView;
 
+    /**
+     * constructor of the class used with Player so in Multi Player Mode
+     * @param player
+     * @param turn
+     * @param boardManager
+     * @param virtualView
+     */
     public ActionController(Player player, PlayerTurn turn, BoardManager boardManager, Map<String, VirtualView> virtualView) {
         this.player = (Player) player;
         this.turn = turn;
@@ -60,6 +71,13 @@ public class ActionController extends Observable implements ControllerObserver {
         this.numberResourcesFromM = 0;
     }
 
+    /**
+     * constructor of the class used with SoloPlayer so in Single Player Mode
+     * @param player
+     * @param turn
+     * @param boardManager
+     * @param virtualView
+     */
     public ActionController(SoloPlayer player, SoloPlayerTurn turn, BoardManager boardManager, Map<String, VirtualView> virtualView) {
         this.player = (SoloPlayer) player;
         this.soloPlayerTurn = turn;
@@ -71,7 +89,11 @@ public class ActionController extends Observable implements ControllerObserver {
         this.numberResourcesFromM = 0;
     }
 
-
+    /**
+     * this method returns a list of playerInterfaces that represents all the players of the game
+     * @param players
+     * @return
+     */
     private List<String> getPlayerAsList(Map<Integer, PlayerInterface> players) {
         List<String> p = new ArrayList<>();
         for (Integer i : players.keySet()) {
@@ -96,7 +118,8 @@ public class ActionController extends Observable implements ControllerObserver {
     /*---------------------------------------------------------------------------------------------------------------------*/
 
     /**
-     * receive the msg from the client with the Action he choose
+     * receive the msg from the client with the Action he choose,
+     * the possible actions are: BUY_CARD,MOVE_RESOURCE,BUY_FROM_MARKET,ACTIVE_PRODUCTION_POWER,REMOVE_LEADER_CARD,ACTIVE_LEADER_CARD,SEE_OTHER_PLAYER,END_TURN (not as first action of the turn )
      *
      * @param msg
      */
@@ -173,6 +196,10 @@ public class ActionController extends Observable implements ControllerObserver {
 
     }
 
+    /**
+     * returns an arrayList of integer representing the Leader cards that a player can discard
+     * @return
+     */
     private ArrayList<Integer> cardAbleForPlayer() {
         ArrayList<Integer> possibleCardToBeDiscarded = new ArrayList<>();
         ArrayList<LeaderCard> leaderCards = this.player.getLeaderCards();
@@ -191,6 +218,11 @@ public class ActionController extends Observable implements ControllerObserver {
         return possibleCardToBeDiscarded;
     }
 
+    /**
+     * returns an arrayList of integers representing the Leader cards that a player can activate, so foreach card
+     * we have to control that the player has all the requirements
+     * @return
+     */
     public ArrayList<Integer> cardActivatableForPlayer() {
         //The result
         ArrayList<Integer> possibleActivatableCards = new ArrayList<>();
@@ -277,6 +309,10 @@ public class ActionController extends Observable implements ControllerObserver {
         return possibleActivatableCards;
     }
 
+    /**
+     * returns an array of strings containing all the usernames of the players that aren't playing in that moment
+     * @return
+     */
     private ArrayList<String> getNotPlaying() {
         ArrayList<String> players = new ArrayList<>();
         for (PlayerInterface p : boardManager.getPlayers().values()) {
@@ -319,14 +355,6 @@ public class ActionController extends Observable implements ControllerObserver {
                 System.out.println("Cannot buy this card, sorry!");
                 e.printStackTrace();
             } catch (CardSpaceException e) {
-                //e.printStackTrace();
-                //restore the warehouse before the bought
-
-                //player.getGameSpace().getResourceManager().setStrongBox(msg.getStrongBox());
-
-                //player.getGameSpace().getResourceManager().setWarehouse(msg.getWarehouseBeforeCost());
-
-                //boardManager.setDevelopmentCardTable(msg.getDevelopmentCardTableBeforeCost());
 
                 VNotValidCardSpaceMsg notification = new VNotValidCardSpaceMsg("you choose a card space not valid", player.getUsername(), msg.getRow(), msg.getColumn());
                 notifyAllObserver(ObserverType.VIEW, notification);
@@ -336,7 +364,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CChangeActionTurnMsg msg) {
-
+      //NOT HERE
     }
 
     /**
@@ -474,8 +502,13 @@ public class ActionController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
 
+        //NOT HERE
     }
 
+    /**
+     * this msg is received when the player has finished storing the resources taken from the market
+     * @param msg
+     */
     @Override
     public void receiveMsg(CStopMarketMsg msg) {
         endAction = true;
@@ -484,6 +517,10 @@ public class ActionController extends Observable implements ControllerObserver {
         nextAction();
     }
 
+    /**
+     * manage the choose of the player to activate a production power
+     * @param msg
+     */
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
@@ -496,6 +533,10 @@ public class ActionController extends Observable implements ControllerObserver {
     }
 
 
+    /**
+     * received when a client decides to stop activating production powers
+     * @param msg
+     */
     @Override
     public void receiveMsg(CStopPPMsg msg) {
         notifyAllObserver(ObserverType.CONTROLLER, msg);
@@ -504,6 +545,10 @@ public class ActionController extends Observable implements ControllerObserver {
 
     }
 
+    /**
+     * manage the action of the client that asks to see the personal board of another player
+     * @param msg
+     */
     @Override
     public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
         if (this.player.getUsername().equals(msg.getUsernameAsking())) {
@@ -625,8 +670,8 @@ public class ActionController extends Observable implements ControllerObserver {
     }
 
     /**
-     * this after receive a White marble when the player has, and the same when he have to
-     * choose a depots for a specific resource, the last one is the same as VChooseDepotsRequestMsg
+     * this msg is received when the player receives from the market a white marble and has two TransformWhiteMarble activated
+     * and the same when he has to choose a depot for a specific resource, the last one is the same as VChooseDepotsRequestMsg
      *
      * @param msg
      */
@@ -638,10 +683,6 @@ public class ActionController extends Observable implements ControllerObserver {
                 //player.getGameSpace().getResourceManager().addResourceToWarehouse(r, msg.getDepot());
                 player.getGameSpace().getWarehouse().addResource(r, msg.getDepot());
                 endAction = true;
-                /*numberResourcesFromM--;
-                if (numberResourcesFromM == 0) {
-                    nextAction();
-                }*/
                 VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
                 notifyAllObserver(ObserverType.VIEW, notification);
             } catch (InvalidActionException e) {
@@ -704,6 +745,10 @@ public class ActionController extends Observable implements ControllerObserver {
 
     }
 
+    /**
+     * remove an action from the possible actions that a player can do
+     * @param action
+     */
     private void removeAction(TurnAction action) {
         if (!isSolo) {
             turn.removeAction(action);

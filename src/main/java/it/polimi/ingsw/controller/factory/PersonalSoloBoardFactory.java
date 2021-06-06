@@ -12,8 +12,12 @@ import it.polimi.ingsw.model.board.resourceManagement.WarehouseStandard;
 
 import java.util.ArrayList;
 
-/*
- * SOFI*/
+/**
+ * Pattern: FACTORY
+ * this class is made to create the personal board in the Single Player Game, so it's the same of the normal Personal Board
+ * and more creates the Deck of action tokens that will be used at the end of each turn
+ */
+
 public class PersonalSoloBoardFactory extends PersonalBoardFactory {
 
     public SoloPersonalBoard createGame(){
@@ -30,7 +34,7 @@ public class PersonalSoloBoardFactory extends PersonalBoardFactory {
 
 
     private ArrayList<ActionToken> createActionToken(){
-        //where I have to take all these cards an create the dek to put in the Solo Board
+        //where I have to take all these cards an create the deck to put in the Solo Board
         ActionToken actionToken1 = new ActionToken(new CardActionAbility(Color.PURPLE), 1);
         ActionToken actionToken2 = new ActionToken(new CardActionAbility(Color.YELLOW), 2);
         ActionToken actionToken3 = new ActionToken(new CardActionAbility(Color.GREEN), 3);

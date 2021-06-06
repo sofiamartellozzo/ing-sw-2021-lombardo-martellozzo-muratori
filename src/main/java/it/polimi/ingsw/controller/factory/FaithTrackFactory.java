@@ -11,6 +11,11 @@ import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+/**
+ * Pattern: FACTORY
+ * Creates the Faith Track of the game, combining 7 Gold Boxes, 3 Pope Boxes, 15 Simple Boxes
+ * The Track is composed by 3 Popes Favor Tiles, 3 Vatican Sections and a Faith Marker
+ */
 public class FaithTrackFactory {
 
     public FaithTrack createFaithTrack() throws FileNotFoundException {
@@ -76,7 +81,7 @@ public class FaithTrackFactory {
         vaticanSections.add(vaticanSection2);
         vaticanSections.add(vaticanSection3);
 
-        //create faith market
+        //create faith marker
         FaithMarker faithMarker = new FaithMarker();
 
         FaithTrack faithTrack = new FaithTrack(boxes, array3, faithMarker, vaticanSections);
