@@ -109,6 +109,7 @@ public class IntroSceneController {
             /* try to create the connection sending the username, port and ip */
             VVConnectionRequestMsg request = new VVConnectionRequestMsg("OFFLINE", getUsername);
             gui.sendMsg(request);
+            gui.setUsername(getUsername);
         }else{
             //ERROR MESSAGE Username or Ip not valid
             enableAllLoginFields();

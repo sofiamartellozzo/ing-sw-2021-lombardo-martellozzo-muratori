@@ -84,8 +84,12 @@ public class DevCardTableSceneController {
         ImageView[][] devCardTableView = getDevCardTableView();
         for(int i=0;i<3;i++){
             for(int j=0;j<4;j++){
-                devCardTableView[i][j].setImage(new Image("/images/frontCards/DevelopmentCard ("+table[i][j].getUpperCard().getId()+").png"));
-                devCardTableView[i][j].setVisible(true);
+                if(table[i][j].getDevelopDeck()!=null && !table[i][j].getDevelopDeck().isEmpty()) {
+                    devCardTableView[i][j].setImage(new Image("/images/frontCards/DevelopmentCard (" + table[i][j].getUpperCard().getId() + ").png"));
+                    devCardTableView[i][j].setVisible(true);
+                }else{
+                    devCardTableView[i][j].setVisible(false);
+                }
             }
         }
         setAllDevCardTableDisable();

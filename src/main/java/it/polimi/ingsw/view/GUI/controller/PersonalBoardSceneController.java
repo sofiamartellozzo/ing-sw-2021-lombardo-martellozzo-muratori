@@ -115,6 +115,8 @@ public class PersonalBoardSceneController {
     private ArrayList<Integer> chosenDepots=new ArrayList<>();
     private ArrayList<String> otherPlayers=new ArrayList<>();
 
+    private HashMap<Integer,ImageView> leaderCardWithID;
+
     public void start(){
         updateFaithTrackView(gui.getPlayer().getGameSpace().getFaithTrack());
         updateResourceManagerView(gui.getPlayer().getGameSpace().getResourceManager());
@@ -138,13 +140,10 @@ public class PersonalBoardSceneController {
         disableOtherPlayersButtons();
     }
 
-    public void setChooseActionMessage(String content){
-        setLabelText(chooseActionMessage,content);
-    }
     public void chooseAction(VChooseActionTurnRequestMsg msg){
         waitPane.setVisible(false);
         if(!returnToMarket) {
-            setChooseActionMessage("These are your available actions.\nChoose one action:");
+            setLabelText(chooseActionMessage,"These are your available actions.\nChoose one action:");
 
             actionButtons.setVisible(true);
             showActionButtons(msg.getAvailableActions());
@@ -576,10 +575,10 @@ public class PersonalBoardSceneController {
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
+                        returnToMarket=!returnToMarket;
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
-                action=null;
                 where="warehouse";
                 disableDepotPanes();
                 strongBoxPane.setVisible(false);
@@ -606,6 +605,7 @@ public class PersonalBoardSceneController {
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
+                        returnToMarket=!returnToMarket;
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -635,6 +635,7 @@ public class PersonalBoardSceneController {
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
+                        returnToMarket=!returnToMarket;
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -732,8 +733,8 @@ public class PersonalBoardSceneController {
         if(msg.getMiniDeckLeaderCardFour().size()>0) {
             for(int i=0;i<leaderCards.size();i++){
                 System.out.println("LeaderCardsView: "+leaderCards.get(i));
-                getLeaderCardsView().get(i).setDisable(false);
-                getLeaderCardsView().get(i).setEffect(null);
+                getLeaderCardViewByID(leaderCards.get(i)).setDisable(false);
+                getLeaderCardViewByID(leaderCards.get(i)).setEffect(null);
             }
         }else{
             setLabelText(errorMessage,"No card to"+msg.getWhatFor());
@@ -877,14 +878,18 @@ public class PersonalBoardSceneController {
 
     //Update FXML Elements based on Model Elements
     public void updateLeaderCards(ArrayList<LeaderCard> leaderCards){
+        leaderCardWithID=new HashMap<>();
         for(int i=0;i<2;i++){
             if(i+1<=leaderCards.size()){
+                System.out.println(leaderCards.get(i).getCardID());
+                leaderCardWithID.put(leaderCards.get(i).getCardID(),getLeaderCardsView().get(i));
                 getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+leaderCards.get(i).getCardID()+").png"));
             }else{
                 getLeaderCardsView().get(i).setImage(new Image("/images/backCards/LeaderCard (1).png"));
             }
         }
     }
+
     public void updateCardSpace(ArrayList<CardSpace> cardSpaces){
         for(int i=0;i<cardSpaces.size();i++){
             if(!cardSpaces.get(i).getCards().isEmpty()){
@@ -966,23 +971,23 @@ public class PersonalBoardSceneController {
             if (i+1<=warehouse.getDepots().size()) {
                 Depot depot = warehouse.getDepots().get(i);
                 ArrayList<ImageView> depotView = getWarehouseView().get(i);
-                if (i == 4||i==5) {
+                if (i+1==4||i+1==5) {
                     switch (depot.getType()) {
                         case COIN:
-                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotCoin.png"));
+                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalBoard/SpecialDepotCoin.png"));
                             break;
                         case SERVANT:
-                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotServant.png"));
+                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalBoard/SpecialDepotServant.png"));
                             break;
                         case STONE:
-                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotStone.png"));
+                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalBoard/SpecialDepotStone.png"));
                             break;
                         case SHIELD:
-                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotShield.png"));
+                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalBoard/SpecialDepotShield.png"));
                             break;
                     }
                     getDepotPanes().get(i).setVisible(true);
-                    getSpecialDepotsView().get(i-4).setVisible(true);
+                    getSpecialDepotsView().get(i-3).setVisible(true);
                 }
                 for (int j = 0; j < depot.getSize(); j++) {
                     if (j + 1 <= depot.getNumberResources()) {
@@ -1048,24 +1053,8 @@ public class PersonalBoardSceneController {
             }
         }
     }
-    public void updateLeaderCardsView(ArrayList<LeaderCard> leaderCards){
-        for(int i=0;i<2;i++) {
-            if (i <= leaderCards.size()) {
-                getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard (" + leaderCards.get(i).getCardID() + ").png"));
-                getLeaderCardsView().get(i).setVisible(true);
-                if (leaderCards.get(i).getState() instanceof Inactive) {
-                    ColorAdjust colorAdjust = new ColorAdjust();
-                    colorAdjust.setBrightness(-0.5);
 
-                    getLeaderCardsView().get(i).setEffect(colorAdjust);
-                }
-            } else {
-                getLeaderCardsView().get(i).setImage(new Image(("/images/backCards/LeaderCard (0).png")));
-                getLeaderCardsView().get(i).setVisible(true);
-            }
-            getLeaderCardsView().get(i).setDisable(true);
-        }
-    }
+
     public void updateVictoryPointsView(int victoryPoints){
         setLabelText(this.victoryPoints,""+victoryPoints);
     }
@@ -1299,5 +1288,12 @@ public class PersonalBoardSceneController {
 
     public void showWaitPane(){
         waitPane.setVisible(true);
+    }
+    private ImageView getLeaderCardViewByID(Integer id){
+        if(leaderCardWithID.keySet().contains(id)){
+            return leaderCardWithID.get(id);
+        }else{
+            return null;
+        }
     }
 }

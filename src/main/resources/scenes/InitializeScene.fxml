@@ -224,7 +224,7 @@
             </VBox>
         </content>
       </TitledPane>
-      <Label fx:id="playerlabel" alignment="CENTER" layoutX="258.0" layoutY="14.0" text="You're the player 1" textAlignment="CENTER">
+      <Label fx:id="playerLabel" alignment="CENTER" layoutX="258.0" layoutY="14.0" text="You're the player 1" textAlignment="CENTER">
          <font>
             <Font name="System Bold Italic" size="36.0" />
          </font>

@@ -162,34 +162,6 @@ public class InitializeSceneController {
         chooseDepotPane.setVisible(true);
     }
 
-    public void mouseEnteredDepot1(){depot1Pane.setEffect(new Glow());}
-    public void mouseEnteredDepot2(){depot2Pane.setEffect(new Glow());}
-    public void mouseEnteredDepot3(){depot3Pane.setEffect(new Glow());}
-    public void mouseExitedDepot1(){depot1Pane.setEffect(null);}
-    public void mouseExitedDepot2(){depot2Pane.setEffect(null);}
-    public void mouseExitedDepot3(){depot3Pane.setEffect(null);}
-    public void clickDepot1(){
-        waitPane.setVisible(true);
-        disableDepotPanes();
-        discardButton.setDisable(true);
-        chooseDepotPane.setVisible(false);
-        gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),1,gui.getUsername()));
-    }
-    public void clickDepot2(){
-        waitPane.setVisible(true);
-        disableDepotPanes();
-        discardButton.setDisable(true);
-        chooseDepotPane.setVisible(false);
-        gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),2,gui.getUsername()));
-    }
-    public void clickDepot3(){
-        waitPane.setVisible(true);
-        disableDepotPanes();
-        discardButton.setDisable(true);
-        chooseDepotPane.setVisible(false);
-        gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),3,gui.getUsername()));
-    }
-
     public void chooseDepot(VNotValidDepotMsg msg){
         messageDepot.setText("You can't put the resource here.\n Select a new depot for:");
         enableDepotPanes();
@@ -220,6 +192,36 @@ public class InitializeSceneController {
         }
         chooseDepotPane.setVisible(true);
     }
+
+    public void mouseEnteredDepot1(){depot1Pane.setEffect(new Glow());}
+    public void mouseEnteredDepot2(){depot2Pane.setEffect(new Glow());}
+    public void mouseEnteredDepot3(){depot3Pane.setEffect(new Glow());}
+    public void mouseExitedDepot1(){depot1Pane.setEffect(null);}
+    public void mouseExitedDepot2(){depot2Pane.setEffect(null);}
+    public void mouseExitedDepot3(){depot3Pane.setEffect(null);}
+    public void clickDepot1(){
+        waitPane.setVisible(true);
+        disableDepotPanes();
+        discardButton.setDisable(true);
+        chooseDepotPane.setVisible(false);
+        gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),1,gui.getUsername()));
+    }
+    public void clickDepot2(){
+        waitPane.setVisible(true);
+        disableDepotPanes();
+        discardButton.setDisable(true);
+        chooseDepotPane.setVisible(false);
+        gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),2,gui.getUsername()));
+    }
+    public void clickDepot3(){
+        waitPane.setVisible(true);
+        disableDepotPanes();
+        discardButton.setDisable(true);
+        chooseDepotPane.setVisible(false);
+        gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),3,gui.getUsername()));
+    }
+
+
 
     public void chooseLeaderCard(VChooseLeaderCardRequestMsg msg){
         waitPane.setVisible(false);

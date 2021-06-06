@@ -332,6 +332,39 @@
             </HBox>
         </content>
       </TitledPane>
+      <TitledPane fx:id="chooseResourcePane" animated="false" layoutX="85.0" layoutY="246.0" text="Choose Resource">
+        <content>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Choose the resource you want:" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="coin" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickCoin" onMouseEntered="#mouseEnteredCoin" onMouseExited="#mouseExitedCoin" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/coin.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="servant" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickServant" onMouseEntered="#mouseEnteredServant" onMouseExited="#mouseExitedServant" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/servant.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="shield" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickShield" onMouseEntered="#mouseEnteredShield" onMouseExited="#mouseExitedShield" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/shield.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="stone" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#clickStone" onMouseEntered="#mouseEnteredStone" onMouseExited="#mouseExitedStone" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/stone.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+        </content>
+      </TitledPane>
       <Button fx:id="backButton" layoutX="35.0" layoutY="29.0" mnemonicParsing="false" onAction="#clickBackButton" text="&lt;- BACK" />
    </children>
 </AnchorPane>

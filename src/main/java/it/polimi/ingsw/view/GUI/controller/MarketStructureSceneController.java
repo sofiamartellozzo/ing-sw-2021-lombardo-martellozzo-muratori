@@ -5,6 +5,7 @@ import it.polimi.ingsw.message.controllerMsg.CChooseDiscardResourceMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
 import it.polimi.ingsw.message.controllerMsg.CStopMarketMsg;
 import it.polimi.ingsw.message.viewMsg.VBuyFromMarketRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VNotValidDepotMsg;
 import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.market.MarketStructure;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,13 +55,22 @@ public class MarketStructureSceneController {
     @FXML
     private TitledPane chooseDepotPane;
 
+    @FXML
+    private TitledPane chooseResourcePane;
+
+    @FXML
+    private ImageView coin,servant,stone,shield;
+
     private ArrayList<TypeResource> resourcesToStore;
+    private ArrayList<TypeResource> whiteSpecial;
     private TypeResource resourceToStore;
 
     public void start(){
         update(gui.getMarketStructureData());
         ArrayList<Button> buttons = getButtons();
+        disableResources();
         chooseDepotPane.setVisible(false);
+        chooseResourcePane.setVisible(false);
         for(Button button:buttons){
             button.setDisable(true);
         }
@@ -149,7 +160,116 @@ public class MarketStructureSceneController {
         backButton.setDisable(false);
     }
 
-    public void chooseResource(){}
+    public void chooseResource(){
+        for(TypeResource type: whiteSpecial){
+            int which=0;
+            switch(type){
+                case COIN:
+                    which=0;
+                    break;
+                case SERVANT:
+                    which=1;
+                    break;
+                case SHIELD:
+                    which=2;
+                    break;
+                case STONE:;
+                    which=3;
+                    break;
+            }
+            getResourcesView().get(which).setEffect(null);
+            getResourcesView().get(which).setDisable(false);
+        }
+        chooseResourcePane.setVisible(true);
+    }
+
+    public void mouseEnteredCoin(){
+        if(!coin.isDisable()){
+            coin.setEffect(new Glow());
+        }
+    }
+    public void mouseEnteredServant(){
+        if(!servant.isDisable()){
+            servant.setEffect(new Glow());
+        }
+    }
+    public void mouseEnteredShield(){
+        if(!shield.isDisable()){
+            shield.setEffect(new Glow());
+        }
+    }
+    public void mouseEnteredStone(){
+        if(!stone.isDisable()){
+            stone.setEffect(new Glow());
+        }
+    }
+
+    public void mouseExitedCoin(){
+        if(!coin.isDisable()){
+            coin.setEffect(null);
+        }
+    }
+    public void mouseExitedServant(){
+        if(!servant.isDisable()){
+            servant.setEffect(null);
+        }
+    }
+    public void mouseExitedShield(){
+        if(!shield.isDisable()){
+            shield.setEffect(null);
+        }
+    }
+    public void mouseExitedStone(){
+        if(!stone.isDisable()){
+            stone.setEffect(null);
+        }
+    }
+
+    public void clickCoin(){
+        if(!coin.isDisable()){
+            resourceToStore=TypeResource.COIN;
+            disableResources();
+            chooseResourcePane.setVisible(false);
+            setResourceAndLabel(resourceToStore);
+            moveResourceButton.setDisable(false);
+            discardButton.setDisable(false);
+            chooseDepotPane.setVisible(true);
+        }
+    }
+    public void clickServant(){
+        if(!servant.isDisable()){
+            resourceToStore=TypeResource.SERVANT;
+            disableResources();
+            chooseResourcePane.setVisible(false);
+            setResourceAndLabel(resourceToStore);
+            moveResourceButton.setDisable(false);
+            discardButton.setDisable(false);
+            chooseDepotPane.setVisible(true);
+        }
+    }
+    public void clickShield(){
+        if(!shield.isDisable()){
+            resourceToStore=TypeResource.SHIELD;
+            disableResources();
+            chooseResourcePane.setVisible(false);
+            setResourceAndLabel(resourceToStore);
+            moveResourceButton.setDisable(false);
+            discardButton.setDisable(false);
+            chooseDepotPane.setVisible(true);
+        }
+    }
+    public void clickStone(){
+        if(!stone.isDisable()){
+            resourceToStore=TypeResource.STONE;
+            disableResources();
+            chooseResourcePane.setVisible(false);
+            setResourceAndLabel(resourceToStore);
+            moveResourceButton.setDisable(false);
+            discardButton.setDisable(false);
+            chooseDepotPane.setVisible(true);
+        }
+    }
+
     public void chooseDepot(){
         if(resourcesToStore.size()>0){
             gui.seeMarketBoard();
@@ -159,10 +279,21 @@ public class MarketStructureSceneController {
             setLabelText(message,"Choose a depot\n" +
                     "where to store this resource:");
             resourceToStore = resourcesToStore.remove(0);
-            setResourceAndLabel(resourceToStore);
-            moveResourceButton.setDisable(false);
-            discardButton.setDisable(false);
-            chooseDepotPane.setVisible(true);
+            if(whiteSpecial!=null && whiteSpecial.size()==1 && resourceToStore.equals(TypeResource.BLANK)){
+                resourceToStore=whiteSpecial.get(0);
+                setResourceAndLabel(resourceToStore);
+                moveResourceButton.setDisable(false);
+                discardButton.setDisable(false);
+                chooseDepotPane.setVisible(true);
+            }else if(whiteSpecial!=null && whiteSpecial.size()>1 && resourceToStore.equals(TypeResource.BLANK)){
+                chooseResource();
+            }else if(!resourceToStore.equals(TypeResource.BLANK)){
+                setResourceAndLabel(resourceToStore);
+                moveResourceButton.setDisable(false);
+                discardButton.setDisable(false);
+                chooseDepotPane.setVisible(true);
+            }
+
         }else{
             gui.seePersonalBoard();
             backButton.setDisable(false);
@@ -170,6 +301,22 @@ public class MarketStructureSceneController {
             chooseDepotPane.setVisible(false);
             gui.sendMsg(new CStopMarketMsg("Finished to buy",gui.getUsername(), TurnAction.BUY_FROM_MARKET));
         }
+    }
+
+    public void chooseDepot(VNotValidDepotMsg msg){
+        gui.seeMarketBoard();
+        backButton.setDisable(true);
+        copyWarehouseFromPersonalBoard();
+        enableDepotPane();
+        getDepotPanes().get(msg.getUnableDepot()-1).setDisable(true);
+        setLabelText(message,"Chosen depot not valid.\n" +
+                "Choose a depot\n" +
+                "where to store this resource:");
+        resourceToStore = fromColorToType(msg.getResourceChooseBefore());
+        setResourceAndLabel(resourceToStore);
+        moveResourceButton.setDisable(false);
+        discardButton.setDisable(false);
+        chooseDepotPane.setVisible(true);
     }
 
     public void mouseEnteredDepot1(){
@@ -422,5 +569,35 @@ public class MarketStructureSceneController {
         Platform.runLater(()->{
             label.setText(content);
         });
+    }
+
+    private TypeResource fromColorToType(it.polimi.ingsw.model.Color color){
+        switch(color){
+            case YELLOW:return TypeResource.COIN;
+            case PURPLE:return TypeResource.SERVANT;
+            case BLUE:return TypeResource.SHIELD;
+            case GREY:return TypeResource.STONE;
+            default:return null;
+        }
+    }
+
+    public void setWhiteSpecial(ArrayList<TypeResource> whiteSpecial){this.whiteSpecial=whiteSpecial;}
+
+    private ArrayList<ImageView> getResourcesView(){
+        ArrayList<ImageView> resources=new ArrayList<>();
+        resources.add(coin);
+        resources.add(servant);
+        resources.add(shield);
+        resources.add(stone);
+        return resources;
+    }
+
+    private void disableResources(){
+        ColorAdjust colorAdjust=new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
+        for(ImageView imageView:getResourcesView()){
+            imageView.setEffect(colorAdjust);
+            imageView.setDisable(true);
+        }
     }
 }

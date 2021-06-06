@@ -273,10 +273,9 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VNotValidDepotMsg msg) {
         System.out.println(msg.toString());
             if(stage.getScene().equals(initializeScene)){
-                //Ask again depot initializeController
                 initializeSceneController.chooseDepot(msg);
-            }else if(stage.getScene().equals(personalBoardScene)){
-                //Ask again depot from gameController
+            }else if(stage.getScene().equals(marketStructureScene)||stage.getScene().equals(personalBoardScene)){
+                marketStructureSceneController.chooseDepot(msg);
             }
     }
 
@@ -436,6 +435,7 @@ public class GUI extends Application implements ViewObserver {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             marketStructureSceneController.setResourcesToStore(msg.getResourceToStore());
+            marketStructureSceneController.setWhiteSpecial(msg.getWhiteSpecialResources());
             marketStructureSceneController.chooseDepot();
         }
     }
