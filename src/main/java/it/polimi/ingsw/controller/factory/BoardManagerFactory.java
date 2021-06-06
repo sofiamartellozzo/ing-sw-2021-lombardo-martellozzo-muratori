@@ -34,7 +34,7 @@ public class BoardManagerFactory {
      * @return
      */
     public BoardManager createBoardManager(HashMap<Integer, PlayerInterface> turnSequence) {
-        MarketStructure marketStructure = new MarketStructure(createStructure(), new ColoredMarble(Color.PURPLE));
+        MarketStructure marketStructure = createStructure();
         DevelopmentCardTable developmentCardTable = new DevelopmentCardTable(createDevelopmentDeckTable());
         LeaderCardDeck leaderCardDeck = new LeaderCardDeck(createLeaderCardDeck());
         ResourcesSupplyFactory resourcesSupplyFactory = new ResourcesSupplyFactory();
@@ -43,7 +43,7 @@ public class BoardManagerFactory {
         return new BoardManager(turnSequence, marketStructure, developmentCardTable, leaderCardDeck, resourcesSupply);
     }
 
-    protected Marble[][] createStructure() {
+    protected MarketStructure createStructure() {
         Marble[][] marbles = new Marble[3][4];
         ArrayList<Marble> possibleMarbles = new ArrayList<>();
         ColoredMarble purple = new ColoredMarble(Color.PURPLE);
@@ -79,7 +79,7 @@ public class BoardManagerFactory {
             }
         }
 
-        return marbles;
+        return new MarketStructure(marbles, possibleMarbles.remove(0));
     }
 
 

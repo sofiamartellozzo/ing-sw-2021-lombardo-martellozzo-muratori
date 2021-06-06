@@ -123,8 +123,6 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
         tryToStartGame();
 
-
-        tryToStartGame();
     }
 
     @Override
