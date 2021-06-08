@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.GUI.controller;
 
 import it.polimi.ingsw.message.controllerMsg.*;
+import it.polimi.ingsw.message.viewMsg.VActionTokenActivateMsg;
 import it.polimi.ingsw.message.viewMsg.VActivateProductionPowerRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseActionTurnRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
@@ -15,6 +16,7 @@ import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
+import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.cardAbility.TypeAbility;
 import it.polimi.ingsw.view.GUI.GUI;
 import javafx.application.Platform;
@@ -101,7 +103,16 @@ public class PersonalBoardSceneController {
     private Button player1Button, player2Button, player3Button;
 
     @FXML
+    private ImageView specialCard1,specialCard2;
+
+    @FXML
     private TitledPane waitPane;
+
+    @FXML
+    private Pane lastActionTokenPane;
+
+    @FXML
+    private ImageView lastActionToken;
 
     private boolean returnToMarket;
 
@@ -122,6 +133,7 @@ public class PersonalBoardSceneController {
         updateResourceManagerView(gui.getPlayer().getGameSpace().getResourceManager());
         updateCardSpacesView(gui.getPlayer().getGameSpace().getCardSpaces());
         updateVictoryPointsView(gui.getPlayer().getVictoryPoints());
+        updateAdditionalPPView(gui.getPlayer().getSpecialCard());
         setAllLeaderDisable();
         disableActionButtons();
         disableDepotPanes();
@@ -138,6 +150,7 @@ public class PersonalBoardSceneController {
         chooseResourcePane.setVisible(false);
         chooseOtherPlayerPane.setVisible(false);
         disableOtherPlayersButtons();
+        lastActionTokenPane.setVisible(false);
     }
 
     public void chooseAction(VChooseActionTurnRequestMsg msg){
@@ -194,7 +207,6 @@ public class PersonalBoardSceneController {
 
     private void activatePP(){
         ArrayList<ImageView> cardSpacesView = getCardSpacesView();
-        //ACTIVATE STANDARD,CARDSPACES AND LEADER
         for(Integer i:activatablePP){
             if(i==0) {
                 standardPPPane.setVisible(true);
@@ -203,12 +215,8 @@ public class PersonalBoardSceneController {
                 cardSpacesView.get(i-1).setDisable(false);
                 cardSpacesView.get(i-1).setEffect(null);
             }else if(i>=4 && i<=5){
-                for(int j=0;j<gui.getLeaderCards().size();j++){
-                    LeaderCard leaderCard= gui.getLeaderCards().get(j);
-                    if(j==i-4 && leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility().getTypeAbility().equals(TypeAbility.ADDITIONAL_POWER)){
-                        //RIVEDI DOPO
-                    }
-                }
+                getSpecialCardsView().get(i-4).setDisable(false);
+                getSpecialCardsView().get(i-4).setEffect(null);
             }
         }
     }
@@ -258,6 +266,43 @@ public class PersonalBoardSceneController {
             whichPP=0;
             disablePP();
             setLabelText(chooseResourceLabel,"Choose first resource to remove");
+            chooseResourcePane.setVisible(true);
+        }
+    }
+
+    public void mouseEnteredSpecialCard1(){
+        if(!specialCard1.isDisable()){
+            specialCard1.setEffect(new Glow());
+        }
+    }
+    public void mouseExitedSpecialCard1(){
+        if(!specialCard1.isDisable()){
+            specialCard1.setEffect(null);
+        }
+    }
+    public void clickSpecialCard1(){
+        if(!specialCard1.isDisable()) {
+            whichPP = 4;
+            disablePP();
+            setLabelText(chooseResourceLabel,"Choose the resource you want");
+            chooseResourcePane.setVisible(true);
+        }
+    }
+    public void mouseEnteredSpecialCard2(){
+        if(!specialCard2.isDisable()){
+            specialCard2.setEffect(new Glow());
+        }
+    }
+    public void mouseExitedSpecialCard2(){
+        if(!specialCard2.isDisable()){
+            specialCard2.setEffect(null);
+        }
+    }
+    public void clickSpecialCard2(){
+        if(!specialCard2.isDisable()) {
+            whichPP = 5;
+            disablePP();
+            setLabelText(chooseResourceLabel,"Choose the resource you want");
             chooseResourcePane.setVisible(true);
         }
     }
@@ -474,16 +519,19 @@ public class PersonalBoardSceneController {
             gui.sendMsg(response);
         }
     }
-    //CLICK LEADER CARD AND SHADOW PP UNAVAILABLE
 
     private void disablePP(){
+        ColorAdjust colorAdjust=new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
         standardPPPane.setVisible(false);
         standardPPPane.setDisable(true);
         for(ImageView cardSpaceView:getCardSpacesView()){
             cardSpaceView.setDisable(true);
+            cardSpaceView.setEffect(colorAdjust);
         }
-        for(ImageView leaderCardView: getLeaderCardsView()){
-            leaderCardView.setDisable(true);
+        for(ImageView specialCardView: getSpecialCardsView()){
+            specialCardView.setDisable(true);
+            specialCardView.setEffect(colorAdjust);
         }
     }
 
@@ -890,20 +938,10 @@ public class PersonalBoardSceneController {
         }
     }
 
-    public void updateCardSpace(ArrayList<CardSpace> cardSpaces){
-        for(int i=0;i<cardSpaces.size();i++){
-            if(!cardSpaces.get(i).getCards().isEmpty()){
-                getCardSpacesView().get(i).setImage(new Image("/images/frontCards/DevelopmentCard ("+cardSpaces.get(i).getUpperCard().getId()+").png"));
-                getCardSpacesView().get(i).setVisible(true);
-            }else{
-                getCardSpacesView().get(i).setImage(null);
-                getCardSpacesView().get(i).setVisible(false);
-            }
-        }
-    }
     public void updateFaithTrackView(FaithTrack faithTrack){
         if(faithTrack instanceof SoloFaithTrack){
             SoloFaithTrack soloFaithTrack = (SoloFaithTrack) faithTrack;
+            System.out.println(soloFaithTrack.getLorenzoFaithMarker().getPosition());
             for(int i=0;i<25;i++){
                 if(soloFaithTrack.getLorenzoFaithMarker().getPosition()==i){
                     if(i==0){
@@ -1054,9 +1092,33 @@ public class PersonalBoardSceneController {
         }
     }
 
+    public void updateAdditionalPPView(ArrayList<SpecialCard> specialCards){
+        for(int i=0;i<2;i++){
+            if(specialCards!=null && i+1<=specialCards.size()){
+                String type="";
+                switch(specialCards.get(i).getCostProductionPower().get(0).getType()){
+                    case COIN:type="Coin";break;
+                    case SHIELD:type="Shield";break;
+                    case STONE:type="Stone";break;
+                    case SERVANT:type="Servant";break;
+                }
+                getSpecialCardsView().get(i).setImage(new Image("/images/personalboard/AdditionalPower_"+type+".png"));
+                getSpecialCardsView().get(i).setVisible(true);
+            }else{
+                getSpecialCardsView().get(i).setVisible(false);
+            }
+        }
+    }
 
     public void updateVictoryPointsView(int victoryPoints){
         setLabelText(this.victoryPoints,""+victoryPoints);
+    }
+
+    public void updateLastActionToken(VActionTokenActivateMsg msg){
+        lastActionToken.setImage(new Image("/images/punchboard/actiontoken ("+msg.getActionToken().getCardID()+").png"));
+        if(!lastActionTokenPane.isVisible()){
+            lastActionTokenPane.setVisible(true);
+        }
     }
 
     private void showActionButtons(ArrayList<TurnAction> activatableActions){
@@ -1295,5 +1357,12 @@ public class PersonalBoardSceneController {
         }else{
             return null;
         }
+    }
+
+    private ArrayList<ImageView> getSpecialCardsView(){
+        ArrayList<ImageView> specialCardsView=new ArrayList<>();
+        specialCardsView.add(specialCard1);
+        specialCardsView.add(specialCard2);
+        return specialCardsView;
     }
 }

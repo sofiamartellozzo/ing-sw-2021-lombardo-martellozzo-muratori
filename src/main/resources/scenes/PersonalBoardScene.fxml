@@ -633,7 +633,7 @@
             </VBox>
         </content>
       </TitledPane>
-      <Button fx:id="stopPPPowerButton" layoutX="897.0" layoutY="45.0" mnemonicParsing="false" onAction="#clickStopPPPowerButton" text="STOP" />
+      <Button fx:id="stopPPPowerButton" layoutX="759.0" layoutY="34.0" mnemonicParsing="false" onAction="#clickStopPPPowerButton" text="STOP" />
       <TitledPane fx:id="chooseResourcePane" animated="false" layoutX="282.0" layoutY="218.0" text="Choose Resource">
         <content>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -786,5 +786,38 @@
             </VBox>
          </content>
       </TitledPane>
+      <Pane layoutX="529.0" layoutY="613.0" prefHeight="90.0" prefWidth="459.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="35.0" prefWidth="251.0" text="YOUR ADDITIONAL PRODUCTION POWER:" textFill="#1806b9">
+               <font>
+                  <Font name="Yu Gothic Bold" size="11.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="specialCard1" fitHeight="50.0" fitWidth="150.0" layoutX="14.0" layoutY="26.0" onMouseClicked="#clickSpecialCard1" onMouseEntered="#mouseEnteredSpecialCard1" onMouseExited="#mouseExitedSpecialCard1" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/personalboard/AdditionalPower_Coin.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="specialCard2" fitHeight="50.0" fitWidth="150.0" layoutX="165.0" layoutY="26.0" onMouseClicked="#clickSpecialCard2" onMouseEntered="#mouseEnteredSpecialCard2" onMouseExited="#mouseExitedSpecialCard2" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/personalboard/AdditionalPower_Coin.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="lastActionTokenPane" layoutX="852.0" prefHeight="134.0" prefWidth="142.0">
+         <children>
+            <Label alignment="CENTER" layoutX="-2.0" prefHeight="35.0" prefWidth="142.0" text="LAST ACTION TOKEN" textFill="#1806b9">
+               <font>
+                  <Font name="Yu Gothic Bold" size="11.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="lastActionToken" fitHeight="90.0" fitWidth="86.0" layoutX="28.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/punchboard/actiontoken (7).png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

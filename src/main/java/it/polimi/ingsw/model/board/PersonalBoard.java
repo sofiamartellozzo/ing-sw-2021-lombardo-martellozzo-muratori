@@ -24,7 +24,6 @@ public class PersonalBoard implements PersonalBoardInterface,Serializable {
     private final FaithTrack faithTrack;
     private final ResourceManager resourceManager;
     private final ArrayList<CardSpace> cardSpaces;
-
     /**
      * Constructor
      * @param faithTrack -> The reference to the FaithTrack
@@ -169,6 +168,7 @@ public class PersonalBoard implements PersonalBoardInterface,Serializable {
         }
         //Ability Production Power
         int countLeaderCard=0;
+
         if(player.getLeaderCards()!=null) {
             for (LeaderCard leaderCard : player.getLeaderCards()) {
                 if (leaderCard.getState() instanceof Active && leaderCard.getSpecialAbility() instanceof AdditionalPower) {
@@ -187,5 +187,6 @@ public class PersonalBoard implements PersonalBoardInterface,Serializable {
         }
         return activatableCardSpace;
     }
+
 
 }

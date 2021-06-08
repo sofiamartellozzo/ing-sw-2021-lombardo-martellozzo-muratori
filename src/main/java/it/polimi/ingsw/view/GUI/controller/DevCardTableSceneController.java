@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.GUI.controller;
 import it.polimi.ingsw.message.controllerMsg.CBuyDevelopCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChangeActionTurnMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseDevelopCardRequestMsg;
+import it.polimi.ingsw.message.viewMsg.VNotValidCardSpaceMsg;
 import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.card.DevelopmentCardDeck;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
@@ -77,6 +78,15 @@ public class DevCardTableSceneController {
             backButton.setVisible(true);
             errorPopup.setVisible(true);
         }
+    }
+
+    public void chooseCardSpace(VNotValidCardSpaceMsg msg){
+        justSee=false;
+        backButton.setVisible(false);
+        backButton.setDisable(true);
+        chosenColumn=msg.getColumnTable();
+        chosenColumn=msg.getRowTable();
+        chooseCardSpace();
     }
 
     public void update(DevelopmentCardTable developmentCardTable){
