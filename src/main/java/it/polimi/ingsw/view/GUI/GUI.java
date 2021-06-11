@@ -5,6 +5,7 @@ import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
+import it.polimi.ingsw.message.controllerMsg.CCloseRoomMsg;
 import it.polimi.ingsw.message.controllerMsg.VStartWaitReconnectionMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CRoomSizeResponseMsg;
@@ -475,6 +476,11 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VAskNewGameMsg msg) {
 
+    }
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+        //in server
     }
 
     @Override

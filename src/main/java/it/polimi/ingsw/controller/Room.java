@@ -176,6 +176,10 @@ public class Room extends Observable {
         }
     }
 
+    public void disconnectPlayer(String username){
+        getPlayerByUsername(username).setDisconnected(true);
+    }
+
     /**
      * method to check if the room is full (4 player maximum) or not
      *
@@ -283,10 +287,14 @@ public class Room extends Observable {
     }
 
     public void removeVV() {
-        Set<String> usermanes = listOfVirtualView.keySet();
-        for (String user : usermanes) {
-            listOfVirtualView.remove(user);
+        printRoomMessage("HERE?!?!?!?");
+        Set<String> usernames = listOfVirtualView.keySet();
+        printRoomMessage(listOfVirtualView.toString());
+        for (String user : usernames) {
+            printRoomMessage("detach");
+            detachObserver(ObserverType.VIEW, listOfVirtualView.get(user));
         }
+        listOfVirtualView = null;
     }
 
 

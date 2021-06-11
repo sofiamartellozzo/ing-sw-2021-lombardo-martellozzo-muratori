@@ -13,8 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/*
- * SOFI*/
+
 
 public class Player implements PlayerInterface, Serializable {
 
@@ -36,6 +35,8 @@ public class Player implements PlayerInterface, Serializable {
 
 
 
+
+
     /**
      *
      * @param username
@@ -49,6 +50,7 @@ public class Player implements PlayerInterface, Serializable {
         this.playing = false;
         this.disconnected = false;
         this.leaderCards = new ArrayList<>();
+
     }
 
 
@@ -104,6 +106,8 @@ public class Player implements PlayerInterface, Serializable {
             this.specialCard = new ArrayList<>();
         this.specialCard.add(specialCard);
     }
+
+
 
     /**
      *

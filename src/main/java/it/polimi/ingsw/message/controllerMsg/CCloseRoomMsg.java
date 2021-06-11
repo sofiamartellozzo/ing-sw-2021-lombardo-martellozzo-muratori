@@ -1,6 +1,7 @@
 package it.polimi.ingsw.message.controllerMsg;
 
 import it.polimi.ingsw.message.ControllerObserver;
+import it.polimi.ingsw.message.ViewObserver;
 
 /**
  * Turn Controller ---> VV ---> Lobby [CLOSE ROOM]
@@ -23,5 +24,10 @@ public class CCloseRoomMsg extends ControllerGameMsg{
     @Override
     public void notifyHandler(ControllerObserver controllerObserver) {
         controllerObserver.receiveMsg(this);
+    }
+
+    @Override
+    public void notifyHandler(ViewObserver viewObserver) {
+        viewObserver.receiveMsg(this);
     }
 }

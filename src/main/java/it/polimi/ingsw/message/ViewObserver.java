@@ -2,6 +2,7 @@ package it.polimi.ingsw.message;
 
 import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
+import it.polimi.ingsw.message.controllerMsg.CCloseRoomMsg;
 import it.polimi.ingsw.message.controllerMsg.VStartWaitReconnectionMsg;
 import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
@@ -94,6 +95,8 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VShowEndGameResultsMsg msg);
     /*ask the client if wants to play again or not*/
     public void receiveMsg(VAskNewGameMsg msg);
+    /*close the old room*/
+    public void receiveMsg(CCloseRoomMsg msg);
 
 
     /*notification to all players in a room about one disconnected*/

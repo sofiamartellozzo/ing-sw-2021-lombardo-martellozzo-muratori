@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.OfflineLobby;
 import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.updateMsg.*;
+import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.controller.Lobby;
@@ -12,6 +13,8 @@ import it.polimi.ingsw.message.*;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.*;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -44,6 +47,8 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     private boolean reconnected;
 
+    private boolean waitInitialResource;
+
 
     public VirtualView(ClientHandler client) {
         this.client = client;    //specific for this VV
@@ -54,6 +59,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
         userConnected = new AtomicBoolean(false);
         reconnected = false;
+        waitInitialResource = false;
     }
 
     /* the constructor for the offline mode*/
@@ -105,6 +111,8 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             connectionLock.lock();
             userConnected.set(true);
             connectionLock.unlock();
+
+            System.out.println("IN [VV]:" +userConnected);
 
             //create the message to send to the controller with the username the client send
             CConnectionRequestMsg requestToController = new CConnectionRequestMsg("Msg from [Virtual view] in respond of a request of connection by a client", client.getUserIP(), client.getUserPort(), username, gameMode);
@@ -266,6 +274,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             //now send it to the Lobby
             notifyAllObserver(ObserverType.CONTROLLER, msg);
             lobby.detachObserver(ObserverType.VIEW, this);
+            if (waitInitialResource){
+                VChooseResourceAndDepotMsg fakeRequest = new VChooseResourceAndDepotMsg("", username);
+                receiveMsg(fakeRequest);
+            }
         } else if (!msg.getUsername().equals(username)) {
             /* VV as a View so msg from Turn controller to notify all
                 other player about a disconnection */
@@ -275,7 +287,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VStartWaitReconnectionMsg msg) {
-        System.out.println("POPOPOPOPOPOPOPO");
+        //System.out.println("POPOPOPOPOPOPOPO");
         client.startWaitReconnection();
     }
 
@@ -303,7 +315,9 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     public void receiveMsg(CCloseRoomMsg msg) {
         //ask to lobby to close the room of this client
         System.out.println("POPOPOPOPOPOPOPOSSS");
-        notifyAllObserver(ObserverType.CONTROLLER, msg);
+        if (msg.getUsername().equals(username)) {
+            notifyAllObserver(ObserverType.CONTROLLER, msg);
+        }
     }
 
     @Override
@@ -365,11 +379,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     public void receiveMsg(VRoomSizeRequestMsg msg) {
         if (msg.getUsername().equals(this.username)) {
             //the connection is not on yet so
-
-
+            /*
             connectionLock.lock();
             userConnected.set(false);
-            connectionLock.unlock();
+            connectionLock.unlock();*/
 
             //and then send the request to the client
             //for sure online
@@ -428,7 +441,22 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
         if (msg.getUsername().equals(this.username)) {
             /* send this message (notify) to the client */
-            sendToClient(msg);
+            if  (!userConnected.get() && offLobby==null){
+                //client disconnected during initialization
+                //so choose random 2 leader cards for him
+                System.out.println("THE SERVER CHOOSE RANDOM THE LEADER CARDS");
+                ArrayList<Integer> chosenCards = new ArrayList<>();
+                chosenCards.add(msg.getMiniDeckLeaderCardFour().remove(0));
+                chosenCards.add(msg.getMiniDeckLeaderCardFour().remove(1));
+                //create a fake msg of response from the client
+                CChooseLeaderCardResponseMsg disconnectedChoice = new CChooseLeaderCardResponseMsg("", chosenCards, msg.getUsername(), "firstChoose" );
+                //send it to the Controller
+                notifyAllObserver(ObserverType.CONTROLLER, disconnectedChoice);
+            }
+            else{
+                sendToClient(msg);
+            }
+
         }
     }
 
@@ -456,9 +484,21 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     public void receiveMsg(VChooseResourceAndDepotMsg msg) {
         //check if the username is mine
         if (msg.getUsername().equals(this.username)) {
+            waitInitialResource = true;
             /* send this message (notify) to the client */
-            //System.out.println("choosing in VV");
-            sendToClient(msg);
+            if (!userConnected.get() && offLobby==null){
+                //client disconnected during initialization
+                //choose random his resource
+                Random r = new Random();
+                Color[] resourceColor = Color.values();
+                Color c = resourceColor[r.nextInt(Color.values().length)];
+                CChooseResourceAndDepotMsg fakeResponse = new CChooseResourceAndDepotMsg("", c, r.nextInt(3), username);
+                notifyAllObserver(ObserverType.CONTROLLER, fakeResponse);
+            }
+            else{
+                sendToClient(msg);
+            }
+
         }
     }
 
@@ -487,7 +527,18 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     public void receiveMsg(VNotValidDepotMsg msg) {
         if (msg.getUsername().equals(this.username)) {
 
-            sendToClient(msg);
+            if (!userConnected.get() && offLobby==null){
+                //client disconnected during initialization
+                //if fourth player and choosing random the second resource catch the depot exception
+                // (baybe random choose the same depot has the first resource but another resource Type == illegal action )
+                Random r = new Random();
+                CChooseResourceAndDepotMsg fakeResponse = new CChooseResourceAndDepotMsg("", msg.getResourceChooseBefore(), r.nextInt(3), username);
+                notifyAllObserver(ObserverType.CONTROLLER, fakeResponse);
+            }
+            else{
+                sendToClient(msg);
+            }
+
         }
     }
 
@@ -646,6 +697,14 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
         //the client don't want to play again so close the connection
+        client.setCloseBecauseEnded(true);
+        client.disconnect();
+    }
+
+    @Override
+    public void receiveMsg(CNewStartMsg msg) {
+        //close the old connection, he is creating another and NEW one
+        client.setCloseBecauseEnded(true);
         client.disconnect();
     }
 
@@ -685,12 +744,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             connectionLock.lock();
             try {
                 //check if the connection is ON and ask to the Lobby if the Game can start
+                System.out.println(userConnected.get());
                 if (userConnected.get() && lobby.canInitializeGameFor(this.username)) {
                     System.out.println("TRY TO START GAME IN VV, CREAtE MSG to con e view");
                     CVStartInitializationMsg msg = new CVStartInitializationMsg("A room is full so starting the initialization", username);
                     notifyAllObserver(ObserverType.CONTROLLER, msg);
                     lobby.startInitializationOfTheGame(username);
-                } else {
+                } else if(reconnected){
                     System.out.println("RESUME GAME IN VV");
                     CResumeGameMsg msg1 = new CResumeGameMsg("resume a game that was waoiting a reconnection", username);
                     notifyAllObserver(ObserverType.CONTROLLER, msg1);

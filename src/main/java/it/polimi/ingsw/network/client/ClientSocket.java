@@ -102,8 +102,9 @@ public class ClientSocket extends Observable implements Runnable {
                     e.printStackTrace();
                     System.out.println("Ping disable");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     System.out.println("Unable to send pong msg to server");
+                    closeConnection();
                 } finally {
                     Thread.currentThread().interrupt();
                 }
@@ -181,7 +182,7 @@ public class ClientSocket extends Observable implements Runnable {
                 }
 
             } catch (IOException | ClassNotFoundException /*| InterruptedException*/ e) {
-                System.out.println("this client disconnected from the server");
+                System.out.println("this client disconnected from the server, because of the Server");
                 /* setting the attribute to false because the connection shut down */
                 connectionOpen = false;
                 closeConnection();
@@ -197,6 +198,8 @@ public class ClientSocket extends Observable implements Runnable {
             stopPing();
         }
         try {
+            VServerUnableMsg disconnectionOfServer = new VServerUnableMsg("during the game the server shut down, so all game data are lost");
+            notifyAllObserver(ObserverType.VIEW, disconnectionOfServer);
             serverSocket.close();
             //if GUI is on handle the scene for the disconnection
         } catch (IOException e) {

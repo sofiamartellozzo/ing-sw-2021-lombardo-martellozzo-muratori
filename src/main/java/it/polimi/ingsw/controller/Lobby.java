@@ -18,7 +18,9 @@ import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -260,8 +262,11 @@ public class Lobby extends Observable implements ControllerObserver {
      * @return true if the controller can start, false otherwise
      */
     public boolean canInitializeGameFor(String username) {
-        if (this.usersAssigned.contains(username)) {
+        System.out.println(usersAssigned.toString());
+        if (usersAssigned.contains(username)) {
             //the user has been assigned to a Room
+            System.out.println("PLEASEEEE");
+            System.out.println(usersAssigned.toString());
             Room userRoom = null;
             try {
                 //find his room
@@ -334,7 +339,7 @@ public class Lobby extends Observable implements ControllerObserver {
             //check if is a user disconnected that is trying to reconnect
             try {
                 Room room = findUserRoom(msg.getUsername());
-                if (room.getPlayerByUsername(msg.getUsername()).isDisconnected()) {
+                if (room.getPlayerByUsername(msg.getUsername())!=null && room.getPlayerByUsername(msg.getUsername()).isDisconnected()) {
                     room.reconnectPlayer(msg.getUsername(), msg.getVV());
                     detachObserver(ObserverType.VIEW, room.getListOfVirtualView().get(msg.getUsername()));
                 } else {
@@ -369,6 +374,8 @@ public class Lobby extends Observable implements ControllerObserver {
             } else if (!creatingRoomLock.isLocked()) {
                 //all occupied room are full but one can be created, or Solo Mode
                 if (gameMode.equals("0") || canCreateRoom.get()) {
+                    System.out.println("HHHHHHH");
+                    System.out.println(usersAssigned.toString());
                     createNewRoom(msg.getUsername(), gameMode, msg.getVV());
                 }
             } else if (this.numberOfRooms == MAX_NUMBER_ROOM) {
@@ -585,6 +592,7 @@ public class Lobby extends Observable implements ControllerObserver {
         //send to TurnController by Room, to set him disconnected
         try {
             Room room = findUserRoom(msg.getUsername());
+            room.disconnectPlayer(msg.getUsername());
             room.notifyAllObserver(ObserverType.CONTROLLER, msg);
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();
@@ -597,6 +605,13 @@ public class Lobby extends Observable implements ControllerObserver {
         creatingRoomLock.lock();
         try {
             Room room = findUserRoom(msg.getUsername());
+            for (String user: room.getPlayersId()) {
+                usersAssigned.remove(user);
+            }
+            Map<String, VirtualView> roomVV = room.getListOfVirtualView();
+            for (VirtualView vv: roomVV.values()) {
+                detachObserver(ObserverType.VIEW, vv);
+            }
             room.removeVV();
             //remove the room from the not empty ones
             idRoomToUse.add(room.getIntId());
@@ -605,6 +620,7 @@ public class Lobby extends Observable implements ControllerObserver {
             System.out.println(numberOfRooms);
             notEmptyRoom.remove(room);
             updateRoomCounter();
+
             System.out.println(numberOfRooms);
             canCreateRoom.set(true);
 
@@ -618,7 +634,9 @@ public class Lobby extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         /* because of an end of a game, remove the players room and
-         * the usernames from the list */
+         * the usernames from the list
+        String winner = msg.getWinnerUsername();
+
         try {
             Room room = findUserRoom(msg.getWinnerUsername());
             notEmptyRoom.remove(room);
@@ -629,11 +647,16 @@ public class Lobby extends Observable implements ControllerObserver {
             updateRoomCounter();
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNewStartMsg msg) {
 
     }
 

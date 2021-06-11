@@ -71,4 +71,5 @@ public interface ControllerObserver extends Observer{
     /*end of a game situation*/
     public void receiveMsg(VShowEndGameResultsMsg msg);
     public void receiveMsg(CNotStartAgainMsg msg);
+    public void receiveMsg(CNewStartMsg msg);
 }

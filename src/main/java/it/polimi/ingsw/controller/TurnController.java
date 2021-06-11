@@ -16,9 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-/*
- * SOFI*/
-
 /**
  * this class is the part of the controller that arraing the start of the game, and set the turn sequence
  * it is specific for a single room, to manage
@@ -62,7 +59,7 @@ public class TurnController extends Observable implements ControllerObserver {
 
         this.turnSequence = new HashMap<>();
         setTurnSequence(players);
-        this.currentPlayer = (Player) players.get(1);
+        setCurrentPlayer(players);
         lastTurns = false;
         numberOfLastTurn = numberOfPlayer - 1;
 
@@ -89,6 +86,28 @@ public class TurnController extends Observable implements ControllerObserver {
         setVaticanSectionUnchecked();
         this.virtualView = virtualView;
         attachAllVV();
+    }
+
+    /**
+     * this method set the first player of the turn checking that another one is not disconnected
+     * is handle yet while game playing but this is used if one (like the first player)
+     * disconnected at the initialization
+     * @param players
+     */
+    public void setCurrentPlayer(HashMap<Integer, PlayerInterface> players){
+        currentPlayer = (Player) players.get(1);
+        boolean setFirst = false;
+        int index = 1;
+        while (!setFirst && index<players.keySet().size()) {
+            if (currentPlayer.isDisconnected()){
+                System.out.println("SERVER SEE DISCONNECTION (TURN CONTROLLER)");
+                index++;
+                currentPlayer = (Player) players.get(index);
+            }
+            else {
+                setFirst = true;
+            }
+        }
     }
 
     /**
@@ -266,7 +285,10 @@ public class TurnController extends Observable implements ControllerObserver {
      */
     private void checkEndGame() {
         //check the conditions fot the last turn of the game
+        printTurnCMesssage("CHECK end Game in Turn Controller ❀");
         if (!isSoloMode) {
+
+                        //MULTIPLAYER MODE
             currentPlayer.endTurn();
             boolean checkEnd = false;
             for (Integer key : turnSequence.keySet()) {
@@ -276,17 +298,14 @@ public class TurnController extends Observable implements ControllerObserver {
                 }
             }
             if (checkEnd) {
-                int keyCurrentP = 0;
-                for (Integer key : turnSequence.keySet()) {
-                    if (turnSequence.get(key).getUsername().equals(currentPlayer.getUsername())) {
-                        keyCurrentP = key;
-                    }
 
-                }
+                int keyCurrentP = currentPlayer.getNumber();
                 numberOfLastTurn = numberOfPlayer - keyCurrentP;      //it contains the number representing the total of last turn games
                 lastTurns = true;
             }
+            callRightAction();
         } else {
+                        //SINGLE PLAYER MODE
             if (singlePlayer.checkEndGame()) {
                 //single mode the game has ended ...
                 EndGameController endGameController = new EndGameController(singlePlayer, this, virtualView);
@@ -340,7 +359,7 @@ public class TurnController extends Observable implements ControllerObserver {
                     controller = new ActionController(singlePlayer, currentSoloTurnIstance, boardManager, virtualView);
                 }
                 this.actionController = controller;
-                System.out.println("HERE ACTION CONTROLLER: " + actionController);
+                //System.out.println("HERE ACTION CONTROLLER: " + actionController);        //DEBUG
 
                 //attach it as an observer
                 attachObserver(ObserverType.CONTROLLER, controller);
@@ -348,12 +367,17 @@ public class TurnController extends Observable implements ControllerObserver {
                 notifyAllObserver(ObserverType.CONTROLLER, msg);
 
             } else {
+                //                      END_TURN
                 if (!lastTurns) {
                     checkEndGame();
-                    nextTurn();
+
                 } else {
-                    this.numberOfLastTurn--;    //decrease the number of players that have to play
+                    callRightAction();
+                    /*
+                    System.out.println("Number of last turns: " +numberOfLastTurn);
+
                     if (numberOfLastTurn > 0) {
+                        numberOfLastTurn--;    //decrease the number of players that have to play
                         nextTurn();
                     } else {                    // if the game is over EndGameController will be instantiated to count all the victory points
                         EndGameController endGameController = null;
@@ -369,8 +393,35 @@ public class TurnController extends Observable implements ControllerObserver {
                             e.printStackTrace();
                         }
                         attachObserver(ObserverType.CONTROLLER, endGameController);
-                    }
+                    }*/
                 }
+            }
+        }
+    }
+
+    private void callRightAction(){
+        if (!lastTurns) {
+            nextTurn();
+        } else {
+            System.out.println("Number of last turns: " +numberOfLastTurn);
+
+            if (numberOfLastTurn > 0) {
+                numberOfLastTurn--;    //decrease the number of players that have to play
+                nextTurn();
+            } else {                    // if the game is over EndGameController will be instantiated to count all the victory points
+                EndGameController endGameController = null;
+                if (!isSoloMode) {
+                    endGameController = new EndGameController(turnSequence, this, virtualView);
+                } else {
+                    endGameController = new EndGameController(singlePlayer, this, virtualView);
+                }
+
+                try {
+                    endGameController.startCounting();
+                } catch (InvalidActionException e) {
+                    e.printStackTrace();
+                }
+                attachObserver(ObserverType.CONTROLLER, endGameController);
             }
         }
     }
@@ -443,7 +494,7 @@ public class TurnController extends Observable implements ControllerObserver {
         }
 
         //check end game (because all player has increased their position of 1
-        checkEndGame();
+        //checkEndGame();
     }
 
     @Override
@@ -475,7 +526,7 @@ public class TurnController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
         PlayerInterface playerDisconnected = getPlayerByUsername(msg.getUsername());
-        System.out.println("IN TURN CONTROLLER: received disconn Msg ");
+        //System.out.println("IN TURN CONTROLLER: received disconn Msg ");      //DEBUG
         if (playerDisconnected != null) {
             //check if the client disconnected is currently playing
             System.out.println("NAME disconnectied: " + playerDisconnected.getUsername());
@@ -486,7 +537,7 @@ public class TurnController extends Observable implements ControllerObserver {
             }
             System.out.println(playerDisconnected.isDisconnected());
             if (playerDisconnected.isPlaying() && actionController != null) {
-                System.out.println("not here.......$$$$$");
+                //System.out.println("not here.......$$$$$");       //DEBUG
                 detachObserver(ObserverType.CONTROLLER, actionController);
                 actionController = null;
                 playerDisconnected.setPlaying(false);
@@ -547,6 +598,11 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNewStartMsg msg) {
 
     }
 

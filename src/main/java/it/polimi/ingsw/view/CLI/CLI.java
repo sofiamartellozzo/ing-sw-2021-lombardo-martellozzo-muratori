@@ -1691,11 +1691,18 @@ public class CLI extends Observable implements ViewObserver {
         in = new Scanner(System.in);
         String message = in.nextLine().toUpperCase();
         if (message.equals("YES")) {
+            CNewStartMsg choice1 = new CNewStartMsg("the client choose to start a new game", username);
+            sendMsg(choice1);
             start();
         } else {
             CNotStartAgainMsg choice = new CNotStartAgainMsg("The client choose to not start a new game, so close all");
             sendMsg(choice);
         }
+    }
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+        //in server
     }
 
     @Override

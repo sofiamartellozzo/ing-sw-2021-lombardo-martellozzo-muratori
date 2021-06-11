@@ -18,6 +18,7 @@ public interface PlayerInterface{
     public void setBuyCard(BuyCard buyCard);
     public ArrayList<SpecialCard> getSpecialCard();
     public void addSpecialCard(SpecialCard specialCard);
+
     public boolean hasInkpot();
     public int getVictoryPoints();
     public void setGameSpace(PersonalBoard personalBoard);

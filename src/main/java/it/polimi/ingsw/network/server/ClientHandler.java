@@ -42,6 +42,8 @@ public class ClientHandler extends Observable implements Runnable {
     private Timer notifyDisconnectionTimer;
     private static final int TIMER = 50000;
 
+    private boolean closeBecauseEnded;
+
     public ClientHandler(Socket client, String threadId) {
         clientSocket = client;
         this.threadId = threadId;
@@ -51,6 +53,7 @@ public class ClientHandler extends Observable implements Runnable {
         attachObserver(ObserverType.CONTROLLER, virtualView);
         queue = new ArrayList<>();
         notifyDisconnectionTimer = new Timer();
+        closeBecauseEnded = false;
     }
 
     @Override
@@ -107,7 +110,6 @@ public class ClientHandler extends Observable implements Runnable {
     }
 
 
-
     /**
      * adding the new message in the queue to handle one msg at time
      *
@@ -160,7 +162,7 @@ public class ClientHandler extends Observable implements Runnable {
     /**
      * because a reconnection of the client stop the timer and only close this thread
      */
-    public void resetTimer(){
+    public void resetTimer() {
         notifyDisconnectionTimer.cancel();
         Thread.currentThread().interrupt();
         //notifyDisconnectionTimer = new Timer();
@@ -168,11 +170,11 @@ public class ClientHandler extends Observable implements Runnable {
 
     }
 
-    public void startWaitReconnection(){
+    public void startWaitReconnection() {
         notifyDisconnectionTimer.schedule(new DisconnectHandler(this), TIMER);
     }
 
-    public void stopWaitReconnection(){
+    public void stopWaitReconnection() {
         //waitReconnection.interrupt();
         notifyDisconnectionTimer.cancel();
         CCloseRoomMsg msg1 = new CCloseRoomMsg("close the room with..", virtualView.getUsername());
@@ -200,11 +202,13 @@ public class ClientHandler extends Observable implements Runnable {
     public void disconnect() {
 
         try {
-            if (ping.isAlive()){
+            if (ping.isAlive()) {
                 stopPing();
             }
-            CClientDisconnectedMsg notification = new CClientDisconnectedMsg("the client is not reachable anymore", virtualView.getUsername());
-            notifyAllObserver(ObserverType.CONTROLLER, notification);
+            if (!closeBecauseEnded) {
+                CClientDisconnectedMsg notification = new CClientDisconnectedMsg("the client is not reachable anymore", virtualView.getUsername());
+                notifyAllObserver(ObserverType.CONTROLLER, notification);
+            }
             clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -218,5 +222,9 @@ public class ClientHandler extends Observable implements Runnable {
 
     public int getUserPort() {
         return clientSocket.getPort();
+    }
+
+    public void setCloseBecauseEnded(boolean closeBecauseEnded) {
+        this.closeBecauseEnded = closeBecauseEnded;
     }
 }

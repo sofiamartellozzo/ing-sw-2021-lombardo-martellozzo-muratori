@@ -160,7 +160,6 @@ public class InitializedController extends Observable implements ControllerObser
             //then giving the resources initial to the players
             giveStartResources();
 
-
         }
     }
 
@@ -481,6 +480,11 @@ public class InitializedController extends Observable implements ControllerObser
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNewStartMsg msg) {
 
     }
 

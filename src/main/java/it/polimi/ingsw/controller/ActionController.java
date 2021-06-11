@@ -203,8 +203,6 @@ public class ActionController extends Observable implements ControllerObserver {
     private ArrayList<Integer> cardAbleForPlayer() {
         ArrayList<Integer> possibleCardToBeDiscarded = new ArrayList<>();
         ArrayList<LeaderCard> leaderCards = this.player.getLeaderCards();
-        //System.out.println("bug1");       DEBUGGING
-        //System.out.println(leaderCards);
         if (leaderCards != null) {
             //System.out.println("bug2");       DEBUGGING
             for (LeaderCard card : leaderCards) {
@@ -499,11 +497,6 @@ public class ActionController extends Observable implements ControllerObserver {
         }
     }
 
-    @Override
-    public void receiveMsg(CChooseDiscardResourceMsg msg) {
-
-        //NOT HERE
-    }
 
     /**
      * this msg is received when the player has finished storing the resources taken from the market
@@ -564,26 +557,7 @@ public class ActionController extends Observable implements ControllerObserver {
         nextAction();
     }
 
-    @Override
-    public void receiveMsg(CClientDisconnectedMsg msg) {
 
-    }
-
-
-    @Override
-    public void receiveMsg(CCloseRoomMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(VShowEndGameResultsMsg msg) {
-
-    }
-
-    @Override
-    public void receiveMsg(CNotStartAgainMsg msg) {
-
-    }
 
     /**
      * this msg from the client is for active a Leader Card or Discard it
@@ -598,7 +572,7 @@ public class ActionController extends Observable implements ControllerObserver {
                     //if the player ask to active it
                     try {
                         if (!isSolo) {
-                            System.out.println(" in active multiplayer ");
+                            //System.out.println(" in active multiplayer ");        DEBUG
                             turn.activeLeaderCard(msg.getLeaderCards().get(0));
                             VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("activating a Leader Card your Victory points has changed", player.getUsername(), player.calculateVictoryPoints());
                             notifyAllObserver(ObserverType.VIEW, update);
@@ -607,7 +581,7 @@ public class ActionController extends Observable implements ControllerObserver {
                             VSendPlayerDataMsg allData = new VSendPlayerDataMsg("all new info", player, boardManager, false);
                             notifyAllObserver(ObserverType.VIEW, allData);
                         } else {
-                            System.out.println(" in active1 ");
+                            //System.out.println(" in active1 ");           DEBUG
                             soloPlayerTurn.activeLeaderCard(msg.getLeaderCards().get(0));
                             VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("activating a Leader Card your Victory points has changed", soloPlayerTurn.getCurrentPlayer().getUsername(), soloPlayerTurn.getCurrentPlayer().calculateVictoryPoints());
                             notifyAllObserver(ObserverType.VIEW, update);
@@ -664,10 +638,6 @@ public class ActionController extends Observable implements ControllerObserver {
         }
     }
 
-    @Override
-    public void receiveMsg(CGameCanStartMsg msg) {
-        //in Lobby (Room)
-    }
 
     /**
      * this msg is received when the player receives from the market a white marble and has two TransformWhiteMarble activated
@@ -726,17 +696,53 @@ public class ActionController extends Observable implements ControllerObserver {
     public void receiveMsg(CVStartInitializationMsg msg) {
 
     }
+
+    @Override
+    public void receiveMsg(CClientDisconnectedMsg msg) {
+
+    }
+
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(VShowEndGameResultsMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNotStartAgainMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNewStartMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CChooseDiscardResourceMsg msg) {
+        //NOT HERE
+    }
+
+    @Override
+    public void receiveMsg(CGameCanStartMsg msg) {
+        //in Lobby (Room)
+    }
     /*---------------------------------------------------------------------------------------------------------------------*/
 
     private void nextAction() {
-        if (endAction == true) {
+        if (endAction) {
             //send the msg to the client, to choose the next action he want to make
             VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("You're actual amount of Victory Points is: ", player.getUsername(), player.calculateVictoryPoints());
             notifyAllObserver(ObserverType.VIEW, update);
             if (!isSolo) {
                 VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), turn.getAvailableAction());
                 notifyAllObserver(ObserverType.VIEW, msg);
-                System.out.println("next action");
+                //System.out.println("next action");        DEBUG
             } else {
                 VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), soloPlayerTurn.getAvailableAction());
                 notifyAllObserver(ObserverType.VIEW, msg);
@@ -765,6 +771,10 @@ public class ActionController extends Observable implements ControllerObserver {
         }
     }
 
+
+    /*
+            NOT USED ANYMORE
+     */
     public void decrementNumberResourcesFromM() {
         this.numberResourcesFromM--;
         checkNextActionMarket();

@@ -99,6 +99,13 @@ public class EndGameController extends Observable implements ControllerObserver 
         }
         VAskNewGameMsg askNewGameMsg = new VAskNewGameMsg("Do you want to start a new game?");
         notifyAllObserver(ObserverType.VIEW, askNewGameMsg);
+        if (numberOfPlayers > 1) {
+            CCloseRoomMsg closeOldRoom = new CCloseRoomMsg("close the room because the game ended", turnSequence.get(1).getUsername());
+            notifyAllObserver(ObserverType.VIEW, closeOldRoom);
+        } else {
+            CCloseRoomMsg closeRoomMsg = new CCloseRoomMsg("close the room because the game ended", soloPlayer.getUsername());
+            notifyAllObserver(ObserverType.VIEW, closeRoomMsg);
+        }
     }
 
     private void printTurnLastTurnMessage(String messageToPrint) {
@@ -122,13 +129,21 @@ public class EndGameController extends Observable implements ControllerObserver 
      * @return
      */
     private Player findWinnerPlayer(int points) {
+        Player possibleWinner = null;
         for (Integer num : turnSequence.keySet()) {
             Player player = (Player) turnSequence.get(num);
             if (player.getVictoryPoints() == points) {
-                return player;
+                if (possibleWinner != null) {
+                    if (possibleWinner.getGameSpace().getResourceManager().numberAllResources() < player.getGameSpace().getResourceManager().numberAllResources()) {
+                        // if two player has the same Victory Points the one with most resource win
+                        possibleWinner = player;
+                    }
+                } else {
+                    possibleWinner = player;
+                }
             }
         }
-        throw new IllegalArgumentException(" Error, this victory points don't correspond to any player !");
+        return possibleWinner;
 
     }
 
@@ -240,7 +255,6 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
 
-
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
 
@@ -253,6 +267,11 @@ public class EndGameController extends Observable implements ControllerObserver 
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
+
+    }
+
+    @Override
+    public void receiveMsg(CNewStartMsg msg) {
 
     }
 

@@ -169,6 +169,11 @@ public class OfflineLobby extends Observable implements ControllerObserver {
 
     }
 
+    @Override
+    public void receiveMsg(CNewStartMsg msg) {
+
+    }
+
     private void printOffLobbyMessage(String message) {
         System.out.println(message);
     }
