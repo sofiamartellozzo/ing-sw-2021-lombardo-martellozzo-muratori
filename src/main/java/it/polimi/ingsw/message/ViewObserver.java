@@ -8,6 +8,8 @@ import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.viewMsg.VNackConnectionRequestMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 
+import java.io.IOException;
+
 /**
  * OBSERVER
  * interface with the method of the view
@@ -92,7 +94,7 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VWhichPlayerRequestMsg msg);
 
     /*notify the View with the result of the game*/
-    public void receiveMsg(VShowEndGameResultsMsg msg);
+    public void receiveMsg(VShowEndGameResultsMsg msg) throws IOException;
     /*ask the client if wants to play again or not*/
     public void receiveMsg(VAskNewGameMsg msg);
     /*close the old room*/

@@ -6,6 +6,7 @@ import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.controllerMsg.ControllerGameMsg;
 import it.polimi.ingsw.model.Player;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,7 +43,11 @@ public class VShowEndGameResultsMsg extends GameMsg {
 
     @Override
     public void notifyHandler(ViewObserver viewObserver) {
-        viewObserver.receiveMsg(this);
+        try {
+            viewObserver.receiveMsg(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import it.polimi.ingsw.message.updateMsg.*;
 import it.polimi.ingsw.message.controllerMsg.CRoomSizeResponseMsg;
 import it.polimi.ingsw.message.viewMsg.*;
 import it.polimi.ingsw.model.BoardManager;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.model.board.CardSpace;
 import it.polimi.ingsw.model.board.FaithTrack;
@@ -19,6 +20,7 @@ import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
+import it.polimi.ingsw.model.card.SpecialCard;
 import it.polimi.ingsw.model.market.MarketStructure;
 import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.view.GUI.controller.*;
@@ -86,6 +88,7 @@ public class GUI extends Application implements ViewObserver {
     private StrongBox strongBox;
     private FaithTrack faithTrack;
     private ArrayList<CardSpace> cardSpaces;
+    private ArrayList<SpecialCard> specialCards;
 
 
 
@@ -228,6 +231,7 @@ public class GUI extends Application implements ViewObserver {
         faithTrack = msg.getPlayer().getGameSpace().getFaithTrack();
         cardSpaces = msg.getPlayer().getGameSpace().getCardSpaces();
         leaderCards = msg.getPlayer().getLeaderCards();
+        specialCards=msg.getPlayer().getSpecialCard();
         if(!stage.getScene().equals(personalBoardScene)) {
             try {
                 setInitializeScene();
@@ -248,11 +252,12 @@ public class GUI extends Application implements ViewObserver {
                 changeScene(initializeScene);
             });
         }else{
-            personalBoardSceneController.updateCardSpace(cardSpaces);
+            personalBoardSceneController.updateCardSpacesView(cardSpaces);
             personalBoardSceneController.updateLeaderCards(leaderCards);
             personalBoardSceneController.updateWarehouseView(warehouse);
             personalBoardSceneController.updateStrongBoxView(strongBox);
             personalBoardSceneController.updateVictoryPointsView(player.getVictoryPoints());
+            personalBoardSceneController.updateAdditionalPPView(player.getSpecialCard());
         }
     }
 
@@ -398,7 +403,11 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VNotValidCardSpaceMsg msg) {
-
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)){
+            seeDevCardTable();
+            devCardTableSceneController.chooseCardSpace(msg);
+        }
     }
 
     @Override
@@ -411,7 +420,7 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
-    public void setEndGsameScene() throws IOException {
+    public void setEndGameScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/EndGameScene.fxml"));
         endGameScene = new Scene(loader.load());
         endGameSceneController=loader.getController();
@@ -456,7 +465,6 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VResourcesNotValidMsg msg) {
-
     }
 
     @Override
@@ -471,6 +479,24 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         System.out.println(msg.toString());
+        if(msg.getPlayerUsername().contains(username)){
+            try {
+                setEndGameScene();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(msg.getWinnerUsername().equals(username)){
+                endGameSceneController.showOutcome(true);
+            }
+            for(Player loser:msg.getLosersUsernames()){
+                if(loser.getUsername().equals(username)){
+                    endGameSceneController.showOutcome(false);
+                }
+            }
+            Platform.runLater(()->{
+                changeScene(endGameScene);
+            });
+        }
     }
 
     @Override
@@ -515,14 +541,16 @@ public class GUI extends Application implements ViewObserver {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             cardSpaces=msg.getCardSpaces();
-            personalBoardSceneController.updateCardSpace(msg.getCardSpaces());
+            personalBoardSceneController.updateCardSpacesView(msg.getCardSpaces());
         }
     }
 
     @Override
     public void receiveMsg(VActionTokenActivateMsg msg) {
         System.out.println(msg.toString());
-        //SHOW ACTION TOKEN
+        if(msg.getUsername().equals(username)){
+            personalBoardSceneController.updateLastActionToken(msg);
+        }
     }
 
     @Override
@@ -776,6 +804,8 @@ public class GUI extends Application implements ViewObserver {
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
+
+    public ArrayList<SpecialCard> getSpecialCards(){return specialCards;}
 
 }
 
