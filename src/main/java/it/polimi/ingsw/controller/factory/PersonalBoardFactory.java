@@ -35,7 +35,7 @@ public class PersonalBoardFactory {
         //create the faith trak whit all his components
         FaithTrack faithTrack = createFaithTrack();
 
-        //FOR debug add a lot resources to the player
+        /*//FOR debug add a lot resources to the player
         ArrayList<Resource> resources = new ArrayList<>();
         resources.add(new Resource(Color.BLUE));
         resources.add(new Resource(Color.BLUE));
@@ -76,7 +76,7 @@ public class PersonalBoardFactory {
             strongBox.addResources(resources);
         } catch (InvalidActionException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return new PersonalBoard(faithTrack, resourceManager, allCardSpace);
     }

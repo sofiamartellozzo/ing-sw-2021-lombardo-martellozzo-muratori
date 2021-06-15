@@ -1642,7 +1642,7 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(VResourcesNotValidMsg msg) {
+    public void receiveMsg(VResourcesNotFoundMsg msg) {
         printCLIMessage(AnsiColors.RED_BOLD+msg.getMsgContent()+AnsiColors.RESET);
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI.controller;
 
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseDiscardResourceMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
@@ -57,11 +58,18 @@ public class InitializeSceneController {
     @FXML
     private TitledPane waitPane;
 
+    @FXML
+    private TitledPane warningPane;
+
+    @FXML
+    private Button okButton;
+
     private TypeResource chosenType;
     private ArrayList<Integer> possibleLeaderCards;
     private ArrayList<Integer> chosenLeaderCards;
 
     public void start(){
+        warningPane.setVisible(false);
         waitPane.setVisible(true);
         setLabelText(playerLabel,"You're the player "+gui.getPlayer().getNumber());
         chooseResourcePane.setVisible(false);
@@ -273,6 +281,7 @@ public class InitializeSceneController {
             ColorAdjust colorAdjust=new ColorAdjust();
             colorAdjust.setBrightness(-0.5);
             leaderCard1.setEffect(colorAdjust);
+            leaderCard1.setImage(new Image("/images/backCards/LeaderCard (1).png"));
             if(chosenLeaderCards.size()==2){
                 gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose my leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose"));
                 leaderCardPane.setVisible(false);
@@ -286,6 +295,7 @@ public class InitializeSceneController {
             ColorAdjust colorAdjust=new ColorAdjust();
             colorAdjust.setBrightness(-0.5);
             leaderCard2.setEffect(colorAdjust);
+            leaderCard2.setImage(new Image("/images/backCards/LeaderCard (1).png"));
             if(chosenLeaderCards.size()==2){
                 gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose my leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose"));
                 leaderCardPane.setVisible(false);
@@ -299,6 +309,7 @@ public class InitializeSceneController {
             ColorAdjust colorAdjust=new ColorAdjust();
             colorAdjust.setBrightness(-0.5);
             leaderCard3.setEffect(colorAdjust);
+            leaderCard3.setImage(new Image("/images/backCards/LeaderCard (1).png"));
             if(chosenLeaderCards.size()==2){
                 gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose my leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose"));
                 leaderCardPane.setVisible(false);
@@ -312,6 +323,7 @@ public class InitializeSceneController {
             ColorAdjust colorAdjust=new ColorAdjust();
             colorAdjust.setBrightness(-0.5);
             leaderCard4.setEffect(colorAdjust);
+            leaderCard4.setImage(new Image("/images/backCards/LeaderCard (1).png"));
             if(chosenLeaderCards.size()==2){
                 gui.sendMsg(new CChooseLeaderCardResponseMsg("I choose my leader cards",chosenLeaderCards,gui.getUsername(),"firstChoose"));
                 leaderCardPane.setVisible(false);
@@ -401,5 +413,17 @@ public class InitializeSceneController {
     }
     public void showWaitPane(){
         waitPane.setVisible(true);
+    }
+
+    public void setWarningPane(VServerUnableMsg msg) {
+        warningPane.setVisible(true);
+        chooseDepotPane.setVisible(false);
+        chooseResourcePane.setVisible(false);
+        leaderCardPane.setVisible(false);
+        waitPane.setVisible(false);
+    }
+
+    public void clickOkButton(){
+        gui.close();
     }
 }

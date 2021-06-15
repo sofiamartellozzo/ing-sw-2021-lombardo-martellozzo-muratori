@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI.controller;
 
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.controllerMsg.CBuyFromMarketInfoMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseDiscardResourceMsg;
 import it.polimi.ingsw.message.controllerMsg.CChooseResourceAndDepotMsg;
@@ -61,11 +62,20 @@ public class MarketStructureSceneController {
     @FXML
     private ImageView coin,servant,stone,shield;
 
+    @FXML
+    private TitledPane warningPane;
+
+    @FXML
+    private Button okButton;
+
     private ArrayList<TypeResource> resourcesToStore;
     private ArrayList<TypeResource> whiteSpecial;
     private TypeResource resourceToStore;
+    private boolean notValidDepot=false;
+    private TypeResource resourceToRestore;
 
     public void start(){
+        warningPane.setVisible(false);
         update(gui.getMarketStructureData());
         ArrayList<Button> buttons = getButtons();
         disableResources();
@@ -305,18 +315,43 @@ public class MarketStructureSceneController {
 
     public void chooseDepot(VNotValidDepotMsg msg){
         gui.seeMarketBoard();
+        notValidDepot=true;
         backButton.setDisable(true);
         copyWarehouseFromPersonalBoard();
         enableDepotPane();
+        chooseResourcePane.setVisible(false);
         getDepotPanes().get(msg.getUnableDepot()-1).setDisable(true);
         setLabelText(message,"Chosen depot not valid.\n" +
                 "Choose a depot\n" +
                 "where to store this resource:");
-        resourceToStore = fromColorToType(msg.getResourceChooseBefore());
-        setResourceAndLabel(resourceToStore);
+        resourceToRestore = fromColorToType(msg.getResourceChooseBefore());
+        setResourceAndLabel(resourceToRestore);
         moveResourceButton.setDisable(false);
         discardButton.setDisable(false);
         chooseDepotPane.setVisible(true);
+    }
+    public void resumeChooseDepot(TypeResource resource){
+        gui.seeMarketBoard();
+        backButton.setDisable(true);
+        copyWarehouseFromPersonalBoard();
+        enableDepotPane();
+        setLabelText(message,"Choose a depot\n" +
+                "where to store this resource:");
+        enableDepotPane();
+        if(whiteSpecial!=null && whiteSpecial.size()==1 && resource.equals(TypeResource.BLANK)){
+            resource=whiteSpecial.get(0);
+            setResourceAndLabel(resource);
+            moveResourceButton.setDisable(false);
+            discardButton.setDisable(false);
+            chooseDepotPane.setVisible(true);
+        }else if(whiteSpecial!=null && whiteSpecial.size()>1 && resource.equals(TypeResource.BLANK)){
+            chooseResource();
+        }else if(!resource.equals(TypeResource.BLANK)){
+            setResourceAndLabel(resource);
+            moveResourceButton.setDisable(false);
+            discardButton.setDisable(false);
+            chooseDepotPane.setVisible(true);
+        }
     }
 
     public void mouseEnteredDepot1(){
@@ -373,32 +408,102 @@ public class MarketStructureSceneController {
 
     public void clickDepot1(){
         if(!depot1.isDisable()){
-            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot",resourceToStore.getThisColor(),1,gui.getUsername()));
-            chooseDepot();
+            if(notValidDepot){
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 1, gui.getUsername()));
+                resourceToRestore=null;
+                notValidDepot=false;
+                if(resourceToStore!=null){
+                    resumeChooseDepot(resourceToStore);
+                }else{
+                    chooseDepot();
+                    //If resourceToStore is null when call chooseDepot() method, check if the resourcesToStore arraylist is empty,
+                    //which it is, cause resourceToStore was null, so end the buyfrommarketaction.
+                }
+            }else{
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 1, gui.getUsername()));
+                resourceToStore=null;
+                chooseDepot();
+            }
         }
     }
     public void clickDepot2(){
         if(!depot2.isDisable()){
-            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot",resourceToStore.getThisColor(),2,gui.getUsername()));
-            chooseDepot();
+            if(notValidDepot){
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 2, gui.getUsername()));
+                resourceToRestore=null;
+                notValidDepot=false;
+                if(resourceToStore!=null){
+                    resumeChooseDepot(resourceToStore);
+                }else{
+                    chooseDepot();
+                    //If resourceToStore is null when call chooseDepot() method, check if the resourcesToStore arraylist is empty,
+                    //which it is, cause resourceToStore was null, so end the buyfrommarketaction.
+                }
+            }else{
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 2, gui.getUsername()));
+                resourceToStore=null;
+                chooseDepot();
+            }
         }
     }
     public void clickDepot3(){
         if(!depot3.isDisable()){
-            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot",resourceToStore.getThisColor(),3,gui.getUsername()));
-            chooseDepot();
+            if(notValidDepot){
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 3, gui.getUsername()));
+                resourceToRestore=null;
+                notValidDepot=false;
+                if(resourceToStore!=null){
+                    resumeChooseDepot(resourceToStore);
+                }else{
+                    chooseDepot();
+                    //If resourceToStore is null when call chooseDepot() method, check if the resourcesToStore arraylist is empty,
+                    //which it is, cause resourceToStore was null, so end the buyfrommarketaction.
+                }
+            }else{
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 3, gui.getUsername()));
+                resourceToStore=null;
+                chooseDepot();
+            }
         }
     }
     public void clickDepot4(){
         if(!depot4.isDisable()){
-            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot",resourceToStore.getThisColor(),4,gui.getUsername()));
-            chooseDepot();
+            if(notValidDepot){
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 4, gui.getUsername()));
+                resourceToRestore=null;
+                notValidDepot=false;
+                if(resourceToStore!=null){
+                    resumeChooseDepot(resourceToStore);
+                }else{
+                    chooseDepot();
+                    //If resourceToStore is null when call chooseDepot() method, check if the resourcesToStore arraylist is empty,
+                    //which it is, cause resourceToStore was null, so end the buyfrommarketaction.
+                }
+            }else{
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 4, gui.getUsername()));
+                resourceToStore=null;
+                chooseDepot();
+            }
         }
     }
     public void clickDepot5(){
         if(!depot5.isDisable()){
-            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot",resourceToStore.getThisColor(),5,gui.getUsername()));
-            chooseDepot();
+            if(notValidDepot){
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 5, gui.getUsername()));
+                resourceToRestore=null;
+                notValidDepot=false;
+                if(resourceToStore!=null){
+                    resumeChooseDepot(resourceToStore);
+                }else{
+                    chooseDepot();
+                    //If resourceToStore is null when call chooseDepot() method, check if the resourcesToStore arraylist is empty,
+                    //which it is, cause resourceToStore was null, so end the buyfrommarketaction.
+                }
+            }else{
+                gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 5, gui.getUsername()));
+                resourceToStore=null;
+                chooseDepot();
+            }
         }
     }
 
@@ -409,7 +514,6 @@ public class MarketStructureSceneController {
         discardButton.setDisable(true);
         moveResourceButton.setDisable(true);
         chooseDepot();
-        //CHOOSE RESOURCE PANE DISABLE
     }
 
     public void clickMoveResourceButton(){
@@ -599,5 +703,21 @@ public class MarketStructureSceneController {
             imageView.setEffect(colorAdjust);
             imageView.setDisable(true);
         }
+    }
+
+    public void setWarningPane(VServerUnableMsg msg) {
+        warningPane.setVisible(true);
+        ArrayList<Button> buttons = getButtons();
+        disableResources();
+        chooseDepotPane.setVisible(false);
+        chooseResourcePane.setVisible(false);
+        for(Button button:buttons){
+            button.setDisable(true);
+        }
+        backButton.setVisible(false);
+    }
+
+    public void clickOkButton(){
+        gui.close();
     }
 }

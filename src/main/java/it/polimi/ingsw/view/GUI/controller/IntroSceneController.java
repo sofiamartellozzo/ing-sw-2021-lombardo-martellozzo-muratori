@@ -5,10 +5,9 @@ import it.polimi.ingsw.message.ObserverType;
 import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import it.polimi.ingsw.network.client.ClientSocket;
 import it.polimi.ingsw.view.GUI.GUI;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -35,29 +34,30 @@ public class IntroSceneController {
     @FXML
     private RadioButton multiPlayerModeButton;
 
+    @FXML
+    private Label errorMessage;
+
+    @FXML
+    private ProgressIndicator loadingIndicator;
+
     private String selectedIP;
     private boolean customIP;
 
     public void start(){
         selectedIP ="127.0.0.1";
 
+        loadingIndicator.setVisible(false);
         if(gui.isOffline()){
             localhostButton.setVisible(false);
             customIPButton.setVisible(false);
-
-            singlePlayerModeButton.setVisible(false);
-            multiPlayerModeButton.setVisible(false);
-            playButton.setDisable(false);
-
+            ip.setDisable(true);
         }else {
             localhostButton.selectedProperty().setValue(false);
             customIPButton.selectedProperty().setValue(false);
 
-            singlePlayerModeButton.selectedProperty().setValue(false);
-            multiPlayerModeButton.selectedProperty().setValue(false);
-            playButton.setDisable(true);
         }
-        //playButton.setDisable(true);
+        errorMessage.setVisible(false);
+        playButton.setDisable(true);
     }
 
     public void setGui(GUI gui){ this.gui=gui;}
@@ -67,6 +67,9 @@ public class IntroSceneController {
             selectedIP=ip.getText();
             System.out.println("New selected IP: "+selectedIP);
         }
+
+
+        loadingIndicator.setVisible(true);
 
         disableAllLoginFields();
 
@@ -83,8 +86,10 @@ public class IntroSceneController {
             String gameMode = null;
             if (singlePlayerModeButton.selectedProperty().getValue()) {
                 gameMode = "0";
+                gui.setSoloMode(true);
             } else if (multiPlayerModeButton.selectedProperty().getValue()) {
                 gameMode = "1";
+                gui.setSoloMode(false);
             }
             VVConnectionRequestMsg requestMsg = new VVConnectionRequestMsg("Request connection", selectedIP, 0, getUsername, gameMode);
             client.sendMsg(requestMsg);
@@ -111,8 +116,10 @@ public class IntroSceneController {
             gui.sendMsg(request);
             gui.setUsername(getUsername);
         }else{
-            //ERROR MESSAGE Username or Ip not valid
+            setLabelText(errorMessage,"Username already used or IP not valid!");
+            errorMessage.setVisible(true);
             enableAllLoginFields();
+            loadingIndicator.setVisible(false);
         }
     }
 
@@ -213,5 +220,44 @@ public class IntroSceneController {
     public void clickMultiPlayerModeButton(){
         singlePlayerModeButton.selectedProperty().setValue(false);
         playButton.setDisable(!customIPButton.isSelected() && !localhostButton.isSelected());
+    }
+
+    private void setLabelText(Label label,String content){
+        Platform.runLater(()->{
+            label.setText(content);
+        });
+    }
+
+    public void serverUnavailable() {
+        errorMessage.setVisible(true);
+        setLabelText(errorMessage,"The server is unable!\n" +
+                "You'll play in offline mode!");
+        ip.setDisable(true);
+        gui.setOffline(true);
+        try {
+            clickPlayButton();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void userNotValid(){
+        errorMessage.setVisible(true);
+        setLabelText(errorMessage,"Username already taken!");
+        enableAllLoginFields();
+        loadingIndicator.setVisible(false);
+    }
+
+    public void serverIsFull(){
+        errorMessage.setVisible(true);
+        setLabelText(errorMessage,"The server is full!\n" +
+                "You'll play in offline mode!");
+        ip.setDisable(true);
+        gui.setOffline(true);
+        try {
+            clickPlayButton();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

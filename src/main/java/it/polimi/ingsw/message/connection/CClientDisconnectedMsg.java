@@ -3,7 +3,6 @@ package it.polimi.ingsw.message.connection;
 import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.ViewObserver;
-import it.polimi.ingsw.message.controllerMsg.ControllerGameMsg;
 
 /**
  * this msg is created when a client disconnected
@@ -11,14 +10,14 @@ import it.polimi.ingsw.message.controllerMsg.ControllerGameMsg;
  */
 
 public class CClientDisconnectedMsg extends GameMsg {
-    private String username;
-    public CClientDisconnectedMsg(String msgContent, String username) {
+    private String usernameDisconnected;
+    public CClientDisconnectedMsg(String msgContent, String usernameDisconnected) {
         super(msgContent);
-        this.username = username;
+        this.usernameDisconnected = usernameDisconnected;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUsernameDisconnected() {
+        return usernameDisconnected;
     }
 
 

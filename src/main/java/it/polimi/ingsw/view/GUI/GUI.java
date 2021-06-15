@@ -73,6 +73,9 @@ public class GUI extends Application implements ViewObserver {
     private String gameSize;
     private String[] args;
     private boolean offline;
+    private boolean soloMode;
+
+    private boolean serverAvailable=true;
     boolean receiveMsg;
 
     private PlayerInterface player;
@@ -130,7 +133,7 @@ public class GUI extends Application implements ViewObserver {
         //introSceneController.start();
     }
 
-    private void restartIntroScene() {
+    public void restartIntroScene() {
         try {
             setIntroScene();
             setStartScene();
@@ -388,7 +391,7 @@ public class GUI extends Application implements ViewObserver {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             faithTrack=msg.getFaithTrack();
-            personalBoardSceneController.updateFaithTrackView(msg.getFaithTrack());
+            personalBoardSceneController.updateFaithTrackView(msg.getFaithTrack(),player.getGameSpace());
         }
     }
 
@@ -453,6 +456,9 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VLorenzoIncreasedMsg msg) {
         System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)) {
+            personalBoardSceneController.updateFaithTrackView(msg.getPlayer().getGameSpace().getFaithTrack(),msg.getPlayer().getGameSpace());
+        }
     }
 
     @Override
@@ -464,7 +470,8 @@ public class GUI extends Application implements ViewObserver {
     }
 
     @Override
-    public void receiveMsg(VResourcesNotValidMsg msg) {
+    public void receiveMsg(VResourcesNotFoundMsg msg) {
+        System.out.println(msg.toString());
     }
 
     @Override
@@ -479,29 +486,39 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         System.out.println(msg.toString());
-        if(msg.getPlayerUsername().contains(username)){
+        if(msg.getWinnerUsername().equals(username)) {
             try {
                 setEndGameScene();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(msg.getWinnerUsername().equals(username)){
-                endGameSceneController.showOutcome(true);
-            }
-            for(Player loser:msg.getLosersUsernames()){
-                if(loser.getUsername().equals(username)){
-                    endGameSceneController.showOutcome(false);
-                }
-            }
+            endGameSceneController.start();
+            endGameSceneController.showOutcome(true);
             Platform.runLater(()->{
                 changeScene(endGameScene);
             });
+        }else {
+            for(Player loser:msg.getLosersUsernames()) {
+                if(loser.getUsername().equals(username)) {
+                    try {
+                        setEndGameScene();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    endGameSceneController.start();
+                    endGameSceneController.showOutcome(false);
+                    Platform.runLater(()->{
+                        changeScene(endGameScene);
+                    });
+                }
+            }
         }
     }
 
     @Override
     public void receiveMsg(VAskNewGameMsg msg) {
-
+        System.out.println(msg.toString());
+        endGameSceneController.askNewGame();
     }
 
     @Override
@@ -511,17 +528,22 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-
+        System.out.println(msg.toString());
+        personalBoardSceneController.setWarningPane(msg);
     }
 
     @Override
     public void receiveMsg(VStartWaitReconnectionMsg msg) {
-
+        System.out.println(msg.toString());
+        /*
+        * NOT IMPLEMENTED*/
     }
 
     @Override
     public void receiveMsg(VStopWaitReconnectionMsg msg) {
-
+        /*
+         * NOT IMPLEMENTED
+         */
     }
 
     @Override
@@ -556,7 +578,20 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(VServerUnableMsg msg) {
         System.out.println(msg.toString());
-        //SHOW MESSAGE SERVER IS NOT RUNNING
+        serverAvailable=false;
+        if(stage.getScene().equals(personalBoardScene)){
+            personalBoardSceneController.setWarningPane(msg);
+        }else if(stage.getScene().equals(introScene)){
+            introSceneController.serverUnavailable();
+        }else if(stage.getScene().equals(startScene)){
+            startGameController.serverUnavailable();
+        }else if(stage.getScene().equals(initializeScene)){
+            initializeSceneController.setWarningPane(msg);
+        }else if(stage.getScene().equals(marketStructureScene)){
+            marketStructureSceneController.setWarningPane(msg);
+        }else if(stage.getScene().equals(devCardTableScene)){
+            devCardTableSceneController.setWarningPane(msg);
+        }
     }
 
 
@@ -779,15 +814,14 @@ public class GUI extends Application implements ViewObserver {
         System.out.println(msg.toString());
         switch(msg.getErrorInformation()){
             case "USER_NOT_VALID":  // if the username is already taken, the player has to insert a new one
-
-                //Error(" Error, this username is not valid because it is already taken",stage);
-                getIntroSceneController().enableAllLoginFields();
+                getIntroSceneController().userNotValid();
+                break;
             case "FULL_SIZE":  //all the rooms in the server are full, so the client can't be connected to the game
 
                 //Error(" Error, server is full ",stage);
+                getIntroSceneController().serverIsFull();
                 break;
             case "WAIT":      //in this case the server is not full so there are new rooms available, and the client has to wait because someone is creating a new room
-                //Error(" Someone is now creating a new room! Please wait a moment ",stage);
                 try {
                     Thread.sleep(5000);
                     /* the login process has to restart, so the client try again sending another request */
@@ -807,5 +841,16 @@ public class GUI extends Application implements ViewObserver {
 
     public ArrayList<SpecialCard> getSpecialCards(){return specialCards;}
 
+    public void setSoloMode(boolean soloMode){this.soloMode=soloMode;}
+
+    public boolean getSoloMode(){return soloMode;}
+
+    public boolean isServerAvailable() {
+        return serverAvailable;
+    }
+
+    public void setServerAvailable(boolean serverAvailable) {
+        this.serverAvailable = serverAvailable;
+    }
 }
 

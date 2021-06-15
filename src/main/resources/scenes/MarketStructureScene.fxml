@@ -366,5 +366,23 @@
         </content>
       </TitledPane>
       <Button fx:id="backButton" layoutX="35.0" layoutY="29.0" mnemonicParsing="false" onAction="#clickBackButton" text="&lt;- BACK" />
+      <TitledPane fx:id="warningPane" animated="false" layoutX="268.0" layoutY="293.0" prefHeight="142.0" prefWidth="178.0" text="Error">
+        <content>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Server unable!&#10;Sorry the game ends here!" textAlignment="CENTER" textFill="#a40404">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="okButton" mnemonicParsing="false" onAction="#clickOkButton" text="OK">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+        </content>
+      </TitledPane>
    </children>
 </AnchorPane>

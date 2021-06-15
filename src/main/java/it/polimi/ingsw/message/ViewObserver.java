@@ -76,7 +76,7 @@ public interface ViewObserver extends Observer{
     /*from PPController to client*/
     public void receiveMsg(VActivateProductionPowerRequestMsg msg);
     /*from PPController if the player doesn't have te resources to "pay" the PP*/
-    public void receiveMsg(VResourcesNotValidMsg msg);
+    public void receiveMsg(VResourcesNotFoundMsg msg);
     public void receiveMsg(VUpdateStrongboxMsg msg);
 
 

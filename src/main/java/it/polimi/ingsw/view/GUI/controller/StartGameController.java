@@ -40,4 +40,7 @@ public class StartGameController {
         gui.getIntroSceneController().start();
     }
 
+    public void serverUnavailable() {
+        onlineServerButton.setDisable(true);
+    }
 }

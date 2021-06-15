@@ -263,7 +263,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-        if (msg.getUsername().equals(username) && userConnected.get()) {
+        if (msg.getUsernameDisconnected().equals(username) && userConnected.get()) {
             /* VV as controller of client disconnected
                 so this msg is from client Handler,
                 but stop it the second time from the Turn Controller*/
@@ -278,7 +278,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
                 VChooseResourceAndDepotMsg fakeRequest = new VChooseResourceAndDepotMsg("", username);
                 receiveMsg(fakeRequest);
             }
-        } else if (!msg.getUsername().equals(username)) {
+        } else if (!msg.getUsernameDisconnected().equals(username)) {
             /* VV as a View so msg from Turn controller to notify all
                 other player about a disconnection */
             sendToClient(msg);
@@ -672,7 +672,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
-    public void receiveMsg(VResourcesNotValidMsg msg) {
+    public void receiveMsg(VResourcesNotFoundMsg msg) {
         if (msg.getUsername().equals(this.username)) {
             sendToClient(msg);
         }

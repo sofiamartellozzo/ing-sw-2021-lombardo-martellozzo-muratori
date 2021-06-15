@@ -14,7 +14,6 @@ import it.polimi.ingsw.view.VirtualView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * this class is the part of the controller that arraing the start of the game, and set the turn sequence
@@ -248,6 +247,7 @@ public class TurnController extends Observable implements ControllerObserver {
                 startPlayerTurn(nextPlayer);
             }
         } else {
+            singlePlayer.endTurn();
             ActionToken actionTokenActivated = null;
             try {
 
@@ -316,7 +316,11 @@ public class TurnController extends Observable implements ControllerObserver {
                     e.printStackTrace();
                 }
             }
+            else if(singlePlayer.isPlaying()){
+                nextTurn();
+            }
         }
+
     }
 
     private void checkIfFirstAction() {
@@ -525,7 +529,7 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-        PlayerInterface playerDisconnected = getPlayerByUsername(msg.getUsername());
+        PlayerInterface playerDisconnected = getPlayerByUsername(msg.getUsernameDisconnected());
         //System.out.println("IN TURN CONTROLLER: received disconn Msg ");      //DEBUG
         if (playerDisconnected != null) {
             //check if the client disconnected is currently playing

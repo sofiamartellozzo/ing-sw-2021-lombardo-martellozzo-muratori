@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI.controller;
 
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.controllerMsg.CBuyDevelopCardResponseMsg;
 import it.polimi.ingsw.message.controllerMsg.CChangeActionTurnMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseDevelopCardRequestMsg;
@@ -33,7 +34,10 @@ public class DevCardTableSceneController {
     private ImageView cardSpace1,cardSpace2,cardSpace3;
 
     @FXML
-    private Button cardSpace1Button, cardSpace2Button,cardSpace3Button,backButton;
+    private Button cardSpace1Button, cardSpace2Button,cardSpace3Button,backButton,okButton;
+
+    @FXML
+    private TitledPane warningPane;
 
     @FXML
     private Label errorMessage;
@@ -42,6 +46,7 @@ public class DevCardTableSceneController {
     boolean justSee;
 
     public void start(){
+        warningPane.setVisible(false);
         update(gui.getDevelopmentCardTable());
         setAllDevCardTableDisable();
         chooseCardSpacePane.setVisible(false);
@@ -354,6 +359,7 @@ public class DevCardTableSceneController {
     }
 
     public void setGui(GUI gui){this.gui=gui;}
+
     private ImageView[][] getDevCardTableView(){
         ImageView[][] devCardTableView = new ImageView[3][4];
         devCardTableView[0][0]=devCard1_1;
@@ -437,4 +443,17 @@ public class DevCardTableSceneController {
         });
     }
 
+
+    public void setWarningPane(VServerUnableMsg msg) {
+        warningPane.setVisible(true);
+        setAllDevCardTableDisable();
+        chooseCardSpacePane.setVisible(false);
+        setAllButtonsDisable();
+        errorPopup.setVisible(false);
+        backButton.setVisible(false);
+    }
+
+    public void clickOkButton(){
+        gui.close();
+    }
 }

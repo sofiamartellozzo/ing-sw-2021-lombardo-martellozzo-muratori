@@ -220,7 +220,10 @@ public abstract class Warehouse implements Serializable {
      */
     public int searchResource(Resource resource){
         for(int i=0; i< depots.size(); i++){
-            if(depots.get(i).getType()!=null && depots.get(i).getType().equals(resource.getType())){
+            Depot depot =depots.get(i);
+            if(depot instanceof RealDepot && depot.getType()!=null && depot.getType().equals(resource.getType())){
+                return i+1;
+            }else if(depot instanceof AbilityDepot && !depot.isEmpty() && depot.getType().equals(resource.getType())){
                 return i+1;
             }
         }

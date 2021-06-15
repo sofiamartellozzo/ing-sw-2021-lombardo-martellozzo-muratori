@@ -13,12 +13,10 @@ import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
 import it.polimi.ingsw.message.updateMsg.CGameCanStartMsg;
 import it.polimi.ingsw.message.updateMsg.CVStartInitializationMsg;
 import it.polimi.ingsw.message.viewMsg.*;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.view.VirtualView;
 
 import javax.naming.LimitExceededException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -591,8 +589,8 @@ public class Lobby extends Observable implements ControllerObserver {
         System.out.println("DISCONNECT IN LOBBY");
         //send to TurnController by Room, to set him disconnected
         try {
-            Room room = findUserRoom(msg.getUsername());
-            room.disconnectPlayer(msg.getUsername());
+            Room room = findUserRoom(msg.getUsernameDisconnected());
+            room.disconnectPlayer(msg.getUsernameDisconnected());
             room.notifyAllObserver(ObserverType.CONTROLLER, msg);
         } catch (NotFreeRoomAvailableError error) {
             error.printStackTrace();

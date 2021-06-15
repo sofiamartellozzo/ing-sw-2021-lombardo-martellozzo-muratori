@@ -123,7 +123,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                     } catch (InvalidActionException e) {
                         //e.printStackTrace();
                         //if the player doesn't have the resources
-                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        VResourcesNotFoundMsg msg1 = new VResourcesNotFoundMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
                         notifyAllObserver(ObserverType.VIEW, msg1);
 
                     }
@@ -139,7 +139,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                         putResource = true;
                     } catch (InvalidActionException e) {
                         //e.printStackTrace();
-                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        VResourcesNotFoundMsg msg1 = new VResourcesNotFoundMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
                         notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }
@@ -162,7 +162,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                         putResource = true;
                     } catch (InvalidActionException e) {
                         //e.printStackTrace();
-                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        VResourcesNotFoundMsg msg1 = new VResourcesNotFoundMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
                         notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 } else if (msg.getWhere().equals("strongbox")) {
@@ -174,7 +174,7 @@ public class ProductionPowerController extends Observable implements ControllerO
 
                     } catch (InvalidActionException e) {
                         //e.printStackTrace();
-                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        VResourcesNotFoundMsg msg1 = new VResourcesNotFoundMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
                         notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }
@@ -199,7 +199,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                                 putResource = true;
                             } catch (InvalidActionException e) {
                                 //e.printStackTrace();
-                                VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                                VResourcesNotFoundMsg msg1 = new VResourcesNotFoundMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
                                 notifyAllObserver(ObserverType.VIEW, msg1);
                             }
                         }
@@ -213,7 +213,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                         putResource = true;
                     } catch (InvalidActionException e) {
                         //e.printStackTrace();
-                        VResourcesNotValidMsg msg1 = new VResourcesNotValidMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
+                        VResourcesNotFoundMsg msg1 = new VResourcesNotFoundMsg("Error you can't activate the ProductionPower, because you don't have the resources you chose!", player.getUsername());
                         notifyAllObserver(ObserverType.VIEW, msg1);
                     }
                 }

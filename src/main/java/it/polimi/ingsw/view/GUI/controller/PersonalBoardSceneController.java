@@ -1,11 +1,12 @@
 package it.polimi.ingsw.view.GUI.controller;
 
+import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.controllerMsg.*;
 import it.polimi.ingsw.message.viewMsg.VActionTokenActivateMsg;
 import it.polimi.ingsw.message.viewMsg.VActivateProductionPowerRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseActionTurnRequestMsg;
 import it.polimi.ingsw.message.viewMsg.VChooseLeaderCardRequestMsg;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Resource;
 import it.polimi.ingsw.model.TurnAction;
 import it.polimi.ingsw.model.TypeResource;
@@ -17,7 +18,6 @@ import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.LeaderCard;
 import it.polimi.ingsw.model.card.LeaderCardDeck;
 import it.polimi.ingsw.model.card.SpecialCard;
-import it.polimi.ingsw.model.cardAbility.TypeAbility;
 import it.polimi.ingsw.view.GUI.GUI;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -114,7 +114,11 @@ public class PersonalBoardSceneController {
     @FXML
     private ImageView lastActionToken;
 
+    @FXML
+    private Label actionLabel;
+
     private boolean returnToMarket;
+    private boolean actionButtonsVisible;
 
     private TurnAction action;
     private ArrayList<Integer> activatablePP;
@@ -129,7 +133,8 @@ public class PersonalBoardSceneController {
     private HashMap<Integer,ImageView> leaderCardWithID;
 
     public void start(){
-        updateFaithTrackView(gui.getPlayer().getGameSpace().getFaithTrack());
+        actionLabel.setVisible(false);
+        updateFaithTrackView(gui.getPlayer().getGameSpace().getFaithTrack(),gui.getPlayer().getGameSpace());
         updateResourceManagerView(gui.getPlayer().getGameSpace().getResourceManager());
         updateCardSpacesView(gui.getPlayer().getGameSpace().getCardSpaces());
         updateVictoryPointsView(gui.getPlayer().getVictoryPoints());
@@ -193,12 +198,15 @@ public class PersonalBoardSceneController {
     public void choosePP(VActivateProductionPowerRequestMsg msg){
         activatablePP=msg.getActivatablePP();
         if(activatablePP.size()>0) {
+            setLabelText(actionLabel,"Choose where to pay from");
+            actionLabel.setVisible(true);
             chooseDepots();
             strongBoxPane.setVisible(true);
             strongBoxPane.setDisable(false);
             stopPPPowerButton.setVisible(true);
             stopPPPowerButton.setDisable(false);
         }else{
+            stopPPPowerButton.setVisible(false);
             okButton.setDisable(false);
             errorMessagePane.setVisible(true);
             setLabelText(errorMessage,"No available Production Power");
@@ -225,6 +233,10 @@ public class PersonalBoardSceneController {
         gui.sendMsg(new CStopPPMsg("I don't want to activate any production power anymore",gui.getUsername()));
         stopPPPowerButton.setDisable(true);
         stopPPPowerButton.setVisible(false);
+        notVisibleDepotPanes();
+        disableDepotPanes();
+        strongBoxPane.setVisible(false);
+        strongBoxPane.setDisable(true);
         action=null;
     }
 
@@ -248,6 +260,8 @@ public class PersonalBoardSceneController {
             strongBoxPane.setDisable(true);
             strongBoxPane.setVisible(false);
             disableDepotPanes();
+            setLabelText(actionLabel,"Choose the Production Power you want to activate");
+            actionLabel.setVisible(true);
         }
     }
 
@@ -267,6 +281,7 @@ public class PersonalBoardSceneController {
             disablePP();
             setLabelText(chooseResourceLabel,"Choose first resource to remove");
             chooseResourcePane.setVisible(true);
+            actionLabel.setVisible(false);
         }
     }
 
@@ -286,6 +301,7 @@ public class PersonalBoardSceneController {
             disablePP();
             setLabelText(chooseResourceLabel,"Choose the resource you want");
             chooseResourcePane.setVisible(true);
+            actionLabel.setVisible(false);
         }
     }
     public void mouseEnteredSpecialCard2(){
@@ -304,6 +320,7 @@ public class PersonalBoardSceneController {
             disablePP();
             setLabelText(chooseResourceLabel,"Choose the resource you want");
             chooseResourcePane.setVisible(true);
+            actionLabel.setVisible(false);
         }
     }
 
@@ -503,6 +520,7 @@ public class PersonalBoardSceneController {
             response=new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,1);
             disablePP();
             gui.sendMsg(response);
+            actionLabel.setVisible(false);
         }
     }
     public void clickCardSpace2(){
@@ -510,6 +528,7 @@ public class PersonalBoardSceneController {
             response=new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,2);
             disablePP();
             gui.sendMsg(response);
+            actionLabel.setVisible(false);
         }
     }
     public void clickCardSpace3(){
@@ -517,6 +536,7 @@ public class PersonalBoardSceneController {
             response=new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,3);
             disablePP();
             gui.sendMsg(response);
+            actionLabel.setVisible(false);
         }
     }
 
@@ -545,6 +565,10 @@ public class PersonalBoardSceneController {
     }
 
     public void chooseDepots(){
+        if(actionButtons.isVisible()){
+            actionButtons.setVisible(false);
+            actionButtonsVisible=true;
+        }
         ArrayList<ImageView> specialDepotView = getSpecialDepotsView();
         ArrayList<Pane> depotPanes=getDepotPanes();
         for(int i=0;i<5;i++){
@@ -555,6 +579,8 @@ public class PersonalBoardSceneController {
                 depotPanes.get(i).setVisible(true);
             }
         }
+        setLabelText(actionLabel,"Choose the depot where to move the resource from");
+        actionLabel.setVisible(true);
     }
 
     public void mouseEnteredDepot1Pane(){
@@ -613,7 +639,10 @@ public class PersonalBoardSceneController {
         if(!depot1Pane.isDisable()){
             if(this.action.equals(TurnAction.MOVE_RESOURCE)){
                 chosenDepots.add(1);
+                setLabelText(actionLabel,"Choose the depot where to move the resource to");
+                actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
+                    actionLabel.setVisible(false);
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
@@ -624,6 +653,10 @@ public class PersonalBoardSceneController {
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
+                    }
+                    if(actionButtonsVisible){
+                        actionButtonsVisible=false;
+                        actionButtons.setVisible(true);
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -636,6 +669,8 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 disableDepotPanes();
                 notVisibleDepotPanes();
+                setLabelText(actionLabel,"Choose the Production Power you want to activate");
+                actionLabel.setVisible(true);
             }
         }
     }
@@ -643,7 +678,10 @@ public class PersonalBoardSceneController {
         if(!depot2Pane.isDisable()){
             if(this.action.equals(TurnAction.MOVE_RESOURCE)){
                 chosenDepots.add(2);
+                setLabelText(actionLabel,"Choose the depot where to move the resource to");
+                actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
+                    actionLabel.setVisible(false);
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
@@ -654,6 +692,11 @@ public class PersonalBoardSceneController {
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
+                    }
+
+                    if(actionButtonsVisible){
+                        actionButtonsVisible=false;
+                        actionButtons.setVisible(true);
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -666,6 +709,8 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 disableDepotPanes();
                 notVisibleDepotPanes();
+                setLabelText(actionLabel,"Choose the Production Power you want to activate");
+                actionLabel.setVisible(true);
             }
         }
     }
@@ -673,7 +718,10 @@ public class PersonalBoardSceneController {
         if(!depot3Pane.isDisable()){
             if(this.action.equals(TurnAction.MOVE_RESOURCE)){
                 chosenDepots.add(3);
+                setLabelText(actionLabel,"Choose the depot where to move the resource to");
+                actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
+                    actionLabel.setVisible(false);
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
@@ -685,6 +733,10 @@ public class PersonalBoardSceneController {
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
                     }
+                    if(actionButtonsVisible){
+                        actionButtonsVisible=false;
+                        actionButtons.setVisible(true);
+                    }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
                 where="warehouse";
@@ -696,6 +748,8 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 disableDepotPanes();
                 notVisibleDepotPanes();
+                setLabelText(actionLabel,"Choose the Production Power you want to activate");
+                actionLabel.setVisible(true);
             }
         }
     }
@@ -703,7 +757,10 @@ public class PersonalBoardSceneController {
         if(!depot4Pane.isDisable()){
             if(this.action.equals(TurnAction.MOVE_RESOURCE)){
                 chosenDepots.add(4);
+                setLabelText(actionLabel,"Choose the depot where to move the resource to");
+                actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
+                    actionLabel.setVisible(false);
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
@@ -713,6 +770,10 @@ public class PersonalBoardSceneController {
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
+                    }
+                    if(actionButtonsVisible){
+                        actionButtonsVisible=false;
+                        actionButtons.setVisible(true);
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -725,6 +786,8 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 disableDepotPanes();
                 notVisibleDepotPanes();
+                setLabelText(actionLabel,"Choose the Production Power you want to activate");
+                actionLabel.setVisible(true);
             }
         }
     }
@@ -732,7 +795,10 @@ public class PersonalBoardSceneController {
         if(!depot5Pane.isDisable()){
             if(this.action.equals(TurnAction.MOVE_RESOURCE)){
                 chosenDepots.add(5);
+                setLabelText(actionLabel,"Choose the depot where to move the resource to");
+                actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
+                    actionLabel.setVisible(false);
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
@@ -742,6 +808,10 @@ public class PersonalBoardSceneController {
                         gui.seeMarketBoard();
                         gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
+                    }
+                    if(actionButtonsVisible){
+                        actionButtonsVisible=false;
+                        actionButtons.setVisible(true);
                     }
                 }
             }else if(this.action.equals(TurnAction.ACTIVE_PRODUCTION_POWER)){
@@ -754,11 +824,11 @@ public class PersonalBoardSceneController {
                 strongBoxPane.setVisible(false);
                 disableDepotPanes();
                 notVisibleDepotPanes();
+                setLabelText(actionLabel,"Choose the Production Power you want to activate");
+                actionLabel.setVisible(true);
             }
         }
     }
-
-
 
     //ACTIVE OR DISCARD LEADER CARD ACTION
     public void clickActivateLeaderCard(){
@@ -783,9 +853,11 @@ public class PersonalBoardSceneController {
                 System.out.println("LeaderCardsView: "+leaderCards.get(i));
                 getLeaderCardViewByID(leaderCards.get(i)).setDisable(false);
                 getLeaderCardViewByID(leaderCards.get(i)).setEffect(null);
+                setLabelText(actionLabel,"Choose leader card to "+msg.getWhatFor());
+                actionLabel.setVisible(true);
             }
         }else{
-            setLabelText(errorMessage,"No card to"+msg.getWhatFor());
+            setLabelText(errorMessage,"No card to "+msg.getWhatFor());
             okButton.setDisable(false);
             errorMessagePane.setVisible(true);
         }
@@ -796,6 +868,8 @@ public class PersonalBoardSceneController {
             gui.sendMsg(new CChangeActionTurnMsg("Not possible to do action, I want to change action", gui.getUsername(), action));
         }else if(action==TurnAction.ACTIVE_PRODUCTION_POWER){
             gui.sendMsg(new CStopPPMsg("No Production Power Available",gui.getUsername()));
+        }else if(!gui.isServerAvailable()){
+            gui.close();
         }
         action = null;
         okButton.setDisable(true);
@@ -838,6 +912,7 @@ public class PersonalBoardSceneController {
                 leaderCard1.setDisable(true);
                 leaderCard1.setImage(new Image("/images/backCards/LeaderCard (1).png"));
             }
+            actionLabel.setVisible(false);
             action=null;
         }
     }
@@ -853,6 +928,7 @@ public class PersonalBoardSceneController {
                 leaderCard2.setDisable(true);
                 leaderCard2.setImage(new Image("/images/backCards/LeaderCard (1).png"));
             }
+            actionLabel.setVisible(false);
             action=null;
         }
     }
@@ -906,12 +982,13 @@ public class PersonalBoardSceneController {
         disableActionButtons();
         actionButtons.setVisible(false);
     }
+
     public void clickSeeMarketBoardButton(){
         gui.seeMarketBoard();
     }
     public void clickSeeDevCardTableButton(){
-        gui.seeDevCardTable();
         gui.getDevCardTableSceneController().setAllCardNormal();
+        gui.seeDevCardTable();
     }
 
     public void setGui(GUI gui) {
@@ -938,12 +1015,11 @@ public class PersonalBoardSceneController {
         }
     }
 
-    public void updateFaithTrackView(FaithTrack faithTrack){
-        if(faithTrack instanceof SoloFaithTrack){
-            SoloFaithTrack soloFaithTrack = (SoloFaithTrack) faithTrack;
-            System.out.println(soloFaithTrack.getLorenzoFaithMarker().getPosition());
+    public void updateFaithTrackView(FaithTrack faithTrack,PersonalBoard personalBoard){
+        if(gui.getSoloMode()){
+            SoloPersonalBoard soloPersonalBoard = (SoloPersonalBoard) personalBoard;
             for(int i=0;i<25;i++){
-                if(soloFaithTrack.getLorenzoFaithMarker().getPosition()==i){
+                if(soloPersonalBoard.getLorenzoIlMagnifico().getPosition()==i){
                     if(i==0){
                         backgroundBox0.setVisible(true);
                     }else{
@@ -974,7 +1050,7 @@ public class PersonalBoardSceneController {
                     getFaithMarkersView().get(i).setVisible(false);
                 }
             }
-        }else {
+        } else {
             for (int i = 0; i < 25; i++) {
                 if (faithTrack.getPositionFaithMarker() == i) {
                     if (i == 0) {
@@ -1364,5 +1440,32 @@ public class PersonalBoardSceneController {
         specialCardsView.add(specialCard1);
         specialCardsView.add(specialCard2);
         return specialCardsView;
+    }
+
+    public void setWarningPane(CClientDisconnectedMsg msg){
+        setLabelText(errorMessage,msg.getUsernameDisconnected()+" is disconnected!");
+        errorMessagePane.setVisible(true);
+        okButton.setDisable(false);
+    }
+
+    public void setWarningPane(VServerUnableMsg msg){
+        setLabelText(errorMessage,"Server unable!\n Sorry the game ends here!");
+        actionButtons.setVisible(false);
+        errorMessagePane.setVisible(true);
+        okButton.setDisable(false);
+        setAllLeaderDisable();
+        disableActionButtons();
+        disableDepotPanes();
+        notVisibleDepotPanes();
+        actionButtons.setVisible(false);
+        strongBoxPane.setVisible(false);
+        strongBoxPane.setDisable(true);
+        disablePP();
+        disableCardSpaces();
+        stopPPPowerButton.setVisible(false);
+        stopPPPowerButton.setDisable(true);
+        chooseResourcePane.setVisible(false);
+        chooseOtherPlayerPane.setVisible(false);
+        disableOtherPlayersButtons();
     }
 }

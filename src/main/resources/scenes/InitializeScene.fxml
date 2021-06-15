@@ -79,106 +79,6 @@
             </VBox>
         </content>
       </TitledPane>
-      <TitledPane fx:id="chooseDepotPane" animated="false" layoutX="228.0" layoutY="163.0" prefHeight="274.0" prefWidth="318.0" text="Choose Depot">
-        <content>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label fx:id="messageDepot" text="Message" />
-                        <ImageView fx:id="chosenResource" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/punchboard/coin.png" />
-                           </image>
-                           <effect>
-                              <DropShadow />
-                           </effect>
-                        </ImageView>
-                        <Label fx:id="labelChosenResource" text="COIN" textFill="#a9a9a9">
-                           <font>
-                              <Font name="System Bold Italic" size="22.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="discardButton" mnemonicParsing="false" text="Discard" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="176.0">
-                           <children>
-                              <ImageView fitHeight="221.0" fitWidth="176.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/personalboard/Warehouse.png" />
-                                 </image>
-                              </ImageView>
-                              <Pane fx:id="depot1Pane" layoutX="62.0" layoutY="33.0" onMouseClicked="#clickDepot1" onMouseEntered="#mouseEnteredDepot1" onMouseExited="#mouseExitedDepot1" prefHeight="48.0" prefWidth="78.0">
-                                 <children>
-                                    <ImageView fx:id="resource1_1" fitHeight="47.0" fitWidth="51.0" layoutX="16.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/punchboard/coin.png" />
-                                       </image>
-                                       <effect>
-                                          <DropShadow />
-                                       </effect>
-                                    </ImageView>
-                                 </children>
-                              </Pane>
-                              <Pane fx:id="depot2Pane" layoutX="41.0" layoutY="78.0" onMouseClicked="#clickDepot2" onMouseEntered="#mouseEnteredDepot2" onMouseExited="#mouseExitedDepot2" prefHeight="51.0" prefWidth="113.0">
-                                 <children>
-                                    <ImageView fx:id="resource2_1" fitHeight="47.0" fitWidth="51.0" layoutX="20.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/punchboard/coin.png" />
-                                       </image>
-                                       <effect>
-                                          <DropShadow />
-                                       </effect>
-                                    </ImageView>
-                                    <ImageView fx:id="resource2_2" fitHeight="47.0" fitWidth="51.0" layoutX="49.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/punchboard/coin.png" />
-                                       </image>
-                                       <effect>
-                                          <DropShadow />
-                                       </effect>
-                                    </ImageView>
-                                 </children>
-                              </Pane>
-                              <Pane fx:id="depot3Pane" layoutX="26.0" layoutY="131.0" onMouseClicked="#clickDepot3" onMouseEntered="#mouseEnteredDepot3" onMouseExited="#mouseExitedDepot3" prefHeight="51.0" prefWidth="143.0">
-                                 <children>
-                                    <ImageView fx:id="resource3_1" fitHeight="47.0" fitWidth="51.0" layoutX="20.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/punchboard/coin.png" />
-                                       </image>
-                                       <effect>
-                                          <DropShadow />
-                                       </effect>
-                                    </ImageView>
-                                    <ImageView fx:id="resource3_2" fitHeight="47.0" fitWidth="51.0" layoutX="49.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/punchboard/coin.png" />
-                                       </image>
-                                       <effect>
-                                          <DropShadow />
-                                       </effect>
-                                    </ImageView>
-                                    <ImageView fx:id="resource3_3" fitHeight="47.0" fitWidth="51.0" layoutX="79.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/punchboard/coin.png" />
-                                       </image>
-                                       <effect>
-                                          <DropShadow />
-                                       </effect>
-                                    </ImageView>
-                                 </children>
-                              </Pane>
-                           </children>
-                        </Pane>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-        </content>
-      </TitledPane>
       <TitledPane fx:id="leaderCardPane" animated="false" layoutX="122.0" layoutY="168.0" text="Choose Leader Card">
         <content>
             <VBox alignment="CENTER">
@@ -229,11 +129,129 @@
             <Font name="System Bold Italic" size="36.0" />
          </font>
       </Label>
+      <TitledPane fx:id="chooseDepotPane" animated="false" layoutX="228.0" layoutY="163.0" prefHeight="274.0" prefWidth="318.0" text="Choose Depot">
+        <content>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label fx:id="messageDepot" text="Message" />
+                        <ImageView fx:id="chosenResource" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/punchboard/coin.png" />
+                           </image>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </ImageView>
+                        <Label fx:id="labelChosenResource" text="COIN" textFill="#a9a9a9">
+                           <font>
+                              <Font name="System Bold Italic" size="22.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="discardButton" mnemonicParsing="false" text="Discard" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="221.0" prefWidth="176.0">
+                           <children>
+                              <ImageView fitHeight="221.0" fitWidth="176.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/personalboard/Warehouse.png" />
+                                 </image>
+                              </ImageView>
+                              <Pane fx:id="depot1Pane" layoutX="62.0" layoutY="33.0" onMouseClicked="#clickDepot1" onMouseEntered="#mouseEnteredDepot1" onMouseExited="#mouseExitedDepot1" prefHeight="42.0" prefWidth="78.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-color: grey; -fx-border-radius: 50;">
+                                 <children>
+                                    <ImageView fx:id="resource1_1" fitHeight="47.0" fitWidth="51.0" layoutX="16.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="depot2Pane" layoutX="41.0" layoutY="84.0" onMouseClicked="#clickDepot2" onMouseEntered="#mouseEnteredDepot2" onMouseExited="#mouseExitedDepot2" prefHeight="45.0" prefWidth="113.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-color: grey; -fx-border-radius: 50;">
+                                 <children>
+                                    <ImageView fx:id="resource2_1" fitHeight="47.0" fitWidth="51.0" layoutX="20.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource2_2" fitHeight="47.0" fitWidth="51.0" layoutX="49.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="depot3Pane" layoutX="26.0" layoutY="137.0" onMouseClicked="#clickDepot3" onMouseEntered="#mouseEnteredDepot3" onMouseExited="#mouseExitedDepot3" prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: rgba(255,255,255,0.1); -fx-border-color: grey; -fx-border-radius: 50;">
+                                 <children>
+                                    <ImageView fx:id="resource3_1" fitHeight="47.0" fitWidth="51.0" layoutX="20.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource3_2" fitHeight="47.0" fitWidth="51.0" layoutX="49.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                    <ImageView fx:id="resource3_3" fitHeight="47.0" fitWidth="51.0" layoutX="79.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/punchboard/coin.png" />
+                                       </image>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+        </content>
+      </TitledPane>
+      <TitledPane fx:id="warningPane" animated="false" layoutX="324.0" layoutY="238.0" prefHeight="126.0" prefWidth="170.0" text="Error">
+        <content>
+            <VBox alignment="CENTER" prefHeight="107.0" prefWidth="169.0">
+               <children>
+                  <Label prefHeight="34.0" prefWidth="272.0" text="Server unable!&#10;Sorry, the game ends here!" textAlignment="CENTER" textFill="#b40000">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="okButton" mnemonicParsing="false" onAction="#clickOkButton" text="OK">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+        </content>
+      </TitledPane>
       <TitledPane fx:id="waitPane" animated="false" layoutX="284.0" layoutY="210.0" prefHeight="142.0" prefWidth="251.0">
         <content>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="Wait for the other players..." textFill="#004be1">
+                  <Label text="Wait..." textFill="#004be1">
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
