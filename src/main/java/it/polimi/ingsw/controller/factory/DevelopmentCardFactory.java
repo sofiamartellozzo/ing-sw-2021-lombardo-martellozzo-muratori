@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.card.LeaderCard;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -27,10 +28,10 @@ public class DevelopmentCardFactory {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/developmentCard.json"));
+        //BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/developmentCard.json"));
         Type list = new TypeToken<ArrayList<DevelopmentCard>>() {
         }.getType();
-        ArrayList<DevelopmentCard> cards = gson.fromJson(reader, list);
+        ArrayList<DevelopmentCard> cards = gson.fromJson(new InputStreamReader(getClass().getResourceAsStream("/developmentCard.json")), list);
 
         DevelopmentCardDeck[][] table = new DevelopmentCardDeck[3][4];
 

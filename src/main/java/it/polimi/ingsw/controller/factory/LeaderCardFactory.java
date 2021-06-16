@@ -30,10 +30,10 @@ public class LeaderCardFactory {
     public ArrayList<LeaderCard> createLeaderCardDeck() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/leaderCard.json"));
+        //BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/leaderCard.json"));
         Type list = new TypeToken<ArrayList<SmallLeaderCard>>() {
         }.getType();
-        ArrayList<SmallLeaderCard> cards = gson.fromJson(reader, list);
+        ArrayList<SmallLeaderCard> cards = gson.fromJson(new InputStreamReader(getClass().getResourceAsStream("/leaderCard.json")), list);
         ArrayList<LeaderCard> leaderCards = new ArrayList<>();
         for (SmallLeaderCard smallCard: cards) {
             leaderCards.add(new LeaderCard(smallCard.getCardID(),smallCard.getVictoryPoints(),smallCard.getTypeAbility(),smallCard.getSpecialResource(), smallCard.getRequirements()));

@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.board.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -24,24 +25,24 @@ public class FaithTrackFactory {
 
         ArrayList<Box> boxes = new ArrayList<>();
         //15 normal box
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/simpleBox.json"));
+        //BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/simpleBox.json"));
         Type list = new TypeToken<ArrayList<SimpleBox>>() {
         }.getType();
-        ArrayList<SimpleBox> simpleBoxes = gson.fromJson(reader, list);
+        ArrayList<SimpleBox> simpleBoxes = gson.fromJson(new InputStreamReader(getClass().getResourceAsStream("/simpleBox.json")), list);
         boxes.addAll(simpleBoxes);
 
         //7 gold box
-        BufferedReader reader1 = new BufferedReader(new FileReader("src/main/resources/goldBox.json"));
+        //BufferedReader reader1 = new BufferedReader(new FileReader("src/main/resources/goldBox.json"));
         Type list1 = new TypeToken<ArrayList<GoldBox>>() {
         }.getType();
-        ArrayList<GoldBox> goldBoxes = gson.fromJson(reader1, list1);
+        ArrayList<GoldBox> goldBoxes = gson.fromJson(new InputStreamReader(getClass().getResourceAsStream("/goldBox.json")), list1);
         boxes.addAll(goldBoxes);
 
         //3 pope box
-        BufferedReader reader2 = new BufferedReader(new FileReader("src/main/resources/popeBox.json"));
+        //BufferedReader reader2 = new BufferedReader(new FileReader("src/main/resources/popeBox.json"));
         Type list2 = new TypeToken<ArrayList<PopeBox>>() {
         }.getType();
-        ArrayList<PopeBox> popeBoxes = gson.fromJson(reader2, list2);
+        ArrayList<PopeBox> popeBoxes = gson.fromJson(new InputStreamReader(getClass().getResourceAsStream("/popeBox.json")), list2);
         boxes.addAll(popeBoxes);
 
         //create and add the 3 Popes Favor Tile
