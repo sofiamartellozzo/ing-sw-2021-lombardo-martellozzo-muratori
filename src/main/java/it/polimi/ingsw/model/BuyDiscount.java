@@ -37,21 +37,25 @@ public class BuyDiscount implements BuyCard, Serializable {
         /* take the payment for the card, applicate the discount, then remove it from the table*/
         DevelopmentCard cardBought = boardManager.getDevelopmentCardTable().takeCard(row, column);
         ArrayList<Resource> cost = cardBought.getCost();
+        ArrayList<Resource> auxiliarCost = (ArrayList<Resource>) cost.clone();
         PersonalBoard playerBoard = player.getGameSpace();
         /*apply the discount*/
         //cost.removeAll(resourceWithDiscount); --->these are not exacly the same object, I have to remove the one by one
         for (Resource rDiscounted : resourceWithDiscount) {
-            int j = cost.size();
-            for (int i = 0; i < j; i++) {
-                Resource resource = cost.get(i);
-                if (resource.getType().equals(rDiscounted.getType()))
-                    cost.remove(resource);
+            int j = auxiliarCost.size();
+            boolean found = false;
+            for (int i = 0; (i < j) && (!found); i++) {
+                Resource resource = auxiliarCost.get(i);
+                if (resource.getType().equals(rDiscounted.getType())) {
+                    auxiliarCost.remove(resource);
+                    found=true;
+                }
                 i--;
                 j--;
             }
         }
-        if (checkBeforeBuy(cardBought, player, cost)) {
-            playerBoard.getResourceManager().removeResourcesFromBoth(cost);
+        if (checkBeforeBuy(cardBought, player, auxiliarCost)) {
+            playerBoard.getResourceManager().removeResourcesFromBoth(auxiliarCost);
             //playerBoard.removeResource(cost.get(1), new RealDepot(1,1));
             playerBoard.getCardSpaces().get(selectedCardSpace).addCard(cardBought);
         } else {
@@ -67,7 +71,7 @@ public class BuyDiscount implements BuyCard, Serializable {
         int i = 0;
         boolean find = false;
         for (Resource resource : requirements) {
-            for (int r = 0; (!resourcesOwned.isEmpty()) && (0 < resourcesOwned.size()) && (!find); r++) {
+            for (int r = 0; (!resourcesOwned.isEmpty()) && (0 < resourcesOwned.size()) && (!find) && (r < resourcesOwned.size()); r++) {
 
                 if (resourcesOwned.get(r).getType().equals(resource.getType())) {
                     resourcesOwned.remove(r);

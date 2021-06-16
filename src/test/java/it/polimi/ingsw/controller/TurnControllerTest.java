@@ -5,12 +5,16 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
+import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.view.VirtualView;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TurnControllerTest extends TestCase {
 
@@ -23,7 +27,9 @@ public class TurnControllerTest extends TestCase {
         players.put(2, new Player("B"));
         players.put(3, new Player("C"));
         BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
-        //turnController = new TurnController(players, boardManagerFactory.createBoardManager(players));
+        Map<String, VirtualView> virtualView = new HashMap<>();
+        virtualView.put("A", new VirtualView(new ClientHandler(new Socket(),"lalal")));
+        turnController = new TurnController(players, boardManagerFactory.createBoardManager(players), virtualView);
     }
 
     @After

@@ -1693,10 +1693,12 @@ public class CLI extends Observable implements ViewObserver {
         if (message.equals("YES")) {
             CNewStartMsg choice1 = new CNewStartMsg("the client choose to start a new game", username);
             sendMsg(choice1);
+            client.closeConnection();
             start();
         } else {
             CNotStartAgainMsg choice = new CNotStartAgainMsg("The client choose to not start a new game, so close all");
             sendMsg(choice);
+            client.closeConnection();
         }
     }
 

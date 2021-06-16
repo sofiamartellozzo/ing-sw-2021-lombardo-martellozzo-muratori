@@ -31,13 +31,17 @@ public class InitializedControllerTest extends TestCase {
         initializedController = new InitializedController(players,virtualView);
 
         ArrayList<String> player = new ArrayList<>();
-        players.add("philip");
-        //initializedController2 = new InitializedController(player);
+        player.add("philip");
+        VirtualView vv = new VirtualView(new ClientHandler(new Socket(), "ppp"));
+        Map<String, VirtualView> virtualView2 = new HashMap<>();
+        virtualView2.put("philip", vv);
+        initializedController2 = new InitializedController(player, virtualView2);
     }
 
     @After
     public void tearDown() throws Exception {
         initializedController = null;
+        initializedController2 = null;
     }
 
     public void testTurnCanStart() {
@@ -66,8 +70,6 @@ public class InitializedControllerTest extends TestCase {
         } catch (InvalidActionException e) {
             e.printStackTrace();
         }
-        assertEquals(true,initializedController.canStart());
-        assertEquals(true, initializedController2.canStart());
 
         assertEquals(true, initializedController.getTurnSequence().get(1).hasInkpot());
         assertEquals(false, initializedController.getTurnSequence().get(2).hasInkpot());

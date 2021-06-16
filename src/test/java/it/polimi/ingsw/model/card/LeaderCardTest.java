@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model.card;
 
+import com.google.gson.internal.LinkedTreeMap;
+import it.polimi.ingsw.controller.factory.BoardManagerFactory;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
+import it.polimi.ingsw.exception.CardSpaceException;
 import it.polimi.ingsw.exception.InvalidActionException;
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.Resource;
-import it.polimi.ingsw.model.TypeResource;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Active;
 import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.board.PersonalBoard;
@@ -19,17 +19,25 @@ import org.junit.Test;
 
 import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LeaderCardTest extends TestCase {
 
     LeaderCard leaderCard = null;
+    Player player = new Player("bob");
+    PersonalBoardFactory f = new PersonalBoardFactory();
+    PersonalBoard board = f.createGame();
+    HashMap<Integer, PlayerInterface> players = new HashMap<>();
+
+    BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
+    BoardManager boardManager = boardManagerFactory.createBoardManager(players);
 
     @Before
     public void setUp() throws Exception {
 
-        ArrayList<Object> req = new ArrayList<>();
-        req.add(new Resource(Color.PURPLE));
-        leaderCard = new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
+
+        player.setGameSpace(board);
+        leaderCard = boardManager.getLeaderCardDeck().getLeaderCardById(2);
     }
 
     @After
@@ -41,7 +49,7 @@ public class LeaderCardTest extends TestCase {
     public void testGetSpecialAbility() {
 
         SpecialAbility special = leaderCard.getSpecialAbility();
-        assertEquals(TypeAbility.SPECIAL_DEPOT, special.getTypeAbility());
+        assertEquals(TypeAbility.ADDITIONAL_POWER, special.getTypeAbility());
     }
 
     @Test
@@ -49,38 +57,36 @@ public class LeaderCardTest extends TestCase {
 
         ArrayList<Object> ob = new ArrayList<>();
         ob = leaderCard.getRequirements();
-        Resource r = (Resource) ob.get(0);
-        assertEquals(TypeResource.SERVANT,r.getType());
+        Object[] keys = ((LinkedTreeMap) ob.get(0)).keySet().toArray();
+        Object[] values = ((LinkedTreeMap) ob.get(0)).values().toArray();
+        //assertEquals(TypeResource.SERVANT,r.getType());
+        assertEquals(Color.PURPLE.toString(), values[0].toString());
+        assertEquals(2.0, values[1]);
     }
 
     @Test
-    public void testActiveCard() throws InvalidActionException {
+    public void testActiveCard() throws InvalidActionException, CardSpaceException {
 
-        Player player = new Player("bob");
+
+
+        player.getGameSpace().getCardSpace(0).addCard(boardManager.getDevelopmentCardTable().takeCard(2,3));
+        player.getGameSpace().getCardSpace(0).addCard(boardManager.getDevelopmentCardTable().takeCard(1,3));
         leaderCard.activeCard(player);
         assertEquals(new Active().toString(), leaderCard.getState().toString());
     }
 
     @Test
-    public void testTestActiveCard() throws InvalidActionException {
+    public void testTestActiveCard()  {
 
-        Player player = new Player("bob");
-        Resource res = new Resource(Color.PURPLE);
-
-        PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
-        PersonalBoard personalBoard = personalBoardFactory.createGame();
-        player.setGameSpace(personalBoard);
-        ArrayList<Resource> array = new ArrayList<>();
-        array.add(new Resource(Color.BLUE));
-
-        player.getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.PURPLE),1);
-        player.getGameSpace().getResourceManager().getWarehouse().addResource(new Resource(Color.YELLOW),2);
-        player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);
-
-        String where = "Warehouse";
-        //leaderCard.activeCard(res,player);
-
-        assertEquals(leaderCard.getState().toString(),"Active");
+        leaderCard = boardManager.getLeaderCardDeck().getLeaderCardById(1);
+        boolean thrown = false;
+        Player p = null;
+        try {
+            leaderCard.activeCard(p);
+        } catch (InvalidActionException e) {
+            thrown = true;
+        }
+        assertEquals(true, thrown);
     }
 
     @Test
@@ -91,9 +97,11 @@ public class LeaderCardTest extends TestCase {
     }
 
     @Test
-    public void testGetVictoryPoints() throws InvalidActionException {
+    public void testGetVictoryPoints() throws InvalidActionException, CardSpaceException {
 
-        leaderCard.activeCard(new Player("gimmi"));
-        assertEquals(leaderCard.getVictoryPoints(),2);
+        player.getGameSpace().getCardSpace(0).addCard(boardManager.getDevelopmentCardTable().takeCard(2,3));
+        player.getGameSpace().getCardSpace(0).addCard(boardManager.getDevelopmentCardTable().takeCard(1,3));
+        leaderCard.activeCard(player);
+        assertEquals(leaderCard.getVictoryPoints(),4);
     }
 }

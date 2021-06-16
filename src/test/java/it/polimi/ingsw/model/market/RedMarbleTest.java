@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.TypeResource;
 import it.polimi.ingsw.model.board.PersonalBoard;
 import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import junit.framework.TestCase;
@@ -37,12 +38,12 @@ public class RedMarbleTest extends TestCase {
         Player player = new Player("sofia");
         PersonalBoard personalBoard = personalBoardFactory.createGame();
         player.setGameSpace(personalBoard);
+        TypeResource fromMarket = null;
         try {
-            rm.choose(player);
+            fromMarket= rm.choose(player);
         } catch (InvalidActionException e) {
             e.printStackTrace();
         }
-        //afret active this method his position should be one
-        assertEquals(1, player.getGameSpace().getFaithTrack().getPositionFaithMarker());
+       assertEquals(TypeResource.FAITHMARKER, fromMarket);
     }
 }

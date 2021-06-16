@@ -6,7 +6,7 @@
     "requirements": [
       {
         "color": "GREEN",
-        "level": 1
+        "level": 2
       }
     ],
     "cardID": 1,
@@ -19,7 +19,7 @@
     "requirements": [
       {
         "color": "PURPLE",
-        "level": 1
+        "level": 2
       }
     ],
 
@@ -34,7 +34,7 @@
     "requirements": [
       {
         "color": "BLUE",
-        "level": 1
+        "level": 2
       }
     ],
 
@@ -49,7 +49,7 @@
     "requirements": [
       {
         "color": "YELLOW",
-        "level": 1
+        "level": 2
       }
     ],
     "cardID": 4,
@@ -63,6 +63,14 @@
     "requirements": [
       {
         "color": "PURPLE",
+        "level": 0
+      },
+      {
+        "color": "PURPLE",
+        "level": 0
+      },
+      {
+        "color": "GREEN",
         "level": 0
       }
     ],
@@ -78,6 +86,14 @@
       {
         "color": "BLUE",
         "level": 0
+      },
+      {
+        "color": "BLUE",
+        "level": 0
+      },
+      {
+        "color": "YELLOW",
+        "level": 0
       }
     ],
     "cardID": 6,
@@ -90,6 +106,14 @@
     "requirements": [
       {
         "color": "GREEN",
+        "level": 0
+      },
+      {
+        "color": "GREEN",
+        "level": 0
+      },
+      {
+        "color": "PURPLE",
         "level": 0
       }
     ],
@@ -105,6 +129,14 @@
       {
         "color": "YELLOW",
         "level": 0
+      },
+      {
+        "color": "YELLOW",
+        "level": 0
+      },
+      {
+        "color": "BLUE",
+        "level": 0
       }
     ],
     "cardID": 8,
@@ -116,6 +148,22 @@
   ,
     "specialResource": "COIN",
     "requirements": [
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
+      {
+        "color": "BLUE",
+        "typeResource": "SHIELD"
+      },
       {
         "color": "BLUE",
         "typeResource": "SHIELD"
@@ -133,6 +181,22 @@
       {
         "color": "PURPLE",
         "typeResource": "SERVANT"
+      },
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
+      },
+      {
+        "color": "PURPLE",
+        "typeResource": "SERVANT"
       }
     ],
     "cardID": 10,
@@ -144,6 +208,22 @@
   ,
     "specialResource": "SERVANT",
     "requirements": [
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
+      {
+        "color": "GREY",
+        "typeResource": "STONE"
+      },
       {
         "color": "GREY",
         "typeResource": "STONE"
@@ -161,6 +241,22 @@
       {
         "color": "YELLOW",
         "typeResource": "COIN"
+      },
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
+      },
+      {
+        "color": "YELLOW",
+        "typeResource": "COIN"
       }
     ],
     "cardID": 12,
@@ -174,6 +270,10 @@
     "requirements": [
       {
         "color": "YELLOW",
+        "level": 0
+      },
+      {
+        "color": "PURPLE",
         "level": 0
       }
     ],
@@ -189,6 +289,10 @@
       {
         "color": "GREEN",
         "level": 0
+      },
+      {
+        "color": "BLUE",
+        "level": 0
       }
     ],
     "cardID": 14,
@@ -203,6 +307,10 @@
       {
         "color": "BLUE",
         "level": 0
+      },
+      {
+        "color": "PURPLE",
+        "level": 0
       }
     ],
     "cardID": 15,
@@ -216,6 +324,10 @@
     "requirements": [
       {
         "color": "YELLOW",
+        "level": 0
+      },
+      {
+        "color": "GREEN",
         "level": 0
       }
     ],

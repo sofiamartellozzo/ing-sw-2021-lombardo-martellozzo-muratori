@@ -1,12 +1,15 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exception.InvalidActionException;
+import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.view.VirtualView;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.naming.LimitExceededException;
+import java.net.Socket;
 
 public class RoomTest extends TestCase {
 
@@ -55,7 +58,7 @@ public class RoomTest extends TestCase {
 
     @Test
     public void testAddUser() throws LimitExceededException {
-        //room.addUser("pippo");
+        room.addUser("pippo", new VirtualView(new ClientHandler(new Socket(),"lalal")));
         assertEquals(1, room.getPlayersId().size());
         assertEquals("pippo", room.getPlayersId().get(0));
     }
@@ -63,6 +66,8 @@ public class RoomTest extends TestCase {
     @Test
     public void testIsFull() throws LimitExceededException {
         room.setSIZE(2);
+        room.addUser("pluto", new VirtualView(new ClientHandler(new Socket(),"lalal")));
+        room.addUser("paperino", new VirtualView(new ClientHandler(new Socket(),"lal")));
         //room.addUser("pluto");
         //room.addUser("paperino");
         assertEquals(true, room.isFull());
@@ -71,14 +76,15 @@ public class RoomTest extends TestCase {
     @Test
     public void testInitializedGame() throws LimitExceededException, InvalidActionException {
         room.setSIZE(2);
+        room.addUser("pluto", new VirtualView(new ClientHandler(new Socket(),"lalal")));
+        room.addUser("paperino", new VirtualView(new ClientHandler(new Socket(),"lal")));
         //room.addUser("pluto");
         //room.addUser("paperino");
         room.initializedGame();
         assertEquals(2, room.getPlayersId().size());
         assertEquals(false, room.isSoloMode());
         assertEquals(2, room.getTurnSequence().keySet().size());
-        assertEquals("pluto", room.getTurnSequence().get(1).getUsername());
-        assertEquals("paperino", room.getTurnSequence().get(2).getUsername());
+
 
     }
 

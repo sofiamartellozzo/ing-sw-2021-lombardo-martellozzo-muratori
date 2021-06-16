@@ -70,15 +70,15 @@ public class BuyDiscountTest extends TestCase {
         player1.getGameSpace().getResourceManager().addResourcesToStrongBox(cost);
         player1.setBuyCard(buyDiscount);
         try{
-            buyDiscount.buyCard(1,1,boardManager,player1,1);
+            buyDiscount.buyCard(2,0,boardManager,player1,1);
         }catch (InvalidActionException | CardSpaceException e){
             thrown = true;
         }
         assertTrue(!thrown);
-        //check if the card has been bought
+        //check if the card has been bought, it shouldn't
         assertEquals(1, player1.getGameSpace().getCardSpaces().get(1).getNumberOfCards());
         //check if this class applyed the discount so in his Wharehouse there will still be the blu resource but only that
-        assertEquals(Color.BLUE, player1.getGameSpace().getResourceManager().getResources().get(0).getColor());
+        assertEquals(Color.PURPLE, player1.getGameSpace().getResourceManager().getResources().get(0).getColor());
         assertEquals(1, player1.getGameSpace().getResourceManager().getResources().size()); //una sola perchè all'inizio ne aveva due
     }
 

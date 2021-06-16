@@ -70,7 +70,7 @@ public class ProductionPowerControllerTest extends TestCase {
 
     public void testReceiveMsg_CActivateProductionPowerResponseMsg_CardSpace1() {
         assertTrue(productionPowerController.getReceivedResources().isEmpty());
-        CActivateProductionPowerResponseMsg msg = new CActivateProductionPowerResponseMsg("Activation Production Power",player.getUsername(),"Warehouse",1);
+        CActivateProductionPowerResponseMsg msg = new CActivateProductionPowerResponseMsg("Activation Production Power",player.getUsername(),"warehouse",1);
         productionPowerController.receiveMsg(msg);
         ArrayList<ArrayList<TypeResource>> expectedWarehouse = new ArrayList<>();
         for(int i=0;i<3;i++){
@@ -101,7 +101,7 @@ public class ProductionPowerControllerTest extends TestCase {
 
     public void testReceiveMsg_CActivateProductionPowerResponseMsg_StandardPP() {
         assertTrue(productionPowerController.getReceivedResources().isEmpty());
-        CActivateProductionPowerResponseMsg msg = new CActivateProductionPowerResponseMsg("Activation Production Power",player.getUsername(),"Warehouse",0);
+        CActivateProductionPowerResponseMsg msg = new CActivateProductionPowerResponseMsg("Activation Production Power",player.getUsername(),"warehouse",0);
         ArrayList<TypeResource> resourcesToPay = new ArrayList<>();
         resourcesToPay.add(TypeResource.COIN);
         resourcesToPay.add(TypeResource.SHIELD);

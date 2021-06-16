@@ -1,12 +1,15 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.message.controllerMsg.CConnectionRequestMsg;
+import it.polimi.ingsw.network.server.ClientHandler;
+import it.polimi.ingsw.view.VirtualView;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class LobbyTest extends TestCase {
@@ -38,6 +41,7 @@ public class LobbyTest extends TestCase {
         byte[] ipAddr = new byte[]{127, 0, 0, 1};
         InetAddress addr = InetAddress.getByAddress(ipAddr);
         CConnectionRequestMsg msg = new CConnectionRequestMsg("first connection request", addr, 4444, "patrizio", "1" );
+        msg.setVirtualView(new VirtualView(new ClientHandler(new Socket(),"lalal")));
         lobby.receiveMsg(msg);
         assertEquals(1, lobby.getUsersAssigned().size());
         assertEquals("patrizio", lobby.getUsersAssigned().get(0));

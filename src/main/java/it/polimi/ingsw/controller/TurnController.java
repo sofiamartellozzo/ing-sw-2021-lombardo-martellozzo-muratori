@@ -248,6 +248,7 @@ public class TurnController extends Observable implements ControllerObserver {
             }
         } else {
             singlePlayer.endTurn();
+            //now play Lorenzo
             ActionToken actionTokenActivated = null;
             try {
 
