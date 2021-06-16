@@ -3,13 +3,16 @@ package it.polimi.ingsw.model.card;
 import it.polimi.ingsw.controller.factory.DevelopmentCardFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.utility.TableCardCopy;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.model.board.CardSpace;
+
+/**
+ * table of cards composed by 12 LeaderCard Deck
+ */
 
 public class DevelopmentCardTable implements Serializable {
 

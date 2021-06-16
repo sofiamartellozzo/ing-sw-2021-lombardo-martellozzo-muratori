@@ -3,7 +3,7 @@ package it.polimi.ingsw.view.CLI.display;
 import it.polimi.ingsw.utility.AnsiColors;
 
 /**
- * class to write the message on the CLI
+ * class to write the messages on the CLI
  */
 public class WriteMessageDisplay {
 
@@ -75,7 +75,8 @@ public class WriteMessageDisplay {
     }
 
     /**
-     * waiting msg when the player has to wait that other player
+     * waiting msg when the player has to wait other player's actions
+     * for example in the initialization when a player has to wait that other players choose the resources
      */
     public static void writeWaitOtherPlayers(){
         System.out.println(" " +AnsiColors.BLUE_BOLD+
@@ -87,7 +88,7 @@ public class WriteMessageDisplay {
                 "                             "+AnsiColors.RESET);
     }
     /**
-     * method that shows " END GAME" to say that the play is over!
+     * method that shows " END GAME" to say that the game is over!
      */
     public static void endGame(){
 
@@ -101,7 +102,7 @@ public class WriteMessageDisplay {
     }
 
     /**
-     * method that shows the word "WINNER"
+     * method that shows the word "WINNER", to the actual winner of the game
      */
     public static void declareWinner(){
 
@@ -116,7 +117,7 @@ public class WriteMessageDisplay {
 
 
     /**
-     * method that shows the word "LOSER"
+     * method that shows the word "LOSER" to the losers of the game
      */
     public static void declareLoser(){
         System.out.println("I'M SORRY, YOU'RE A " +AnsiColors.RED_BOLD+
@@ -128,8 +129,13 @@ public class WriteMessageDisplay {
                 "                      "+AnsiColors.RED_BOLD);
     }
 
+
+    /**
+     * msg that shows the final ranking of the game
+     * basing on player's victory points
+     */
     public static void showRanking(){
-        System.out.println(" HERE IS THE FINAL RANKING OF THE GAME: ");
-        System.out.println(" ►►►►►►►►►►►►►►►►");
+        System.out.println(AnsiColors.BLUE_BOLD+" HERE IS THE FINAL RANKING OF THE GAME: ");
+        System.out.println(" ►►►►►►►►►►►►►►►►"+AnsiColors.RESET);
     }
 }

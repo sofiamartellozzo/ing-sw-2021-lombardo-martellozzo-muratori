@@ -7,7 +7,7 @@ import java.util.List;
 
 
 /**
- * this class has to notify all the Listener attached
+ * this class is used to attachObservers (VIEW, CONTROLLER), detachObservers (VIEW, CONTROLLER) and notify them
  */
 public abstract class Observable {
 
@@ -21,7 +21,7 @@ public abstract class Observable {
 
     /**
      *
-     * @param observerType
+     * @param observerType -> type of observer that has to be notified
      * @param msg
      */
     public synchronized void notifyAllObserver(ObserverType observerType, GameMsg msg){

@@ -6,6 +6,7 @@ import it.polimi.ingsw.utility.AnsiColors;
 
 /**
  * this class show to the player his faith Track with the updated position of his FaithMarker on it
+ * (if is in Solo Game it shows the position of Lorenzo's faith marker too)
  */
 
 public class FaithTrackDisplay {
@@ -23,7 +24,6 @@ public class FaithTrackDisplay {
     }
 
     public void showFaithTrack() {
-        //public static void main(String[] args) {
 
         System.out.println(AnsiColors.BLUE_BOLD + "HERE IS YOUR FAITHTRACK: " + AnsiColors.RESET);
         System.out.println("LEGEND:");

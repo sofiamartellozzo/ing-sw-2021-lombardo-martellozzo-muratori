@@ -199,7 +199,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
-        //send to Turn Controller
+        //send to Turn Controller (creating Action Controller)
         if (msg.getUsername().equals(username)) {
             notifyAllObserver(ObserverType.CONTROLLER, msg);
         }
@@ -752,7 +752,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
                     lobby.startInitializationOfTheGame(username);
                 } else if(reconnected){
                     System.out.println("RESUME GAME IN VV");
-                    CResumeGameMsg msg1 = new CResumeGameMsg("resume a game that was waoiting a reconnection", username);
+                    CResumeGameMsg msg1 = new CResumeGameMsg("resume a game that was waiting a reconnection", username);
                     notifyAllObserver(ObserverType.CONTROLLER, msg1);
                 }
             } finally {

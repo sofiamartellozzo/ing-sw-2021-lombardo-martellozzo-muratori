@@ -22,6 +22,11 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
+/**
+ * ths class handles the initialization scene, so the starting part in which the player has to choose two Leader Cards
+ * and a resource (if is the second player)/ two resources (if is the fourth player)
+ */
+
 public class InitializeSceneController {
     private GUI gui;
 

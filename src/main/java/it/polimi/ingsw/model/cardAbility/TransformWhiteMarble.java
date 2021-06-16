@@ -10,9 +10,10 @@ import java.io.Serializable;
 
 
 /**
- * GIANLUCA
- * It allows to the Player to take one Resource (indicated by the Special Ability)
- * for each White Marble he draws
+ * It allows the Player to take one Resource (indicated by the Special Ability)
+ * for each White Marble he draws from the market
+ * If are activated two abilities of TransformWhiteMarble the player, foreach white marble taken from the market,
+ * will have to choose from the two types specified
 * */
 
 public class TransformWhiteMarble extends SpecialAbility implements Serializable {

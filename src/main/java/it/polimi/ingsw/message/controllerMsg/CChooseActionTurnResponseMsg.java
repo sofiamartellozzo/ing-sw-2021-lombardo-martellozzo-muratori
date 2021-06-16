@@ -8,7 +8,8 @@ import java.util.ArrayList;
 /**
  * CLI ---> VV ---> TurnController
  *
- * msg of response by the client with which action he want to do in the turn
+ * msg of response by the client with which action he wants to do in the turn
+ * possible actions: BUY_CARD, ACTIVE_LEADER_CARD, DISCARD_LEADER_CARD, BUY_FROM_MARKET, SEE_OTHER_PLAYER, MOVE_RESOURCE, ACTIVE_PRODUCTION_POWER, END_TURN(when possible)
  */
 public class CChooseActionTurnResponseMsg extends ControllerGameMsg{
     private String username;

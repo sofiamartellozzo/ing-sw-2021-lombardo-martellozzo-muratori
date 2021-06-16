@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * GIANLUCA
- * TEST PASSED
- * It represents the Vatican Section.
+ * It represents the Vatican Section, a section composed by some simpleBoxes, some goldBoxes and only one popeBox (the last one)
  */
 public class VaticanSection implements Serializable {
     private final int whichVaticanSection;
@@ -27,7 +25,7 @@ public class VaticanSection implements Serializable {
 
     /**
      * Getter Method
-     * @return
+     * @return --> number corresponding to which vatican section (1-2-3)
      */
     public int getWhichVaticanSection() {
         return whichVaticanSection;
@@ -35,7 +33,7 @@ public class VaticanSection implements Serializable {
 
     /**
      * Getter Method
-     * @return
+     * @return --> list of boxes in that vatican section
      */
     public ArrayList<Box> getBoxes() {
         return boxes;
@@ -43,7 +41,7 @@ public class VaticanSection implements Serializable {
 
     /**
      * Getter Method
-     * @return
+     * @return --> pope favor tile of a specific vatican section
      */
     public PopesFavorTile getPopesFavorTile() {
         return popesFavorTile;

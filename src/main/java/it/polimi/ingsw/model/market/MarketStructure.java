@@ -7,17 +7,20 @@ import it.polimi.ingsw.model.TypeResource;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/*
- * SOFIA
- *
- * SINGLETON: istanziated only once, it's unique*/
+/**
+ * this class represents the structure of the market (a matrix of 3x4 Marbles)
+ * plus the slide marble
+ */
 public class MarketStructure implements Serializable {
 
     private Marble[][] structure; //row,column
     private Marble slide;
 
-
-    /*Constructor*/
+    /**
+     * Constructor of the class
+     * @param structure
+     * @param slide
+     */
     public MarketStructure(Marble[][] structure, Marble slide) {
         this.structure = structure;
         this.slide = slide;

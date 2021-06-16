@@ -3,9 +3,9 @@ package it.polimi.ingsw.model.board;
 import java.io.Serializable;
 
 /**
- * GIANLUCA
- * TEST PASSED
  * It represents the Pope's Favor Tile.
+ * A small card that can be activated or not, if it is active you earn the victory points of that pope,
+ * otherwise you discard them
  */
 public class PopesFavorTile implements Serializable {
     private final int whichVaticanSection;

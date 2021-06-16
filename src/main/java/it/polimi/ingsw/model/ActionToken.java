@@ -8,13 +8,12 @@ import it.polimi.ingsw.model.actionAbility.PlusUneAndShuffleActionAbility;
 
 import java.io.Serializable;
 
-/*
- * SOFI*/
-
 /**
  * class of cards used in individual mode game
- * them are stored in the Solo Personal Bord
- * (=the board specific for the single player)
+ * they are stored in the Solo Personal Bord
+ * (= the board specific for the single player)
+ * they represents the "action made by lorenzo at the end of each turn"
+ * There are three types of ActionToken:  CARD ACTION ABILITY, PLUS TWO BLACK CROSS ACTION ABILITY, PLUS ONE AND SHUFFLE ACTION ABILITY
  */
 
 public class ActionToken implements Serializable {
@@ -24,7 +23,11 @@ public class ActionToken implements Serializable {
 
     private int cardID;
 
-    /* constructor */
+    /**
+     * constructor of the class
+     * @param ability --> specific for an action token
+     * @param cardID --> identifier fro each token
+     */
     public ActionToken(ActionAbility ability, int cardID) {
         this.ability = ability;
         this.cardID = cardID;

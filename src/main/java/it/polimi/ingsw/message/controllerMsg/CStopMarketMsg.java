@@ -4,6 +4,7 @@ import it.polimi.ingsw.message.ControllerObserver;
 import it.polimi.ingsw.model.TurnAction;
 
 /**
+ * CLI (Market CLI)/GUI --> VV --> Action Controller
  * msg sent from CLI (MarketCLI) to the Action Controller to notify that a client stopped buying from the market
  */
 public class CStopMarketMsg extends ControllerGameMsg {

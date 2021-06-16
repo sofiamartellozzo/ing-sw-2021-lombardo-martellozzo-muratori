@@ -26,8 +26,10 @@ import java.util.Map;
 
 /**
  * this class is a part of the Controller that manages all the actions of the game,
- * so it sends to the client the msgs containing the possible choices
- * and receives/manages the client responses
+ * so it sends to the client the messages containing the possible ACTIONS
+ * the possible actions of a game are BUY FROM MARKET,BUY DEVELOPMENT CARD,ACTIVE LEADER CARD, REMOVE LEADER CARD,MOVE RESOURCE
+ *                                    ACTIVE PRODUCTION POWER, SEE OTHER PLAYER, END TURN (when possible)
+ * after receiving the client answer, this controller manages all the possible responses
  */
 public class ActionController extends Observable implements ControllerObserver {
 
@@ -55,10 +57,10 @@ public class ActionController extends Observable implements ControllerObserver {
 
     /**
      * constructor of the class used with Player so in Multi Player Mode
-     * @param player
+     * @param player to manage
      * @param turn
      * @param boardManager
-     * @param virtualView
+     * @param virtualView of the players
      */
     public ActionController(Player player, PlayerTurn turn, BoardManager boardManager, Map<String, VirtualView> virtualView) {
         this.player = (Player) player;
@@ -72,11 +74,11 @@ public class ActionController extends Observable implements ControllerObserver {
     }
 
     /**
-     * constructor of the class used with SoloPlayer so in Single Player Mode
-     * @param player
+     * constructor of the class, override the previous one, used in Single Player Mode
+     * @param player (SOLO Player) to manage
      * @param turn
      * @param boardManager
-     * @param virtualView
+     * @param virtualView of the Solo Player
      */
     public ActionController(SoloPlayer player, SoloPlayerTurn turn, BoardManager boardManager, Map<String, VirtualView> virtualView) {
         this.player = (SoloPlayer) player;
@@ -91,8 +93,8 @@ public class ActionController extends Observable implements ControllerObserver {
 
     /**
      * this method returns a list of playerInterfaces that represents all the players of the game
-     * @param players
-     * @return
+     * @param players of the game
+     * @return -> username of all players
      */
     private List<String> getPlayerAsList(Map<Integer, PlayerInterface> players) {
         List<String> p = new ArrayList<>();
@@ -198,7 +200,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
     /**
      * returns an arrayList of integer representing the Leader cards that a player can discard
-     * @return
+     * @return -> list of cards (integers) that can be discarded
      */
     private ArrayList<Integer> cardAbleForPlayer() {
         ArrayList<Integer> possibleCardToBeDiscarded = new ArrayList<>();
@@ -219,7 +221,7 @@ public class ActionController extends Observable implements ControllerObserver {
     /**
      * returns an arrayList of integers representing the Leader cards that a player can activate, so foreach card
      * we have to control that the player has all the requirements
-     * @return
+     * @return -> list of activatable cards
      */
     public ArrayList<Integer> cardActivatableForPlayer() {
         //The result
@@ -309,7 +311,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
     /**
      * returns an array of strings containing all the usernames of the players that aren't playing in that moment
-     * @return
+     * @return list of Players' usernames that aren't playing
      */
     private ArrayList<String> getNotPlaying() {
         ArrayList<String> players = new ArrayList<>();
@@ -362,7 +364,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CChangeActionTurnMsg msg) {
-      //NOT HERE
+      //NOT HERE, implemented in Turn Controller
     }
 
     /**
@@ -496,7 +498,6 @@ public class ActionController extends Observable implements ControllerObserver {
             }
         }
     }
-
 
     /**
      * this msg is received when the player has finished storing the resources taken from the market
@@ -674,63 +675,64 @@ public class ActionController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CResumeGameMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
     @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Virtual View
     }
 
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
-        //not here, in (Lobby)
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CVStartInitializationMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
-
+        //NOT IMPLEMENTED HERE, (VV) but in Lobby
     }
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CNewStartMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
-        //NOT HERE
+        //NOT HERE, implemented in Turn Controller
     }
 
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-        //in Lobby (Room)
+        //NOT HERE, implemented in Lobby (Room)
+
     }
     /*---------------------------------------------------------------------------------------------------------------------*/
 
@@ -753,7 +755,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
     /**
      * remove an action from the possible actions that a player can do
-     * @param action
+     * @param action that has to be removed
      */
     private void removeAction(TurnAction action) {
         if (!isSolo) {

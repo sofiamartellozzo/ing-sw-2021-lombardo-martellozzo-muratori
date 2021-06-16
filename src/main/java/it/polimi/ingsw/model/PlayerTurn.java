@@ -5,14 +5,20 @@ import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.util.ArrayList;
 
-/*
- * SOFI*/
-
+/**
+ * this class represents a turn of the game, so it controls the current player and the actions
+ * that this player can do in that turn
+ */
 public class PlayerTurn implements PlayerTurnInterface {
     private Player currentPlayer;
     private BoardManager boardManager;
     private ArrayList<TurnAction> availableAction;
 
+    /**
+     * constructor of the class
+     * @param currentPlayer --> player that is playing
+     * @param boardManager --> contains all the dates
+     */
     public PlayerTurn(Player currentPlayer, BoardManager boardManager) {
         this.currentPlayer = currentPlayer;
         this.boardManager = boardManager;
@@ -56,7 +62,7 @@ public class PlayerTurn implements PlayerTurnInterface {
     }
 
     /**
-     * method called to add an action
+     * method called to add an action to the possibles action of the turn
      * @param actionToAdd
      */
     @Override

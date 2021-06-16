@@ -6,11 +6,10 @@ import it.polimi.ingsw.model.Resource;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/* ILA */
-
 /**
- * this special card created with the AdditionalPower, will create a new type of card,
- * in which the player receive one faithMarker points and chooses the resource he wants
+ * this special card is created with the AdditionalPower (ability of a leader Card),
+ * this class will create a new type of card,
+ * in which the player receives one faithMarker point and chooses the resource he wants to store
  */
 public class SpecialCard implements Serializable {
 

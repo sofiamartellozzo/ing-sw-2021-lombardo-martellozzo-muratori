@@ -8,9 +8,9 @@ import it.polimi.ingsw.model.card.DevelopmentCard;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/*
-* SOFI*/
-
+/**
+ * this class represents the generic action of buying a card from the Dev Table (without discounts)
+ */
 public class Buy implements BuyCard, Serializable {
     @Override
     public void buyCard(int row, int column, BoardManager boardManager, Player player, int selectedCardSpace) throws InvalidActionException, CardSpaceException {
@@ -36,7 +36,12 @@ public class Buy implements BuyCard, Serializable {
     }
 
 
-
+    /**
+     * this method checks if the players has the resources to buy a specific card
+     * @param card --> that the player wants to buy
+     * @param player --> current of the turn
+     * @return true --> the player has the resources
+     */
     private boolean checkBeforeBuy(DevelopmentCard card, Player player){
         ArrayList<Resource> requirements = new ArrayList<>();
         ArrayList<Resource> resourcesOwned = new ArrayList<>();

@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.TypeResource;
 
 /**
- * CLI --->  VV , InitializedController or TurnController
+ * CLI --->  VV --> InitializedController or TurnController
  *
  * this msg is created by the cli when the player chose the resource
  * and the depot where to store it, then send it back to the controller to change the view

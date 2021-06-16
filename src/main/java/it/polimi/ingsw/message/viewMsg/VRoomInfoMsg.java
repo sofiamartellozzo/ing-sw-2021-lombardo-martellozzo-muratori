@@ -4,6 +4,10 @@ import it.polimi.ingsw.message.ViewObserver;
 
 import java.util.ArrayList;
 
+/**
+ * Lobby --> VV --> CLI/GUI
+ * contains the information about the ROOM so its ID, the size, and the actual number of players
+ */
 public class VRoomInfoMsg extends ViewGameMsg{
     private ArrayList<String> playersId;
     private String roomId;

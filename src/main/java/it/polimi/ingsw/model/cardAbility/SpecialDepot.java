@@ -10,10 +10,8 @@ import java.io.Serializable;
 
 
 /**
- * GIANLUCA
- * TEST PASSED
  * It creates a Special Depot in which the Player can insert
- * maximum two Resources (indicated by the "type" attribute
+ * maximum two Resources (indicated by the "type" attribute)
  * of the SpecialAbility abstract class
  */
 

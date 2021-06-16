@@ -7,23 +7,24 @@ import it.polimi.ingsw.model.SoloPlayer;
 
 import java.io.Serializable;
 
-/*
- * SOFI*/
-
 /**
- * One type of the ability that do the remove of the card
+ * (In the solo Player)
+ * An action ability that removes two cards of a specific color from the Dev Card Table
  */
 
 public class CardActionAbility implements ActionAbility, Serializable {
     private Color color;
 
-    /* constructor whit the color of the card to revome */
+    /**
+     * constructor of the class with the color of the cards that will be removed
+     * @param color
+     */
     public CardActionAbility(Color color) {
         this.color = color;
     }
 
     /**
-     * method called when take the Action Token with this ability
+     * method called when is taken an Action Token with this ability
      */
     public void activeAbility(BoardManager boardManager, SoloPlayer player) throws InvalidActionException {
         /* remove two card of this.color */

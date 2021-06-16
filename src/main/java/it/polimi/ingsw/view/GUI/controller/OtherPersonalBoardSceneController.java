@@ -22,6 +22,11 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * this class manages the case in which the player wants to see the personal board of another player,
+ * so it handles the scene of other's personal boards
+ */
+
 public class OtherPersonalBoardSceneController {
     private GUI gui;
     @FXML

@@ -21,6 +21,11 @@ import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
 
+/**
+ * this class handles the scene of the table of Development cards,
+ * the table is composed by 3 rows and 4 columns, in each position there is a deck of 4 development cards
+ * In the case that a player can't afford a card, he will visualize an error message
+ */
 public class DevCardTableSceneController {
     private GUI gui;
 

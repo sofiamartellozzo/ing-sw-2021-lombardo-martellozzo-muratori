@@ -5,10 +5,6 @@ import it.polimi.ingsw.model.Resource;
 
 import java.io.Serializable;
 
-/*
- * SOFIA
- * */
-
 /**
  * Represents the Faith Marker within the FaithTrack
  * The "position" attribute indicates in which box of the FaithTrack the player is.

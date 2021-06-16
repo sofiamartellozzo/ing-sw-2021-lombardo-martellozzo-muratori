@@ -6,16 +6,15 @@ import it.polimi.ingsw.model.*;
 import java.io.Serializable;
 
 /**
- * GIANLUCA
- * TEST PASSED
  * It refers to the ability of the Discount when the relative Player
  * buy a Development Card
+ * so with this ability the player will pay 1 resource less of the type of resource specified by the card
  */
 
 public class Discount extends SpecialAbility implements Serializable {
     /**
      * Constructor
-     * @param resource
+     * @param resource --> resource that will be discounted
      */
     public Discount(Resource resource) {
         super(resource, TypeAbility.DISCOUNT);

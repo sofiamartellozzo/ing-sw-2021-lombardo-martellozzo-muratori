@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.PlayerInterface;
 
 /**
  * TurnController ---> VV ---> CLI / GUI
+ *
+ * send to let the client choose which player's situation he wants to see
  */
 public class VAnotherPlayerInfoMsg extends ViewGameMsg{
     private PlayerInterface player;

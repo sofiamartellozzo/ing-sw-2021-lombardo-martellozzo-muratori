@@ -9,10 +9,9 @@ import it.polimi.ingsw.model.board.resourceManagement.ResourceManager;
 import java.io.Serializable;
 import java.util.*;
 
-/*
-* SOFI*/
 /**
- * this class is the same as the Personal Board but for the Solo Game
+ * this class is the same as the Personal Board but for the Solo Game,
+ * so as a difference it contains the Lorenzo Faith Marker
  */
     public class SoloPersonalBoard extends PersonalBoard implements Serializable {
 

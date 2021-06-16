@@ -5,7 +5,9 @@ import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 import it.polimi.ingsw.model.board.FaithTrack;
 
 /**
- * after something in the faithTrack changes (for examples positions or Popes Favor Tiles)
+ * Action Controller, PPController, Turn Controller --> VV -->  CLI /GUI
+ *
+ * update after something in the faithTrack changes (for examples positions or Popes Favor Tiles)
  */
 public class VUpdateFaithTrackMsg extends ViewGameMsg {
 

@@ -16,8 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * this class is the part of the controller that arraing the start of the game, and set the turn sequence
- * it is specific for a single room, to manage
+ * this class is the part of the controller that manages the start of the game,
+ * deals with next players' turns and checks if is the end of a game (creating EndGameController)
+ * It sets the turn sequence of a game
+ * Turn Controller is specific for a single room
  */
 
 public class TurnController extends Observable implements ControllerObserver {
@@ -53,7 +55,12 @@ public class TurnController extends Observable implements ControllerObserver {
     /*references to Action Controller if is on*/
     private ActionController actionController;
 
-    /* Constructor of the class */
+    /**
+     * constructor of the class used in a Multi Player Mode
+     * @param players of the game
+     * @param boardManager
+     * @param virtualView
+     */
     public TurnController(HashMap<Integer, PlayerInterface> players, BoardManager boardManager, Map<String, VirtualView> virtualView) {
 
         this.turnSequence = new HashMap<>();
@@ -66,7 +73,12 @@ public class TurnController extends Observable implements ControllerObserver {
 
     }
 
-    /* override of the constructor, for the Solo Mode */
+    /**
+     * constructor of the class, override the previous one, used in Single Player Mode
+     * @param player of the game
+     * @param boardManager
+     * @param virtualView
+     */
     public TurnController(SoloPlayer player, BoardManager boardManager, Map<String, VirtualView> virtualView) {
 
         this.turnSequence = null;
@@ -120,6 +132,11 @@ public class TurnController extends Observable implements ControllerObserver {
         System.out.println("number of players " + numberOfPlayer + " index " + players.keySet());
     }
 
+    /**
+     * find a player basing on his username
+     * @param username of the player
+     * @return
+     */
     private Player getPlayerByUsername(String username) {
         if (!isSoloMode) {
             for (PlayerInterface p : turnSequence.values()) {
@@ -169,7 +186,7 @@ public class TurnController extends Observable implements ControllerObserver {
 
     /**
      * method to initialized the game, creating the spaces and setting everithing
-     * exept the Board Manager the rest is setted differently if the number of player
+     * except the Board Manager the rest is setted differently if the number of player
      * are one or more : so solo mode or multiple mode
      *
      * @throws InvalidActionException
@@ -188,7 +205,7 @@ public class TurnController extends Observable implements ControllerObserver {
      * start the game in solo mode, so create the Solo Player Turn that manage the different
      * action the player can do
      *
-     * @param player
+     * @param player of which the turn has to start
      */
     private void startSoloPlayerTurn(SoloPlayer player) throws InvalidActionException {
         printTurnCMesssage("The client \"" + player.getUsername() + "\" choose to play in Solo Mode, starting his turn");
@@ -204,7 +221,7 @@ public class TurnController extends Observable implements ControllerObserver {
      * start a new Turn of a Player in multiple mode, called any time a new turn start
      * first after setting all game, then at the end of the others player turn
      *
-     * @param player
+     * @param player of which the turn has to start
      */
     private void startPlayerTurn(Player player) {
         currentPlayer = player;
@@ -431,6 +448,10 @@ public class TurnController extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * received when a player has to change the action of the game and choose another one from the possible actions
+     * @param msg
+     */
     @Override
     public void receiveMsg(CChangeActionTurnMsg msg) {
         detachObserver(ObserverType.CONTROLLER, actionController);
@@ -511,14 +532,14 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
-        //to ACTIONCONTROLLER
+        //to ACTIONCONTROLLER (PPController)
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
-        //to ACTIONCONTROLLER
+        //to PPController (ActionC)
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
@@ -598,34 +619,34 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CNewStartMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-        //to ACTIONCONTROLLER
+        //NOT IMPLEMENTED HERE, but in Initialized Controller/ ActionC
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-        //in Lobby (Room)
+        //NOT IMPLEMENTED HERE, but in Lobby (Room)
     }
 
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
-        //not here
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
@@ -637,29 +658,28 @@ public class TurnController extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
-        //not here
+        //NOT IMPLEMENTED HERE, but in Virtual View
     }
 
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
-        //not here (Lobby)
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CVStartInitializationMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
-        //in VV
+        //NOT IMPLEMENTED HERE, (VV) but in Lobby
     }
 
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
-        //here after buyFromMarket
-        //to ACTIONCONTROLLER
+        //to Initialize Controller/ActionC
         notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 

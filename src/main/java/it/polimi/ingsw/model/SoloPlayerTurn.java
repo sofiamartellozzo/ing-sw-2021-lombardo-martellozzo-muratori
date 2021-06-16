@@ -3,12 +3,18 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.card.LeaderCard;
 
-/*
- * SOFI*/
-
+/**
+ * this class represents the turn of a single player
+ * (so he himself is always the current player of the turn, against Lorenzo)
+ */
 public class SoloPlayerTurn extends PlayerTurn {
     private SoloPlayer currentPlayer;
 
+    /**
+     * constructor of the class
+     * @param currentPlayer --> single player
+     * @param boardManager
+     */
     public SoloPlayerTurn(SoloPlayer currentPlayer, BoardManager boardManager) {
         super(currentPlayer, boardManager);
         this.currentPlayer = currentPlayer;
@@ -40,9 +46,6 @@ public class SoloPlayerTurn extends PlayerTurn {
 
     }
 
-
-
-
     @Override
     public boolean checkEndTurn(){
         if (!this.currentPlayer.isPlaying())
@@ -53,6 +56,7 @@ public class SoloPlayerTurn extends PlayerTurn {
 
     /**
      * method called at the end of each Solo Turn
+     * this method activates an action token that represents the turn of lorenzo il magnifico
      */
     public ActionToken activateActionToken() throws InvalidActionException {
         ActionToken actionTokenActivated = this.currentPlayer.getGameSpace().playActionToken(getBoardManager(), this.currentPlayer);

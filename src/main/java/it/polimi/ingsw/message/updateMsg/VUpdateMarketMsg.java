@@ -8,6 +8,11 @@ import it.polimi.ingsw.model.market.MarketStructure;
 
 import java.util.Map;
 
+/**
+ * Action Controller --> VV --> CLI/GUI
+ *
+ * after something happen in the market structure and some changes are made
+ */
 public class VUpdateMarketMsg extends ViewGameMsg {
     private String username;
     private MarketStructure marketUpdate;

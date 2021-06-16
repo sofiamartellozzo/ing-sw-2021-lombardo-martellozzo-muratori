@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * msg send by the controller (Turn Controller) to the view
  * this will ask the client to choose an action he want to make
  * from the list of action available (so that the client can make)
+ * possible actions: BUY_CARD, ACTIVE_LEADER_CARD, DISCARD_LEADER_CARD, BUY_FROM_MARKET, SEE_OTHER_PLAYER, MOVE_RESOURCE, ACTIVE_PRODUCTION_POWER, END_TURN(when possible)
  */
 public class VChooseActionTurnRequestMsg extends ViewGameMsg{
     private String username;

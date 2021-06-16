@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model;
 
-/* ILA */
-
 import java.io.Serializable;
 
 /**
- * this class creates the Cell of the resourcesSupply, composed by a specific type of resource
+ * this class creates each Cell of the resourcesSupply (that can contain only a type of resource)
+ * There are 4 Cells in the resources Supply
  */
 public class Cell implements Serializable {
 

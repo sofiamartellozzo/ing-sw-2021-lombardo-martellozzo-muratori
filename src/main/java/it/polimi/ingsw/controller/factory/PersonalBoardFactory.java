@@ -17,10 +17,15 @@ import java.util.ArrayList;
 /**
  * Pattern: FACTORY
  * this class is made to create the Personal Board of each Player
- * So the 3 Card spaces, the Resource manager containing Warehouse and Strongbox and the Faith track
+ * So the 3 Card spaces that can contain 3 cards each one, the Resource manager (containing Warehouse and Strongbox) that contains all the resources of the game
+ * and the Faith track
  */
 public class PersonalBoardFactory {
 
+    /**
+     * creates all the components of the game ant putting them together in a personal board
+     * @return -> personal board
+     */
     public PersonalBoard createGame(){
 
         //create the 3 spaces where stored the Development Card for each player
@@ -81,6 +86,10 @@ public class PersonalBoardFactory {
         return new PersonalBoard(faithTrack, resourceManager, allCardSpace);
     }
 
+    /**
+     * creates the card spaces of a personal board
+     * @return -> list of three card spaces
+     */
     public ArrayList<CardSpace> createCardSpaces(){
         CardSpace cardSpace1 = new CardSpace(1);
         CardSpace cardSpace2 = new CardSpace(2);
@@ -92,6 +101,10 @@ public class PersonalBoardFactory {
         return allCardSpace;
     }
 
+    /**
+     * creates the faith track of a personal board
+     * @return -> faith track
+     */
     public FaithTrack createFaithTrack(){
         FaithTrackFactory faithTrackFactory = new FaithTrackFactory();
         FaithTrack faithTrack = null;

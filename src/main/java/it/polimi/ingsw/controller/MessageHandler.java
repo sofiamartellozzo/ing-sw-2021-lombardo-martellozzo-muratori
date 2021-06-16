@@ -26,12 +26,19 @@ public class MessageHandler extends Observable implements Runnable{
 
     private boolean gameOn;
 
+    /**
+     * constructor of the class
+     */
     public MessageHandler() {
         this.messageQueueForVV = new ArrayList<>();
         this.messageQueueForView = new ArrayList<>();
         gameOn = true;
     }
 
+    /**
+     * this method creates the virtual view for the player given in input
+     * @param username of the player
+     */
     public void generateVV(String username){
         offlineVirtualView = new VirtualView(username, this);
         //attachObserver(ObserverType.VIEW, offlineVirtualView);

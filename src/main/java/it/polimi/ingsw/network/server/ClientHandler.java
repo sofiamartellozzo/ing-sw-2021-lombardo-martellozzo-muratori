@@ -19,10 +19,10 @@ import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 /**
- * class in the SERVER that rapresent the server, it manage the comunication
- * with a specifc client so it is istanziated for each
+ * class in the SERVER that represent the client, it manages the communication
+ * with a specific client so it is instantiated for each
  * Client that ask a connection in the specific Socket assigned
- * Whith this I can manage multiple Client contemporally
+ * With this I can manage multiple Client simultaneously
  */
 public class ClientHandler extends Observable implements Runnable {
 

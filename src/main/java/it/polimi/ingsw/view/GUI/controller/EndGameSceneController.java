@@ -9,6 +9,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+/**
+ * this class handles the end of a game
+ * it shows the outcome to the player (winner or loser) and asks him if he wants to play another game or stop there
+ */
 public class EndGameSceneController {
     private GUI gui;
 

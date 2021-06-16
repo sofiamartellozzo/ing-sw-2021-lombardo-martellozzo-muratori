@@ -25,7 +25,11 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
-
+/**
+ * this class manages the scene of the market,
+ * the market is composed by 3 rows and 4 columns with a marble in each position
+ * So this class shows the market structure and lets the player choose if he wants a row or a column of the market and which one
+ */
 public class MarketStructureSceneController {
     private GUI gui;
 

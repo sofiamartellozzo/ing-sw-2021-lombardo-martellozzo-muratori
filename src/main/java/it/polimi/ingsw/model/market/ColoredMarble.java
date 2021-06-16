@@ -8,17 +8,23 @@ import it.polimi.ingsw.model.TypeResource;
 
 import java.io.Serializable;
 
-/*
-* SOFIA*/
-
 /**
- * this class rapresent a normal Marble present in the Market
- * it is rapresented by a color, that color rapresent the Resource that relese
- * when the plyer buy from the Market
+ * this class represents a normal Marble present in the Market
+ * it is represented by a color, that color represents the Resource that will be given to the player
+ * when he buys from the Market
+ * each color refers to a specific resource:
+ * RED --> FAITH MARKER
+ * BLUE --> SHIELD
+ * GREY --> STONE
+ * YELLOW --> COIN
+ * PURPLE --> SERVANT
  */
 public class ColoredMarble extends Marble implements Serializable {
 
-    /* constructor of the class */
+    /**
+     * constructor of the class
+     * @param color --> color of the marble
+     */
     public ColoredMarble(Color color){
             this.color = color;
     }

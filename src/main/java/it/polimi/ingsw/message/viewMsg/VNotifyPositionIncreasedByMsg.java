@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * INITIALIZED CONTROLLER ---> VV ---> CLI
  *
- * msg to all users that a player (usernameIncreased) increased position in faith track
+ * msg to notify all users that a player (usernameIncreased) increased position in faith track
  */
 public class VNotifyPositionIncreasedByMsg extends ViewGameMsg{
     private final String usernameIncreased;

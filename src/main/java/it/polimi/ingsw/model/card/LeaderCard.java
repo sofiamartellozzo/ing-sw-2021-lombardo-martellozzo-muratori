@@ -20,7 +20,11 @@ import it.polimi.ingsw.utility.SmallDevelopCard;
 
 import javax.print.DocFlavor;
 
-/* ILA */
+/**
+ * Leader Card of the game
+ * each card has a special Ability, a state (Active,Inactive), some requirements to activate it,a special resource and an ID
+ * (the requirements of the card won't be taken from the Player's game)
+ */
 
 public class LeaderCard extends Card implements Serializable {
 
@@ -32,9 +36,12 @@ public class LeaderCard extends Card implements Serializable {
 
     /**
      * constructor of the class
-     * @param victoryPoints
+     * @param cardID --> id of the card
+     * @param victoryPoints  --> points of the card
+     * @param typeSpecialAbility --> special ability of it
+     * @param specialResource --> resources of the card
+     * @param requirements --> requirements to have to activate the card
      */
-
     public LeaderCard(int cardID, int victoryPoints, TypeAbility typeSpecialAbility, TypeResource specialResource, ArrayList<Object> requirements) {
 
         super(victoryPoints);
@@ -131,7 +138,10 @@ public class LeaderCard extends Card implements Serializable {
         return this.getState().returnPoints(victoryPoints);
     }
 
-
+    /**
+     * used to convert the requirements of the card in emoji
+     * @return
+     */
     public String getRequirementsForCli() {
 
         String req = "";
@@ -205,14 +215,4 @@ public class LeaderCard extends Card implements Serializable {
     public String getStatetoString(){return " state: " + AnsiColors.RED_BOLD+state + AnsiColors.RESET+"\t\t\t\t";}
     public String getVPointsToString(){return " victoryPoints: " + AnsiColors.YELLOW_BOLD+victoryPoints+AnsiColors.RESET+"\t\t\t";}
 
-    public static void main(String[] args) {
-
-        ArrayList<Object> req = new ArrayList<>();
-        req.add(new SmallDevelopCard(Color.PURPLE,0));
-        req.add(new SmallDevelopCard(Color.BLUE,1));
-        req.add(new SmallDevelopCard(Color.YELLOW,1));
-
-        LeaderCard leaderCard = new LeaderCard(2,2, TypeAbility.SPECIAL_DEPOT, TypeResource.COIN,req);
-        System.out.println(leaderCard.toString());
-    }
 }

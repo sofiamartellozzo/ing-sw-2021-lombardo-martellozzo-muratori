@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * ActionController ---> VV ---> CLI
  *
  * ask the client to choose in which depot store the resource
+ * the depot chosen can be 1,2,3 or 3,4 if a special depot is activated
  */
 public class VChooseDepotMsg extends ViewGameMsg{
 

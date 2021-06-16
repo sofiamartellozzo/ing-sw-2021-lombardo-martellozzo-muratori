@@ -15,22 +15,9 @@ public class StrongboxDisplay {
         this.strongBox = strongBox;
     }
 
-    /*public static void main(String[] args) throws InvalidActionException {
-
-        PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
-        Player player = new Player("bob");
-        PersonalBoard personalBoard = personalBoardFactory.createGame();
-        player.setGameSpace(personalBoard);
-        ArrayList<Resource> array = new ArrayList<>();
-        array.add(new Resource(Color.BLUE));
-        array.add(new Resource(Color.PURPLE));
-
-        player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);
-        player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);
-        player.getGameSpace().getResourceManager().addResourcesToStrongBox(array);*/
-
        public void displayStrongBox(){
-       //take the count of every type of resource inside the strongbox
+
+        //take the count of every type of resource inside the strongbox
         int coinInStrong = 0;
         int shieldInStrong = 0;
         int servantInStrong = 0;

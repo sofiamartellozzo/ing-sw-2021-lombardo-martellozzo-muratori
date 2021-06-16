@@ -6,6 +6,7 @@ import it.polimi.ingsw.utility.AnsiColors;
 
 /**
  * this class shows the market updated situation during the Game
+ * so the structure of the market and the slide marble
  */
 public class MarketDisplay {
 

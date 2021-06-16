@@ -9,7 +9,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * this class rapresents the client
+ * this class represents the client
  * here he will choose the type of view (CLI or GUI)
  * this info will be in the args in input
  */

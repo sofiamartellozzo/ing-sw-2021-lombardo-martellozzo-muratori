@@ -7,25 +7,22 @@ import it.polimi.ingsw.model.TypeResource;
 
 import java.io.Serializable;
 
-/*
- * SOFIA
- * */
 
 /**
- * this class rapresent the specific Marble present in the Market
- * whith the color Red, so it has a different response when choose in the market
- * it doen't return a Resource but increment the position of the faith market of one
+ * this class represents a specific Marble that is present in the Market (the RED marble)
+ * it doesn't return a Resource but increments the position of the faith marker of one
  */
 public class RedMarble extends Marble implements Serializable {
 
-    /* constructor of the class */
+    /**
+     * constructor of the class
+     */
     public RedMarble() {
         this.color = Color.RED;
     }
 
     @Override
     public TypeResource choose(Player player) throws InvalidActionException {
-        //player.getGameSpace().getFaithTrack().increasePosition();
         return TypeResource.FAITHMARKER;
     }
 }

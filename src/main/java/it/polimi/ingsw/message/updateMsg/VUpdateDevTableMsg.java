@@ -10,6 +10,11 @@ import it.polimi.ingsw.model.market.MarketStructure;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Action Controller, Turn Controller --> VV --> CLI/GUI
+ *
+ * msg used to update the table of the development cards after a player buy one or (in the solo game) Lorenzo take two fo them
+ */
 public class VUpdateDevTableMsg extends ViewGameMsg {
     private String username;
     private int updateVictoryPoints;

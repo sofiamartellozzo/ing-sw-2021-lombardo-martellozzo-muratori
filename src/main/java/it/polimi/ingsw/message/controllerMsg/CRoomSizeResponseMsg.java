@@ -7,7 +7,7 @@ import it.polimi.ingsw.message.ControllerObserver;
  * CLI ---> VV ----> Lobby
  *
  * msg by the client as a response for a request of the room size
- * the Lobby will set the Romm size request
+ * the Lobby will set the Room size request
  */
 public class CRoomSizeResponseMsg extends ControllerGameMsg{
 

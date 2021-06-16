@@ -21,7 +21,15 @@ import it.polimi.ingsw.view.VirtualView;
 import java.util.*;
 
 /**
- * this class set the information of the game at the initialization
+ * this class is a part of the Controller
+ * It sets the information of the game at the initialization
+ * It creates the players, the Board Manager (that manages all the players and their objects), the Personal Board of each player
+ * (Solo Personal Board if is in solo game)
+ * This class manages the players' Leader Cards choice (two cards) and assigns the beginning resources to the players
+ * 1 player -> 0 resources
+ * 2 player -> 1 resources
+ * 3 player -> 1 resources
+ * 4 player -> 2 resources
  */
 
 public class InitializedController extends Observable implements ControllerObserver {
@@ -45,7 +53,11 @@ public class InitializedController extends Observable implements ControllerObser
     private int counterPlayerInitialized = 0;
     private int counterResourcesChosen = 0;
 
-    /* Constructor of the class */
+    /**
+     * constructor of the class
+     * @param players
+     * @param virtualView
+     */
     public InitializedController(ArrayList<String> players, Map<String, VirtualView> virtualView) {
 
         this.canStart = false;
@@ -88,8 +100,8 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     /**
-     * this method create a organized sequence of the players as a Map
-     * (if only one initialized his as Solo Player class)
+     * this method create an organized sequence of the players as a Map
+     * (if there is only one player it initialize a Solo Player class)
      *
      * @param players
      */
@@ -105,6 +117,9 @@ public class InitializedController extends Observable implements ControllerObser
         }
     }
 
+    /**
+     * attach all VV of the players so this class can notify them
+     */
     private void attachAllVV() {
         for (String username : virtualView.keySet()) {
             attachObserver(ObserverType.VIEW, virtualView.get(username));
@@ -165,7 +180,7 @@ public class InitializedController extends Observable implements ControllerObser
 
     /**
      * at the start of the game all player (both single or multiple mode)
-     * have to choose 2 Leader Card from 4 choosen random
+     * have to choose 2 Leader Card from 4 chosen random (from the 16 Cards in the deck)
      *
      * @param solo
      */
@@ -196,7 +211,7 @@ public class InitializedController extends Observable implements ControllerObser
     }
 
     /**
-     * auxiliary method to choose randomly 4 card from all in the game
+     * auxiliary method used to choose randomly 4 card from the deck of 16 and after removes them
      *
      * @param allLeaderCard
      * @return
@@ -212,11 +227,11 @@ public class InitializedController extends Observable implements ControllerObser
 
     /**
      * this method is called only in multiple mode, in single one is not necessary
-     * at the game start, after chose the Leader Card all player recive different stuff:
+     * at the game start, after chose the Leader Card all player receive different stuff:
      * the first one only the inkpot
-     * the second one recive one resource that he choose
-     * the third one (if exist) recive one resource that he choose and increasing of one position the faith market
-     * the fourth one (if exist) recive two resources that he choose and increasing of one position the paith market
+     * the second one receive one resource that he chooses
+     * the third one (if exist) receive one resource that he chooses and increasing of one position the faith marker
+     * the fourth one (if exist) receive two resources that he chooses and increasing of one position the faith marker
      *
      * @throws InvalidActionException
      */
@@ -295,7 +310,7 @@ public class InitializedController extends Observable implements ControllerObser
     //HANDLE EVENT OF THE GAME
 
     /**
-     * this msg contains the list of Leader Cards the user choose and
+     * this msg contains the list of Leader Cards the user chose and
      * the two discarded
      *
      * @param msg
@@ -357,11 +372,11 @@ public class InitializedController extends Observable implements ControllerObser
 
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby (Room)
     }
 
     /**
-     * msg from client with the resource he chose and the depots where he wants to store it
+     * msg from client with the resource he chose and the depot where he wants to store it
      *
      * @param msg
      */
@@ -410,108 +425,103 @@ public class InitializedController extends Observable implements ControllerObser
 
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CChangeActionTurnMsg msg) {
-
+        //NOT HERE, implemented in Turn Controller
     }
-
 
     @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
     @Override
     public void receiveMsg(CStopMarketMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
-
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in PPController
     }
-
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in PPController (ActionC)
     }
 
     @Override
     public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
-
-
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
-
+        //NOT IMPLEMENTED HERE, (VV) but in Lobby
     }
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CNewStartMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
-        //not here
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CResumeGameMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
     @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
-        //not here
+        //NOT IMPLEMENTED HERE, but in Virtual View
     }
 
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
-        //not here (Lobby)
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CVStartInitializationMsg msg) {
-        //not here (VV-->Lobby and CLI)
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
 }

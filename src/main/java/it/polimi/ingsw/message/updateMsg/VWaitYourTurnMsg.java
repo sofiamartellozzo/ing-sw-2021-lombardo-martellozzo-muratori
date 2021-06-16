@@ -4,6 +4,7 @@ import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 
 /**
+ * Turn Controller --> VV --> CLI/GUI
  *
  * msg send from Server to client to notify him that is not his turn
  * but another player is actually playing

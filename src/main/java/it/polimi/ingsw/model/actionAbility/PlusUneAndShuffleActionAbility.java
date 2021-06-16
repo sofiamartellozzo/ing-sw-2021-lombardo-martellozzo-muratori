@@ -4,18 +4,19 @@ import it.polimi.ingsw.model.SoloPlayer;
 
 import java.io.Serializable;
 
-/*
- * SOFI*/
-
 /**
- * One type of the ability that increase the faith traker of +1 and shuffle the action token deck
+ * (In the solo Player)
+ * An Action Ability that increases the position of Lorenzo's Faith Marker of +1 position and shuffle the action token's deck
  */
 
 public class PlusUneAndShuffleActionAbility implements ActionAbility, Serializable {
+    /**
+     * method called when is taken an Action Token with this ability
+     */
     @Override
     public void activeAbility(BoardManager boardManager, SoloPlayer player) {
-        /* move the black cross of plus one and shuffle all the cards
-        ** ask the PlayerTurn attribute that contains all the ActionTocken and change the sequence */
+
+        /* ask the PlayerTurn attribute that contains all the ActionToken and change the sequence */
         player.getGameSpace().increaseLorenzoIlMagnifico();
         player.getGameSpace().shuffleActionToken();
     }

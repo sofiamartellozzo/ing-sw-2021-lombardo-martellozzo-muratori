@@ -20,9 +20,17 @@ import java.util.ArrayList;
 /**
  * Pattern: FACTORY
  * creating every development card and the table that contains them divided in 12 decks of 4 cards each one
+ * The table is composed by 3 rows and 4 column, in each position there is a deck of the same Color and Level
+ * There are four colors: GREEN, YELLOW, PURPLE, BLUE and three levels
+ *
  */
 public class DevelopmentCardFactory {
 
+    /**
+     * creating the Table of Cards using a .json file
+     * @return -> the deck of Dev Cards
+     * @throws FileNotFoundException
+     */
     public DevelopmentCardDeck[][] createTable() throws FileNotFoundException {
 
         GsonBuilder builder = new GsonBuilder();

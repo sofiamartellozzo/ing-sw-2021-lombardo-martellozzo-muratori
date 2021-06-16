@@ -9,9 +9,7 @@ import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 
 /**
  * OBSERVER
- * interface with the method of the controllers
- * not all yet
- *
+ * interface with the methods of the controllers
  */
 public interface ControllerObserver extends Observer{
 

@@ -22,11 +22,16 @@ import java.util.ArrayList;
 
 /**
  * Pattern: FACTORY
- * his purpose is to create the Leader Card Deck for a single game
- * it uses a file json and reading it create all the 16 cards
+ * the purpose of this class is to create the Leader Card Deck for a single game
+ * it uses a file json and while reading it, creates all the 16 cards with a specific Special Ability each one
  */
 public class LeaderCardFactory {
 
+    /**
+     * creates the Leader Cards using a .json file
+     * @return the deck of Leader Cards
+     * @throws FileNotFoundException
+     */
     public ArrayList<LeaderCard> createLeaderCardDeck() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();

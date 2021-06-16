@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Represents to player's personal board.
+ * Represents player's personal board.
  * It is composed by the "faithTrack" and the Strongbox and the Warehouse in the "resourceManager".
  * The "cardSpaces" attribute refers to the 3 card spaces of the board.
  */

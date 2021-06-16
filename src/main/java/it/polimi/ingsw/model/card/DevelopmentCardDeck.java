@@ -3,8 +3,10 @@ package it.polimi.ingsw.model.card;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/* ILA */
-
+/**
+ * deck of the table composed by 4 development cards
+ * each deck has a specific color and level
+ */
 public class DevelopmentCardDeck implements Serializable {
 
     private ArrayList<DevelopmentCard> developDeck;
@@ -28,7 +30,7 @@ public class DevelopmentCardDeck implements Serializable {
     /**
      * method used to show the last card available in a deck,
      * if it is not empty the method returns and removes it, otherwise it launches an exception
-     * @return
+     * @return --> Development Card
      * @throws IndexOutOfBoundsException
      */
 

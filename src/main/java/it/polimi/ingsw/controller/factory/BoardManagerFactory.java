@@ -23,6 +23,7 @@ import java.util.Random;
 /**
  * Pattern: FACTORY
  * this class is used to create the board manager at the initialization of the game
+ * the Board Manager has the MarketStructure, the Resources Supply, the Deck of Leader Cards, and the Table of Dev Cards of the game
  */
 
 public class BoardManagerFactory {
@@ -45,7 +46,7 @@ public class BoardManagerFactory {
 
     /**
      * this method creates the market of the game (3 rows x 4 columns) composed by 4 white marbles, 2 blue, 2 yellow, 2 purple and 1 red
-     * @return
+     * @return -> the structure of the market
      */
     protected MarketStructure createStructure() {
         Marble[][] marbles = new Marble[3][4];
@@ -88,8 +89,8 @@ public class BoardManagerFactory {
 
 
     /**
-     *  method implemented in the DevelopmentCardFactory that creates the card Table composed by decks of Development Cards (3 rows x 4 columns)
-     * @return
+     * method implemented in the DevelopmentCardFactory that creates the card Table composed by decks of Development Cards (3 rows x 4 columns)
+     * @return -> the table of Dev Cards
      */
 
     private DevelopmentCardDeck[][] createDevelopmentDeckTable() {
@@ -109,7 +110,7 @@ public class BoardManagerFactory {
 
     /**
      * this method creates the Leader Card Deck composed by 16 cards using the Leader Card Factory
-     * @return
+     * @return -> the Leader Cards Deck
      */
         private ArrayList<LeaderCard> createLeaderCardDeck ()
         {

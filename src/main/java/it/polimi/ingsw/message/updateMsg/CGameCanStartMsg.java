@@ -8,6 +8,11 @@ import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 
 import java.util.List;
 
+/**
+ * Initialized Controller --> VV --> CLI/GUI
+ *
+ * initialization msg that contains all the players (their username)
+ */
 public class CGameCanStartMsg extends GameMsg {
 
     private List<String> players;

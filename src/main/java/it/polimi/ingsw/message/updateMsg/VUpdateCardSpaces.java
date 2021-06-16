@@ -7,6 +7,11 @@ import it.polimi.ingsw.model.card.Card;
 
 import java.util.ArrayList;
 
+/**
+ * Action Controller --> VV --> CLI/GUI
+ *
+ * msg used to update the situation of the three card spaces of the player's personal board
+ */
 public class VUpdateCardSpaces extends ViewGameMsg {
 
     private String username;

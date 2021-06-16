@@ -8,6 +8,9 @@ import javafx.scene.control.RadioButton;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * this class manages the first scene of the game in which the player has to choose if he wants to play in OFFLINE or ONLINE mode
+ */
 public class StartGameController {
     private GUI gui;
 

@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.TurnAction;
  * CLI ---> VV ---> Lobby(Room) ---> TurnController ---> ActionController
  *
  * msg send by the client with his selection in the market
+ * row/column and which row/column
  */
 public class CBuyFromMarketInfoMsg extends ControllerGameMsg{
     private final String username;

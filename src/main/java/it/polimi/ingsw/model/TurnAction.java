@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model;
 
-/*
-* SOFI*/
+/**
+ * possible action of a Turn
+ * valid both in solo and multi player game
+ */
 
 public enum TurnAction {
 

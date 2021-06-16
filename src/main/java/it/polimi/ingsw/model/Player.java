@@ -13,8 +13,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
+/**
+ * this class represents a generic player of the game
+ */
 public class Player implements PlayerInterface, Serializable {
 
     protected String username;
@@ -33,13 +34,8 @@ public class Player implements PlayerInterface, Serializable {
     protected BuyCard buyCard;//this class specify how the player can buy the card
     protected ArrayList<SpecialCard> specialCard;//addictional card created from an Leader Card ability
 
-
-
-
-
     /**
-     *
-     * @param username
+     * @param username --> name of the player
      * constructor of the class, it set the attribute inkpot with default
      */
     public Player(String username) {
@@ -54,7 +50,6 @@ public class Player implements PlayerInterface, Serializable {
     }
 
 
-
     @Override
     public String getUsername() {
         return username;
@@ -66,8 +61,8 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * method for take the attribute containing the class that implement the way the player buy
-     * a card, it can be Buy if is a normal operation or BuyDiscount if this player have a discount
+     * method to take the attribute containing the class that implements the way the player buys
+     * a card, it can be Buy if is a normal operation or BuyDiscount if this player has a discount
      * to apply at the sale
      * @return
      */
@@ -78,7 +73,7 @@ public class Player implements PlayerInterface, Serializable {
 
     /**
      * setting the way the player buy a card
-     * @param buyCard
+     * @param buyCard --> implementation of buying
      */
     @Override
     public void setBuyCard(BuyCard buyCard) {
@@ -89,7 +84,7 @@ public class Player implements PlayerInterface, Serializable {
      * method to get the card (or cards) special of this player if he had activated
      * the special ability of a particular Leader Card
      * so this attribute can be null!!
-     * @return
+     * @return --> the Special Cards activated
      */
     @Override
     public ArrayList<SpecialCard> getSpecialCard() {
@@ -97,7 +92,7 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * invocathed this method if the player active the Leader Card that create a Special Card
+     * invokes this method if the player actives the Leader Card that creates a Special Card
      * @param specialCard
      */
     @Override
@@ -107,12 +102,8 @@ public class Player implements PlayerInterface, Serializable {
         this.specialCard.add(specialCard);
     }
 
-
-
     /**
-     *
-     * @return true
-     * if the player is the first, else false
+     * @return true --> if the player is the first, else false
      */
     @Override
     public boolean hasInkpot() {
@@ -125,7 +116,7 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * when the game is setted a Personal Board for each player has to be created
+     * when the game is set, a Personal Board for each player has to be created
      * then associated to each one their own
      * @param personalBoard
      */
@@ -146,7 +137,7 @@ public class Player implements PlayerInterface, Serializable {
 
     /**
      * private method that controls if the player is the first
-     * if it is, then assign the inkpot to him (set it true)
+     * if it is, then assigns the inkpot to him (set it true)
      */
     private void setInkpot() {
         if (this.number == 1)
@@ -177,12 +168,12 @@ public class Player implements PlayerInterface, Serializable {
     /**
      *
      * @param cards
-     * @param chose1
-     * @param chose2
-     * method when the player have to choose two leader card from the four that he
+     * @param chose1 --> index of the first card
+     * @param chose2 --> index of the second card
+     * method when the player has to choose two leader cards from the four that he
      * draw from the dek
      */
-    @Override
+    /*@Override
     public void chooseLeaderCards(ArrayList<LeaderCard> cards, int chose1, int chose2){
 
         //int index1 = cards.indexOf(chose1);
@@ -193,7 +184,7 @@ public class Player implements PlayerInterface, Serializable {
         //this.leaderCards.add(cards.remove(index2));
         this.leaderCards.add(cards.remove(chose2));
 
-    }
+    }*/
 
     /**
      * method to take the personal Board of this player
@@ -227,15 +218,15 @@ public class Player implements PlayerInterface, Serializable {
 
     /**
      * method for when is asked to the player to choose a resource
-     * @return the Resource choose
+     * @return the Resource chosen
      */
-    @Override
+    /*@Override
     public Resource chooseResource(){
         return new Resource(Color.YELLOW);
-    }
+    }*/
 
     /**
-     * method invocated when the game end, to set the total
+     * method invoked when the game end, to set the total
      * points that this player has made
      * in order to decide the winner
      */
@@ -262,7 +253,7 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * invocated the method to use the productipon Power of only Developmemnt card
+     * invokes the method to use the production Power of a Development card
      * @param developmentCards
      * @throws InvalidActionException
      */
@@ -282,10 +273,10 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * verify only Development card request, at first if the cost can be payed from the
-     * resources stored in the wherouse if not verify if in the Strong Box there are enought
-     * @param developmentCards
-     * @return where to take the resources for active the ability as a String
+     * verifies only Development card requests , at first if the cost can be payed from the
+     * resources stored in the warehouse, if it can't be payed verifies if in the Strong Box there are enough resources
+     * @param developmentCards --> cards to buy
+     * @return where to take the resources to active the ability as a String
      */
     private String verifyProductionPower(ArrayList<DevelopmentCard> developmentCards){
         ArrayList<Resource> requirements = new ArrayList<>();
@@ -307,7 +298,7 @@ public class Player implements PlayerInterface, Serializable {
 
     /**
      * the player decides to invoke the power of a Development Card and the special card
-     * so he ask the Board to take that from his space and active it
+     * so he asks the Board to take that from his space and active it
      */
     @Override
     public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards, ArrayList<Resource> resources) throws InvalidActionException{
@@ -330,9 +321,9 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * this method verify if the player have in his strong box and warehouse all the resources
-     * requied for the production power, at first if the cost can be payed from the
-     *      * resources stored in the wherouse if not verify if in the Strong Box there are enought
+     * this method verifies if the player has in his strong box and warehouse all the resources
+     * required for the production power, at first if the cost can be payed from the
+     * resources stored in the warehouse, then (if there aren't enough) controls in the strongbox
      * @param developmentCards
      * @param specialCard
      * @return where to take the resources for active the ability as a String
@@ -362,8 +353,8 @@ public class Player implements PlayerInterface, Serializable {
 
     /**
      * select the leader card to active
-     * @param number
-     * @return  the choosen Leader Card owned from the player himself
+     * @param number --> of card to select
+     * @return  the chosen Leader Card owned from the player himself
      */
     @Override
     public LeaderCard selectLeaderCard(int number) {
@@ -377,7 +368,7 @@ public class Player implements PlayerInterface, Serializable {
 
     /**
      * activated the Leader card, handle to produce his ability
-     * @param card
+     * @param card --> leader card to active
      * @throws InvalidActionException
      */
     @Override
@@ -463,7 +454,7 @@ public class Player implements PlayerInterface, Serializable {
 
     /**
      * same as above but in this case the special Ability requires the resource that the player want
-     * to recive with this ability
+     * to receive with this ability
      * @param card
      * @param choice
      * @throws InvalidActionException
@@ -475,22 +466,22 @@ public class Player implements PlayerInterface, Serializable {
 
 
     /**
-     * method invocated from the player when he want to buy from the market, so he have to choose
-     * a row or a column to take all the Marble ad so the Resources that them provide
+     * method invoked from the player when he wants to buy from the market, so he has to choose
+     * a row or a column to take all the Marbles ad so the Resources that them provide
      * @param position  in the Market Structure
-     * @param wich  if he choose a row or a column
+     * @param which  if he choose a row or a column
      * @param boardManager   to reach the Market, that is common for all players
      * @throws IllegalArgumentException
      * @return
      */
     @Override
-    public ArrayList<TypeResource> buyFromMarket(int position, String wich, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException{
+    public ArrayList<TypeResource> buyFromMarket(int position, String which, BoardManager boardManager) throws IllegalArgumentException, InvalidActionException{
         ArrayList<TypeResource> resourcesFromMarket = null;
-        if (wich.equals("row")){
+        if (which.equals("row")){
             resourcesFromMarket = boardManager.getMarketStructure().rowMoveMarble(position, this);
 
         }
-        else if (wich.equals("column")){
+        else if (which.equals("column")){
             resourcesFromMarket = boardManager.getMarketStructure().columnMoveMarble(position, this);
 
         }
@@ -501,8 +492,8 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * method called if the player has 2 white special marble, so when invocated
-     * by the market he have to choose one of them
+     * method called if the player has 2 white special marble, so when invoked
+     * by the market he has to choose one of them
      * @return
      */
     @Override
@@ -514,7 +505,7 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * method invocated whenever the player whant to buy a Development Card
+     * method invoked whenever the player wants to buy a Development Card
      * so the input he have to provide are
      * @param row   of the position of the card to buy in the table
      * @param column   of the position of the card to buy in the table
@@ -545,7 +536,7 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * set the boolean paramether to see if the player is actually playing
+     * set the boolean parameter to see if the player is actually playing
      * or not
      * @param playing-> true at the start of a Turn
      */
@@ -560,7 +551,7 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * method invocated when the player wants to end the game
+     * method invoked when the player wants to end the game
      * @return
      */
     @Override
@@ -568,35 +559,34 @@ public class Player implements PlayerInterface, Serializable {
         setPlaying(false);
     }
 
-    @Override
+    /*@Override
     public void putResources(Resource resource) throws InvalidActionException{
         //i ask to put this resource in this player warehouse
 
         /*we supposed that if the player is able to put the resource only moving two (or more) resources
         * he just did it, so the check is to verify if at the end he can store this resource
         * or not; in second case the resource is throw away and the other player move +1 their faith marker */
-        if (this.getGameSpace().getResourceManager().getWarehouse().checkAvailableDepot(resource)){
+        /*if (this.getGameSpace().getResourceManager().getWarehouse().checkAvailableDepot(resource)){
             this.getGameSpace().getResourceManager().getWarehouse().addResource(resource, chooseDepot());
         }
         else{
             //the other players move +1 their faith market
 
         }
-    }
+    }*/
 
     @Override
     public void moveResource(int depot1, int depot2) throws InvalidActionException{
-        this.getGameSpace().getResourceManager().getWarehouse().moveResource(depot1,depot2
-        );
+        this.getGameSpace().getResourceManager().getWarehouse().moveResource(depot1,depot2);
     }
 
-    @Override
+    /*@Override
     public int chooseDepot(){
         return 1;
-    }
+    }*/
 
     /**
-     * discard a Leader Card implies that the faith track incrise of 1 his position
+     * discard a Leader Card implies that the faith track increases of 1 his position
      * @param card
      */
     @Override
@@ -610,7 +600,7 @@ public class Player implements PlayerInterface, Serializable {
     }
 
     /**
-     * increase the position of this player
+     * increases the position of this player
      */
     @Override
     public void increasePosition() {
@@ -619,6 +609,10 @@ public class Player implements PlayerInterface, Serializable {
     }
 
 
+    /**
+     * checking if every time if one player has terminated the game
+     * @return
+     */
     @Override
     public boolean checkEndGame(){
         if ((gameSpace.getFaithTrack().getPositionFaithMarker()==24)||(gameSpace.getAllCards().size()==7)){

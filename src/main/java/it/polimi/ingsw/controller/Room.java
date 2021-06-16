@@ -15,6 +15,11 @@ import it.polimi.ingsw.view.VirtualView;
 import javax.naming.LimitExceededException;
 import java.util.*;
 
+/**
+ * this class contains the players of the game,
+ * and handles the different phases of the game
+ * A room can be composed of 1-2-3 or 4 players
+ */
 public class Room extends Observable {
 
     /* the ID of the room */
@@ -57,6 +62,10 @@ public class Room extends Observable {
 
     private boolean waiting;
 
+    /**
+     * constructor of the class
+     * @param roomID Id of the room that will be created
+     */
     public Room(String roomID) {
         this.roomID = roomID;
         playersId = new ArrayList<>();
@@ -129,6 +138,9 @@ public class Room extends Observable {
         return number;
     }
 
+    /**
+     * attach all VV of the players so this class can notify them
+     */
     public void addVV(String userVV, VirtualView vV) {
         listOfVirtualView.put(userVV, vV);
         attachObserver(ObserverType.VIEW, vV);
@@ -139,7 +151,7 @@ public class Room extends Observable {
      * adding all the users logged in, in the room to start the game
      * the maximum of the player for room (game) is 4
      *
-     * @param username
+     * @param username of the player that has to be added
      * @throws LimitExceededException
      */
     public void addUser(String username, VirtualView VV) throws LimitExceededException {
@@ -182,8 +194,7 @@ public class Room extends Observable {
 
     /**
      * method to check if the room is full (4 player maximum) or not
-     *
-     * @param
+     * @return -> true if the room is full
      */
     public boolean isFull() {
         if ((isSoloMode && numberOfPlayer == 1) || (numberOfPlayer == SIZE)) {
@@ -196,7 +207,8 @@ public class Room extends Observable {
     }
 
     /**
-     * initialized the game for these players
+     * initialize the game for these players
+     * @throws InvalidActionException
      */
     public void initializedGame() throws InvalidActionException {
         //creating the controller for the initialization
@@ -226,8 +238,11 @@ public class Room extends Observable {
 
     }
 
+    /**
+     * creates the turn controller to manage the turn
+     * @throws InvalidActionException
+     */
     public void startFirstTurn() throws InvalidActionException {
-        //creating the controller for the turn
         //System.out.println("is in solo mode? " +isSoloMode);      DEBUGGING
 
         if (!isSoloMode) {
@@ -251,6 +266,7 @@ public class Room extends Observable {
     }
 
     /**
+     * returns the board of the player found by his username given in input
      * @param username
      * @return
      */
@@ -263,6 +279,11 @@ public class Room extends Observable {
         throw new IllegalArgumentException(" Error, not found any player with that username!");
     }
 
+    /**
+     * returns the Player from his username given in input
+     * @param username of the player
+     * @return
+     */
     public PlayerInterface getPlayerByUsername(String username) {
         if (numberOfPlayer > 1) {
             //multiplayer mode
@@ -286,6 +307,9 @@ public class Room extends Observable {
         }
     }
 
+    /**
+     * removes the virtual view of a specific player (username) from the list
+     */
     public void removeVV() {
         printRoomMessage("HERE?!?!?!?");
         Set<String> usernames = listOfVirtualView.keySet();

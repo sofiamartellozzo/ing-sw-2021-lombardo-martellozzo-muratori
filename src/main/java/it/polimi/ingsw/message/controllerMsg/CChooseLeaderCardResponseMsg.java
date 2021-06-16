@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 /**
  * CLI ---> VV ---> InitializedController or ActionController
+ *
+ * send in the initialization to choose two leader cards
+ * and to active/discard a leader card
  */
 public class CChooseLeaderCardResponseMsg extends ControllerGameMsg {
 

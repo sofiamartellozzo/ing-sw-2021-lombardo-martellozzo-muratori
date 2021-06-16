@@ -5,18 +5,18 @@ import it.polimi.ingsw.model.SoloPlayer;
 
 import java.io.Serializable;
 
-/*
-SOFI
- */
-
 /**
- * One type of the ability that increase the faith traker of +2
+ * (In the solo Player)
+ * An Action Ability that increases the position of Lorenzo's Faith Marker of +2 positions
  */
 
 public class PlusTwoBlackCrossActionAbility implements ActionAbility, Serializable {
+
+    /**
+     * method called when is taken an Action Token with this ability
+     */
     @Override
     public void activeAbility(BoardManager boardManager, SoloPlayer player) {
-        /* increment position of the faith traker black of two, so two times */
         player.getGameSpace().increaseLorenzoIlMagnifico();
         player.getGameSpace().increaseLorenzoIlMagnifico();
     }

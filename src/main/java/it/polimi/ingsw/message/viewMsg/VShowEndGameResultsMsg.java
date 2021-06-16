@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * End Game Controller --> VV --> CLI/GUI
  * this message sent to the View contains the name of the Winner and a list of Losers
+ * and it will be sent at the end of the game
  */
 public class VShowEndGameResultsMsg extends GameMsg {
 

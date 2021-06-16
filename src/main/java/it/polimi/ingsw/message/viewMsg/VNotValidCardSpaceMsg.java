@@ -3,6 +3,10 @@ package it.polimi.ingsw.message.viewMsg;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 
+/**
+ * Action Controller --> VV --> CLI/GUI
+ * msg sent if the card space chosen isn't available or the card bought can't be put in that card space
+ */
 public class VNotValidCardSpaceMsg extends ViewGameMsg{
     private String username;
     private int rowTable;

@@ -22,7 +22,11 @@ import java.util.Map;
 
 
 /**
- * this class is a part of the controller that count the victory points and declare the winner of the game
+ * this class is a part of the controller that is created at the end of the game
+ * It counts the victory points and declare the winner of the game and the list of losers
+ * victory points can be obtained from the faith Track, the number of resources in the Resource Manager and Victory Points of Dev
+ * (the ones that are in the card spaces) and Leader Cards (only if active)
+ *
  */
 public class EndGameController extends Observable implements ControllerObserver {
 
@@ -34,6 +38,12 @@ public class EndGameController extends Observable implements ControllerObserver 
     private Map<String, VirtualView> virtualView;
 
 
+    /**
+     * constructor of the class used when is in Multi Player Game
+     * @param turnSequence sequence players' turns
+     * @param turnController
+     * @param virtualView of the players
+     */
     public EndGameController(HashMap<Integer, PlayerInterface> turnSequence, TurnController turnController, Map<String, VirtualView> virtualView) {
         this.turnSequence = turnSequence;
         this.numberOfPlayers = turnSequence.keySet().size();
@@ -42,6 +52,12 @@ public class EndGameController extends Observable implements ControllerObserver 
         attachAllVV();
     }
 
+    /**
+     * constructor of the class, override the previous one, used in Single Player Mode
+     * @param soloPlayer of the game
+     * @param turnController
+     * @param virtualView of the player
+     */
     public EndGameController(SoloPlayer soloPlayer, TurnController turnController, Map<String, VirtualView> virtualView) {
         this.soloPlayer = soloPlayer;
         this.numberOfPlayers = 1;
@@ -59,6 +75,10 @@ public class EndGameController extends Observable implements ControllerObserver 
         }
     }
 
+    /**
+     * this method counts all the points of the players of the game, declare the winner and the list of losers basing on them victory points
+     * @throws InvalidActionException
+     */
     public void startCounting() throws InvalidActionException {
 
         //for each player in the turn sequence it has to calculate all the victory points obtained
@@ -113,7 +133,7 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     /**
-     * auxiliary method used to calculate all the victory points of a specific player
+     * auxiliary method used to calculate all the victory points of a specific player given in input
      *
      * @param player
      * @return
@@ -123,9 +143,9 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     /**
-     * with this auxiliary method we find the player that corresponds tho the maximum victory points previously calculated
+     * with this auxiliary method we find the player that corresponds to the maximum victory points previously calculated
      *
-     * @param points
+     * @param points of the winner
      * @return
      */
     private Player findWinnerPlayer(int points) {
@@ -152,127 +172,126 @@ public class EndGameController extends Observable implements ControllerObserver 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CResumeGameMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
     @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in Virtual View
     }
 
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
-        //not here (Lobby)
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CVStartInitializationMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in Initialized Controller/ActionC
     }
 
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-        //in Lobby (Room)
+        //NOT IMPLEMENTED HERE, but in Lobby (Room)
     }
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in Initialize Controller/ActionC
     }
 
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CChangeActionTurnMsg msg) {
-
+        //NOT HERE, implemented in Turn Controller
     }
 
     @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
     @Override
     public void receiveMsg(CStopMarketMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
-        //NOT IMPLEMENTED HERE
+        //NOT IMPLEMENTED HERE, but in PPController
     }
-
 
     @Override
     public void receiveMsg(CStopPPMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in PPController (ActionC)
     }
 
     @Override
     public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
-
+        //NOT IMPLEMENTED HERE, (VV) but in Lobby
     }
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CNewStartMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
 

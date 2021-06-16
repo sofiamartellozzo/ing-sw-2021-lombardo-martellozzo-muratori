@@ -20,8 +20,9 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
- * this class is where is readed the input from the CLIENT
- * and send the output for the server
+ * this class is where is read the input from the CLIENT and send the output for the server
+ * This class has an access to the streams in the network
+ * It has a queue inside to manage all the messages in order to be able to consider them one by one
  */
 public class ClientSocket extends Observable implements Runnable {
 

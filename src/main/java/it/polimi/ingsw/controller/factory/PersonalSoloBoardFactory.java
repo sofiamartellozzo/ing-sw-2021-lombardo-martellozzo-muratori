@@ -15,11 +15,16 @@ import java.util.ArrayList;
 /**
  * Pattern: FACTORY
  * this class is made to create the personal board in the Single Player Game, so it's the same of the normal Personal Board
- * and more creates the Deck of action tokens that will be used at the end of each turn
+ * the only difference is that it creates the Deck of action tokens that will be used at the end of each turn
  */
 
 public class PersonalSoloBoardFactory extends PersonalBoardFactory {
 
+
+    /**
+     * creates all the components of the game ant putting them together in a SOLO personal board
+     * @return -> SOLO personal board
+     */
     public SoloPersonalBoard createGame(){
         ArrayList<CardSpace> allCardSpace = createCardSpaces();
         StrongBox strongBox = new StrongBox();
@@ -33,6 +38,10 @@ public class PersonalSoloBoardFactory extends PersonalBoardFactory {
     }
 
 
+    /**
+     * creates a list of action token used only in the single player game
+     * @return -> list of Action Token
+     */
     private ArrayList<ActionToken> createActionToken(){
         //where I have to take all these cards an create the deck to put in the Solo Board
         ActionToken actionToken1 = new ActionToken(new CardActionAbility(Color.PURPLE), 1);

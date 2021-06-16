@@ -4,13 +4,9 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.SoloPlayer;
 
-
-/*
- * SOFI*/
-
 /**
- * The ability that have an Action Token
- * (Only Solo Mode)
+ * The ability that has an Action Token
+ * (Only in Solo Mode)
  */
 
 public interface ActionAbility {

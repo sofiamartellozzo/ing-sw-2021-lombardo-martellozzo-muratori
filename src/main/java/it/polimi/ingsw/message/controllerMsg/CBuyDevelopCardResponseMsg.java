@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.board.resourceManagement.Warehouse;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
 
 /**
- * CLI ---> ActionController
- *
- * ths is the msg by the client with his choice
+ * CLI/ GUI ---> ActionController
+ * this msg contains the response of the client with the position of the Card in the Dev Table
+ * and the number of the card space where he wants to store it
  * send to the action controller (by Turn controller), and actually make the move
  */
 public class CBuyDevelopCardResponseMsg  extends ControllerGameMsg{

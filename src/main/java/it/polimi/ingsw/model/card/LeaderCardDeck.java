@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.card;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+/**
+ * deck composed by 16 leader cards divided in 4 types of special Ability
+ */
 public class LeaderCardDeck implements Serializable {
 
     private ArrayList<LeaderCard>cards;
@@ -10,7 +12,7 @@ public class LeaderCardDeck implements Serializable {
 
     /**
      * constructor of the class
-     * @param cards
+     * @param cards --> leader cards
      */
 
     public LeaderCardDeck(ArrayList<LeaderCard>cards){
@@ -18,7 +20,7 @@ public class LeaderCardDeck implements Serializable {
     }
 
     public ArrayList<LeaderCard> getCards(){return cards;}
-    //public void setCards(ArrayList<LeaderCard>cards){this.cards=cards;}
+
 
     /**
      * method used to have the actual number of the Cards in the Leader Deck,
@@ -37,8 +39,8 @@ public class LeaderCardDeck implements Serializable {
     /**
      * method used to return only the card from the Deck with a specific Id (if present),
      * otherwise it returns an exception
-     * @param IdCard
-     * @return
+     * @param IdCard --> id of the card
+     * @return --> corresponding Leader Card
      * @throws IllegalArgumentException
      */
     public LeaderCard getLeaderCardById (int IdCard) throws IllegalArgumentException {

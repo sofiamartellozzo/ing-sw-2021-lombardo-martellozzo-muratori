@@ -3,20 +3,32 @@ package it.polimi.ingsw.model;
 import java.io.Serializable;
 import java.util.InvalidPropertiesFormatException;
 
-/*
-SOFIA
+/**
+ *  generic Resource of the game
+ *  there are 4 types of resources of 4 different colors
+ *  COIN -> YELLOW
+ *  SHIELD -> BLUE
+ *  STONE -> GREY
+ *  SERVANT -> PURPLE
  */
-
 public class Resource implements Serializable {
 
     protected Color color;
     protected TypeResource typeResource;
 
-    /* constructor */
+    /**
+     * constructor of the class
+     * @param color --> identifies the resource
+     */
     public Resource(Color color){
         this.color=color;
         setType();
     }
+
+    /**
+     * second constructor of the class
+     * @param type --> identifies the resource
+     */
     public Resource(TypeResource type){
         this.typeResource=type;
         setColor();
@@ -27,7 +39,7 @@ public class Resource implements Serializable {
     }
 
     /**
-     * set the type of the resources(class) based on wich color it is
+     * set the type of the resources(class) based on which color it is
      * @throws InvalidPropertiesFormatException
      */
     private void setType() {

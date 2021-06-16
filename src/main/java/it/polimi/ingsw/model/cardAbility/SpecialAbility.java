@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Resource;
 import java.io.Serializable;
 
 /**
- * GIANLUCA
  * It refers to the Special Ability supplied by Leader Card
  * Attributes:
  * active -> a boolean to indicate if it is "active" or "inactive"

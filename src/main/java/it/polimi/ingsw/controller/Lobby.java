@@ -24,13 +24,16 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * SINGLETON
- * this class handle the network, create the rooms and manage the organization of the rooms
+ * this class handles the network, creates the rooms (each room with the size chosen by the first player of the game)
+ * for a maximum of 20 Rooms simultaneously and manage the organization of the rooms
  */
 public class Lobby extends Observable implements ControllerObserver {
 
     private static Lobby lobby = null;
 
-    /* constructor */
+    /**
+     * constructor of the class (private because it is a Singleton)
+     */
     private Lobby() {
         //create the objects inside this class
         canCreateRoom = new AtomicBoolean();
@@ -45,7 +48,7 @@ public class Lobby extends Observable implements ControllerObserver {
      * if is null is created a new Lobby object, otherwise is returned the class itself
      * because can be created only once
      *
-     * @return
+     * @return Lobby
      */
     public static Lobby getInstance() {
         if (lobby == null) {
@@ -138,7 +141,7 @@ public class Lobby extends Observable implements ControllerObserver {
      * method to check if the room (given in input) is full or not
      *
      * @param room -> the class Room to be checked calling his method
-     * @return
+     * @return -> true if the Room is full
      */
     private boolean roomFull(Room room) {
         return room.isFull();
@@ -147,9 +150,9 @@ public class Lobby extends Observable implements ControllerObserver {
     /**
      * scroll all the occupied room ad check if are all full
      * if not returned false so The Lobby know that can assign
-     * the client to the first able room
+     * the client to the first available room
      *
-     * @return
+     * @return -> true if all rooms are full
      */
     private boolean allRoomsFull() {
         for (Room room : notEmptyRoom) {
@@ -160,9 +163,12 @@ public class Lobby extends Observable implements ControllerObserver {
         return true;
     }
 
+
     /**
-     * after checking if there is an available room this method returns the first room
-     * available in this lobby
+     *  after checking if there is an available room this method returns the first room
+     *  available in this lobby
+     * @return available Room
+     * @throws NotFreeRoomAvailableError
      */
     private Room firstFreeRoom() throws NotFreeRoomAvailableError {
         if (allRoomsFull()) {
@@ -189,7 +195,7 @@ public class Lobby extends Observable implements ControllerObserver {
      * private method to find a Room in the not empty List by its ID
      *
      * @param roomId
-     * @return
+     * @return Room
      */
     private Room findRoomByID(String roomId) {
         for (Room room : this.notEmptyRoom) {
@@ -202,11 +208,11 @@ public class Lobby extends Observable implements ControllerObserver {
 
     /**
      * method used to create a new Room by one user
-     * using lock to stop a possible player that wants to inizialized a new
-     * room in the same moment---> he have to wait
-     *
-     * @param username
+     * using lock to stop a possible player that wants to inizialize a new
+     * room at the same moment---> he has to wait
+     * @param username that creates a room
      * @param gameMode
+     * @param userVV virtual view of the player
      */
     private void createNewRoom(String username, String gameMode, VirtualView userVV) {
         creatingRoomLock.lock();
@@ -253,8 +259,8 @@ public class Lobby extends Observable implements ControllerObserver {
     //METHODS FOR THE INITIALIZATION
 
     /**
-     * check if this username can start the game, so is in a full room and the Controller
-     * can start to inizialized the game
+     * check if this username can start the game, so if is in a full room and the Controller
+     * can start to initialize the game
      *
      * @param username the player ask a network
      * @return true if the controller can start, false otherwise
@@ -282,7 +288,7 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     /**
-     * find the room where the user is assigned
+     * find the room where the user given in input is assigned
      *
      * @param username
      * @return
@@ -297,7 +303,7 @@ public class Lobby extends Observable implements ControllerObserver {
     }
 
     /**
-     * called by Lobby after check whit this class method (can Initialized Game for..)
+     * called by Lobby after checking with this class method (can Initialized Game for..)
      *
      * @param username
      */
@@ -388,6 +394,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg received to resume a game that was waiting a reconnection
+     * @param msg
+     */
     @Override
     public void receiveMsg(CResumeGameMsg msg) {
         try {
@@ -418,7 +428,7 @@ public class Lobby extends Observable implements ControllerObserver {
 
     /**
      * notification from VV that a room is full so the initialization has started
-     * so the attribute is setted to true because a new room now can be initialized
+     * so the attribute is set to true because a new room now can be initialized
      *
      * @param msg
      */
@@ -439,14 +449,18 @@ public class Lobby extends Observable implements ControllerObserver {
 
     /**
      * creating the Error message to send to the client, after notify the view
-     *
      * @param msg
+     * @param errorInformation
      */
     private void sendNackConnectionRequest(CConnectionRequestMsg msg, String errorInformation) {
         VNackConnectionRequestMsg nackMsg = new VNackConnectionRequestMsg("Connection cannot be established ", msg.getPort(), msg.getIP(), msg.getUsername(), errorInformation);
         notifyAllObserver(ObserverType.VIEW, nackMsg);
     }
 
+    /**
+     * msg send to Initialized Controller
+     * @param msg
+     */
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
         //send to Initialized Controller, so find the room
@@ -458,6 +472,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg send to Initialized Controller
+     * @param msg
+     */
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
         //System.out.println(" try found room ");
@@ -472,6 +490,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg send to Turn Controller, Action Controller
+     * @param msg
+     */
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
         //send to TurnController by Room
@@ -488,10 +510,13 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
-        //not implemented here (in Virtual View)
+        //NOT IMPLEMENTED HERE, but in Virtual View
     }
 
-
+    /**
+     * msg send to Initialized Controller
+     * @param msg
+     */
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //send to Initialized Controller or TurnController
@@ -503,7 +528,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
-
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
         //send to TurnController by Room and then to ActionController
@@ -515,6 +543,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CChangeActionTurnMsg msg) {
         //send to TurnController by Room and then to ActionController
@@ -526,6 +558,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
         //send to TurnController by Room and then to ActionController
@@ -538,6 +574,10 @@ public class Lobby extends Observable implements ControllerObserver {
 
     }
 
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
         //send to TurnController by Room and then to ActionController
@@ -549,6 +589,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
         //send to TurnController by Room and then to ActionController and PPController
@@ -560,7 +604,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
-
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CStopPPMsg msg) {
 
@@ -573,6 +620,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
         //send to TurnController by Room
@@ -584,6 +635,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg send to TurnController, to set the client disconnected
+     * @param msg
+     */
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
         System.out.println("DISCONNECT IN LOBBY");
@@ -597,7 +652,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
-
+    /**
+     * msg used to close a room and remove it from the lobby
+     * @param msg
+     */
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
         creatingRoomLock.lock();
@@ -629,6 +687,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg used at the end of the game to remove the players from the room
+     * @param msg
+     */
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         /* because of an end of a game, remove the players room and
@@ -650,14 +712,18 @@ public class Lobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CNewStartMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
         //send to TurnController by Room and then to ActionController and PPController
@@ -669,6 +735,10 @@ public class Lobby extends Observable implements ControllerObserver {
         }
     }
 
+    /**
+     * msg send to TurnController
+     * @param msg
+     */
     @Override
     public void receiveMsg(CStopMarketMsg msg) {
         //send to TurnController by Room and then to ActionController
@@ -690,7 +760,7 @@ public class Lobby extends Observable implements ControllerObserver {
      * because the client type 0 or 1 to choose the game mode
      * convert the number to print out the right msg
      *
-     * @param mode
+     * @param mode integer to represent the Game mode
      * @return
      */
     private String convertStringForMode(String mode) {

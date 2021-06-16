@@ -14,11 +14,16 @@ import java.util.ArrayList;
 
 /**
  * Pattern: FACTORY
- * Creates the Faith Track of the game, combining 7 Gold Boxes, 3 Pope Boxes, 15 Simple Boxes
+ * Creates the Faith Track of the game (one of the principals component of it), combining 7 Gold Boxes, 3 Pope Boxes, 15 Simple Boxes
  * The Track is composed by 3 Popes Favor Tiles, 3 Vatican Sections and a Faith Marker
  */
 public class FaithTrackFactory {
 
+    /**
+     * creates the faith track using a .json file for every type of component of it
+     * @return the faith Track of a Player
+     * @throws FileNotFoundException
+     */
     public FaithTrack createFaithTrack() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();

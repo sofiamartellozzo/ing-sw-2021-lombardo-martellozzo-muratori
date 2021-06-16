@@ -9,19 +9,17 @@ import it.polimi.ingsw.model.TypeResource;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/*
- * SOFIA
- * */
-
 /**
- * this class is made by a special ability of the Leader Card that made the white marble
- * in the market special, because if the player active this ability whenever he choose to
- * buy from the market an white marble this will return one Resource (choosen by himself)
+ * this class is made by a special ability of the Leader Card that changes the white marble to the marble special
+ * if the player actives this ability whenever he chooses to buy from the market
+ * every white marble will be converted to Specific resource instead of nothing
  */
 public class MarbleSpecial extends Marble implements Serializable {
     private ArrayList<Ability> ability = new ArrayList<>();
 
-    /* constructor of the class */
+    /**
+     * constructor of the class
+     */
     public MarbleSpecial() {
         this.color = Color.WHITE;
     }
@@ -38,15 +36,12 @@ public class MarbleSpecial extends Marble implements Serializable {
     public TypeResource choose(Player player) throws InvalidActionException {
 
         if (ability.size()==2){
-            //int marble = player.chooseSpecialWhiteMarble();
-            //Resource resource2 = ability.get(marble).getResource();
             return TypeResource.BLANK;   //blank because the player have to decide which one
-            //player.putResources(resource2);
+
         }
         else{
             Resource resource1 = ability.get(0).getResource();
             return resource1.getType();
-            //player.putResources(resource1);
         }
 
     }

@@ -8,13 +8,12 @@ import it.polimi.ingsw.model.card.DevelopmentCard;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/*
- * SOFI*/
-
+/**
+ * created by Dicount Ability
+ * this class is used when a player has the Discount Ability activated and so before buying a card from the table,
+ * the cost has to be discounted of 1 resource (specified in the card)
+ */
 public class BuyDiscount implements BuyCard, Serializable {
-
-    /*
-     * created by Dicount Ability */
 
     private ArrayList<Resource> resourceWithDiscount;
 

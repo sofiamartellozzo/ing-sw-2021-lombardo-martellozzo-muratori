@@ -7,6 +7,9 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+/**
+ * this class is used to manage the creation of a room with the size specified by the player that creates it
+ */
 public class RoomSceneController {
     private GUI gui;
 

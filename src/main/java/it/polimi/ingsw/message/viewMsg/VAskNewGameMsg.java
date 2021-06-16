@@ -4,6 +4,7 @@ import it.polimi.ingsw.message.ViewObserver;
 
 /**
  * EndGameController ---> VV ---> CLI / GUI
+ *
  * msg send by the controller at the end of a game to ask the client if
  * wants to play a new game or not
  */

@@ -4,6 +4,7 @@ import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 
 /**
+ * Action Controller --> VV --> CLI/GUI
  *
  * from server to View to notify a change in the amount of victory points:
  *          by get a development card (that update in the update of the Table)

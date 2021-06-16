@@ -9,8 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * GIANLUCA
- * TEST PASSED
  * It refers to the ability of the Production
  * Power provided by the LeaderCard
  * */

@@ -8,7 +8,7 @@ import it.polimi.ingsw.utility.AnsiColors;
 
 /**
  * this class shows to the player his warehouse, so the three depots
- * and if one of them is empty it display the message "IS EMPTY"
+ * and if one of them is empty it displays the message "IS EMPTY"
  */
 public class WarehouseDisplay {
 
@@ -20,22 +20,7 @@ public class WarehouseDisplay {
         this.specialResource = specialResource;
     }
 
-    /*public static void main(String[] args) throws InvalidActionException {
-
-        PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();
-        Player player = new Player("bob");
-        PersonalBoard personalBoard = personalBoardFactory.createGame();
-        player.setGameSpace(personalBoard);
-        ArrayList<Resource> array = new ArrayList<>();
-        array.add(new Resource(Color.BLUE));
-        array.add(new Resource(Color.PURPLE));
-
-        player.getGameSpace().getResourceManager().addResourceToWarehouse(new Resource(TypeResource.SHIELD), 1);
-        player.getGameSpace().getResourceManager().addResourceToWarehouse(new Resource(TypeResource.SERVANT), 2);
-        player.getGameSpace().getResourceManager().addResourceToWarehouse(new Resource(TypeResource.SERVANT), 2);*/
-
         public void displayWarehouse() {
-
 
         System.out.print(AnsiColors.BLUE_BOLD+"\nHERE IS YOUR WAREHOUSE:\n"+AnsiColors.RESET);
         for (int i = 0; i < warehouse.getDepots().size(); i++) {
@@ -70,19 +55,15 @@ public class WarehouseDisplay {
 
         switch (resource.getType()){
             case SHIELD:
-                //cost += AnsiColors.BLUE_BOLD+"\uD83D\uDD35"+AnsiColors.RESET;
                 cost += "🥏";
                 break;
             case STONE:
-                //cost += AnsiColors.BLACK_BOLD+"\u26AB"+AnsiColors.RESET;
                 cost += "🗿";
                 break;
             case COIN:
-                //cost += AnsiColors.YELLOW_BOLD+"\uD83D\uDFE1"+AnsiColors.RESET;
                 cost += "💰";
                 break;
             case SERVANT:
-                //cost += AnsiColors.PURPLE_BOLD+"\uD83D\uDFE3"+AnsiColors.RESET;
                 cost += "👾";
                 break;
 

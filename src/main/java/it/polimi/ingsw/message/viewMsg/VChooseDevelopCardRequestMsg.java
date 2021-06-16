@@ -4,7 +4,6 @@ import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.model.card.DevelopmentCard;
 import it.polimi.ingsw.model.card.DevelopmentCardTable;
-import it.polimi.ingsw.utility.TableCardCopy;
 
 import it.polimi.ingsw.message.ViewObserver;
 

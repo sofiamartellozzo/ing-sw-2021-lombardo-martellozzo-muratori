@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.server;
 import java.util.TimerTask;
 
 /**
- * Timer for disconnect a client waited to much
+ * this class is used like a timer to disconnect a client that waited so much
  */
 public class DisconnectHandler extends TimerTask {
 

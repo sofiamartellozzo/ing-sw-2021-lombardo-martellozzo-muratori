@@ -10,13 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/*
-SOFI
- */
-
 /**
- * A class containing the main info about the game, such as the list of the players, the market, the Development card dek
- * and the Leader card deck
+ * A class containing the main info about the game, such as the list of the players, the market, the Leader card deck
+ * and the table of Development cards
  * to make them easy accessible from the controller package */
 public class BoardManager implements Serializable {
 
@@ -27,6 +23,14 @@ public class BoardManager implements Serializable {
     private LeaderCardDeck leaderCardDeck;
     private ResourcesSupply resourcesSupply;
 
+    /**
+     * constructor of the class
+     * @param players --> list of players of the game
+     * @param marketStructure --> market of te game
+     * @param developmentCardTable --> table of dev cards (3x4)
+     * @param leaderCardDeck --> deck of 16 cards
+     * @param resourcesSupply --> containers of all the resources
+     */
     public BoardManager(Map<Integer, PlayerInterface> players, MarketStructure marketStructure, DevelopmentCardTable developmentCardTable, LeaderCardDeck leaderCardDeck, ResourcesSupply resourcesSupply) {
         this.players = players;
         this.marketStructure = marketStructure;

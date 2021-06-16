@@ -5,14 +5,11 @@ import it.polimi.ingsw.model.Resource;
 
 import java.io.Serializable;
 
-/*
-SOFI
- */
 
 /**
- * this class rapresent Lorenzo Il Magnifico
- * this is like the faith marker, the differences are that it is BLACK (not red), rapresent Lorenzo il Magnifico
- * himself to wich the player plays against only in single Mode
+ * this class represents Lorenzo Il Magnifico
+ * this is like the faith marker, the differences are that it is BLACK (not red), represents Lorenzo il Magnifico
+ * himself to whom the player plays against only in single Mode
  * it is stored in the (Solo) Personal Board of the player
  */
 

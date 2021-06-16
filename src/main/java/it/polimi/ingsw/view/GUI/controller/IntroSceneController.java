@@ -51,27 +51,37 @@ public class IntroSceneController {
             localhostButton.setVisible(false);
             customIPButton.setVisible(false);
             ip.setDisable(true);
+
+            singlePlayerModeButton.setVisible(false);
+            multiPlayerModeButton.setVisible(false);
+            playButton.setDisable(false);
+
         }else {
             localhostButton.selectedProperty().setValue(false);
             customIPButton.selectedProperty().setValue(false);
 
+
+            singlePlayerModeButton.selectedProperty().setValue(false);
+            multiPlayerModeButton.selectedProperty().setValue(false);
+            playButton.setDisable(true);
         }
+
         errorMessage.setVisible(false);
-        playButton.setDisable(true);
     }
 
     public void setGui(GUI gui){ this.gui=gui;}
 
     public void clickPlayButton() throws IOException {
-        if(customIP){
-            selectedIP=ip.getText();
-            System.out.println("New selected IP: "+selectedIP);
-        }
+            if (!gui.isOffline() && customIP) {
+                selectedIP = ip.getText();
+                System.out.println("New selected IP: " + selectedIP);
+            }
 
 
         loadingIndicator.setVisible(true);
 
         disableAllLoginFields();
+
 
         String getUsername = username.getText().toLowerCase();
         System.out.println("New username gotten: "+getUsername);

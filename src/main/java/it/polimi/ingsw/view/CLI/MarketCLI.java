@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * class used to handle the Market, and all the possible actions that a player can do
+ * so KEEP, DISCARD a resource or move two Depots of the warehouse
  */
 public class MarketCLI {
 

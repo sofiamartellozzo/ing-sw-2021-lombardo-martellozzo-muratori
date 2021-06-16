@@ -14,14 +14,18 @@ import it.polimi.ingsw.message.viewMsg.VVConnectionRequestMsg;
 import javax.naming.LimitExceededException;
 
 /**
- * this class rapresent the Lobby in offline Mode
- * so do the same stuff as the original but not all the check in
- * syncronizations the clients
+ * this class represents the Lobby in offline Mode
+ * so do the same stuff as the original but not manages all the checks
+ * about client's synchronization
  */
 public class OfflineLobby extends Observable implements ControllerObserver {
     private Room offlineRoom;
     private String offlinePlayer;
 
+    /**
+     * constructor of the class
+     * @param offlinePlayer player of the game
+     */
     public OfflineLobby(String offlinePlayer) {
         this.offlinePlayer = offlinePlayer;
     }
@@ -34,6 +38,9 @@ public class OfflineLobby extends Observable implements ControllerObserver {
         return offlinePlayer;
     }
 
+    /**
+     * creates the room of the game setting the size = 1 because in OFFLINE mode the game can be only in single Player Mode
+     */
     public void createRoom() {
         offlineRoom = new Room("#off1");
         offlineRoom.setSoloMode(true);
@@ -42,7 +49,7 @@ public class OfflineLobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
-        //in VV
+        //NOT IMPLEMENTED HERE, but in Virtual View
     }
 
     @Override
@@ -57,7 +64,7 @@ public class OfflineLobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CResumeGameMsg msg) {
-
+        //NOT HERE
     }
 
     @Override
@@ -84,6 +91,10 @@ public class OfflineLobby extends Observable implements ControllerObserver {
         offlineRoom.notifyAllObserver(ObserverType.CONTROLLER, msg);
     }
 
+    /**
+     * starts the first turn for the single player in the offline Mode
+     * @param msg
+     */
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
         try {
@@ -149,29 +160,27 @@ public class OfflineLobby extends Observable implements ControllerObserver {
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-
+        //NOT HERE
     }
-
-
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
-
+        //NOT HERE
     }
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CNewStartMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     private void printOffLobbyMessage(String message) {

@@ -17,6 +17,12 @@ import it.polimi.ingsw.view.VirtualView;
 
 import java.util.*;
 
+/**
+ * this class is a part of the controller that manages all the actions regarding the production powers:
+ * base production power, cards spaces' production power, and the ones of the leader cards (if activated)
+ * this class manages the different powers' activation, removes the payed resources from strongbox/warehouse and
+ * loads the resources into the strongbox (but only AFTER that the CStopPP message is received)
+ */
 public class ProductionPowerController extends Observable implements ControllerObserver {
 
     public PlayerInterface getPlayer() {
@@ -29,6 +35,11 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     private Map<String, VirtualView> virtualView;
 
+    /**
+     * constructor used in a Multi Player Mode
+     * @param player
+     * @param virtualView of the players
+     */
     public ProductionPowerController(Player player, Map<String, VirtualView> virtualView) {
         this.player = (Player) player;
         this.receivedResources = new ArrayList<>();
@@ -37,6 +48,11 @@ public class ProductionPowerController extends Observable implements ControllerO
         attachAllVV();
     }
 
+    /**
+     * constructor of the class, override the previous one, used in Single Player Mode
+     * @param player
+     * @param virtualView of the player
+     */
     public ProductionPowerController(SoloPlayer player, Map<String, VirtualView> virtualView) {
         this.player = (SoloPlayer) player;
         this.receivedResources = new ArrayList<>();
@@ -58,8 +74,11 @@ public class ProductionPowerController extends Observable implements ControllerO
         return receivedResources;
     }
 
+    /**
+     * start production power action
+     */
     public void start() {
-        //start production power action
+
         ArrayList<Integer> activatablePowers = player.getGameSpace().getActivatableCardSpace(player);
         if (activatablePowers.size() > 0 && !notInterrupt) {
             VActivateProductionPowerRequestMsg requestMsg = new VActivateProductionPowerRequestMsg("You ask to activate Production Power from the Personal Board, please choose which production power want to activate: ", player.getUsername(), activatablePowers);
@@ -73,6 +92,10 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     }
 
+    /**
+     * this methods gives to the player the received resources and put them
+     * in the strongbox, but only when he has decided to stop using the production powers !!
+     */
     public void receiveResources() {
         ArrayList<Resource> resourcesToStrongBox = new ArrayList<>();
         for (Resource resource : receivedResources) {
@@ -101,6 +124,11 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     }
 
+    /**
+     * manage the response of the client that decides which production power he wants to activate,
+     * and in case the resources that he wants
+     * @param msg
+     */
     @Override
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
@@ -233,6 +261,10 @@ public class ProductionPowerController extends Observable implements ControllerO
     }
 
 
+    /**
+     * received when the player decides to stop using production powers, so the resources will be put in his strongox
+     * @param msg
+     */
     @Override
     public void receiveMsg(CStopPPMsg msg) {
         //System.out.println("enter in STOP");
@@ -245,118 +277,109 @@ public class ProductionPowerController extends Observable implements ControllerO
 
     @Override
     public void receiveMsg(CAskSeeSomeoneElseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
-
-
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
-
+        //NOT IMPLEMENTED HERE, (VV) but in Lobby
     }
 
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CNotStartAgainMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
 
     @Override
     public void receiveMsg(CNewStartMsg msg) {
-
+        //NOT HERE, implemented in Virtual View
     }
-
-
-
-
 
     /*-----------------------------------------------------------------------------------------------------------------------------------*/
 
     @Override
     public void receiveMsg(VVConnectionRequestMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Virtual View
     }
 
     @Override
     public void receiveMsg(CConnectionRequestMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CResumeGameMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
 
     @Override
     public void receiveMsg(CVStartInitializationMsg msg) {
-
-
+        //NOT IMPLEMENTED HERE, but in Lobby
     }
-
 
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Initialized Controller/ActionC
     }
 
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-        //in Lobby (Room)
+        //NOT IMPLEMENTED HERE, but in Lobby (Room)
     }
 
     @Override
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Initialize Controller/ActionC
     }
-
 
     @Override
     public void receiveMsg(CChooseActionTurnResponseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CBuyDevelopCardResponseMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CChangeActionTurnMsg msg) {
-
+        //NOT HERE, implemented in Turn Controller
     }
 
     @Override
     public void receiveMsg(CMoveResourceInfoMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CBuyFromMarketInfoMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
     @Override
     public void receiveMsg(CChooseDiscardResourceMsg msg) {
-        //not here
+        //NOT IMPLEMENTED HERE, but in Turn Controller
     }
 
     @Override
     public void receiveMsg(CStopMarketMsg msg) {
-
+        //NOT IMPLEMENTED HERE, but in Action Controller
     }
 
 

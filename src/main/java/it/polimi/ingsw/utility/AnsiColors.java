@@ -1,5 +1,9 @@
 package it.polimi.ingsw.utility;
 
+
+/**
+ * list of colors used in CLI
+ */
 public class AnsiColors {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -22,7 +26,6 @@ public class AnsiColors {
 
     // Reset
     public static final String RESET = "\033[0m";  // Text Reset
-
 
     // Bold
     public static final String BLACK_BOLD = "\033[1;30m";  // BLACK

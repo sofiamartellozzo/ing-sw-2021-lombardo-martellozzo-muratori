@@ -3,9 +3,8 @@ package it.polimi.ingsw.model.board;
 import java.io.Serializable;
 
 /**
-* GIANLUCA
- * TEST PASSED
  * It represents the Grey Box of the FaithTrack.
+ * so the ones without victory points
 * */
 public class SimpleBox extends Box implements Serializable {
 
@@ -30,7 +29,7 @@ public class SimpleBox extends Box implements Serializable {
 
     /**
      * Getter Method
-     * @return
+     * @return -> victory points
      */
     @Override
     public int getVictoryPoints() {
@@ -39,7 +38,7 @@ public class SimpleBox extends Box implements Serializable {
 
     /**
      * Getter Method
-     * @return
+     * @return -> the number of the section (1-2-3)
      */
     @Override
     public int getWhichSection() {
@@ -48,7 +47,7 @@ public class SimpleBox extends Box implements Serializable {
 
     /**
      * Getter Method
-     * @return
+     * @return --> the number of the box
      */
     @Override
     public int getNumberBox() {

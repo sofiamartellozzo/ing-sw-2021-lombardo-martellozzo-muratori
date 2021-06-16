@@ -33,7 +33,10 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * this class manages the personal board of a player
+ * so it contains the faith Track, the three card spaces, strongbox and warehouse, two leader cards chosen
+ */
 public class PersonalBoardSceneController {
     private GUI gui;
 

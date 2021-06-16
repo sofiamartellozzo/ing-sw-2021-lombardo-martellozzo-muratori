@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.card.DevelopmentCardTable;
 import it.polimi.ingsw.utility.AnsiColors;
 
 /**
- * this class show to the player the development card table, in particular every last card of a Development Card Deck
+ * this class shows to the player the development card table, in particular every last card of a Development Card Deck
  * available in the table using data contained in
  */
 

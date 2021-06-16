@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.card.LeaderCard;
 
 import java.io.Serializable;
 
+/**
+ * generic player of a solo game
+ * (a game composed by only one player, he himself)
+ */
 public class SoloPlayer extends Player implements Serializable {
 
 
@@ -21,7 +25,8 @@ public class SoloPlayer extends Player implements Serializable {
     }
 
     /**
-     * @param username constructor of the class, it set the attribute inkpot with default
+     * @param username --> of the player
+     * constructor of the class, it set the attribute inkpot with default
      */
     public SoloPlayer(String username) {
         super(username);
@@ -33,6 +38,9 @@ public class SoloPlayer extends Player implements Serializable {
         return gameSpace;
     }
 
+    /**
+     * increases the position of the player's faith marker
+     */
     @Override
     public void increasePosition() {
         gameSpace.getFaithTrack().increasePosition();
@@ -43,6 +51,10 @@ public class SoloPlayer extends Player implements Serializable {
         this.gameSpace = gameSpace;
     }
 
+    /**
+     * calculates all the victory points obtained by the player in the game
+     * @return --> points
+     */
     @Override
     public int calculateVictoryPoints() {
         //sum of all points.. then set the attribute to it

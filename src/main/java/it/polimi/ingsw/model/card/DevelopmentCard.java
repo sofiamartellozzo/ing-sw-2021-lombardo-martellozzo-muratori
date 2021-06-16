@@ -8,8 +8,11 @@ import it.polimi.ingsw.utility.AnsiColors;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/* ILA */
-
+/**
+ * cards that are in the Dev Table
+ * each card has a specific cost to buy (resources to pay to buy the card),
+ * earnProductionPower (resources obtained after activating it) ,costProductionPower (resources to pay to activate it)
+ */
 public class DevelopmentCard extends Card implements Serializable {
 
     private final int id;
@@ -21,12 +24,12 @@ public class DevelopmentCard extends Card implements Serializable {
 
     /**
      * constructor of the class
-     * @param victoryPoints
-     * @param color
-     * @param level
-     * @param costToBuy
-     * @param earnProductionPower
-     * @param costProductionPower
+     * @param victoryPoints --> points of each card
+     * @param color --> specific color of the card
+     * @param level --> level of te card
+     * @param costToBuy --> resources to pay to buy the card
+     * @param earnProductionPower --> resources obtained after activating it
+     * @param costProductionPower --> resources to pay to activate it
      */
 
     public DevelopmentCard(int id,int victoryPoints, Color color, int level, ArrayList<Resource> costToBuy, ArrayList<Resource> earnProductionPower, ArrayList<Resource> costProductionPower)
@@ -61,9 +64,9 @@ public class DevelopmentCard extends Card implements Serializable {
     /**
      * when the player chose to activate the production power,
      * he removes the resources that he paid from the Warehouse of from the strongbox
-     * ( the player chooses) and put the new resources received in the StrongBox
-     * @param player
-     * @param where
+     * (the player chooses) and put the new resources received in the StrongBox
+     * @param player --> player
+     * @param where --> place from where taking the resources
      * @throws InvalidActionException
      */
     public void useProductionPower(Player player,String where) throws InvalidActionException {
@@ -123,12 +126,12 @@ public class DevelopmentCard extends Card implements Serializable {
 
     }
 
-    public String getIDtoString(){ return " ID: "+id+"\t\t\t\t\t\t";}
+    public String getIDtoString(){ return " ID: "+id+"                      ";}
     public String getColortoString(){
-        return " color: "+color+"\t\t\t\t";
+        return " color: "+color+"               ";
     }
     public String getleveltostring(){
-        return " level: "+level+"\t\t\t\t\t";
+        return " level: "+level+"                   ";
     }
     public String getcosttostring(){
         return " cost: "+getCostForCli();
@@ -139,7 +142,7 @@ public class DevelopmentCard extends Card implements Serializable {
     public String getearntostring(){
         return " earn: "+getEarnForCli();
     }
-    public String getvictorytostring(){ return " vp: "+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"\t\t\t\t\t\t"; }
+    public String getvictorytostring(){ return " vp: "+AnsiColors.YELLOW_BOLD+getVictoryPoints()+AnsiColors.RESET+"                      "; }
 
 
 /*-------------------------------------------------------------------------------------------------------------------------*/
@@ -152,21 +155,21 @@ public class DevelopmentCard extends Card implements Serializable {
      */
     private String countSpaces(int lenght){
         if(lenght == 1){
-            return "\t\t\t\t\t\t";
+            return "                    ";
         } else if(lenght == 2){
-            return "\t\t\t\t\t";
+            return "                  ";
         }else if(lenght == 3){
-            return "\t\t\t\t";
+            return "                ";
         }else if(lenght == 4){
-            return "\t\t\t\t";
+            return "              ";
         }else if(lenght == 5){
-            return "\t\t\t\t";
+            return "              ";
         }else if(lenght == 6){
-            return "\t\t\t";
+            return "           ";
         }else if(lenght == 7){
-            return "\t\t\t";
+            return "      ";
         }else{
-            return "\t";
+            return "   ";
         }
     }
 
@@ -199,10 +202,14 @@ public class DevelopmentCard extends Card implements Serializable {
         return cost+countSpaces(lenght);
     }
 
+    /**
+     * used to convert the cost to pay in emoji
+     * @return
+     */
     public String getPayForCli()
     {
         String cost = "" ;
-        int lenght = 0;    //this variable count the lenght of the cost
+        int lenght = 0;    //this variable count the length of the cost
         for (Resource res:costProductionPower) {
 
             switch (res.getType()){
@@ -228,6 +235,10 @@ public class DevelopmentCard extends Card implements Serializable {
         return cost+countSpaces(lenght);
     }
 
+    /**
+     * used to convert the earned resources in emoji
+     * @return
+     */
     public String getEarnForCli()
     {
         String cost = "" ;

@@ -8,6 +8,10 @@ import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 
+/**
+ * this class handles all the Room's updates from the server and manages the players of the game
+ */
+
 public class LobbySceneController {
     private GUI gui;
 

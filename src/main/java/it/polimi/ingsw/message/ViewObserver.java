@@ -12,8 +12,7 @@ import java.io.IOException;
 
 /**
  * OBSERVER
- * interface with the method of the view
- * not all yet
+ * interface with the methods of the view
  */
 public interface ViewObserver extends Observer{
 

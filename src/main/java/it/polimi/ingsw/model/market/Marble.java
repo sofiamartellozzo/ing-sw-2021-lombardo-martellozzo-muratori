@@ -7,9 +7,9 @@ import it.polimi.ingsw.model.TypeResource;
 
 import java.io.Serializable;
 
-/*
- * SOFIA
- * */
+/**
+ * generic Marble of the Market
+ */
 public abstract class Marble implements Serializable {
     protected Color color;
 

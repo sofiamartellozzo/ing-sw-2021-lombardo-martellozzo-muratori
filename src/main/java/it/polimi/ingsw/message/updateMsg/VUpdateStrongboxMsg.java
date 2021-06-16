@@ -5,6 +5,8 @@ import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 import it.polimi.ingsw.model.board.resourceManagement.StrongBox;
 
 /**
+ * ActionController ---> VV ---> CLI / GUI
+ *
  * update after a change in strongbox to the client (CLI or GUI)
  */
 public class VUpdateStrongboxMsg extends ViewGameMsg {
