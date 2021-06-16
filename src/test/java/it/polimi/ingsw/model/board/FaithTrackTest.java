@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.controller.factory.PersonalBoardFactory;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +14,10 @@ public class FaithTrackTest extends TestCase {
     ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();
     @Before
     public void setUp() throws Exception {
-
+        PersonalBoard personalBoard = new PersonalBoardFactory().createGame();
+        faithTrack=personalBoard.getFaithTrack();
+        popesFavorTiles=personalBoard.getFaithTrack().getPopesFavorTiles();
+/*
         GoldBox box = new GoldBox(1,0,9);
         GoldBox box1 = new GoldBox(1,1,2);
         GoldBox box2 = new GoldBox(1,2,1);
@@ -59,7 +63,7 @@ public class FaithTrackTest extends TestCase {
         vatSec.add(vaticanSection1);
 
         faithTrack = new FaithTrack(boxes,popesFavorTiles,new FaithMarker(),vatSec);
-
+*/
     }
 
     @After
@@ -78,7 +82,11 @@ public class FaithTrackTest extends TestCase {
         faithTrack.getFaithMarker().setPosition(4);
         int j = faithTrack.getAllVictoryPoints();
 
-        assertEquals(j,10);
+        assertEquals(1,j);
+
+        faithTrack.getFaithMarker().setPosition(21);
+        j=faithTrack.getAllVictoryPoints();
+        assertEquals(16,j);
 
     }
 
@@ -86,7 +94,7 @@ public class FaithTrackTest extends TestCase {
     public void testIncreasePosition() {
 
         faithTrack.getFaithMarker().increasePosition();
-        assertEquals(faithTrack.getPositionFaithMarker(),1);
+        assertEquals(1,faithTrack.getPositionFaithMarker());
     }
 
     @Test

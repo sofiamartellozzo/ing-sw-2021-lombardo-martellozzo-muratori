@@ -295,11 +295,7 @@ public class DevelopmentCardTableTest extends TestCase {
         for(int row=0;row<3;row++){
             for(int column=0;column<4;column++){
                 if(row==0){
-                    if(column==0){
-                        expected[row][column]=true;
-                    }else{
-                        expected[row][column]=false;
-                    }
+                    expected[row][column]=false;
                 }else if(row==1){
                     if(column==0 || column==1){
                         expected[row][column]=true;

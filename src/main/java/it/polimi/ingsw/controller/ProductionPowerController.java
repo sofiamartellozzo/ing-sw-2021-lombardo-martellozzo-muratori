@@ -19,6 +19,10 @@ import java.util.*;
 
 public class ProductionPowerController extends Observable implements ControllerObserver {
 
+    public PlayerInterface getPlayer() {
+        return player;
+    }
+
     private final PlayerInterface player;
     private boolean notInterrupt;
     private final ArrayList<Resource> receivedResources;

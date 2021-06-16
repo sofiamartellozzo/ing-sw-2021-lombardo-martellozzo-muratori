@@ -35,7 +35,7 @@ public class DevelopmentCardDeck implements Serializable {
     public DevelopmentCard takeCard() throws IndexOutOfBoundsException {
         if (developDeck.size() == 0)
             throw new IndexOutOfBoundsException("Error, the deck is empty,so you can't take a card!!");
-        else return developDeck.get(developDeck.size()-1);
+        else return developDeck.remove(developDeck.size()-1);
     }
 
     public void removeCard(){

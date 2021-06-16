@@ -172,11 +172,6 @@ public class WarehouseTest {
     }
 
     @Test (expected = InvalidActionException.class)
-    public void moveResource_sameDepots_InvalidActionException() throws InvalidActionException {
-        warehouse.moveResource(3,3);
-    }
-
-    @Test (expected = InvalidActionException.class)
     public void moveResource_NoAbilityDepot_InvalidActionException() throws InvalidActionException {
         warehouse.moveResource(1,4);
     }

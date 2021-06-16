@@ -18,13 +18,13 @@ public class DevelopmentCardDeckTest extends TestCase {
     @Before
     public void setUp() throws Exception {
 
-        Resource res = new Resource(Color.GREEN);
+        Resource res = new Resource(Color.YELLOW);
         Resource r1 = new Resource(Color.PURPLE);
         ArrayList<Resource> cost = new ArrayList<>();
         cost.add(res);
         cost.add(r1);
 
-        Resource r2 = new Resource(Color.GREEN);
+        Resource r2 = new Resource(Color.YELLOW);
         ArrayList<Resource> earn = new ArrayList<>();
         earn.add(r2);
 
@@ -57,8 +57,8 @@ public class DevelopmentCardDeckTest extends TestCase {
     @Test
     public void testGetDevelopDeck() {
 
-        //ArrayList<DevelopmentCard> dev = new ArrayList<>();
-        //dev = developmentCardDeck.getDevelopDeck();
+        ArrayList<DevelopmentCard> dev = new ArrayList<>();
+        dev = developmentCardDeck.getDevelopDeck();
         assertEquals(developmentCardDeck.getDevelopDeck().size(),3);
     }
 
@@ -67,10 +67,12 @@ public class DevelopmentCardDeckTest extends TestCase {
 
         boolean thrown = false;
 
-        //DevelopmentCard card = developmentCardDeck.takeCard();
-        //assertEquals(developmentCardDeck.getDevelopDeck().size(),2);
+        DevelopmentCard card = developmentCardDeck.takeCard();
+        assertEquals(developmentCardDeck.getDevelopDeck().size(),2);
 
         try {
+            developmentCardDeck.takeCard();
+            developmentCardDeck.takeCard();
             developmentCardDeck.takeCard();
         }catch (IndexOutOfBoundsException e){
             thrown = true;

@@ -965,7 +965,7 @@ public class DevelopmentCardFactoryTest extends TestCase {
         for(int column=0;column<4;column++){
             for(int row=2;row>=0;row--){
                 ArrayList<DevelopmentCard> deck = new ArrayList<>();
-                for(int i=card;i<card+4;i++) {
+                for(int i=card+3;i>=card;i--) {
                     deck.add(cards.get(i));
                     expected[row][column]=new DevelopmentCardDeck(deck);
                 }

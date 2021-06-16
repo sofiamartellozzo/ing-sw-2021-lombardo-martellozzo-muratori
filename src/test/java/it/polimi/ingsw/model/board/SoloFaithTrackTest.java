@@ -70,7 +70,7 @@ public class SoloFaithTrackTest extends TestCase {
     public void testIncreaseLorenzoPosition() {
         soloFaithTrack.increaseLorenzoPosition();
         soloFaithTrack.increaseLorenzoPosition();
-        int num = soloFaithTrack.getPositionFaithMarker();
+        int num = soloFaithTrack.getLorenzoFaithMarker().getPosition();
 
         assertEquals(num, 2);
     }
