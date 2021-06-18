@@ -9,7 +9,8 @@ import javafx.scene.control.Label;
 import java.util.ArrayList;
 
 /**
- * this class handles all the Room's updates from the server and manages the players of the game
+ * When the player access and, in case has chosen the size of the room too, is redirect to this scene,
+ * where he has to wait other players connect, the scene is updated every time a player is insert in the room.
  */
 
 public class LobbySceneController {
@@ -26,6 +27,10 @@ public class LobbySceneController {
         this.gui = gui;
     }
 
+    /**
+     * To update the info of the Room
+     * @param msg VRoomInfoMsg
+     */
     public void updateLobby(VRoomInfoMsg msg){
         ArrayList<Label> players = getPlayers();
         ArrayList<String> idPlayers = msg.getPlayersId();
@@ -41,6 +46,10 @@ public class LobbySceneController {
         }
     }
 
+    /**
+     * Getter Method of the Players Label View
+     * @return an ordered arraylist of the players' label view
+     */
     private ArrayList<Label> getPlayers(){
         ArrayList<Label> players = new ArrayList<>();
         players.add(firstPlayer);

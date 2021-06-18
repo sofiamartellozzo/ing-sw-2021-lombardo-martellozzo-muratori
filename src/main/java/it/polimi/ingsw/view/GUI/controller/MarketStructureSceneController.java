@@ -26,9 +26,8 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 /**
- * this class manages the scene of the market,
- * the market is composed by 3 rows and 4 columns with a marble in each position
- * So this class shows the market structure and lets the player choose if he wants a row or a column of the market and which one
+ * When the player interacts with the market, the scene is set to the MarketStructureScene and
+ * every action is managed here.
  */
 public class MarketStructureSceneController {
     private GUI gui;
@@ -78,6 +77,9 @@ public class MarketStructureSceneController {
     private boolean notValidDepot=false;
     private TypeResource resourceToRestore;
 
+    /**
+     * When the MarketStructureScene is set, this method prepares it
+     */
     public void start(){
         warningPane.setVisible(false);
         update(gui.getMarketStructureData());
@@ -90,6 +92,10 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * To update the market situation from information of the Model
+     * @param marketStruct the market structure of the model
+     */
     public void update(MarketStructure marketStruct){
         MarketStructure marketStructure=marketStruct;
         ImageView[][] marketStructureView=getMarketStructureView();
@@ -115,6 +121,11 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * When the player choose to buy from the market, the market situation view is updated, every buttons enabled
+     * to allow the player to choose a row/column
+     * @param msg VBuyFromMarketRequestMsg
+     */
     public void chooseRowColumn(VBuyFromMarketRequestMsg msg){
         update(msg.getMarket());
         backButton.setDisable(true);
@@ -124,6 +135,10 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * When the player clicks on "Row 1" button, a message with the choice made is send to the server/message handler
+     * every buttons disabled and the scene temporarily returns to the PersonalBoard.
+     */
     public void clickRow1(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"row",0);
         gui.sendMsg(responseMsg);
@@ -131,6 +146,10 @@ public class MarketStructureSceneController {
         gui.seePersonalBoard();
         backButton.setDisable(false);
     }
+    /**
+     * When the player clicks on "Row 2" button, a message with the choice made is send to the server/message handler
+     * every buttons disabled and the scene temporarily returns to the PersonalBoard.
+     */
     public void clickRow2(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"row",1);
         gui.sendMsg(responseMsg);
@@ -138,6 +157,10 @@ public class MarketStructureSceneController {
         gui.seePersonalBoard();
         backButton.setDisable(false);
     }
+    /**
+     * When the player clicks on "Row 3" button, a message with the choice made is send to the server/message handler
+     * every buttons disabled and the scene temporarily returns to the PersonalBoard.
+     */
     public void clickRow3(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"row",2);
         gui.sendMsg(responseMsg);
@@ -145,6 +168,10 @@ public class MarketStructureSceneController {
         gui.seePersonalBoard();
         backButton.setDisable(false);
     }
+    /**
+     * When the player clicks on "Column 1" button, a message with the choice made is send to the server/message handler
+     * every buttons disabled and the scene temporarily returns to the PersonalBoard.
+     */
     public void clickColumn1(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"column",0);
         gui.sendMsg(responseMsg);
@@ -152,6 +179,10 @@ public class MarketStructureSceneController {
         gui.seePersonalBoard();
         backButton.setDisable(false);
     }
+    /**
+     * When the player clicks on "Column 2" button, a message with the choice made is send to the server/message handler
+     * every buttons disabled and the scene temporarily returns to the PersonalBoard.
+     */
     public void clickColumn2(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"column",1);
         gui.sendMsg(responseMsg);
@@ -159,6 +190,10 @@ public class MarketStructureSceneController {
         gui.seePersonalBoard();
         backButton.setDisable(false);
     }
+    /**
+     * When the player clicks on "Column 3" button, a message with the choice made is send to the server/message handler
+     * every buttons disabled and the scene temporarily returns to the PersonalBoard.
+     */
     public void clickColumn3(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"column",2);
         gui.sendMsg(responseMsg);
@@ -166,6 +201,10 @@ public class MarketStructureSceneController {
         gui.seePersonalBoard();
         backButton.setDisable(false);
     }
+    /**
+     * When the player clicks on "Column 4" button, a message with the choice made is send to the server/message handler
+     * every buttons disabled and the scene temporarily returns to the PersonalBoard.
+     */
     public void clickColumn4(){
         CBuyFromMarketInfoMsg responseMsg= new CBuyFromMarketInfoMsg("I chose the row/column that I want to take from the market",gui.getUsername(),"column",3);
         gui.sendMsg(responseMsg);
@@ -174,6 +213,10 @@ public class MarketStructureSceneController {
         backButton.setDisable(false);
     }
 
+    /**
+     * When the player gets a white marble and has two leader cards of type WHITE_MARBLE,
+     * a pop-up with the possible resources appears.
+     */
     public void chooseResource(){
         for(TypeResource type: whiteSpecial){
             int which=0;
@@ -197,48 +240,75 @@ public class MarketStructureSceneController {
         chooseResourcePane.setVisible(true);
     }
 
+    /**
+     * When the mouse enters on "COIN" image
+     */
     public void mouseEnteredCoin(){
         if(!coin.isDisable()){
             coin.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on "SERVANT" image
+     */
     public void mouseEnteredServant(){
         if(!servant.isDisable()){
             servant.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on "SHIELD" image
+     */
     public void mouseEnteredShield(){
         if(!shield.isDisable()){
             shield.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on "STONE" image
+     */
     public void mouseEnteredStone(){
         if(!stone.isDisable()){
             stone.setEffect(new Glow());
         }
     }
-
+    /**
+     * When the mouse exits from "COIN" image
+     */
     public void mouseExitedCoin(){
         if(!coin.isDisable()){
             coin.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from "SERVANT" image
+     */
     public void mouseExitedServant(){
         if(!servant.isDisable()){
             servant.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from "SHIELD" image
+     */
     public void mouseExitedShield(){
         if(!shield.isDisable()){
             shield.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from "STONE" image
+     */
     public void mouseExitedStone(){
         if(!stone.isDisable()){
             stone.setEffect(null);
         }
     }
 
+    /**
+     * When the player clicks on "COIN" image, the controller saves his choice and makes appear
+     * the pop-up with the depot to put the resource chosen in the warehouse.
+     */
     public void clickCoin(){
         if(!coin.isDisable()){
             resourceToStore=TypeResource.COIN;
@@ -250,6 +320,10 @@ public class MarketStructureSceneController {
             chooseDepotPane.setVisible(true);
         }
     }
+    /**
+     * When the player clicks on "SERVANT" image, the controller saves his choice and makes appear
+     * the pop-up with the depot to put the resource chosen in the warehouse.
+     */
     public void clickServant(){
         if(!servant.isDisable()){
             resourceToStore=TypeResource.SERVANT;
@@ -261,6 +335,10 @@ public class MarketStructureSceneController {
             chooseDepotPane.setVisible(true);
         }
     }
+    /**
+     * When the player clicks on "SHIELD" image, the controller saves his choice and makes appear
+     * the pop-up with the depot to put the resource chosen in the warehouse.
+     */
     public void clickShield(){
         if(!shield.isDisable()){
             resourceToStore=TypeResource.SHIELD;
@@ -272,6 +350,10 @@ public class MarketStructureSceneController {
             chooseDepotPane.setVisible(true);
         }
     }
+    /**
+     * When the player clicks on "STONE" image, the controller saves his choice and makes appear
+     * the pop-up with the depot to put the resource chosen in the warehouse.
+     */
     public void clickStone(){
         if(!stone.isDisable()){
             resourceToStore=TypeResource.STONE;
@@ -284,6 +366,11 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * For every resource received the player has to choose where to put them in the Warehouse,
+     * is checked what type of resource is received and the possible ability activated, to prepare the pop-up.
+     * If the player has finished to manage the resources received, the scene returns to personalboard.
+     */
     public void chooseDepot(){
         if(resourcesToStore.size()>0){
             gui.seeMarketBoard();
@@ -317,6 +404,12 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * When the player choose a depot where he can't put the resource,
+     * the pop-up of the depots is shown to put again correctly the resource.
+     * The cycle to manage the resource received is momentarily interrupted
+     * @param msg VNotValidDepotMsg
+     */
     public void chooseDepot(VNotValidDepotMsg msg){
         gui.seeMarketBoard();
         notValidDepot=true;
@@ -334,6 +427,11 @@ public class MarketStructureSceneController {
         discardButton.setDisable(false);
         chooseDepotPane.setVisible(true);
     }
+
+    /**
+     * To resume the management of the resource received.
+     * @param resource the last resource the player had to manage.
+     */
     public void resumeChooseDepot(TypeResource resource){
         gui.seeMarketBoard();
         backButton.setDisable(true);
@@ -358,58 +456,92 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * When the mouse enters in the "Depot 1" pane
+     */
     public void mouseEnteredDepot1(){
         if(!depot1.isDisable()){
             depot1.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters in the "Depot 2" pane
+     */
     public void mouseEnteredDepot2(){
         if(!depot2.isDisable()){
             depot2.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters in the "Depot 3" pane
+     */
     public void mouseEnteredDepot3(){
         if(!depot3.isDisable()){
             depot3.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters in the "Depot 4" pane
+     */
     public void mouseEnteredDepot4(){
         if(!depot4.isDisable()){
             depot4.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters in the "Depot 5" pane
+     */
     public void mouseEnteredDepot5(){
         if(!depot5.isDisable()){
             depot5.setEffect(new Glow());
         }
     }
-
+    /**
+     * When the mouse exits from the "Depot 1" pane
+     */
     public void mouseExitedDepot1(){
         if(!depot1.isDisable()){
             depot1.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Depot 2" pane
+     */
     public void mouseExitedDepot2(){
         if(!depot2.isDisable()){
             depot2.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Depot 3" pane
+     */
     public void mouseExitedDepot3(){
         if(!depot3.isDisable()){
             depot3.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Depot 4" pane
+     */
     public void mouseExitedDepot4(){
         if(!depot4.isDisable()){
             depot4.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Depot 5" pane
+     */
     public void mouseExitedDepot5(){
         if(!depot5.isDisable()){
             depot5.setEffect(null);
         }
     }
 
+    /**
+     * When the player clicks on the "Depot 1" pane,
+     * if the action was to put again a resource (NotValidDepot) send a message to restore it and resume the
+     * management of the remaining resources, else just send a message to store the resource.
+     */
     public void clickDepot1(){
         if(!depot1.isDisable()){
             if(notValidDepot){
@@ -430,6 +562,11 @@ public class MarketStructureSceneController {
             }
         }
     }
+    /**
+     * When the player clicks on the "Depot 2" pane,
+     * if the action was to put again a resource (NotValidDepot) send a message to restore it and resume the
+     * management of the remaining resources, else just send a message to store the resource.
+     */
     public void clickDepot2(){
         if(!depot2.isDisable()){
             if(notValidDepot){
@@ -450,6 +587,11 @@ public class MarketStructureSceneController {
             }
         }
     }
+    /**
+     * When the player clicks on the "Depot 3" pane,
+     * if the action was to put again a resource (NotValidDepot) send a message to restore it and resume the
+     * management of the remaining resources, else just send a message to store the resource.
+     */
     public void clickDepot3(){
         if(!depot3.isDisable()){
             if(notValidDepot){
@@ -470,6 +612,11 @@ public class MarketStructureSceneController {
             }
         }
     }
+    /**
+     * When the player clicks on the "Depot 4" pane,
+     * if the action was to put again a resource (NotValidDepot) send a message to restore it and resume the
+     * management of the remaining resources, else just send a message to store the resource.
+     */
     public void clickDepot4(){
         if(!depot4.isDisable()){
             if(notValidDepot){
@@ -490,6 +637,11 @@ public class MarketStructureSceneController {
             }
         }
     }
+    /**
+     * When the player clicks on the "Depot 5" pane,
+     * if the action was to put again a resource (NotValidDepot) send a message to restore it and resume the
+     * management of the remaining resources, else just send a message to store the resource.
+     */
     public void clickDepot5(){
         if(!depot5.isDisable()){
             if(notValidDepot){
@@ -511,7 +663,9 @@ public class MarketStructureSceneController {
         }
     }
 
-
+    /**
+     * To discard the resource received
+     */
     public void clickDiscardButton(){
         gui.sendMsg(new CChooseDiscardResourceMsg("I want to discard this resource",gui.getUsername()));
         chooseDepotPane.setVisible(false);
@@ -520,21 +674,40 @@ public class MarketStructureSceneController {
         chooseDepot();
     }
 
+    /**
+     * To move the resources in the warehouse before put the resources received, the scene temporary
+     * returns to the PersonalBoardScene which manages the action
+     */
     public void clickMoveResourceButton(){
-        gui.getPersonalBoardSceneController().setAction(TurnAction.MOVE_RESOURCE);
+        gui.getPersonalBoardSceneController().setTurnAction(TurnAction.MOVE_RESOURCE);
         gui.seePersonalBoard();
         gui.getPersonalBoardSceneController().setReturnToMarket(true);
         gui.getPersonalBoardSceneController().chooseDepots();
     }
 
+    /**
+     * If the player wants just see the market before make the action, this button allows him to return in the
+     * personal board, it appears just when the player choose the action "SEE MARKET BOARD"
+     */
     public void clickBackButton(){
         gui.seePersonalBoard();
     }
 
+    /**
+     * To set the GUI which the controllers refers
+     * @param gui the GUI of the player
+     */
     public void setGui(GUI gui){this.gui=gui;}
 
+    /**
+     * To set the resources received from the BUY FROM MARKET action
+     * @param resourcesToStore
+     */
     public void setResourcesToStore(ArrayList<TypeResource> resourcesToStore){this.resourcesToStore = resourcesToStore;}
 
+    /**
+     * @return the market structure view similar to the structure of the market model
+     */
     private ImageView[][] getMarketStructureView(){
         ImageView[][] marketStructureView = new ImageView[3][4];
         marketStructureView[0][0]=marble1_1;
@@ -551,6 +724,10 @@ public class MarketStructureSceneController {
         marketStructureView[2][3]=marble3_4;
         return marketStructureView;
     }
+
+    /**
+     * @return an arraylist with every "row/column" button
+     */
     private ArrayList<Button> getButtons(){
         ArrayList<Button> buttons=new ArrayList<>();
         buttons.add(row1Button);
@@ -562,12 +739,20 @@ public class MarketStructureSceneController {
         buttons.add(column4Button);
         return buttons;
     }
+
+    /**
+     * To disable the "row/column" buttons
+     */
     private void disableButtons(){
         ArrayList<Button> buttons = getButtons();
         for(Button button:buttons){
             button.setDisable(true);
         }
     }
+
+    /**
+     * @return the structure of the warehouse view similar to the warehouse model
+     */
     private ArrayList<ArrayList<ImageView>> getWarehouseView(){
         ArrayList<ArrayList<ImageView>> warehouseView= new ArrayList<>();
 
@@ -599,6 +784,10 @@ public class MarketStructureSceneController {
 
         return warehouseView;
     }
+
+    /**
+     * @return a list of the depot panes
+     */
     private ArrayList<Pane> getDepotPanes(){
         ArrayList<Pane> depotPanes=new ArrayList<>();
         depotPanes.add(depot1);
@@ -608,12 +797,20 @@ public class MarketStructureSceneController {
         depotPanes.add(depot5);
         return depotPanes;
     }
+
+    /**
+     * @return a list of the special depot images
+     */
     private ArrayList<ImageView> getSpecialDepotView(){
         ArrayList<ImageView> specialDepotView = new ArrayList<>();
         specialDepotView.add(specialDepot1);
         specialDepotView.add(specialDepot2);
         return specialDepotView;
     }
+
+    /**
+     * To copy the warehouse view in the market from the personal board
+     */
     public void copyWarehouseFromPersonalBoard(){
         ArrayList<ArrayList<ImageView>> warehouseFromPersonalBoardView = gui.getPersonalBoardSceneController().getWarehouseView();
         ArrayList<ImageView> specialDepotsFromPersonalBoardView = gui.getPersonalBoardSceneController().getSpecialDepotsView();
@@ -632,6 +829,10 @@ public class MarketStructureSceneController {
             specialDepotView.get(i).setImage(specialDepotsFromPersonalBoardView.get(i).getImage());
         }
     }
+
+    /**
+     * To enable the depot panes
+     */
     private void enableDepotPane(){
         for(int i=0;i<5;i++){
             if(i<3) {
@@ -643,11 +844,20 @@ public class MarketStructureSceneController {
             }
         }
     }
+
+    /**
+     * To disable the depot panes
+     */
     private void disableDepotPane(){
         for(Pane pane:getDepotPanes()){
             pane.setDisable(true);
         }
     }
+
+    /**
+     * In the "depot" pop-up this method set the resource image and its label based on the type
+     * @param type the type of the resource to store or discard
+     */
     private void setResourceAndLabel(TypeResource type){
         switch(type){
             case COIN:
@@ -673,12 +883,22 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * To set a label text
+     * @param label the label to change
+     * @param content the text to set
+     */
     private void setLabelText(Label label,String content){
         Platform.runLater(()->{
             label.setText(content);
         });
     }
 
+    /**
+     * To get the type resource from a color
+     * @param color the color of the resource
+     * @return the type of the resource
+     */
     private TypeResource fromColorToType(it.polimi.ingsw.model.Color color){
         switch(color){
             case YELLOW:return TypeResource.COIN;
@@ -689,8 +909,15 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * To set if the player has some ability WHITE_MARBLE activated
+     * @param whiteSpecial
+     */
     public void setWhiteSpecial(ArrayList<TypeResource> whiteSpecial){this.whiteSpecial=whiteSpecial;}
 
+    /**
+     * @return a list of the resources view in the pop-up to choose the resource the player wants
+     */
     private ArrayList<ImageView> getResourcesView(){
         ArrayList<ImageView> resources=new ArrayList<>();
         resources.add(coin);
@@ -700,6 +927,9 @@ public class MarketStructureSceneController {
         return resources;
     }
 
+    /**
+     * To disable every resource image
+     */
     private void disableResources(){
         ColorAdjust colorAdjust=new ColorAdjust();
         colorAdjust.setBrightness(-0.5);
@@ -709,6 +939,11 @@ public class MarketStructureSceneController {
         }
     }
 
+    /**
+     * When the server is unable, every pop-up is hidden and every action is disabled.
+     * Then an error message is shown.
+     * @param msg VServerUnableMsg
+     */
     public void setWarningPane(VServerUnableMsg msg) {
         warningPane.setVisible(true);
         ArrayList<Button> buttons = getButtons();
@@ -721,6 +956,9 @@ public class MarketStructureSceneController {
         backButton.setVisible(false);
     }
 
+    /**
+     * When the player received the VServerUnableMsg and click on the OK button, the GUI closes automatically
+     */
     public void clickOkButton(){
         gui.close();
     }

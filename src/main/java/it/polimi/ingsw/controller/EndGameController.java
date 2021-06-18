@@ -109,11 +109,11 @@ public class EndGameController extends Observable implements ControllerObserver 
             System.out.println("inside end game controller");
             String result = soloPlayer.checkIfWin();
             if (result.equals("Winner")) {
-                VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ", soloPlayer.getUsername(), soloPlayer.getVictoryPoints(), null);
+                VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ", soloPlayer.getUsername(), soloPlayer.getVictoryPoints(), true);
                 notifyAllObserver(ObserverType.VIEW, msg);
             } else if (result.equals("Looser")) {
                 System.out.println("inside end game controller LOOSER");
-                VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ", soloPlayer.getUsername(), soloPlayer.getVictoryPoints(), null);
+                VShowEndGameResultsMsg msg = new VShowEndGameResultsMsg("The counting is finished ", soloPlayer.getUsername(), soloPlayer.getVictoryPoints(), false);
                 notifyAllObserver(ObserverType.VIEW, msg);
             }
         }

@@ -22,9 +22,9 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 
 /**
- * this class handles the scene of the table of Development cards,
- * the table is composed by 3 rows and 4 columns, in each position there is a deck of 4 development cards
- * In the case that a player can't afford a card, he will visualize an error message
+ * When the player interacts with the Development Card Table, usually the scene changes to the
+ * DevCardTableScene, every possible action is managed here.
+ * The "justSee" boolean is made to allow the player to see the table without interacts with it.
  */
 public class DevCardTableSceneController {
     private GUI gui;
@@ -50,6 +50,9 @@ public class DevCardTableSceneController {
     int chosenRow,chosenColumn;
     boolean justSee;
 
+    /**
+     * When the scene is set, this method prepares it
+     */
     public void start(){
         warningPane.setVisible(false);
         update(gui.getDevelopmentCardTable());
@@ -60,6 +63,12 @@ public class DevCardTableSceneController {
         justSee=true;
     }
 
+    /**
+     * When the player wants to buy a card, every images of card is shadowed if the player can't buy it,
+     * if any card can't be bought an alert message is showed and the player can go back to the personal board and choose
+     * another action
+     * @param msg VChooseDevelopCardRequestMsg
+     */
     public void choose(VChooseDevelopCardRequestMsg msg){
         justSee=false;
         backButton.setVisible(false);
@@ -90,6 +99,13 @@ public class DevCardTableSceneController {
         }
     }
 
+    /**
+     * When the player choose the card to buy and choose a not valid card space,
+     * a pop-up with a copy of the card spaces is shown to choose another card space.
+     * The possible card the player can buy can be put always in a card space,
+     * so it's impossible to go in a loop.
+     * @param msg VNotValidCardSpaceMsg
+     */
     public void chooseCardSpace(VNotValidCardSpaceMsg msg){
         justSee=false;
         backButton.setVisible(false);
@@ -99,6 +115,10 @@ public class DevCardTableSceneController {
         chooseCardSpace();
     }
 
+    /**
+     * To update the table view from the Model information of the table
+     * @param developmentCardTable the table from the Model
+     */
     public void update(DevelopmentCardTable developmentCardTable){
         DevelopmentCardDeck[][] table = developmentCardTable.getTable();
         ImageView[][] devCardTableView = getDevCardTableView();
@@ -117,6 +137,9 @@ public class DevCardTableSceneController {
         setAllButtonsDisable();
     }
 
+    /**
+     * When the player click on the "Card Row 1 Column 1", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard1_1(){
         if(!devCard1_1.isDisable() && !justSee) {
             chosenRow = 0;
@@ -124,7 +147,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
-
+    /**
+     * When the player click on the "Card Row 1 Column 2", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard1_2(){
         if(!devCard1_2.isDisable() && !justSee) {
             chosenRow = 0;
@@ -132,6 +157,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 1 Column 3", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard1_3(){
         if(!devCard1_3.isDisable() && !justSee) {
             chosenRow = 0;
@@ -139,6 +167,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 1 Column 4", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard1_4(){
         if(!devCard1_4.isDisable() && !justSee) {
             chosenRow = 0;
@@ -146,6 +177,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 2 Column 1", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard2_1(){
         if(!devCard2_1.isDisable() && !justSee) {
             chosenRow = 1;
@@ -153,6 +187,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 2 Column 2", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard2_2(){
         if(!devCard2_2.isDisable() && !justSee) {
             chosenRow = 1;
@@ -160,6 +197,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 2 Column 3", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard2_3(){
         if(!devCard2_3.isDisable() && !justSee) {
             chosenRow = 1;
@@ -167,6 +207,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 2 Column 4", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard2_4(){
         if(!devCard2_4.isDisable() && !justSee) {
             chosenRow = 1;
@@ -174,6 +217,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 3 Column 1", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard3_1(){
         if(!devCard3_1.isDisable() && !justSee) {
             chosenRow = 2;
@@ -181,6 +227,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 3 Column 2", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard3_2(){
         if(!devCard3_2.isDisable() && !justSee) {
             chosenRow = 2;
@@ -188,6 +237,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 3 Column 3", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard3_3(){
         if(!devCard3_3.isDisable() && !justSee) {
             chosenRow = 2;
@@ -195,6 +247,9 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
+    /**
+     * When the player click on the "Card Row 3 Column 4", then is shown a pop-up to choose the card space
+     */
     public void clickDevCard3_4(){
         if(!devCard3_4.isDisable() && !justSee) {
             chosenRow = 2;
@@ -202,135 +257,212 @@ public class DevCardTableSceneController {
             chooseCardSpace();
         }
     }
-
+    /**
+     * When the mouse enters on the "Card Row 1 Column 1"
+     */
     public void mouseEnteredDevCard1_1(){
         if(!devCard1_1.isDisable() && !justSee){
             devCard1_1.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 1 Column 2"
+     */
     public void mouseEnteredDevCard1_2(){
         if(!devCard1_2.isDisable() && !justSee){
             devCard1_2.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 1 Column 3"
+     */
     public void mouseEnteredDevCard1_3(){
         if(!devCard1_3.isDisable() && !justSee){
             devCard1_3.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 1 Column 4"
+     */
     public void mouseEnteredDevCard1_4(){
         if(!devCard1_4.isDisable() && !justSee){
             devCard1_4.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 2 Column 1"
+     */
     public void mouseEnteredDevCard2_1(){
         if(!devCard2_1.isDisable() && !justSee){
             devCard2_1.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 2 Column 2"
+     */
     public void mouseEnteredDevCard2_2(){
         if(!devCard2_2.isDisable() && !justSee){
             devCard2_2.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 2 Column 3"
+     */
     public void mouseEnteredDevCard2_3(){
         if(!devCard2_3.isDisable() && !justSee){
             devCard2_3.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 2 Column 4"
+     */
     public void mouseEnteredDevCard2_4(){
         if(!devCard2_4.isDisable() && !justSee){
             devCard1_1.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 3 Column 1"
+     */
     public void mouseEnteredDevCard3_1(){
         if(!devCard3_1.isDisable() && !justSee){
             devCard3_1.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 3 Column 2"
+     */
     public void mouseEnteredDevCard3_2(){
         if(!devCard3_2.isDisable() && !justSee){
             devCard3_2.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 3 Column 3"
+     */
     public void mouseEnteredDevCard3_3(){
         if(!devCard3_3.isDisable() && !justSee){
             devCard3_3.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters on the "Card Row 3 Column 4"
+     */
     public void mouseEnteredDevCard3_4(){
         if(!devCard3_4.isDisable() && !justSee){
             devCard3_4.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 1 Column 1"
+     */
     public void mouseExitedDevCard1_1(){
         if(!devCard1_1.isDisable() && !justSee){
             devCard1_1.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 1 Column 2"
+     */
     public void mouseExitedDevCard1_2(){
         if(!devCard1_2.isDisable() && !justSee){
             devCard1_2.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 1 Column 3"
+     */
     public void mouseExitedDevCard1_3(){
         if(!devCard1_3.isDisable() && !justSee){
             devCard1_3.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 1 Column 4"
+     */
     public void mouseExitedDevCard1_4(){
         if(!devCard1_4.isDisable() && !justSee){
             devCard1_4.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 2 Column 1"
+     */
     public void mouseExitedDevCard2_1(){
         if(!devCard2_1.isDisable() && !justSee){
             devCard2_1.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 2 Column 2"
+     */
     public void mouseExitedDevCard2_2(){
         if(!devCard2_2.isDisable() && !justSee){
             devCard2_2.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 2 Column 3"
+     */
     public void mouseExitedDevCard2_3(){
         if(!devCard2_3.isDisable() && !justSee){
             devCard2_3.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 2 Column 4"
+     */
     public void mouseExitedDevCard2_4(){
         if(!devCard2_4.isDisable() && !justSee){
             devCard2_4.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 3 Column 1"
+     */
     public void mouseExitedDevCard3_1(){
         if(!devCard3_1.isDisable() && !justSee){
             devCard3_1.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 3 Column 2"
+     */
     public void mouseExitedDevCard3_2(){
         if(!devCard3_2.isDisable() && !justSee){
             devCard3_2.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 3 Column 3"
+     */
     public void mouseExitedDevCard3_3(){
         if(!devCard3_3.isDisable() && !justSee){
             devCard3_3.setEffect(null);
         }
     }
+    /**
+     * When the mouse exits from the "Card Row 3 Column 4"
+     */
     public void mouseExitedDevCard3_4(){
         if(!devCard3_4.isDisable() && !justSee){
             devCard3_4.setEffect(null);
         }
     }
 
-
+    /**
+     * To show a pop-up with a copy of the card spaces of the player and choose where to put the card just bought
+     */
     private void chooseCardSpace(){
         setCardSpaceView();
         setAllButtonsEnable();
         chooseCardSpacePane.setVisible(true);
     }
 
+    /**
+     * When the player click on the "Card Space 1" button, send a message to the server/message handler with
+     * the card chosen (row and column) and the card space where to put. Then change scene in the Personal Board.
+     */
     public void clickCardSpace1Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,0));
         chooseCardSpacePane.setVisible(false);
@@ -339,6 +471,10 @@ public class DevCardTableSceneController {
         backButton.setDisable(false);
     }
 
+    /**
+     * When the player click on the "Card Space 2" button, send a message to the server/message handler with
+     * the card chosen (row and column) and the card space where to put. Then change scene in the Personal Board.
+     */
     public void clickCardSpace2Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,1));
         chooseCardSpacePane.setVisible(false);
@@ -346,6 +482,10 @@ public class DevCardTableSceneController {
         backButton.setVisible(true);
         backButton.setDisable(false);
     }
+    /**
+     * When the player click on the "Card Space 3" button, send a message to the server/message handler with
+     * the card chosen (row and column) and the card space where to put. Then change scene in the Personal Board.
+     */
     public void clickCardSpace3Button(){
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,2));
         chooseCardSpacePane.setVisible(false);
@@ -353,6 +493,10 @@ public class DevCardTableSceneController {
         backButton.setVisible(true);
         backButton.setDisable(false);
     }
+    /**
+     * The scene returns to the PersonalBoard,if justSee=false also the error pop-up is hidden and is send
+     * a message that the player can't buy any card.
+     */
     public void clickBackButton(){
         gui.seePersonalBoard();
         setAllDevCardTableDisable();
@@ -363,8 +507,16 @@ public class DevCardTableSceneController {
         }
     }
 
+    /**
+     * To set the GUI
+     * @param gui the GUI of the player
+     */
     public void setGui(GUI gui){this.gui=gui;}
 
+    /**
+     * To get every card images of the table view similar to the structure of the table model.
+     * @return every card images of the table view.
+     */
     private ImageView[][] getDevCardTableView(){
         ImageView[][] devCardTableView = new ImageView[3][4];
         devCardTableView[0][0]=devCard1_1;
@@ -382,6 +534,9 @@ public class DevCardTableSceneController {
         return devCardTableView;
     }
 
+    /**
+     * To shadow every card image
+     */
     private void setAllDevCardTableDisable(){
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.5);
@@ -394,6 +549,10 @@ public class DevCardTableSceneController {
         }
     }
 
+    /**
+     * To get an arraylist of the card space images of the pop-up
+     * @return every card space image
+     */
     private ArrayList<ImageView> getCardSpaceView(){
         ArrayList<ImageView> cardSpaceView = new ArrayList<>();
         cardSpaceView.add(cardSpace1);
@@ -402,15 +561,21 @@ public class DevCardTableSceneController {
         return cardSpaceView;
     }
 
+    /**
+     * To copy the card space images from the personal board scene
+     */
     private void setCardSpaceView(){
         ArrayList<ImageView> cardSpaceTableView = getCardSpaceView();
         //Remove comment when getCardSpaceView() is implemented in the GameSceneController
-        ArrayList<ImageView> cardSpacePersonalBoardView = gui.getGameSceneController().getCardSpacesView();
+        ArrayList<ImageView> cardSpacePersonalBoardView = gui.getPersonalBoardSceneController().getCardSpacesView();
         for(int i=0;i<3;i++){
             cardSpaceTableView.get(i).setImage(cardSpacePersonalBoardView.get(i).getImage());
         }
     }
 
+    /**
+     * @return an arraylist of the card spaces buttons
+     */
     private ArrayList<Button> getCardSpaceButtons(){
         ArrayList<Button> buttons= new ArrayList<>();
         buttons.add(cardSpace1Button);
@@ -419,6 +584,9 @@ public class DevCardTableSceneController {
         return buttons;
     }
 
+    /**
+     * To disable every button of the card spaces
+     */
     private void setAllButtonsDisable(){
         ArrayList<Button> buttons = getCardSpaceButtons();
         for(Button button:buttons){
@@ -426,6 +594,9 @@ public class DevCardTableSceneController {
         }
     }
 
+    /**
+     * To enable every button of the card spaces
+     */
     private void setAllButtonsEnable(){
         ArrayList<Button> buttons = getCardSpaceButtons();
         for(Button button:buttons){
@@ -433,6 +604,9 @@ public class DevCardTableSceneController {
         }
     }
 
+    /**
+     * To set every card images normal (without shadowing)
+     */
     public void setAllCardNormal(){
         ImageView[][] devCardTableView=getDevCardTableView();
         for(int i=0;i<3;i++){
@@ -442,13 +616,21 @@ public class DevCardTableSceneController {
         }
     }
 
+    /**
+     * To set the text of a label.
+     * @param label the label to change
+     * @param content the text to set
+     */
     private void setLabelText(Label label,String content){
         Platform.runLater(()->{
             label.setText(content);
         });
     }
 
-
+    /**
+     * In case of server unable every possible pop-up is hidden, then shown an error pop-up
+     * @param msg VServerUnableMsg
+     */
     public void setWarningPane(VServerUnableMsg msg) {
         warningPane.setVisible(true);
         setAllDevCardTableDisable();
@@ -458,6 +640,9 @@ public class DevCardTableSceneController {
         backButton.setVisible(false);
     }
 
+    /**
+     * If the player click on the OK button of the error "Server Unable" pop-up, the GUI is automatically close.
+     */
     public void clickOkButton(){
         gui.close();
     }

@@ -10,9 +10,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
+/**
+ * After choosing if ONLINE/OFFLINE game, the stage shows this scene, where the player can choose if the wants
+ * to play in Single/MultiPlayer, with which IP and username.
+ */
 public class IntroSceneController {
     private GUI gui;
 
@@ -43,6 +45,9 @@ public class IntroSceneController {
     private String selectedIP;
     private boolean customIP;
 
+    /**
+     * To prepare the scene when it is set
+     */
     public void start(){
         selectedIP ="127.0.0.1";
 
@@ -69,8 +74,19 @@ public class IntroSceneController {
         errorMessage.setVisible(false);
     }
 
+    /**
+     * To set the GUI
+     * @param gui The GUI of the Player
+     */
     public void setGui(GUI gui){ this.gui=gui;}
 
+    /**
+     * Whene the PlayButton is clicked, this method disables every field and checks what the player
+     * has just inserted through the scene fields.
+     * If something is incorrect the scene enables again every field and alert the client.
+     * If not, try to connect to the server/message handler.
+     * @throws IOException if something went wrong when the connection message is send.
+     */
     public void clickPlayButton() throws IOException {
             if (!gui.isOffline() && customIP) {
                 selectedIP = ip.getText();
@@ -105,6 +121,7 @@ public class IntroSceneController {
             client.sendMsg(requestMsg);
             new Thread(client).start();
             gui.setUsername(getUsername);
+            gui.setIP(selectedIP);
         }else if(getUsername!=null && !getUsername.equals("") && selectedIP.length()>=7 && selectedIP.length()<=15 && gui.isOffline() /*&& offlineButton.isSelected()*/){
             /*create the message handler, he work as Client Socket but not throw the net*/
             //gui.setOffline(true);
@@ -133,6 +150,9 @@ public class IntroSceneController {
         }
     }
 
+    /**
+     * To disable all scene's fields
+     */
     public void disableAllLoginFields(){
         playButton.setDisable(true);
         ip.setDisable(true);
@@ -144,6 +164,9 @@ public class IntroSceneController {
         localhostButton.setDisable(true);
     }
 
+    /**
+     * To enable all scene's fields
+     */
     public void enableAllLoginFields(){
         playButton.setDisable(false);
         ip.setDisable(false);
@@ -155,6 +178,9 @@ public class IntroSceneController {
         localhostButton.setDisable(false);
     }
 
+    /**
+     * When local host button is clicked, the IP field is disabled and the other button are set to false.
+     */
     public void clickLocalHostButton(){
 
         if(!gui.isOffline()) {
@@ -173,28 +199,9 @@ public class IntroSceneController {
         }
     }
 
-    /*public void clickOnlineServerButton(){
-        customIP=false;
-
-        try{
-            selectedIP= InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            System.out.println("Not possible to get IP Address Online Server");
-            playButton.setDisable(true);
-        }
-
-        ip.setDisable(true);
-        localhostButton.selectedProperty().setValue(false);
-        customIPButton.selectedProperty().setValue(false);
-        offlineButton.selectedProperty().setValue(false);
-        if(singlePlayerModeButton.isDisable()||multiPlayerModeButton.isDisable()) {
-            singlePlayerModeButton.setDisable(false);
-            multiPlayerModeButton.setDisable(false);
-        }
-        playButton.setDisable(!singlePlayerModeButton.isSelected() && !multiPlayerModeButton.isSelected());
-    }*/
-
+    /**
+     * When custom IP button is clicked, the IP field is enabled and the other button are set to false.
+     */
     public void clickCustomIPButton(){
         if(!gui.isOffline()) {
             customIP = true;
@@ -210,34 +217,37 @@ public class IntroSceneController {
         }
     }
 
-    /*public void clickOfflineButton(){
-        playButton.setDisable(false);
-        customIP=false;
-
-        ip.setDisable(true);
-        localhostButton.selectedProperty().setValue(false);
-        onlineServerButton.selectedProperty().setValue(false);
-        customIPButton.selectedProperty().setValue(false);
-        singlePlayerModeButton.setDisable(true);
-        multiPlayerModeButton.setDisable(true);
-    }*/
-
+    /**
+     * When the single player mode button is clicked, the multi player mode is disabled
+     */
     public void clickSinglePlayerModeButton(){
         multiPlayerModeButton.selectedProperty().setValue(false);
         playButton.setDisable(!customIPButton.isSelected() && !localhostButton.isSelected());
     }
 
+    /**
+     * When the multi player mode button is clicked, the single player mode is disabled
+     */
     public void clickMultiPlayerModeButton(){
         singlePlayerModeButton.selectedProperty().setValue(false);
         playButton.setDisable(!customIPButton.isSelected() && !localhostButton.isSelected());
     }
 
+    /**
+     * To set a label's text
+     * @param label the label to modify
+     * @param content the text to add
+     */
     private void setLabelText(Label label,String content){
         Platform.runLater(()->{
             label.setText(content);
         });
     }
 
+    /**
+     * When the server is unable and the player click the play button,
+     * an error message is shown and the game is started automatically in OFFLINE mode.
+     */
     public void serverUnavailable() {
         errorMessage.setVisible(true);
         setLabelText(errorMessage,"The server is unable!\n" +
@@ -251,6 +261,10 @@ public class IntroSceneController {
         }
     }
 
+    /**
+     * If username is not valid, an error message is shown and all fields are enabled to modify some choices or
+     * credentials.
+     */
     public void userNotValid(){
         errorMessage.setVisible(true);
         setLabelText(errorMessage,"Username already taken!");
@@ -258,6 +272,9 @@ public class IntroSceneController {
         loadingIndicator.setVisible(false);
     }
 
+    /**
+     * If the server is full, an error message is shown and the game is set to OFFLINE mode automatically.
+     */
     public void serverIsFull(){
         errorMessage.setVisible(true);
         setLabelText(errorMessage,"The server is full!\n" +

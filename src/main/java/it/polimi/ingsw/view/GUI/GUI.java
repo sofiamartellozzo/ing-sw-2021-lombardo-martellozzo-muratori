@@ -33,6 +33,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * GUI version of the View
+ */
 public class GUI extends Application implements ViewObserver {
     private Stage stage;
 
@@ -68,10 +71,10 @@ public class GUI extends Application implements ViewObserver {
 
     private ClientSocket client;
     private String username;
+
     private String iP;
 
     private String gameSize;
-    private String[] args;
     private boolean offline;
     private boolean soloMode;
 
@@ -100,6 +103,12 @@ public class GUI extends Application implements ViewObserver {
 
     public static void main(String[] args){ Application.launch(args);}
 
+    /**
+     * To launch the GUI.
+     * Set the stage and prepare the three main scene.
+     * @param stage where to show the various scenes
+     * @throws Exception in case something went wrong
+     */
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
@@ -117,6 +126,10 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
+    /**
+     * To set the StartScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     private void setStartScene() throws IOException {
         FXMLLoader loaderStartScene = new FXMLLoader(getClass().getResource("/scenes/InitWindowScene.fxml"));
         startScene = new Scene(loaderStartScene.load());
@@ -125,6 +138,10 @@ public class GUI extends Application implements ViewObserver {
         //startGameController.start();
     }
 
+    /**
+     * To set the IntroScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     private void setIntroScene() throws IOException {
         FXMLLoader loaderIntroScene = new FXMLLoader(getClass().getResource("/scenes/IntroScene.fxml"));
         introScene = new Scene(loaderIntroScene.load());
@@ -133,6 +150,10 @@ public class GUI extends Application implements ViewObserver {
         //introSceneController.start();
     }
 
+    /**
+     * When the game ends and the player wants to play another match, this method is used to prepare again
+     * the main scenes and to change it in the stage
+     */
     public void restartIntroScene() {
         try {
             setIntroScene();
@@ -144,12 +165,21 @@ public class GUI extends Application implements ViewObserver {
         changeScene(startScene);
     }
 
+    /**
+     * To set the LobbyScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     public void setLobbyScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/LobbyScene.fxml"));
         lobbyScene = new Scene(loader.load());
         lobbySceneController=loader.getController();
     }
 
+    /**
+     * When this message is received, the GUI prepare the RoomScene
+     * to allow to the player to choose how many players wants to play with
+     * @param msg VRoomSizeRequestMsg
+     */
     @Override
     public void receiveMsg(VRoomSizeRequestMsg msg) {
         System.out.println(msg.toString());
@@ -162,6 +192,10 @@ public class GUI extends Application implements ViewObserver {
         });
     }
 
+    /**
+     * To set the RoomScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     public void roomSizeRequest(String idRoom) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/RoomScene.fxml"));
         roomScene = new Scene(loader.load());
@@ -171,12 +205,20 @@ public class GUI extends Application implements ViewObserver {
         roomSceneController.setIdRoom(idRoom);
     }
 
+    /**
+     * To send the response of room size to the Server/MessageHandler
+     * @param choice the size
+     * @param idRoom the id of the room
+     */
     public void roomSizeResponse(int choice,String idRoom){
         CRoomSizeResponseMsg responseMsg = new CRoomSizeResponseMsg("Room size chosen: "+choice,choice,getUsername(),idRoom);
         client.sendMsg(responseMsg);
     }
 
-
+    /**
+     * When this message is received, set the information of the LobbyScene and change the scene of the stage
+     * @param msg VRoomInfoMsg
+     */
     @Override
     public void receiveMsg(VRoomInfoMsg msg) {
         System.out.println(msg.toString());
@@ -186,6 +228,10 @@ public class GUI extends Application implements ViewObserver {
         });
     }
 
+    /**
+     * To set the InitializeScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     public void setInitializeScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/InitializeScene.fxml"));
         initializeScene = new Scene(loader.load());
@@ -193,6 +239,10 @@ public class GUI extends Application implements ViewObserver {
         initializeSceneController.setGui(this);
     }
 
+    /**
+     * To set the PersonalBoardScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     public void setPersonalBoardScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/PersonalBoardScene.fxml"));
         personalBoardScene = new Scene(loader.load());
@@ -200,7 +250,10 @@ public class GUI extends Application implements ViewObserver {
         personalBoardSceneController.setGui(this);
     }
 
-
+    /**
+     * To set the MarketStructureScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     public void setMarketStructureScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/MarketStructureScene.fxml"));
         marketStructureScene=new Scene(loader.load());
@@ -208,12 +261,21 @@ public class GUI extends Application implements ViewObserver {
         marketStructureSceneController.setGui(this);
     }
 
+    /**
+     * To set the DevCardTableScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     public void setDevCardTableScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/DevCardTableScene.fxml"));
         devCardTableScene=new Scene(loader.load());
         devCardTableSceneController = loader.getController();
         devCardTableSceneController.setGui(this);
     }
+
+    /**
+     * To set the OtherPersonalBoardScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     private void setOtherPersonalBoardScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/OtherPersonalBoardScene.fxml"));
         otherPersonalBoardScene = new Scene(loader.load());
@@ -221,6 +283,13 @@ public class GUI extends Application implements ViewObserver {
         otherPersonalBoardSceneController.setGui(this);
     }
 
+    /**
+     * To update during the game, the info of the player and the view of the PersonalBoardScene.
+     * If the stage's scene is not the PersonalBoardScene does mean the scene is the InitializeScene,
+     * so the game can start and the scene can be changed with the first one.
+     * Long story short, it is used to alert the GUI to change in the PersonalBoardScene.
+     * @param msg VSendPlayerDataMsg
+     */
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
         System.out.println(msg.toString());
@@ -250,10 +319,7 @@ public class GUI extends Application implements ViewObserver {
             personalBoardSceneController.start();
             marketStructureSceneController.start();
             devCardTableSceneController.start();
-            otherPersonalBoardSceneController.start();
-            Platform.runLater(() -> {
-                changeScene(initializeScene);
-            });
+            Platform.runLater(() -> changeScene(initializeScene));
         }else{
             personalBoardSceneController.updateCardSpacesView(cardSpaces);
             personalBoardSceneController.updateLeaderCards(leaderCards);
@@ -264,8 +330,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
-
-
+    /**
+     * Alert the relative scene's controller to prepare a pop-up to allow the player to choose the
+     * resource and, then, the depot.
+     * @param msg VChooseResourceAndDepotMsg
+     */
     @Override
     public void receiveMsg(VChooseResourceAndDepotMsg msg) {
         System.out.println(msg.toString());
@@ -278,6 +347,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * In case the player choose a not valid depot, notify the relative scene's controller to prepare a pop-up
+     * to choose the depot where to store the resource contained in the message.
+     * @param msg VNotValidDepotMsg
+     */
     @Override
     public void receiveMsg(VNotValidDepotMsg msg) {
         System.out.println(msg.toString());
@@ -288,7 +362,10 @@ public class GUI extends Application implements ViewObserver {
             }
     }
 
-
+    /**
+     * To alert the relative scene's controller to allow to choose one or two leader cards based on the action.
+     * @param msg VChooseLeaderCardRequestMsg
+     */
     @Override
     public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
         System.out.println(msg.toString());
@@ -303,6 +380,10 @@ public class GUI extends Application implements ViewObserver {
 
     }
 
+    /**
+     * To show a message in the GUI of the clients saying that they have to wait the other players
+     * @param msg VWaitOtherPlayerInitMsg
+     */
     @Override
     public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
         System.out.println(msg.toString());
@@ -311,37 +392,48 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * The game can start after the initialization, so the scene can be changed to the PersonalBoardScene
+     * @param msg CGameCanStartMsg
+     */
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
         System.out.println(msg.toString());
-        Platform.runLater(()->{
-            changeScene(personalBoardScene);
-        });
+        Platform.runLater(()-> changeScene(personalBoardScene));
     }
 
+    /**
+     * To change the scene with the MarketStructureScene
+     */
     public void seeMarketBoard(){
-        Platform.runLater(()->{
-            changeScene(marketStructureScene);
-        });
+        Platform.runLater(()-> changeScene(marketStructureScene));
     }
 
+    /**
+     * To change the scene with the DevCardTableScene
+     */
     public void seeDevCardTable(){
-        Platform.runLater(()->{
-            changeScene(devCardTableScene);
-        });
+        Platform.runLater(()-> changeScene(devCardTableScene));
     }
+
+    /**
+     * To change the scene with the PersonalBoardScene
+     */
     public void seePersonalBoard(){
-        Platform.runLater(()->{
-            changeScene(personalBoardScene);
-        });
+        Platform.runLater(()-> changeScene(personalBoardScene));
     }
 
+    /**
+     * To change the scene with the OtherPersonalBoardScene
+     */
     public void seeOtherPersonalBoard(){
-        Platform.runLater(()->{
-            changeScene(otherPersonalBoardScene);
-        });
+        Platform.runLater(()-> changeScene(otherPersonalBoardScene));
     }
 
+    /**
+     * Alert the PersonalBoardSceneController to show a pop-up with the possible action the player can do.
+     * @param msg VChooseActionTurnRequestMsg
+     */
     @Override
     public void receiveMsg(VChooseActionTurnRequestMsg msg) {
         System.out.println(msg.toString());
@@ -350,6 +442,12 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * When the player choose to see another player personal board and which player,
+     * this message contains all the request player info and are send to
+     * the OtherPersonalBoardSceneController to update the view.
+     * @param msg VAnotherPlayerInfoMsg
+     */
     @Override
     public void receiveMsg(VAnotherPlayerInfoMsg msg) {
         System.out.println(msg.toString());
@@ -359,6 +457,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * When the player choose to see another player personal board, this message
+     * alerts the personal board to prepare a pop-up with a list of the player to choose.
+     * @param msg VWhichPlayerRequestMsg
+     */
     @Override
     public void receiveMsg(VWhichPlayerRequestMsg msg) {
         System.out.println(msg.toString());
@@ -367,7 +470,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
-
+    /**
+     * When the player choose to buy from the market, the stage's scene change to the MarketStructureScene
+     * and alerts its controller to enable the buttons to choose the row/column to choose.
+     * @param msg VBuyFromMarketRequestMsg
+     */
     @Override
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
         System.out.println(msg.toString());
@@ -377,6 +484,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * To update the market view in the MarketStructureScene.
+     * @param msg VUpdateMarketMsg
+     */
     @Override
     public void receiveMsg(VUpdateMarketMsg msg) {
         System.out.println(msg.toString());
@@ -386,15 +497,25 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * To update the FaithTrack view in the PersonalBoardScene
+     * @param msg VUpdateFaithTrackMsg
+     */
     @Override
     public void receiveMsg(VUpdateFaithTrackMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             faithTrack=msg.getFaithTrack();
-            personalBoardSceneController.updateFaithTrackView(msg.getFaithTrack(),player.getGameSpace());
+            personalBoardSceneController.updateFaithTrackView(msg.getFaithTrack());
         }
     }
 
+    /**
+     * When the player chooses to buy a card, the stage's scene change to the DevCardTableScene and
+     * alerts its controller to prepare the table view with the possible choices or alerts the player that
+     * he can't buy anything.
+     * @param msg VChooseDevelopCardRequestMsg
+     */
     @Override
     public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
         System.out.println(msg.toString());
@@ -404,6 +525,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * When the player buy a card and puts it in a wrong card space, the scene is changed with the DevCardTableScene
+     * and alerts its controller to prepare a pop-up to choose another card space.
+     * @param msg VNotValidCardSpaceMsg
+     */
     @Override
     public void receiveMsg(VNotValidCardSpaceMsg msg) {
         System.out.println(msg.toString());
@@ -413,6 +539,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * To update the table view of the DevCardTableScene
+     * @param msg VUpdateDevTableMsg
+     */
     @Override
     public void receiveMsg(VUpdateDevTableMsg msg) {
         System.out.println(msg.toString());
@@ -423,6 +553,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * To set the EndGameScene and its controller from the FXML element
+     * @throws IOException in case the FXML doesn't exist or is incorrect
+     */
     public void setEndGameScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/EndGameScene.fxml"));
         endGameScene = new Scene(loader.load());
@@ -430,11 +564,11 @@ public class GUI extends Application implements ViewObserver {
         endGameSceneController.setGui(this);
     }
 
-    @Override
-    public void receiveMsg(CVStartInitializationMsg msg){
-        System.out.println(msg.toString());
-    }
-
+    /**
+     * When the player choose to move the resource in the Warehouse, this message alerts the PersonalBoardSceneController
+     * to prepare the scene to allow to the player to choose where to move from and to.
+     * @param msg VMoveResourceRequestMsg
+     */
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
         System.out.println(msg.toString());
@@ -443,6 +577,12 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * When the player receive some resources from the market, this message
+     * sets in the MarketSceneController the resources received and the possible choices for the white marbles
+     * and alerts the controller to prepare a pop-up to choose in which depot the player wants to store them
+     * @param msg VChooseDepotMsg
+     */
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
         System.out.println(msg.toString());
@@ -453,14 +593,24 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * In the SoloGame, update the position of the BlackFaithMarker of Lorenzo in the PersonalBoardScene.
+     * @param msg VLorenzoIncreasedMsg
+     */
     @Override
     public void receiveMsg(VLorenzoIncreasedMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
-            personalBoardSceneController.updateFaithTrackView(msg.getPlayer().getGameSpace().getFaithTrack(),msg.getPlayer().getGameSpace());
+            personalBoardSceneController.updateBlackFaithMarkerView(msg.getPlayer().getGameSpace());
         }
     }
 
+    /**
+     * When the player choose to activate some production powers, this message alerts the PersonalBoardSceneController
+     * to prepare the scene to allow to the player to choose where he wants to pay from and which
+     * Production Power wants to activate.
+     * @param msg VActivateProductionPowerRequestMsg
+     */
     @Override
     public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
         System.out.println(msg.toString());
@@ -469,11 +619,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
-    @Override
-    public void receiveMsg(VResourcesNotFoundMsg msg) {
-        System.out.println(msg.toString());
-    }
-
+    /**
+     * To update the strongbox view in the PersonalBoardScene.
+     * @param msg VUpdateStrongboxMsg
+     */
     @Override
     public void receiveMsg(VUpdateStrongboxMsg msg) {
         System.out.println(msg.toString());
@@ -483,6 +632,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * When the game ends, the EndGameScene is set, prepared with the correct outcome
+     * and, then, the stage's scene changes to it
+     * @param msg VShowEndGameResultsMsg
+     */
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         System.out.println(msg.toString());
@@ -493,10 +647,12 @@ public class GUI extends Application implements ViewObserver {
                 e.printStackTrace();
             }
             endGameSceneController.start();
-            endGameSceneController.showOutcome(true);
-            Platform.runLater(()->{
-                changeScene(endGameScene);
-            });
+            if(soloMode){
+                endGameSceneController.showOutcome(msg.isSoloWin());
+            }else {
+                endGameSceneController.showOutcome(true);
+            }
+            Platform.runLater(()-> changeScene(endGameScene));
         }else {
             for(Player loser:msg.getLosersUsernames()) {
                 if(loser.getUsername().equals(username)) {
@@ -507,57 +663,49 @@ public class GUI extends Application implements ViewObserver {
                     }
                     endGameSceneController.start();
                     endGameSceneController.showOutcome(false);
-                    Platform.runLater(()->{
-                        changeScene(endGameScene);
-                    });
+                    Platform.runLater(()-> changeScene(endGameScene));
                 }
             }
         }
     }
 
+    /**
+     * To ask to the player if he wants to play another match in the EndGameScene.
+     * @param msg VAskNewGameMsg
+     */
     @Override
     public void receiveMsg(VAskNewGameMsg msg) {
         System.out.println(msg.toString());
         endGameSceneController.askNewGame();
     }
 
-    @Override
-    public void receiveMsg(CCloseRoomMsg msg) {
-        //in server
-    }
-
+    /**
+     * To alert the players that one player has just been disconnected.
+     * @param msg CClientDisconnectedMsg
+     */
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
         System.out.println(msg.toString());
         personalBoardSceneController.setWarningPane(msg);
     }
 
-    @Override
-    public void receiveMsg(VStartWaitReconnectionMsg msg) {
-        System.out.println(msg.toString());
-        /*
-        * NOT IMPLEMENTED*/
-    }
-
-    @Override
-    public void receiveMsg(VStopWaitReconnectionMsg msg) {
-        /*
-         * NOT IMPLEMENTED
-         */
-    }
-
+    /**
+     * To update the leader cards view in the PersonalBoardScene.
+     * @param msg VUpdateLeaderCards
+     */
     @Override
     public void receiveMsg(VUpdateLeaderCards msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             leaderCards=msg.getLeaderCards();
-            for(LeaderCard leaderCard:leaderCards) {
-                System.out.println(leaderCard.getCardID());
-            }
             personalBoardSceneController.updateLeaderCards(msg.getLeaderCards());
         }
     }
 
+    /**
+     * To update the card spaces view in the PersonalBoardScene
+     * @param msg VUpdateCardSpaces
+     */
     @Override
     public void receiveMsg(VUpdateCardSpaces msg) {
         System.out.println(msg.toString());
@@ -567,6 +715,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * In the SoloGame, shows which action token was drawn in the PersonalBoardScene.
+     * @param msg VActionTokenActivateMsg
+     */
     @Override
     public void receiveMsg(VActionTokenActivateMsg msg) {
         System.out.println(msg.toString());
@@ -575,6 +727,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * To alert the players that the server is no more available and prepare a message in every possible scene.
+     * @param msg VServerUnableMsg
+     */
     @Override
     public void receiveMsg(VServerUnableMsg msg) {
         System.out.println(msg.toString());
@@ -594,8 +750,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
-
-
+    /**
+     * To show to the players a message of waiting in the PersonalBoardScene.
+     * @param msg VWaitYourTurnMsg
+     */
     @Override
     public void receiveMsg(VWaitYourTurnMsg msg) {
         System.out.println(msg.toString());
@@ -604,6 +762,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * To update the warehouse view in the PersonalBoardScene
+     * @param msg VUpdateWarehouseMsg
+     */
     @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {
         System.out.println(msg.toString());
@@ -613,11 +775,10 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
-    @Override
-    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
-        System.out.println(msg.toString());
-    }
-
+    /**
+     * To update the count of victory points in the PersonalBoardScene
+     * @param msg VUpdateVictoryPointsMsg
+     */
     @Override
     public void receiveMsg(VUpdateVictoryPointsMsg msg) {
         if(msg.getUsername().equals(username)){
@@ -625,12 +786,19 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    /**
+     * To change the scene in the stage
+     * @param scene the new scene to show
+     */
     public void changeScene(Scene scene){
         stage.setTitle("Masters of Renaissance");
         stage.setScene(scene);
         stage.show();
     }
 
+    /**
+     * To close the GUI stage.
+     */
     public void close(){
         stage.close();
         Platform.exit();
@@ -638,6 +806,10 @@ public class GUI extends Application implements ViewObserver {
         System.exit(0);
     }
 
+    /**
+     * To send the message to the Server/MessageHandler
+     * @param msg the message to send
+     */
     public void sendMsg(GameMsg msg){
         if(!offline)
             client.sendMsg(msg);
@@ -645,6 +817,37 @@ public class GUI extends Application implements ViewObserver {
             messageHandler.receiveMsgForVV(msg);
     }
 
+    /**
+     * When the player try to connect and fails, set a message to show in the IntroScene
+     * @param msg VNackConnectionRequestMsg
+     */
+    @Override
+    public void receiveMsg(VNackConnectionRequestMsg msg) {
+        System.out.println(msg.toString());
+        switch(msg.getErrorInformation()){
+            case "USER_NOT_VALID":  // if the username is already taken, the player has to insert a new one
+                getIntroSceneController().userNotValid();
+                break;
+            case "FULL_SIZE":  //all the rooms in the server are full, so the client can't be connected to the game
+
+                //Error(" Error, server is full ",stage);
+                getIntroSceneController().serverIsFull();
+                break;
+            case "WAIT":      //in this case the server is not full so there are new rooms available, and the client has to wait because someone is creating a new room
+                try {
+                    Thread.sleep(5000);
+                    /* the login process has to restart, so the client try again sending another request */
+                    VVConnectionRequestMsg request2 = new VVConnectionRequestMsg("Trying to connect", iP, 0, username, gameSize);
+                    this.client.sendMsg(request2);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    //GETTER AND SETTER METHOD
 
     public void setMessageHandler(MessageHandler messageHandler) {
         this.messageHandler = messageHandler;
@@ -654,18 +857,6 @@ public class GUI extends Application implements ViewObserver {
 
     public void setUsername(String username){this.username=username;}
 
-    public Stage getStage() {
-        return stage;
-    }
-
-    public StartGameController getStartGameController() {
-        return startGameController;
-    }
-
-    public void setStartGameController(StartGameController startGameController) {
-        this.startGameController = startGameController;
-    }
-
     public Scene getIntroScene() {
         return introScene;
     }
@@ -674,68 +865,12 @@ public class GUI extends Application implements ViewObserver {
         return introSceneController;
     }
 
-    public Scene getLobbyScene() {
-        return lobbyScene;
-    }
-
-    public LobbySceneController getLobbySceneController() {
-        return lobbySceneController;
-    }
-
-    public Scene getRoomScene() {
-        return roomScene;
-    }
-
-    public RoomSceneController getRoomSceneController() {
-        return roomSceneController;
-    }
-
-    public Scene getInitializeScene() {
-        return initializeScene;
-    }
-
-    public InitializeSceneController getInitializeSceneController() {
-        return initializeSceneController;
-    }
-
-    public Scene getPersonalBoardScene() {
-        return personalBoardScene;
-    }
-
-    public PersonalBoardSceneController getGameSceneController() {
-        return personalBoardSceneController;
-    }
-
-    public Scene getEndGameScene() {
-        return endGameScene;
-    }
-
-    public EndGameSceneController getEndGameSceneController() {
-        return endGameSceneController;
-    }
-
     public ClientSocket getClient() {
         return client;
     }
 
     public String getUsername() {
         return username;
-    }
-
-    public String getIP() {
-        return iP;
-    }
-
-    public String getGameSize() {
-        return gameSize;
-    }
-
-    public String[] getArgs() {
-        return args;
-    }
-
-    public String getiP() {
-        return iP;
     }
 
     public PlayerInterface getPlayer() {
@@ -780,18 +915,9 @@ public class GUI extends Application implements ViewObserver {
         return personalBoardSceneController;
     }
 
-    public Scene getMarketStructureScene() {
-        return marketStructureScene;
-    }
-
     public MarketStructureSceneController getMarketStructureSceneController() {
         return marketStructureSceneController;
     }
-
-    public Scene getDevCardTableScene() {
-        return devCardTableScene;
-    }
-
 
     public DevCardTableSceneController getDevCardTableSceneController() {
         return devCardTableSceneController;
@@ -805,41 +931,9 @@ public class GUI extends Application implements ViewObserver {
         return receiveMsg;
     }
 
-    public MessageHandler getMessageHandler() {
-        return messageHandler;
-    }
-
-    @Override
-    public void receiveMsg(VNackConnectionRequestMsg msg) {
-        System.out.println(msg.toString());
-        switch(msg.getErrorInformation()){
-            case "USER_NOT_VALID":  // if the username is already taken, the player has to insert a new one
-                getIntroSceneController().userNotValid();
-                break;
-            case "FULL_SIZE":  //all the rooms in the server are full, so the client can't be connected to the game
-
-                //Error(" Error, server is full ",stage);
-                getIntroSceneController().serverIsFull();
-                break;
-            case "WAIT":      //in this case the server is not full so there are new rooms available, and the client has to wait because someone is creating a new room
-                try {
-                    Thread.sleep(5000);
-                    /* the login process has to restart, so the client try again sending another request */
-                    VVConnectionRequestMsg request2 = new VVConnectionRequestMsg("Trying to connect", iP, 0, username, gameSize);
-                    this.client.sendMsg(request2);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                break;
-        }
-    }
-
     public ArrayList<LeaderCard> getLeaderCards() {
         return leaderCards;
     }
-
-    public ArrayList<SpecialCard> getSpecialCards(){return specialCards;}
 
     public void setSoloMode(boolean soloMode){this.soloMode=soloMode;}
 
@@ -849,8 +943,41 @@ public class GUI extends Application implements ViewObserver {
         return serverAvailable;
     }
 
-    public void setServerAvailable(boolean serverAvailable) {
-        this.serverAvailable = serverAvailable;
+    public void setIP(String iP) { this.iP = iP; }
+
+    //Messages not used here
+
+    @Override
+    public void receiveMsg(CVStartInitializationMsg msg){
+        //Message not used here
     }
+
+    @Override
+    public void receiveMsg(VResourcesNotFoundMsg msg) {
+        //Message not used here
+    }
+
+    @Override
+    public void receiveMsg(CCloseRoomMsg msg) {
+        //Message not used here
+    }
+
+    @Override
+    public void receiveMsg(VStartWaitReconnectionMsg msg) {
+        //Message not used here
+    }
+
+    @Override
+    public void receiveMsg(VStopWaitReconnectionMsg msg) {
+       // Message not used here
+    }
+
+
+    @Override
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
+        //Message not used here
+    }
+
+
 }
 

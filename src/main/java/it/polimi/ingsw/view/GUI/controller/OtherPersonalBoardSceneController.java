@@ -23,8 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * this class manages the case in which the player wants to see the personal board of another player,
- * so it handles the scene of other's personal boards
+ * When the player asks to see another player, the scene changes to the OtherPersonalBoardScene and it is
+ * managed by this controller, there's to scene of personal board to avoid a loss of the view data of the main
+ * personal board of the player.
  */
 
 public class OtherPersonalBoardSceneController {
@@ -58,10 +59,10 @@ public class OtherPersonalBoardSceneController {
     @FXML
     private Button backButton;
 
-    public void start(){
-        return;
-    }
-
+    /**
+     * To update the OtherPersonalBoardScene with the data of player chosen
+     * @param player the player chosen
+     */
     public void update(PlayerInterface player){
         updateLeaderCardsView(player.getLeaderCards());
         updateCardSpacesView(player.getGameSpace().getCardSpaces());
@@ -70,6 +71,9 @@ public class OtherPersonalBoardSceneController {
         updateVictoryPointsView(player.getVictoryPoints());
     }
 
+    /**
+     * To return in the PersonalBoardScene
+     */
     public void clickBackButton(){
         if(!backButton.isDisable()){
             gui.seePersonalBoard();
@@ -77,6 +81,11 @@ public class OtherPersonalBoardSceneController {
     }
 
     //Update FXML Elements based on Model Elements
+
+    /**
+     * To update the faith track view from the faith track model
+     * @param faithTrack the faithtrack model
+     */
     public void updateFaithTrackView(FaithTrack faithTrack){
         for (int i = 0; i < 25; i++) {
             if (faithTrack.getPositionFaithMarker() == i) {
@@ -100,10 +109,19 @@ public class OtherPersonalBoardSceneController {
         }
 
     }
+    /**
+     * To update the resource manager view from the resource manager model
+     * @param resourceManager the resource manager model
+     */
     public void updateResourceManagerView(ResourceManager resourceManager){
         updateWarehouseView(resourceManager.getWarehouse());
         updateStrongBoxView(resourceManager.getStrongBox());
     }
+
+    /**
+     * To update the warehouse view from the warehouse model
+     * @param warehouse the warehouse model
+     */
     public void updateWarehouseView(Warehouse warehouse){
         for(int i=0;i<5;i++){
             if (i+1<=warehouse.getDepots().size()) {
@@ -160,6 +178,11 @@ public class OtherPersonalBoardSceneController {
             }
         }
     }
+
+    /**
+     * To update the strongbox view from the strongbox model
+     * @param strongBox the strongbox model
+     */
     public void updateStrongBoxView(StrongBox strongBox){
         HashMap<TypeResource,Integer> countResourcesInStrongBox=new HashMap<>();
         int servant=0;
@@ -179,6 +202,11 @@ public class OtherPersonalBoardSceneController {
         setLabelText(getStrongboxLabelsView().get(TypeResource.SERVANT),""+servant);
         setLabelText(getStrongboxLabelsView().get(TypeResource.STONE),""+stone);
     }
+
+    /**
+     * To update the card spaces view from the card spaces model
+     * @param cardSpaces the card spaces model
+     */
     public void updateCardSpacesView(ArrayList<CardSpace> cardSpaces){
         for(int i=0;i<cardSpaces.size();i++){
             if(cardSpaces.get(i).getNumberOfCards()!=0){
@@ -190,6 +218,11 @@ public class OtherPersonalBoardSceneController {
             }
         }
     }
+
+    /**
+     * To update the leadercards view from the leader cards model
+     * @param leaderCards the leader cards model
+     */
     public void updateLeaderCardsView(ArrayList<LeaderCard> leaderCards){
         for(int i=0;i<2;i++) {
             if (i <= leaderCards.size()) {
@@ -211,12 +244,21 @@ public class OtherPersonalBoardSceneController {
             getLeaderCardsView().get(i).setDisable(true);
         }
     }
+
+    /**
+     * To update the count of victory points view from the count of victory points model
+     * @param victoryPoints the victory points model
+     */
     public void updateVictoryPointsView(int victoryPoints){
         setLabelText(this.victoryPoints,""+victoryPoints);
     }
 
 
     //Getter Method for FXML Elements
+
+    /**
+     * @return the list of faith markers view in the faith track
+     */
     private ArrayList<ImageView> getFaithMarkersView(){
         ArrayList<ImageView> faithMarkerPositionsView = new ArrayList<>();
         faithMarkerPositionsView.add(faithMarker0);
@@ -246,6 +288,10 @@ public class OtherPersonalBoardSceneController {
         faithMarkerPositionsView.add(faithMarker24);
         return faithMarkerPositionsView;
     }
+
+    /**
+     * @return a list of pope's favor tile images view from the faith track
+     */
     private ArrayList<ImageView> getPopesFavorTilesView(){
         ArrayList<ImageView> popesFavorTilesView = new ArrayList<>();
         popesFavorTilesView.add(popesFavorTile1);
@@ -253,6 +299,10 @@ public class OtherPersonalBoardSceneController {
         popesFavorTilesView.add(popesFavorTile3);
         return popesFavorTilesView;
     }
+
+    /**
+     * @return the warehouse view images structure similar to the warehouse model structure
+     */
     public ArrayList<ArrayList<ImageView>> getWarehouseView(){
         ArrayList<ArrayList<ImageView>> warehouseView= new ArrayList<>();
 
@@ -284,6 +334,10 @@ public class OtherPersonalBoardSceneController {
 
         return warehouseView;
     }
+
+    /**
+     * @return a map of the strongbox label of the view
+     */
     private HashMap<TypeResource,Label> getStrongboxLabelsView(){
         HashMap<TypeResource,Label> strongboxLabel = new HashMap<>();
         strongboxLabel.put(TypeResource.SERVANT,servantLabel);
@@ -292,6 +346,10 @@ public class OtherPersonalBoardSceneController {
         strongboxLabel.put(TypeResource.STONE,stoneLabel);
         return strongboxLabel;
     }
+
+    /**
+     * @return a list of the card spaces image view
+     */
     public ArrayList<ImageView> getCardSpacesView(){
         ArrayList<ImageView> cardSpaceView = new ArrayList<>();
         cardSpaceView.add(cardSpace1);
@@ -299,23 +357,41 @@ public class OtherPersonalBoardSceneController {
         cardSpaceView.add(cardSpace3);
         return cardSpaceView;
     }
+
+    /**
+     * @return a list of the leader cards images view
+     */
     private ArrayList<ImageView> getLeaderCardsView(){
         ArrayList<ImageView> leaderCardsView = new ArrayList<>();
         leaderCardsView.add(leaderCard1);
         leaderCardsView.add(leaderCard2);
         return leaderCardsView;
     }
+
+    /**
+     * @return a list of the special depots image view
+     */
     public ArrayList<ImageView> getSpecialDepotsView(){
         ArrayList<ImageView> specialDepotsView = new ArrayList<>();
         specialDepotsView.add(specialDepot1);
         specialDepotsView.add(specialDepot2);
         return specialDepotsView;
     }
+
+    /**
+     * To set a label text
+     * @param label the label to change
+     * @param content the text to set
+     */
     private void setLabelText(Label label,String content){
         Platform.runLater(()->{
             label.setText(content);
         });
     }
 
+    /**
+     * To set the GUI which the controller refers to
+     * @param gui the GUI of the player
+     */
     public void setGui(GUI gui){this.gui=gui;}
 }

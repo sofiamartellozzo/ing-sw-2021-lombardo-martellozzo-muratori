@@ -16,15 +16,23 @@ import java.util.List;
  */
 public class VShowEndGameResultsMsg extends GameMsg {
 
-    private final String winnerUsername;
-    private final List<Player> losers;
+    private String winnerUsername;
+    private List<Player> losers;
     private int victoryPoints;
+    private boolean soloWin;
 
     public VShowEndGameResultsMsg(String msgContent, String winnerUsername, int victoryPoints, List<Player> losers) {
         super(msgContent);
         this.winnerUsername = winnerUsername;
         this.victoryPoints = victoryPoints;
         this.losers = losers;
+    }
+
+    public VShowEndGameResultsMsg(String msgContent, String winnerUsername, int victoryPoints, boolean win){
+        super(msgContent);
+        this.winnerUsername=winnerUsername;
+        this.victoryPoints=victoryPoints;
+        this.soloWin=win;
     }
 
     public String getPlayerUsername() {
@@ -41,6 +49,10 @@ public class VShowEndGameResultsMsg extends GameMsg {
 
     public List<Player> getLosersUsernames() {
         return losers;
+    }
+
+    public boolean isSoloWin(){
+        return soloWin;
     }
 
     @Override

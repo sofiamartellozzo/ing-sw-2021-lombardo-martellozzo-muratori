@@ -23,8 +23,8 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
 /**
- * ths class handles the initialization scene, so the starting part in which the player has to choose two Leader Cards
- * and a resource (if is the second player)/ two resources (if is the fourth player)
+ * When every player is connected to the room, the initialization of the game starts with this scene,
+ * to allocate the resources and faith point to the players.
  */
 
 public class InitializeSceneController {
@@ -73,6 +73,9 @@ public class InitializeSceneController {
     private ArrayList<Integer> possibleLeaderCards;
     private ArrayList<Integer> chosenLeaderCards;
 
+    /**
+     * To prepare the scene when this scene is set
+     */
     public void start(){
         warningPane.setVisible(false);
         waitPane.setVisible(true);
@@ -89,48 +92,91 @@ public class InitializeSceneController {
         chosenLeaderCards=new ArrayList<>();
     }
 
+    /**
+     * To show a pop-up to choose which resource the player wants
+     */
     public void chooseResource(){
         waitPane.setVisible(false);
         discardButton.setDisable(false);
         chooseResourcePane.setVisible(true);
     }
 
+    /**
+     * When the player entered with the mouse in the "COIN" image
+     */
     public void mouseEnteredCoin(){
         coin.setEffect(new Glow());
     }
+    /**
+     * When the player entered with the mouse in the "SERVANT" image
+     */
     public void mouseEnteredServant(){
         servant.setEffect(new Glow());
     }
+    /**
+     * When the player entered with the mouse in the "SHIELD" image
+     */
     public void mouseEnteredShield(){
         shield.setEffect(new Glow());
     }
+    /**
+     * When the player entered with the mouse in the "STONE" image
+     */
     public void mouseEnteredStone(){
         stone.setEffect(new Glow());
     }
 
+    /**
+     * When the player exited with the mouse in the "COIN" image
+     */
     public void mouseExitedCoin(){coin.setEffect(null);}
+    /**
+     * When the player exited with the mouse in the "SERVANT" image
+     */
     public void mouseExitedServant(){servant.setEffect(null);}
+    /**
+     * When the player exited with the mouse in the "SHIELD" image
+     */
     public void mouseExitedShield(){shield.setEffect(null);}
+    /**
+     * When the player exited with the mouse in the "STONE" image
+     */
     public void mouseExitedStone(){stone.setEffect(null);}
 
+    /**
+     * When the player click with the mouse in the "COIN" image, set the type in the scene and prepare and show
+     * a pop-up to choose in which depot store it
+     */
     public void clickCoin(){
         chosenType =TypeResource.COIN;
         chooseResourcePane.setVisible(false);
         discardButton.setDisable(true);
         chooseDepot();
     }
+    /**
+     * When the player click with the mouse in the "SERVANT" image, set the type in the scene and prepare and show
+     * a pop-up to choose in which depot store it
+     */
     public void clickServant(){
         chosenType =TypeResource.SERVANT;
         chooseResourcePane.setVisible(false);
         discardButton.setDisable(true);
         chooseDepot();
     }
+    /**
+     * When the player click with the mouse in the "SHIELD" image, set the type in the scene and prepare and show
+     * a pop-up to choose in which depot store it
+     */
     public void clickShield(){
         chosenType =TypeResource.SHIELD;
         chooseResourcePane.setVisible(false);
         discardButton.setDisable(true);
         chooseDepot();
     }
+    /**
+     * When the player click with the mouse in the "STONE" image, set the type in the scene and prepare and show
+     * a pop-up to choose in which depot store it
+     */
     public void clickStone(){
         chosenType =TypeResource.STONE;
         chooseResourcePane.setVisible(false);
@@ -138,6 +184,9 @@ public class InitializeSceneController {
         chooseDepot();
     }
 
+    /**
+     * When the player click to the Discard Button every pop-up is hidden and send a message to server/message handler
+     */
     public void clickDiscardButton(){
         chooseResourcePane.setVisible(false);
         chooseDepotPane.setVisible(false);
@@ -145,6 +194,9 @@ public class InitializeSceneController {
         gui.sendMsg(new CChooseDiscardResourceMsg("I want to discard this resource",gui.getUsername()));
     }
 
+    /**
+     * To prepare a pop-up to choose the depot where to store the resource chosen
+     */
     public void chooseDepot(){
         messageDepot.setText("Select a depot for:");
         enableDepotPanes();
@@ -175,6 +227,10 @@ public class InitializeSceneController {
         chooseDepotPane.setVisible(true);
     }
 
+    /**
+     * In case the depot chosen is not valid, show another time a pop-up to choose a different depot.
+     * @param msg VNotValidDepotMsg
+     */
     public void chooseDepot(VNotValidDepotMsg msg){
         messageDepot.setText("You can't put the resource here.\n Select a new depot for:");
         enableDepotPanes();
@@ -206,12 +262,34 @@ public class InitializeSceneController {
         chooseDepotPane.setVisible(true);
     }
 
+    /**
+     * When the mouse enters in the "Depot 1" pane
+     */
     public void mouseEnteredDepot1(){depot1Pane.setEffect(new Glow());}
+    /**
+     * When the mouse enters in the "Depot 2" pane
+     */
     public void mouseEnteredDepot2(){depot2Pane.setEffect(new Glow());}
+    /**
+     * When the mouse enters in the "Depot 3" pane
+     */
     public void mouseEnteredDepot3(){depot3Pane.setEffect(new Glow());}
+    /**
+     * When the mouse exits from the "Depot 1" pane
+     */
     public void mouseExitedDepot1(){depot1Pane.setEffect(null);}
+    /**
+     * When the mouse exits from the "Depot 2" pane
+     */
     public void mouseExitedDepot2(){depot2Pane.setEffect(null);}
+    /**
+     * When the mouse exits in the "Depot 3" pane
+     */
     public void mouseExitedDepot3(){depot3Pane.setEffect(null);}
+
+    /**
+     * When the player click on the "Depot 1" pane, a response message with the chosen type and depot is send
+     */
     public void clickDepot1(){
         waitPane.setVisible(true);
         disableDepotPanes();
@@ -219,6 +297,9 @@ public class InitializeSceneController {
         chooseDepotPane.setVisible(false);
         gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),1,gui.getUsername()));
     }
+    /**
+     * When the player click on the "Depot 2" pane, a response message with the chosen type and depot is send
+     */
     public void clickDepot2(){
         waitPane.setVisible(true);
         disableDepotPanes();
@@ -226,6 +307,9 @@ public class InitializeSceneController {
         chooseDepotPane.setVisible(false);
         gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),2,gui.getUsername()));
     }
+    /**
+     * When the player click on the "Depot 3" pane, a response message with the chosen type and depot is send
+     */
     public void clickDepot3(){
         waitPane.setVisible(true);
         disableDepotPanes();
@@ -234,8 +318,10 @@ public class InitializeSceneController {
         gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),3,gui.getUsername()));
     }
 
-
-
+    /**
+     * To prepare and show a pop-up with the possible leader cards to choose,
+     * every image is set based on the ID of the card
+     */
     public void chooseLeaderCard(VChooseLeaderCardRequestMsg msg){
         waitPane.setVisible(false);
         for(int i=0;i<4;i++){
@@ -247,38 +333,67 @@ public class InitializeSceneController {
         leaderCardPane.setVisible(true);
     }
 
+    /**
+     * When the mouse enters in the "Leader Card 1" image
+     */
     public void mouseEnteredLeaderCard1(){
         if(!leaderCard1.isDisable()){
             leaderCard1.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters in the "Leader Card 2" image
+     */
     public void mouseEnteredLeaderCard2(){
         if(!leaderCard2.isDisable()){
             leaderCard2.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters in the "Leader Card 3" image
+     */
     public void mouseEnteredLeaderCard3(){
         if(!leaderCard3.isDisable()){
             leaderCard3.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse enters in the "Leader Card 4" image
+     */
     public void mouseEnteredLeaderCard4(){
         if(!leaderCard4.isDisable()){
             leaderCard4.setEffect(new Glow());
         }
     }
+    /**
+     * When the mouse exits from the "Leader Card 1" image
+     */
     public void mouseExitedLeaderCard1(){
         leaderCard1.setEffect(null);
     }
+    /**
+     * When the mouse exits from the "Leader Card 2" image
+     */
     public void mouseExitedLeaderCard2(){
         leaderCard2.setEffect(null);
     }
+    /**
+     * When the mouse exits from the "Leader Card 3" image
+     */
     public void mouseExitedLeaderCard3(){
         leaderCard3.setEffect(null);
     }
+    /**
+     * When the mouse exits from the "Leader Card 4" image
+     */
     public void mouseExitedLeaderCard4(){
         leaderCard4.setEffect(null);
     }
+    /**
+     * When the player click on the "Leader Card 1" image, the card is switch to the back,
+     * memorize in the scene temporary and if the player has already chosen two leader cards
+     * a response message is send to the Server/Message Handler
+     */
     public void clickLeaderCard1(){
         if(!leaderCard1.isDisable() && chosenLeaderCards.size()<2){
             chosenLeaderCards.add(possibleLeaderCards.get(0));
@@ -293,6 +408,11 @@ public class InitializeSceneController {
             }
         }
     }
+    /**
+     * When the player click on the "Leader Card 2" image, the card is switch to the back,
+     * memorize in the scene temporary and if the player has already chosen two leader cards
+     * a response message is send to the Server/Message Handler
+     */
     public void clickLeaderCard2(){
         if(!leaderCard2.isDisable() && chosenLeaderCards.size()<2){
             chosenLeaderCards.add(possibleLeaderCards.get(1));
@@ -307,6 +427,11 @@ public class InitializeSceneController {
             }
         }
     }
+    /**
+     * When the player click on the "Leader Card 3" image, the card is switch to the back,
+     * memorize in the scene temporary and if the player has already chosen two leader cards
+     * a response message is send to the Server/Message Handler
+     */
     public void clickLeaderCard3(){
         if(!leaderCard3.isDisable() && chosenLeaderCards.size()<2){
             chosenLeaderCards.add(possibleLeaderCards.get(2));
@@ -321,6 +446,11 @@ public class InitializeSceneController {
             }
         }
     }
+    /**
+     * When the player click on the "Leader Card 4" image, the card is switch to the back,
+     * memorize in the scene temporary and if the player has already chosen two leader cards
+     * a response message is send to the Server/Message Handler
+     */
     public void clickLeaderCard4(){
         if(!leaderCard4.isDisable() && chosenLeaderCards.size()<2){
             chosenLeaderCards.add(possibleLeaderCards.get(3));
@@ -336,6 +466,11 @@ public class InitializeSceneController {
         }
     }
 
+    /**
+     * Private method to convert easily a type to color
+     * @param type the type to convert
+     * @return the relative color
+     */
     private it.polimi.ingsw.model.Color fromTypeToColor(TypeResource type){
         switch(type){
             case COIN:return it.polimi.ingsw.model.Color.YELLOW;
@@ -345,6 +480,12 @@ public class InitializeSceneController {
             default:return null;
         }
     }
+
+    /**
+     * Private method to convert easily a color to a type
+     * @param color the color to convert
+     * @return the relative type of resource
+     */
     private TypeResource fromColorToType(it.polimi.ingsw.model.Color color){
         switch(color){
             case YELLOW:return TypeResource.COIN;
@@ -354,16 +495,28 @@ public class InitializeSceneController {
             default:return null;
         }
     }
+
+    /**
+     * To disable every depot pane
+     */
     private void disableDepotPanes(){
         depot1Pane.setDisable(true);
         depot2Pane.setDisable(true);
         depot3Pane.setDisable(true);
     }
+
+    /**
+     * To enable every depot pane
+     */
     private void enableDepotPanes(){
         depot1Pane.setDisable(false);
         depot2Pane.setDisable(false);
         depot3Pane.setDisable(false);
     }
+
+    /**
+     * Copy the view of the warehouse from the personal board, so the images are set automatically from there.
+     */
     private void copyWarehouseFromPersonalBoardView(){
         ArrayList<ArrayList<ImageView>> warehouseFromPersonalBoardView = gui.getPersonalBoardSceneController().getWarehouseView();
         ArrayList<ArrayList<ImageView>> warehouseView = getWarehouseView();
@@ -373,6 +526,12 @@ public class InitializeSceneController {
             }
         }
     }
+
+    /**
+     * To obtain a structure of the resources images of the warehouse similar to the Warehouse Model structure,
+     * in order to change easily and quickly the images
+     * @return the warehouse view
+     */
     private ArrayList<ArrayList<ImageView>> getWarehouseView(){
         ArrayList<ArrayList<ImageView>> warehouseView= new ArrayList<>();
 
@@ -394,7 +553,17 @@ public class InitializeSceneController {
 
         return warehouseView;
     }
+
+    /**
+     * To set the GUI which the scene is refered
+     * @param gui The GUI of the player
+     */
     public void setGui(GUI gui){this.gui=gui;}
+
+    /**
+     * To get an ordered list of every depot pane
+     * @return
+     */
     private ArrayList<Pane> getDepotPanes(){
         ArrayList<Pane> depotPanes=new ArrayList<>();
         depotPanes.add(depot1Pane);
@@ -402,6 +571,11 @@ public class InitializeSceneController {
         depotPanes.add(depot3Pane);
         return depotPanes;
     }
+
+    /**
+     * To get an ordered list of the leader cards images
+     * @return
+     */
     private ArrayList<ImageView> getLeaderCardsView(){
         ArrayList<ImageView> leaderCardsView=new ArrayList<>();
         leaderCardsView.add(leaderCard1);
@@ -411,15 +585,28 @@ public class InitializeSceneController {
         return leaderCardsView;
     }
 
+    /**
+     * To set a label text
+     * @param label the label to change
+     * @param content the text to set
+     */
     private void setLabelText(Label label,String content){
         Platform.runLater(()->{
             label.setText(content);
         });
     }
+
+    /**
+     * To show a message that says that the player has to wait the others
+     */
     public void showWaitPane(){
         waitPane.setVisible(true);
     }
 
+    /**
+     * To show a message that the server is no more available and the game ends, every pane is hidden
+     * @param msg VServerUnableMsg
+     */
     public void setWarningPane(VServerUnableMsg msg) {
         warningPane.setVisible(true);
         chooseDepotPane.setVisible(false);
@@ -428,6 +615,9 @@ public class InitializeSceneController {
         waitPane.setVisible(false);
     }
 
+    /**
+     * If after the "VServerUnableMsg" the player click on the OK Button the GUI is closed automatically
+     */
     public void clickOkButton(){
         gui.close();
     }
