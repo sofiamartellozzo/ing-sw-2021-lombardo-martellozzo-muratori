@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.ProgressIndicator?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -50,7 +50,7 @@
                               <DropShadow />
                            </effect>
                         </Label>
-                        <ProgressIndicator layoutX="268.0" layoutY="24.0" />
+                        <ProgressIndicator layoutX="268.0" layoutY="24.0" prefHeight="36.0" prefWidth="34.0" />
                      </children>
                   </Pane>
                </children>

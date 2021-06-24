@@ -142,6 +142,7 @@ public class IntroSceneController {
             VVConnectionRequestMsg request = new VVConnectionRequestMsg("OFFLINE", getUsername);
             gui.sendMsg(request);
             gui.setUsername(getUsername);
+            gui.setSoloMode(true);
         }else{
             setLabelText(errorMessage,"Username already used or IP not valid!");
             errorMessage.setVisible(true);
