@@ -240,13 +240,17 @@ public class InitializedController extends Observable implements ControllerObser
         if (this.turnSequence.get(2) != null) {
             //the second player receive one resources that he choose
             //System.out.println("giving the resources to the second player inside");       DEBUGGING
-            VChooseResourceAndDepotMsg msg1 = new VChooseResourceAndDepotMsg("You are the second player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(2).getUsername());
+                //send wait mag to the first player
+            VWaitOtherPlayerInitMsg firstWait = new VWaitOtherPlayerInitMsg("", turnSequence.get(1).getUsername());
+            notifyAllObserver(ObserverType.VIEW, firstWait);
+                //to the second send the msg to choose the resource
+            VChooseResourceAndDepotMsg msg1 = new VChooseResourceAndDepotMsg("You are the second player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(2).getUsername(), 1);
             notifyAllObserver(ObserverType.VIEW, msg1);
 
             if (this.turnSequence.get(3) != null) {
                 //System.out.println("giving the resources to the 3 player inside");        DEBUGGING
                 //the third player receive one resource and a faith marker(so increase of one his position)
-                VChooseResourceAndDepotMsg msg2 = new VChooseResourceAndDepotMsg("You are the third player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(3).getUsername());
+                VChooseResourceAndDepotMsg msg2 = new VChooseResourceAndDepotMsg("You are the third player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(3).getUsername(),1);
                 notifyAllObserver(ObserverType.VIEW, msg2);
 
                 this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
@@ -257,10 +261,10 @@ public class InitializedController extends Observable implements ControllerObser
 
                 if (this.turnSequence.get(4) != null) {
                     //the fourth player receives two resources and a faith marker(so thi increase of one his position)
-                    VChooseResourceAndDepotMsg msg3 = new VChooseResourceAndDepotMsg("You are the fourth player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(4).getUsername());
+                    VChooseResourceAndDepotMsg msg3 = new VChooseResourceAndDepotMsg("You are the fourth player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(4).getUsername(), 2);
                     notifyAllObserver(ObserverType.VIEW, msg3);
-                    VChooseResourceAndDepotMsg msg4 = new VChooseResourceAndDepotMsg("You are the fourth player, please select another resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(4).getUsername());
-                    notifyAllObserver(ObserverType.VIEW, msg4);
+                    //VChooseResourceAndDepotMsg msg4 = new VChooseResourceAndDepotMsg("You are the fourth player, please select another resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(4).getUsername());
+                    //notifyAllObserver(ObserverType.VIEW, msg4);
 
                     this.turnSequence.get(4).getGameSpace().getFaithTrack().increasePosition();
                     /* notify all palyers that this one increase his position */
@@ -384,6 +388,7 @@ public class InitializedController extends Observable implements ControllerObser
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //find the player by username
         counterResourcesChosen++;
+        System.out.println("inizial resource: " +counterResourcesChosen);
         Resource r = new Resource(msg.getResource());
         if (singlePlayer == null) {
             Player player = null;
@@ -406,6 +411,10 @@ public class InitializedController extends Observable implements ControllerObser
             if ((numberOfPlayer == 4 && counterResourcesChosen == 4) || (counterResourcesChosen == (numberOfPlayer - 1) && (numberOfPlayer != 4))) {
                 //call the msg to choose the leader card
                 chooseLeaderCard(false);
+            }
+            else{
+                VWaitOtherPlayerInitMsg wait = new VWaitOtherPlayerInitMsg("", msg.getUsername());
+                notifyAllObserver(ObserverType.VIEW, wait);
             }
         } else {
             try {

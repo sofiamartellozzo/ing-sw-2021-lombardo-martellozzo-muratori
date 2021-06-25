@@ -926,134 +926,136 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VChooseResourceAndDepotMsg msg) {
 
-        int depot = -1;
-        int choice = -1;
-        String resourceColor = null;
-        String resourceType = null;
-        Color typeColor = null;
-        Color resColor = null;
-        boolean correctInput = false;     //boolean used to check if the exception is thrown and so the client can't store the resources in a specific depot chosen
+        for (int resourceToChoose = msg.getNumberOfResources(); resourceToChoose > 0; resourceToChoose--) {
 
-        in = new Scanner(System.in);
-        in.reset();
+            int depot = -1;
+            int choice = -1;
+            String resourceColor = null;
+            String resourceType = null;
+            Color typeColor = null;
+            Color resColor = null;
+            boolean correctInput = false;     //boolean used to check if the exception is thrown and so the client can't store the resources in a specific depot chosen
 
-        if (msg.getUsername().equals(username)) {
-
-            printCLIMessage(msg.getMsgContent());
-            //System.out.println(" Here is your current Warehouse's situation ");
-            //showWarehouse(warehouse, player);
-
-            printCLIMessage(" If you want to discard the resource digit 0, otherwise if you want to keep it digit 1! \uD83D\uDE00" + AnsiColors.RESET);
             in = new Scanner(System.in);
             in.reset();
 
-            while (!correctInput) {
+            if (msg.getUsername().equals(username)) {
 
-                try {
-                    choice = in.nextInt();
-                    if(choice == 1 || choice == 2)
-                    {
-                        correctInput = true;
-                    }
-                } catch (InputMismatchException eio) {
-                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
-                    in.nextLine();
-                }
-            }
+                printCLIMessage(msg.getMsgContent());
+                //System.out.println(" Here is your current Warehouse's situation ");
+                //showWarehouse(warehouse, player);
 
-            if (choice == 1) {    //if he chooses to keep the resource he will be asked info about which one he wants and where putting it
-                if (msg.getChoices() == null) {
-                    printCLIMessage("Please enter the color of the resource you want : ");
-                    System.out.println("YELLOW --> COIN 💰\n" +
-                            "PURPLE --> SERVANT 👾\n" +
-                            "BLUE --> SHIELD 🥏\n" +
-                            "GREY --> STONE 🗿\n");
-
-                    in = new Scanner(System.in);
-                    in.reset();
-                    resourceColor = in.nextLine().toUpperCase();
-
-                    // check if the color exist
-                    while (!checkColor(resourceColor)) {
-
-                        printCLIMessage(" Error, please insert a valid color! ");
-                        resourceColor = in.nextLine().toUpperCase();
-                    }
-
-                /* create the color starting from the string written by the player,
-                with the function toUpperCase we are sure that the input of the player will be in an upperCase mode */
-                    resColor = converter.getColorFromString(resourceColor.toUpperCase());
-
-                } else {
-                    // if he has to chose from specific type because the White Marble ability is activated
-                    System.out.println(" You can choose from one of these: ");
-                    for (TypeResource typeResource : msg.getChoices()) {
-                        System.out.print(typeResource.toString() + "\n");
-                    }
-
-                    in = new Scanner(System.in);
-                    in.reset();
-                    resourceType = in.nextLine();
-                    boolean correct = false;
-
-                    while (!correct) {
-                        for (TypeResource type : msg.getChoices()) {
-                            if (type.toString().equals(resourceType.toUpperCase())) {
-                                correct = true;
-                            }
-                        }
-                        if (!correct) {
-                            in.reset();
-
-                            in = new Scanner(System.in);
-                            in.reset();
-                            printCLIMessage(" Error, please insert a valid Type! ");
-                            resourceType = in.nextLine();
-                        }
-
-                    }
-
-                    /*creates the color of the resource basing on the Type of it, written by the player*/
-                    typeColor = converter.getColorFromType(resourceType.toUpperCase());
-
-                }
-
-                //check if the exception is thrown and has to insert a new depot
-
-                printCLIMessage("Please enter the depot where you want to put the resource : ");
-                System.out.println("1 --> DEPOT1\n" +
-                        "2 --> DEPOT2\n" +
-                        "3 --> DEPOT3\n");
-
+                printCLIMessage(" If you want to discard the resource digit 0, otherwise if you want to keep it digit 1! \uD83D\uDE00" + AnsiColors.RESET);
                 in = new Scanner(System.in);
                 in.reset();
 
-                try {
-                    depot = in.nextInt();
-                } catch (InputMismatchException eio) {
-                    printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
-                    in.nextLine();
+                while (!correctInput) {
+
+                    try {
+                        choice = in.nextInt();
+                        if (choice == 1 || choice == 2) {
+                            correctInput = true;
+                        }
+                    } catch (InputMismatchException eio) {
+                        printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
+                        in.nextLine();
+                    }
                 }
 
+                if (choice == 1) {    //if he chooses to keep the resource he will be asked info about which one he wants and where putting it
+                    if (msg.getChoices() == null) {
+                        printCLIMessage("Please enter the color of the resource you want : ");
+                        System.out.println("YELLOW --> COIN 💰\n" +
+                                "PURPLE --> SERVANT 👾\n" +
+                                "BLUE --> SHIELD 🥏\n" +
+                                "GREY --> STONE 🗿\n");
 
-                // check if the depot exist
-                while (!checkDepotValidity(depot)) {
+                        in = new Scanner(System.in);
+                        in.reset();
+                        resourceColor = in.nextLine().toUpperCase();
+
+                        // check if the color exist
+                        while (!checkColor(resourceColor)) {
+
+                            printCLIMessage(" Error, please insert a valid color! ");
+                            resourceColor = in.nextLine().toUpperCase();
+                        }
+
+                /* create the color starting from the string written by the player,
+                with the function toUpperCase we are sure that the input of the player will be in an upperCase mode */
+                        resColor = converter.getColorFromString(resourceColor.toUpperCase());
+
+                    } else {
+                        // if he has to chose from specific type because the White Marble ability is activated
+                        System.out.println(" You can choose from one of these: ");
+                        for (TypeResource typeResource : msg.getChoices()) {
+                            System.out.print(typeResource.toString() + "\n");
+                        }
+
+                        in = new Scanner(System.in);
+                        in.reset();
+                        resourceType = in.nextLine();
+                        boolean correct = false;
+
+                        while (!correct) {
+                            for (TypeResource type : msg.getChoices()) {
+                                if (type.toString().equals(resourceType.toUpperCase())) {
+                                    correct = true;
+                                }
+                            }
+                            if (!correct) {
+                                in.reset();
+
+                                in = new Scanner(System.in);
+                                in.reset();
+                                printCLIMessage(" Error, please insert a valid Type! ");
+                                resourceType = in.nextLine();
+                            }
+
+                        }
+
+                        /*creates the color of the resource basing on the Type of it, written by the player*/
+                        typeColor = converter.getColorFromType(resourceType.toUpperCase());
+
+                    }
+
+                    //check if the exception is thrown and has to insert a new depot
+
+                    printCLIMessage("Please enter the depot where you want to put the resource : ");
+                    System.out.println("1 --> DEPOT1\n" +
+                            "2 --> DEPOT2\n" +
+                            "3 --> DEPOT3\n");
+
+                    in = new Scanner(System.in);
                     in.reset();
 
-                    System.out.println(" ⚠️ Error depot int not valid, insert a new one (1,2,3,4,5) ");
-                    depot = in.nextInt();
+                    try {
+                        depot = in.nextInt();
+                    } catch (InputMismatchException eio) {
+                        printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
+                        in.nextLine();
+                    }
+
+
+                    // check if the depot exist
+                    while (!checkDepotValidity(depot)) {
+                        in.reset();
+
+                        System.out.println(" ⚠️ Error depot int not valid, insert a new one (1,2,3,4,5) ");
+                        depot = in.nextInt();
+                    }
+
+                    //send one of this two types of responses depending on the type of request
+                    CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg(" resource and depot chosen ", resColor, depot, msg.getUsername());
+                    sendMsg(response);
+
                 }
 
-                //send one of this two types of responses depending on the type of request
-                CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg(" resource and depot chosen ", resColor, depot, msg.getUsername());
+
+            } else {
+                CChooseDiscardResourceMsg response = new CChooseDiscardResourceMsg("I chose to discard this resource", username);
                 sendMsg(response);
-
             }
-
-
-        } else {
-            CChooseDiscardResourceMsg response = new CChooseDiscardResourceMsg("I chose to discard this resource", username);
-            sendMsg(response);
         }
     }
 
@@ -1693,11 +1695,13 @@ public class CLI extends Observable implements ViewObserver {
         if (message.equals("YES")) {
             CNewStartMsg choice1 = new CNewStartMsg("the client choose to start a new game", username);
             sendMsg(choice1);
+            client.setClientFinish(true);
             client.closeConnection();
             start();
         } else {
             CNotStartAgainMsg choice = new CNotStartAgainMsg("The client choose to not start a new game, so close all");
             sendMsg(choice);
+            client.setClientFinish(true);
             client.closeConnection();
         }
     }

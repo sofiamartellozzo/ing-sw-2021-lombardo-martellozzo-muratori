@@ -7,7 +7,6 @@ import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.connection.PingMsg;
 import it.polimi.ingsw.message.connection.PongMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
-import it.polimi.ingsw.message.viewMsg.ViewGameMsg;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -17,7 +16,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * this class is where is read the input from the CLIENT and send the output for the server
@@ -35,7 +33,7 @@ public class ClientSocket extends Observable implements Runnable {
 
     private boolean connectionOpen = false;
 
-    private boolean serverUnable = false;
+    private boolean clientFinish = false;
 
     private Thread ping;  //to keep alive the connection
 
@@ -66,7 +64,6 @@ public class ClientSocket extends Observable implements Runnable {
             VServerUnableMsg error = new VServerUnableMsg("");
             notifyAllObserver(ObserverType.VIEW, error);
             //e.printStackTrace();
-
         }
 
 
@@ -102,12 +99,11 @@ public class ClientSocket extends Observable implements Runnable {
                         out.writeObject(new PongMsg("Pong!"));
                     }
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                     System.out.println("Ping disable");
                 } catch (IOException e) {
                     //e.printStackTrace();
                     System.out.println("Unable to send pong msg to server");
-                    serverUnable = true;
+
                     closeConnection();
                 } finally {
                     Thread.currentThread().interrupt();
@@ -189,7 +185,6 @@ public class ClientSocket extends Observable implements Runnable {
                 System.out.println("this client disconnected from the server, because of the Server");
                 /* setting the attribute to false because the connection shut down */
                 connectionOpen = false;
-                serverUnable = true;
                 closeConnection();
             }
 
@@ -197,13 +192,17 @@ public class ClientSocket extends Observable implements Runnable {
 
     }
 
+    public void setClientFinish(boolean clientFinish) {
+        this.clientFinish = clientFinish;
+    }
 
     public void closeConnection() {
         if (ping.isAlive()) {
             stopPing();
+            //ping.interrupt();
         }
         try {
-            if (serverUnable) {
+            if (!clientFinish) {
                 VServerUnableMsg disconnectionOfServer = new VServerUnableMsg("during the game the server shut down, so all game data are lost");
                 notifyAllObserver(ObserverType.VIEW, disconnectionOfServer);
             }

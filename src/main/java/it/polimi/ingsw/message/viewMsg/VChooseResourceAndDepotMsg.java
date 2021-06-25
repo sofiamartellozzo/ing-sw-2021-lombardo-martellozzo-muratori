@@ -16,12 +16,13 @@ public class VChooseResourceAndDepotMsg extends ViewGameMsg {
 
     private final String username;
     private ArrayList<TypeResource> choices;
+    private int numberOfResources;
 
-
-    public VChooseResourceAndDepotMsg(String msgContent, String username) {
+    public VChooseResourceAndDepotMsg(String msgContent, String username, int numberOfResources) {
         super(msgContent);
         this.username = username;
         choices = null;
+        this.numberOfResources = numberOfResources;
     }
 
     public VChooseResourceAndDepotMsg(String msgContent, String username,ArrayList<TypeResource> choice ){
@@ -38,6 +39,9 @@ public class VChooseResourceAndDepotMsg extends ViewGameMsg {
         return username;
     }
 
+    public int getNumberOfResources() {
+        return numberOfResources;
+    }
 
     public void notifyHandler(ViewObserver viewObserver){
         /* redirect the msg to the VV*/

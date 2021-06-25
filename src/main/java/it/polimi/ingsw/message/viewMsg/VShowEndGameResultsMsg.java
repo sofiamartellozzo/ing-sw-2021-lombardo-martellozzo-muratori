@@ -35,6 +35,9 @@ public class VShowEndGameResultsMsg extends GameMsg {
         this.soloWin=win;
     }
 
+
+
+
     public String getPlayerUsername() {
         return winnerUsername;
     }
@@ -54,6 +57,7 @@ public class VShowEndGameResultsMsg extends GameMsg {
     public boolean isSoloWin(){
         return soloWin;
     }
+
 
     @Override
     public void notifyHandler(ViewObserver viewObserver) {

@@ -275,7 +275,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             notifyAllObserver(ObserverType.CONTROLLER, msg);
             lobby.detachObserver(ObserverType.VIEW, this);
             if (waitInitialResource){
-                VChooseResourceAndDepotMsg fakeRequest = new VChooseResourceAndDepotMsg("", username);
+                VChooseResourceAndDepotMsg fakeRequest = new VChooseResourceAndDepotMsg("", username, 1);
                 receiveMsg(fakeRequest);
             }
         } else if (!msg.getUsernameDisconnected().equals(username)) {
