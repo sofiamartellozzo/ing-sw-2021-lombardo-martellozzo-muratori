@@ -107,6 +107,8 @@ public interface ViewObserver extends Observer{
     /*msg if a client reconnect to the room*/
     public void receiveMsg(VStopWaitReconnectionMsg msg);
 
+    /*msg used to update the state of leader cards*/
     public void receiveMsg(VUpdateLeaderCards msg);
+    /*msg used to update the situation of the card spaces*/
     public void receiveMsg(VUpdateCardSpaces msg);
 }

@@ -28,14 +28,11 @@ public interface PlayerInterface{
     public void setNumber(int number);
     public ArrayList<LeaderCard> getLeaderCards();
     public void setLeaderCards(ArrayList<LeaderCard> card);
-    //public void chooseLeaderCards(ArrayList<LeaderCard> cards, int chose1, int chose2);
     public PersonalBoard getGameSpace();
     public MarbleSpecial getWhiteSpecialMarble();
     public void setWhiteSpecialMarble(MarbleSpecial whiteSpecialMarble);
 
 
-
-    //public Resource chooseResource();
     public int calculateVictoryPoints();
     public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards) throws InvalidActionException;
     public void invokesProductionPower(ArrayList<DevelopmentCard> developmentCards, ArrayList<Resource> resources) throws InvalidActionException;
@@ -53,9 +50,7 @@ public interface PlayerInterface{
     public void setPlaying(boolean playing);
     public void setDisconnected(boolean disconnected);
     public void endTurn();
-    //public void putResources(Resource resource) throws InvalidActionException;
     public void moveResource(int depot1, int depot2) throws InvalidActionException;
-    //public int chooseDepot();
 
     public void removeLeaderCard(LeaderCard card) throws InvalidActionException;
     public void increasePosition();
