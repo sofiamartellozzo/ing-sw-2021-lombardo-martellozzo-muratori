@@ -47,7 +47,7 @@
                         </ImageView>
                         <VBox alignment="BOTTOM_CENTER" prefHeight="46.0" prefWidth="328.0">
                            <children>
-                              <Label fx:id="errorMessage" alignment="CENTER" prefHeight="30.0" prefWidth="86.0" text="Error Message&#10;........" textAlignment="CENTER" textFill="#ae0000">
+                              <Label fx:id="errorMessage" alignment="CENTER" prefHeight="28.0" prefWidth="295.0" text="Error Message&#10;........" textAlignment="CENTER" textFill="#ae0000">
                                  <font>
                                     <Font name="System Bold Italic" size="10.0" />
                                  </font>

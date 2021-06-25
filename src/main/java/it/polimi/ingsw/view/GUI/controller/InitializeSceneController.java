@@ -72,6 +72,8 @@ public class InitializeSceneController {
     private TypeResource chosenType;
     private ArrayList<Integer> possibleLeaderCards;
     private ArrayList<Integer> chosenLeaderCards;
+    private int countResource=0;
+    private int resourceToReceive;
 
     /**
      * To prepare the scene when this scene is set
@@ -291,31 +293,40 @@ public class InitializeSceneController {
      * When the player click on the "Depot 1" pane, a response message with the chosen type and depot is send
      */
     public void clickDepot1(){
-        waitPane.setVisible(true);
         disableDepotPanes();
         discardButton.setDisable(true);
         chooseDepotPane.setVisible(false);
         gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),1,gui.getUsername()));
+        resourceToReceive--;
+        if(resourceToReceive!=0){
+            chooseResource();
+        }
     }
     /**
      * When the player click on the "Depot 2" pane, a response message with the chosen type and depot is send
      */
     public void clickDepot2(){
-        waitPane.setVisible(true);
         disableDepotPanes();
         discardButton.setDisable(true);
         chooseDepotPane.setVisible(false);
         gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),2,gui.getUsername()));
+        resourceToReceive--;
+        if(resourceToReceive!=0){
+            chooseResource();
+        }
     }
     /**
      * When the player click on the "Depot 3" pane, a response message with the chosen type and depot is send
      */
     public void clickDepot3(){
-        waitPane.setVisible(true);
         disableDepotPanes();
         discardButton.setDisable(true);
         chooseDepotPane.setVisible(false);
         gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the resource and the depot",fromTypeToColor(chosenType),3,gui.getUsername()));
+        resourceToReceive--;
+        if(resourceToReceive!=0){
+            chooseResource();
+        }
     }
 
     /**
@@ -600,7 +611,9 @@ public class InitializeSceneController {
      * To show a message that says that the player has to wait the others
      */
     public void showWaitPane(){
-        waitPane.setVisible(true);
+        if(resourceToReceive==0) {
+            waitPane.setVisible(true);
+        }
     }
 
     /**
@@ -620,5 +633,13 @@ public class InitializeSceneController {
      */
     public void clickOkButton(){
         gui.close();
+    }
+
+    /**
+     * Setter method
+     * @param resourceToReceive to memorize how many resource the player should receive
+     */
+    public void setResourceToReceive(int resourceToReceive) {
+        this.resourceToReceive = resourceToReceive;
     }
 }

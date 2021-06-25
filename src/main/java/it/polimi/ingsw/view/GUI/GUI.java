@@ -340,6 +340,7 @@ public class GUI extends Application implements ViewObserver {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
             if(stage.getScene().equals(initializeScene)) {
+                initializeSceneController.setResourceToReceive(msg.getNumberOfResources());
                 initializeSceneController.chooseResource();
             }else if(stage.getScene().equals(marketStructureScene)){
                 marketStructureSceneController.chooseResource();
