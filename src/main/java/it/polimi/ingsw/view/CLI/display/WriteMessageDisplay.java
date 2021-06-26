@@ -90,15 +90,16 @@ public class WriteMessageDisplay {
     /**
      * method that shows " END GAME" to say that the game is over!
      */
-    public static void endGame(){
+    public static void endGame() {
 
-        System.out.println(
-                "███████ ███    ██ ██████       ██████   █████  ███    ███ ███████ \n" +
-                "██      ████   ██ ██   ██     ██       ██   ██ ████  ████ ██      \n" +
-                "█████   ██ ██  ██ ██   ██     ██   ███ ███████ ██ ████ ██ █████   \n" +
-                "██      ██  ██ ██ ██   ██     ██    ██ ██   ██ ██  ██  ██ ██      \n" +
-                "███████ ██   ████ ██████       ██████  ██   ██ ██      ██ ███████ \n" +
-                "                                                                  ");
+        System.out.println("" +
+                "███████╗███╗   ██╗██████╗      ██████╗  █████╗ ███╗   ███╗███████╗\n" +
+                "██╔════╝████╗  ██║██╔══██╗    ██╔════╝ ██╔══██╗████╗ ████║██╔════╝\n" +
+                "█████╗  ██╔██╗ ██║██║  ██║    ██║  ███╗███████║██╔████╔██║█████╗  \n" +
+                "██╔══╝  ██║╚██╗██║██║  ██║    ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  \n" +
+                "███████╗██║ ╚████║██████╔╝    ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗\n" +
+                "╚══════╝╚═╝  ╚═══╝╚═════╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝\n" +
+                "                                                                  ");
     }
 
     /**
@@ -106,12 +107,12 @@ public class WriteMessageDisplay {
      */
     public static void declareWinner(){
 
-        System.out.println("YOU'RE THE  " +AnsiColors.BLUE_BOLD+
-                "         _                       \n" +
+        System.out.println(AnsiColors.BLUE_BOLD+"CONGRATULATIONS, you're the\n " +
+                "          _                       \n" +
                 "__      ___)_ __  _ __   ___ _ __ \n" +
                 "\\ \\ /\\ / / | '_ \\| '_ \\ / _ \\ '__|\n" +
                 " \\ V  V /| | | | | | | |  __/ |   \n" +
-                "  \\_/\\_/ |_|_| |_|_| |_|\\___|_|   \n" +
+                "  \\_/\\_/ |_|_| |_|_| |_|\\___|_|   \n\n\n\n" +
                 "                                 "+AnsiColors.RESET);
     }
 
@@ -120,13 +121,13 @@ public class WriteMessageDisplay {
      * method that shows the word "LOSER" to the losers of the game
      */
     public static void declareLoser(){
-        System.out.println("I'M SORRY, YOU'RE A " +AnsiColors.RED_BOLD+
+        System.out.println(AnsiColors.RED_BOLD+"I'M SORRY :(, YOU'RE A \n" +
                 " _                     \n" +
                 "| | ___  ___  ___ _ __ \n" +
                 "| |/ _ \\/ __|/ _ \\ '__|\n" +
                 "| | (_) \\__ \\  __/ |   \n" +
-                "|_|\\___/|___/\\___|_|   \n" +
-                "                      "+AnsiColors.RED_BOLD);
+                "|_|\\___/|___/\\___|_|   \n\n\n\n" +
+                "                      "+AnsiColors.RESET);
     }
 
 
@@ -136,6 +137,6 @@ public class WriteMessageDisplay {
      */
     public static void showRanking(){
         System.out.println(AnsiColors.BLUE_BOLD+" HERE IS THE FINAL RANKING OF THE GAME: ");
-        System.out.println(" ►►►►►►►►►►►►►►►►"+AnsiColors.RESET);
+        System.out.println(" ►►►►►►►►►►►►►►►►►►►►►►►►"+AnsiColors.RESET);
     }
 }

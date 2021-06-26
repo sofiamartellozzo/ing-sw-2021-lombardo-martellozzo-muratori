@@ -74,7 +74,7 @@ public class CLI extends Observable implements ViewObserver {
     private MarketStructure marketStructureData; //contains the data about the market
     private PlayerInterface player;
     private LeaderCardDeck leaderCards;
-    private ArrayList<LeaderCard> myLeaderCards;
+    private ArrayList<LeaderCard> myLeaderCards = new ArrayList<>();
     private DevelopmentCardTable developmentCardTable;
     private StrongBox strongBox;
     private Warehouse warehouse;
@@ -109,7 +109,6 @@ public class CLI extends Observable implements ViewObserver {
         connectionOFF = false;
 
     }
-
 
     public void start() {
 
@@ -176,32 +175,37 @@ public class CLI extends Observable implements ViewObserver {
                 }
             }
         } else {
-            //write offline status!!!!
-            WriteMessageDisplay.writeOfflineStatus();
-            /*ask to set the username*/
-            String user = null;
-            user = askUsername();
-            /* put inside the variable username the name that the client chose*/
-            username = user;
-            /*create the message handler, he work as Client Socket but not throw the net*/
-            messageHandler = new MessageHandler();
-            /*generate a sort of Virtual View*/
-            messageHandler.generateVV(username);
-            /*
-            offlineVirtualView = new VirtualView(username);
-            attachObserver(ObserverType.VIEW, offlineVirtualView);
-            attachObserver(ObserverType.CONTROLLER, offlineVirtualView);*/
-            //this.offlineVirtualView.attachObserver(ObserverType.VIEW, this);
-            messageHandler.attachObserver(ObserverType.VIEW, this);
-            //printCLIMessage("before run");
-            new Thread(messageHandler).start();
-            //printCLIMessage("after run");
-            /* try to create the connection sending the username, port and ip */
-            VVConnectionRequestMsg request = new VVConnectionRequestMsg("OFFLINE", username);
-            sendMsg(request);
+        setOfflineMode();
         }
 
     }
+
+    private void setOfflineMode() {
+        WriteMessageDisplay.writeOfflineStatus();
+        /*ask to set the username*/
+        String user = null;
+        user = askUsername();
+        /* put inside the variable username the name that the client chose*/
+        username = user;
+        /*create the message handler, he work as Client Socket but not throw the net*/
+        messageHandler = new MessageHandler();
+        /*generate a sort of Virtual View*/
+        messageHandler.generateVV(username);
+        /*
+        offlineVirtualView = new VirtualView(username);
+        attachObserver(ObserverType.VIEW, offlineVirtualView);
+        attachObserver(ObserverType.CONTROLLER, offlineVirtualView);*/
+        //this.offlineVirtualView.attachObserver(ObserverType.VIEW, this);
+        messageHandler.attachObserver(ObserverType.VIEW, this);
+        //printCLIMessage("before run");
+        new Thread(messageHandler).start();
+        //printCLIMessage("after run");
+        /* try to create the connection sending the username, port and ip */
+        VVConnectionRequestMsg request = new VVConnectionRequestMsg("OFFLINE", username);
+        sendMsg(request);
+    }
+
+
 
     /**
      * ask the client if want to play offline or online
@@ -1662,14 +1666,27 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
         clearScreen();
+        System.out.println(msg.getMsgContent());
 
         if (msg.getWinnerUsername().equals(username)) {
-            WriteMessageDisplay.endGame();
-            WriteMessageDisplay.declareWinner();
-            WriteMessageDisplay.showRanking();
-            printCLIMessage("- You totalize " + msg.getVictoryPoints() + " points");
-            for (PlayerInterface player:msg.getLosersUsernames()) {
-                printCLIMessage("- "+player.getUsername()+ " Victory Points: "+AnsiColors.YELLOW_BOLD+player.getVictoryPoints()+AnsiColors.RESET);
+            if(soloMode){
+                if(msg.isSoloWin()){
+                    WriteMessageDisplay.endGame();
+                    WriteMessageDisplay.declareWinner();
+                }
+                else{
+                    WriteMessageDisplay.endGame();
+                    WriteMessageDisplay.declareLoser();
+                    System.out.println(AnsiColors.RED_BOLD+"You lost against the biggest LORENZO :( ,try again"+AnsiColors.RESET);
+                }
+            }else {
+                WriteMessageDisplay.endGame();
+                WriteMessageDisplay.declareWinner();
+                WriteMessageDisplay.showRanking();
+                printCLIMessage("- You totalize " +AnsiColors.YELLOW_BOLD+ msg.getVictoryPoints()+AnsiColors.RESET + " points");
+                for (PlayerInterface player : msg.getLosersUsernames()) {
+                    printCLIMessage("- " + player.getUsername() + " Victory Points: " + AnsiColors.YELLOW_BOLD + player.getVictoryPoints() + AnsiColors.RESET);
+                }
             }
         } else {
             WriteMessageDisplay.endGame();
@@ -1687,8 +1704,9 @@ public class CLI extends Observable implements ViewObserver {
 
     @Override
     public void receiveMsg(VAskNewGameMsg msg) {
+        printCLIMessage("----------------------------------------------\n\n");
         printCLIMessage(msg.getMsgContent());
-        printCLIMessage("type YES if you want to continue");
+        printCLIMessage("Type YES if you want to continue");
         in.reset();
         in = new Scanner(System.in);
         String message = in.nextLine().toUpperCase();
@@ -1822,8 +1840,19 @@ public class CLI extends Observable implements ViewObserver {
 
     @Override
     public void receiveMsg(VServerUnableMsg msg) {
-        printCLIMessage("⚠️ Sorry, now the server is not available\nTry later :)");
         connectionOFF = false;
+
+        if(this.myLeaderCards.isEmpty()){
+
+            printCLIMessage(AnsiColors.RED_BOLD+"⚠️ Sorry, the server is unable so you can play only in OFFLINE mode! \n"+AnsiColors.RESET);
+            client = null;
+            offline = true;
+            WriteMessageDisplay.writeTitle();
+            setOfflineMode();
+        }
+        else {
+            printCLIMessage(AnsiColors.RED_BOLD+"⚠️ Sorry, now the server is not available :) \n"+AnsiColors.RESET);
+        }
     }
 
 
