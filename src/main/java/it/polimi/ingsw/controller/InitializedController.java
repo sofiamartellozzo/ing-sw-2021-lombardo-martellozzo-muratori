@@ -68,9 +68,9 @@ public class InitializedController extends Observable implements ControllerObser
         this.virtualView = virtualView;
         attachAllVV();
         /* shuffle the player to make the choise of the fist random */
-        Collections.shuffle(players);
+        //Collections.shuffle(players);
         /* creating a ordered sequence of the players */
-        creatingPlayers(players);
+        //creatingPlayers(players);
 
         //contruct the resources supply for all the players
         ResourcesSupplyFactory resourcesSupplyFactory = new ResourcesSupplyFactory();
@@ -105,16 +105,30 @@ public class InitializedController extends Observable implements ControllerObser
      *
      * @param players
      */
-    private void creatingPlayers(ArrayList<String> players) {
+    public void creatingPlayersSequence(ArrayList<String> players, ArrayList<Player> realPlayers) {
+        Collections.shuffle(players);
+        for (int i = 0; i < numberOfPlayer; i++) {
+            for (Player p: realPlayers) {
+                if (p.getUsername().equals(players.get(i))){
+                    turnSequence.put(i+1, p);
+                    System.out.println("[Init Controller]: " +turnSequence.get(i+1).getUsername());
+                }
+            }
+        }
+        /*
         if (numberOfPlayer == 1) {
             SoloPlayer p = new SoloPlayer(players.get(0));
             singlePlayer = p;
         } else {
             for (int i = 0; i < numberOfPlayer; i++) {
                 Player p = new Player(players.get(i));
-                turnSequence.put(i + 1, p);
+                turnSequence.put(i + 1, realPlayers.get());
             }
-        }
+        }*/
+    }
+
+    public void fillSinglePlayer(SoloPlayer realPlayer){
+        singlePlayer = realPlayer;
     }
 
     /**

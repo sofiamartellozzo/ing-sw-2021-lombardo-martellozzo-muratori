@@ -338,12 +338,16 @@ public class Lobby extends Observable implements ControllerObserver {
         System.out.println("[Lobby] request of a connection from: " + msg.getIP() + " on @" + msg.getPort() + " given  \"" + msg.getUsername() + "\" as username " +
                 "asking for playing in " + convertedGameMode + " Game!");
 
+        printLobbyMsg(usersAssigned.toString());
+
         //check if the username is not used yet
         if (usersAssigned.contains(msg.getUsername())) {
             //check if is a user disconnected that is trying to reconnect
             try {
                 Room room = findUserRoom(msg.getUsername());
+                printLobbyMsg(room.getPlayerByUsername(msg.getUsername()).getUsername());
                 if (room.getPlayerByUsername(msg.getUsername())!=null && room.getPlayerByUsername(msg.getUsername()).isDisconnected()) {
+                    System.out.println("IN LOBBY found player disconnected!!");
                     room.reconnectPlayer(msg.getUsername(), msg.getVV());
                     detachObserver(ObserverType.VIEW, room.getListOfVirtualView().get(msg.getUsername()));
                 } else {
@@ -771,6 +775,10 @@ public class Lobby extends Observable implements ControllerObserver {
                 return "Multiplayer Mode";
         }
         return null;
+    }
+
+    private void printLobbyMsg(String message){
+        System.out.println("[LOBBY]: " +message);
     }
 
 

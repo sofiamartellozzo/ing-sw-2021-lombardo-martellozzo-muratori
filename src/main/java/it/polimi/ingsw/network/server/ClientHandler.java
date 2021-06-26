@@ -42,7 +42,7 @@ public class ClientHandler extends Observable implements Runnable {
     private Timer notifyDisconnectionTimer;
     private static final int TIMER = 50000;
 
-    private boolean closeBecauseEnded;
+    private boolean closeBecauseEnded = false;
 
     public ClientHandler(Socket client, String threadId) {
         clientSocket = client;
@@ -53,7 +53,6 @@ public class ClientHandler extends Observable implements Runnable {
         attachObserver(ObserverType.CONTROLLER, virtualView);
         queue = new ArrayList<>();
         notifyDisconnectionTimer = new Timer();
-        closeBecauseEnded = false;
     }
 
     @Override
@@ -171,6 +170,7 @@ public class ClientHandler extends Observable implements Runnable {
     }
 
     public void startWaitReconnection() {
+        System.out.println("START THREAD WAITING");
         notifyDisconnectionTimer.schedule(new DisconnectHandler(this), TIMER);
     }
 
@@ -208,6 +208,7 @@ public class ClientHandler extends Observable implements Runnable {
             if (!closeBecauseEnded) {
                 CClientDisconnectedMsg notification = new CClientDisconnectedMsg("the client is not reachable anymore", virtualView.getUsername());
                 notifyAllObserver(ObserverType.CONTROLLER, notification);
+                System.out.println("DEBUG HAHAHAHHAHA");
             }
             clientSocket.close();
         } catch (IOException e) {

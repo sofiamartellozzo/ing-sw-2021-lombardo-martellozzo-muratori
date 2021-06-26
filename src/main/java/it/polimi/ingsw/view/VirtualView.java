@@ -275,6 +275,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             notifyAllObserver(ObserverType.CONTROLLER, msg);
             lobby.detachObserver(ObserverType.VIEW, this);
             if (waitInitialResource){
+                System.out.println("[VV]: the first one should not enter here");
                 VChooseResourceAndDepotMsg fakeRequest = new VChooseResourceAndDepotMsg("", username, 1);
                 receiveMsg(fakeRequest);
             }
@@ -287,7 +288,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VStartWaitReconnectionMsg msg) {
-        //System.out.println("POPOPOPOPOPOPOPO");
+        System.out.println("POPOPOPOPOPOPOPO");
         client.startWaitReconnection();
     }
 
@@ -490,9 +491,9 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
                 //client disconnected during initialization
                 //choose random his resource
                 Random r = new Random();
-                Color[] resourceColor = Color.values();
+                Color[] resourceColor = new Color[]{Color.PURPLE, Color.YELLOW, Color.BLUE, Color.GREY};
                 Color c = resourceColor[r.nextInt(Color.values().length)];
-                CChooseResourceAndDepotMsg fakeResponse = new CChooseResourceAndDepotMsg("", c, r.nextInt(3), username);
+                CChooseResourceAndDepotMsg fakeResponse = new CChooseResourceAndDepotMsg("", c, r.nextInt(3) +1, username);
                 notifyAllObserver(ObserverType.CONTROLLER, fakeResponse);
             }
             else{

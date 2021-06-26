@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.ObserverType;
+import it.polimi.ingsw.message.updateMsg.VWaitYourTurnMsg;
 import it.polimi.ingsw.message.viewMsg.VSendPlayerDataMsg;
 import it.polimi.ingsw.message.viewMsg.VStopWaitReconnectionMsg;
 import it.polimi.ingsw.model.BoardManager;
@@ -53,6 +54,7 @@ public class Room extends Observable {
 
     /* the turn sequence in the math */
     private HashMap<Integer, PlayerInterface> turnSequence;
+    private ArrayList<Player> players;
 
     /* boolean that notify if the game is all set and so can start */
     private boolean gameCanStart;
@@ -64,6 +66,7 @@ public class Room extends Observable {
 
     /**
      * constructor of the class
+     *
      * @param roomID Id of the room that will be created
      */
     public Room(String roomID) {
@@ -74,6 +77,7 @@ public class Room extends Observable {
         isSoloMode = false;
         gameCanStart = false;
         turnSequence = new HashMap<>();
+        players = new ArrayList<>();
         cleanRoom = false;
         waiting = false;
         printRoomMessage("Room created");
@@ -168,6 +172,7 @@ public class Room extends Observable {
                     /* multiple game*/
                     Player player = new Player(username);
                     turnSequence.put(numberOfPlayer, player);
+                    players.add(player);
                 } else {
                     SoloPlayer playerS = new SoloPlayer(username);
                     singlePlayer = playerS;
@@ -188,12 +193,16 @@ public class Room extends Observable {
         }
     }
 
-    public void disconnectPlayer(String username){
+    public void disconnectPlayer(String username) {
+        printRoomMessage("set disconnected");
         getPlayerByUsername(username).setDisconnected(true);
+        printRoomMessage("" +getPlayerByUsername(username).isDisconnected());
+
     }
 
     /**
      * method to check if the room is full (4 player maximum) or not
+     *
      * @return -> true if the room is full
      */
     public boolean isFull() {
@@ -208,6 +217,7 @@ public class Room extends Observable {
 
     /**
      * initialize the game for these players
+     *
      * @throws InvalidActionException
      */
     public void initializedGame() throws InvalidActionException {
@@ -216,16 +226,21 @@ public class Room extends Observable {
         //attachAllVV();
         initializedController = new InitializedController(playersId, listOfVirtualView);
         attachObserver(ObserverType.CONTROLLER, initializedController);
-        initializedController.createGame();
-        boardManager = initializedController.getBoardManager();
+        //initializedController.createGame();
+        //boardManager = initializedController.getBoardManager();
         //printRoomMessage("in ROOM " + boardManager.toString());
         if (!isSoloMode) {
             //fill the sequence with the players created
+            initializedController.creatingPlayersSequence(playersId, players);
             turnSequence = initializedController.getTurnSequence();
+            printRoomMessage(turnSequence.values().toString());
         } else {
             //fill the attribute of the single player with the created one
-            singlePlayer = initializedController.getSinglePlayer();
+            //singlePlayer = initializedController.getSinglePlayer();
+            initializedController.fillSinglePlayer(singlePlayer);
         }
+        initializedController.createGame();
+        boardManager = initializedController.getBoardManager();
 
         printRoomMessage("the game has been initialized, starting...");
 
@@ -234,12 +249,11 @@ public class Room extends Observable {
         waiting = true;
 
         //startFirstTurn();
-
-
     }
 
     /**
      * creates the turn controller to manage the turn
+     *
      * @throws InvalidActionException
      */
     public void startFirstTurn() throws InvalidActionException {
@@ -267,6 +281,7 @@ public class Room extends Observable {
 
     /**
      * returns the board of the player found by his username given in input
+     *
      * @param username
      * @return
      */
@@ -281,14 +296,18 @@ public class Room extends Observable {
 
     /**
      * returns the Player from his username given in input
+     *
      * @param username of the player
      * @return
      */
     public PlayerInterface getPlayerByUsername(String username) {
-        if (numberOfPlayer > 1) {
+        if (!isSoloMode) {
             //multiplayer mode
+            printRoomMessage("in getting player");
             for (PlayerInterface player : turnSequence.values()) {
+                printRoomMessage("search player");
                 if (player.getUsername().equals(username)) {
+                    printRoomMessage("found player");
                     return player;
                 }
             }
@@ -326,7 +345,7 @@ public class Room extends Observable {
         VStopWaitReconnectionMsg stop = new VStopWaitReconnectionMsg("The client reconnected so stop the timer");
         notifyAllObserver(ObserverType.VIEW, stop);
 
-        if (listOfVirtualView.get(username)!=null) {
+        if (listOfVirtualView.get(username) != null) {
             //detach the old one
             detachObserver(ObserverType.VIEW, listOfVirtualView.get(username));
             //and then eliminate it
@@ -340,14 +359,18 @@ public class Room extends Observable {
         //send to the player his Data
         VSendPlayerDataMsg msg = new VSendPlayerDataMsg("these is the actual condiction of your game after reconnected", getPlayerByUsername(username), boardManager, false);
         notifyAllObserver(ObserverType.VIEW, msg);
+        VWaitYourTurnMsg secondMsg = new VWaitYourTurnMsg("you just reconnected, so now wait your turn", username);
+        notifyAllObserver(ObserverType.VIEW, secondMsg);
         //VV.attachObserver(ObserverType.CONTROLLER, turnController);
-        turnController.attachObserver(ObserverType.VIEW, VV);
-        turnController.addVV(username, VV);
+        if (turnController != null) {
+            turnController.attachObserver(ObserverType.VIEW, VV);
+            turnController.addVV(username, VV);
+        }
     }
 
-    private boolean inWaiting(){
-        for (PlayerInterface p: turnSequence.values()) {
-            if (!p.isDisconnected()){
+    private boolean inWaiting() {
+        for (PlayerInterface p : turnSequence.values()) {
+            if (!p.isDisconnected()) {
                 return false;
             }
         }
