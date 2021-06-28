@@ -171,6 +171,7 @@ public class ClientHandler extends Observable implements Runnable {
 
     public void startWaitReconnection() {
         System.out.println("START THREAD WAITING");
+        notifyDisconnectionTimer = new Timer();
         notifyDisconnectionTimer.schedule(new DisconnectHandler(this), TIMER);
     }
 

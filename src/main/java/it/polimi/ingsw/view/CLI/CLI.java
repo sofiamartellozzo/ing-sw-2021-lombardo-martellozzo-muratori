@@ -1711,16 +1711,32 @@ public class CLI extends Observable implements ViewObserver {
         in = new Scanner(System.in);
         String message = in.nextLine().toUpperCase();
         if (message.equals("YES")) {
-            CNewStartMsg choice1 = new CNewStartMsg("the client choose to start a new game", username);
-            sendMsg(choice1);
-            client.setClientFinish(true);
-            client.closeConnection();
+
+            if (!offline){
+                //the connection is open
+                CNewStartMsg choice1 = new CNewStartMsg("the client choose to start a new game", username);
+                sendMsg(choice1);
+                client.setClientFinish(true);
+                client.closeConnection();
+            }
+            else{
+                messageHandler.stopMessageHandler();
+                messageHandler = null;
+            }
             start();
         } else {
-            CNotStartAgainMsg choice = new CNotStartAgainMsg("The client choose to not start a new game, so close all");
-            sendMsg(choice);
-            client.setClientFinish(true);
-            client.closeConnection();
+
+            if (!offline){
+                //the connection is open
+                CNotStartAgainMsg choice = new CNotStartAgainMsg("The client choose to not start a new game, so close all");
+                sendMsg(choice);
+                client.setClientFinish(true);
+                client.closeConnection();
+            }
+            else{
+                messageHandler.stopMessageHandler();
+                messageHandler = null;
+            }
         }
     }
 
@@ -1777,11 +1793,12 @@ public class CLI extends Observable implements ViewObserver {
             }
             System.out.print("\n");
             System.out.println("└----------------------┘");
+            /*
             try {
                 msg.getActionToken().activeActionToken(boardManager, (SoloPlayer) player);
             } catch (InvalidActionException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
     }

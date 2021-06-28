@@ -196,7 +196,7 @@ public class Room extends Observable {
     public void disconnectPlayer(String username) {
         printRoomMessage("set disconnected");
         getPlayerByUsername(username).setDisconnected(true);
-        printRoomMessage("" +getPlayerByUsername(username).isDisconnected());
+        printRoomMessage("" + getPlayerByUsername(username).isDisconnected());
 
     }
 
@@ -359,8 +359,10 @@ public class Room extends Observable {
         //send to the player his Data
         VSendPlayerDataMsg msg = new VSendPlayerDataMsg("these is the actual condiction of your game after reconnected", getPlayerByUsername(username), boardManager, false);
         notifyAllObserver(ObserverType.VIEW, msg);
-        VWaitYourTurnMsg secondMsg = new VWaitYourTurnMsg("you just reconnected, so now wait your turn", username);
-        notifyAllObserver(ObserverType.VIEW, secondMsg);
+        if (!isSoloMode) {
+            VWaitYourTurnMsg secondMsg = new VWaitYourTurnMsg("you just reconnected, so now wait your turn", username);
+            notifyAllObserver(ObserverType.VIEW, secondMsg);
+        }
         //VV.attachObserver(ObserverType.CONTROLLER, turnController);
         if (turnController != null) {
             turnController.attachObserver(ObserverType.VIEW, VV);

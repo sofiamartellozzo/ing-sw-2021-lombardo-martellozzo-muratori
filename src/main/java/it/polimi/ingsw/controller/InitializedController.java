@@ -417,7 +417,7 @@ public class InitializedController extends Observable implements ControllerObser
                 VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
                 notifyAllObserver(ObserverType.VIEW, notification);
             } catch (InvalidActionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 //create msg to send to client that he made an invalid action, so change the depot
                 VNotValidDepotMsg msg1 = new VNotValidDepotMsg("You chose a depot that cannot store your resource, please chose another one!", msg.getUsername(), msg.getDepot(), msg.getResource());
                 notifyAllObserver(ObserverType.VIEW, msg1);

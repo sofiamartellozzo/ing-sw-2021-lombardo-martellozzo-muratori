@@ -89,6 +89,11 @@ public class MessageHandler extends Observable implements Runnable{
 
     }
 
+    public void stopMessageHandler(){
+        gameOn = false;
+        thread.interrupt();
+    }
+
     private void printDebug(String message) {
         System.out.println(message);
     }

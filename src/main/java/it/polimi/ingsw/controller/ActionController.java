@@ -286,7 +286,7 @@ public class ActionController extends Observable implements ControllerObserver {
                                 }
                             } else if (key.equals("level")) {
                                 //The requirements it's a card
-                                Integer value = (Integer) values[j];
+                                Double value = (Double) values[j];
                                 for (int k = 0; k < allDevelopmentCards.size(); k++) {
                                     DevelopmentCard developmentCard = allDevelopmentCards.get(k);
                                     if ((developmentCard.getColor().equals(color) && ((value == 0) || (value != 0 && developmentCard.getlevel() == value)))) {

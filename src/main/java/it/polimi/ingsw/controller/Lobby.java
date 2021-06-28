@@ -349,6 +349,7 @@ public class Lobby extends Observable implements ControllerObserver {
                 if (room.getPlayerByUsername(msg.getUsername())!=null && room.getPlayerByUsername(msg.getUsername()).isDisconnected()) {
                     System.out.println("IN LOBBY found player disconnected!!");
                     room.reconnectPlayer(msg.getUsername(), msg.getVV());
+                    msg.getVV().setReconnected(true);
                     detachObserver(ObserverType.VIEW, room.getListOfVirtualView().get(msg.getUsername()));
                 } else {
                     //username used yet

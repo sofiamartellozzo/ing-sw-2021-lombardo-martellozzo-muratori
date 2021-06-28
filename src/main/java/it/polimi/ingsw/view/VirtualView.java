@@ -269,6 +269,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
                 but stop it the second time from the Turn Controller*/
             connectionLock.lock();
             userConnected.set(false);
+            System.out.println("ALEEEEEEEEEEEEEEEEEEEEEE");
             reconnected = true;
             connectionLock.unlock();
             //now send it to the Lobby
@@ -308,6 +309,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
     @Override
     public void receiveMsg(VStopWaitReconnectionMsg msg) {
+
         client.resetTimer();
     }
 
@@ -742,6 +744,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     private void tryToStartGame() {
         if (offLobby == null) {
             System.out.println("TRY TO START GAME IN VV");
+            System.out.println(reconnected);
             connectionLock.lock();
             try {
                 //check if the connection is ON and ask to the Lobby if the Game can start
@@ -765,6 +768,10 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
             //lobby.startInitializationOfTheGame(username);
         }
 
+    }
+
+    public void setReconnected(boolean reconnected) {
+        this.reconnected = reconnected;
     }
 
     public String getUsername() {
