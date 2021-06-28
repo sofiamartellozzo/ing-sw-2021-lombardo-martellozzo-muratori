@@ -439,6 +439,9 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VChooseActionTurnRequestMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
+            if(!stage.getScene().equals(personalBoardScene)){
+                Platform.runLater(()->changeScene(personalBoardScene));
+            }
             personalBoardSceneController.chooseAction(msg);
         }
     }
@@ -760,6 +763,16 @@ public class GUI extends Application implements ViewObserver {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             personalBoardSceneController.showWaitPane();
+            if(!stage.getScene().equals(personalBoardScene)){
+                personalBoardSceneController.updateCardSpacesView(cardSpaces);
+                personalBoardSceneController.updateLeaderCards(leaderCards);
+                personalBoardSceneController.updateWarehouseView(warehouse);
+                personalBoardSceneController.updateStrongBoxView(strongBox);
+                personalBoardSceneController.updateVictoryPointsView(player.getVictoryPoints());
+                personalBoardSceneController.updateAdditionalPPView(player.getSpecialCard());
+                personalBoardSceneController.updateFaithTrackView(player.getGameSpace().getFaithTrack());
+                Platform.runLater(()->changeScene(personalBoardScene));
+            }
         }
     }
 
@@ -951,32 +964,38 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(CVStartInitializationMsg msg){
         //Message not used here
+        System.out.println(msg.toString());
     }
 
     @Override
     public void receiveMsg(VResourcesNotFoundMsg msg) {
         //Message not used here
+        System.out.println(msg.toString());
     }
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
         //Message not used here
+        System.out.println(msg.toString());
     }
 
     @Override
     public void receiveMsg(VStartWaitReconnectionMsg msg) {
         //Message not used here
+        System.out.println(msg.toString());
     }
 
     @Override
     public void receiveMsg(VStopWaitReconnectionMsg msg) {
        // Message not used here
+        System.out.println(msg.toString());
     }
 
 
     @Override
     public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
         //Message not used here
+        System.out.println(msg.toString());
     }
 
 
