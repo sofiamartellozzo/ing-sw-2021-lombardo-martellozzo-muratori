@@ -443,7 +443,7 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VChooseActionTurnRequestMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
-            if(!stage.getScene().equals(personalBoardScene)){
+            if(stage.getScene().equals(initializeScene)){
                 Platform.runLater(()->changeScene(personalBoardScene));
             }
             personalBoardSceneController.chooseAction(msg);

@@ -21,9 +21,9 @@ import java.util.ArrayList;
  * The "cardSpaces" attribute refers to the 3 card spaces of the board.
  */
 public class PersonalBoard implements PersonalBoardInterface,Serializable {
-    private final FaithTrack faithTrack;
-    private final ResourceManager resourceManager;
-    private final ArrayList<CardSpace> cardSpaces;
+    protected final FaithTrack faithTrack;
+    protected final ResourceManager resourceManager;
+    protected final ArrayList<CardSpace> cardSpaces;
     /**
      * Constructor
      * @param faithTrack -> The reference to the FaithTrack

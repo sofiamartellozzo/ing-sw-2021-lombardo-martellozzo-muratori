@@ -18,7 +18,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="992.0" style="-fx-background-image: url('images/board background.jpg');" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.PersonalBoardSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="992.0" style="-fx-background-image: url('images/board_background.jpg');" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.PersonalBoardSceneController">
    <children>
       <ImageView fitHeight="518.0" fitWidth="746.0" layoutX="130.21" layoutY="96.0" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="130.21" AnchorPane.rightAnchor="137.0094213867187" AnchorPane.topAnchor="96.0">
          <image>
@@ -549,7 +549,7 @@
                   <Image url="@../images/backCards/LeaderCard (13).png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" layoutX="3.0" layoutY="97.0" prefHeight="35.0" prefWidth="128.0" text="YOUR LEADER CARDS:" textFill="#1806b9">
+            <Label alignment="CENTER" layoutX="3.0" layoutY="97.0" prefHeight="35.0" prefWidth="128.0" text="YOUR LEADER CARDS:">
                <font>
                   <Font name="Yu Gothic Bold" size="11.0" />
                </font>
@@ -558,7 +558,7 @@
       </Pane>
       <VBox layoutX="1.0" layoutY="332.0" style="-fx-background-color: rgba(200,200,200,0.1);">
          <children>
-            <Label fx:id="specialDepotLabel" alignment="CENTER" prefHeight="17.0" prefWidth="120.0" text="SPECIAL DEPOT:" textFill="#1b0de4">
+            <Label fx:id="specialDepotLabel" alignment="CENTER" prefHeight="17.0" prefWidth="120.0" text="SPECIAL DEPOT:">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
@@ -670,11 +670,29 @@
          <children>
             <HBox alignment="CENTER">
                <children>
-                  <Label text="Your Victory Points: " />
-                  <Label fx:id="victoryPoints" text="0" />
+                  <Label text="Your Victory Points: " textFill="#f7d100">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="victoryPoints" text="0" textFill="#f7d100">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font></Label>
                </children>
             </HBox>
-            <Label fx:id="actionLabel" text="Action Sentence" />
+            <Label fx:id="actionLabel" text="Action Sentence" textFill="#004be1">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect></Label>
          </children>
       </VBox>
       <TitledPane fx:id="chooseOtherPlayerPane" animated="false" layoutX="431.0" layoutY="220.0" text="Choose Player To Visit">
@@ -767,7 +785,7 @@
       </TitledPane>
       <Pane layoutX="529.0" layoutY="613.0" prefHeight="90.0" prefWidth="459.0">
          <children>
-            <Label alignment="CENTER" prefHeight="35.0" prefWidth="251.0" text="YOUR ADDITIONAL PRODUCTION POWER:" textFill="#1806b9">
+            <Label alignment="CENTER" prefHeight="35.0" prefWidth="251.0" text="YOUR ADDITIONAL PRODUCTION POWER:">
                <font>
                   <Font name="Yu Gothic Bold" size="11.0" />
                </font>
