@@ -196,6 +196,10 @@ public class TurnController extends Observable implements ControllerObserver {
         printTurnCMesssage("A Turn can start...");
         if (isSoloMode) {
             startSoloPlayerTurn(this.singlePlayer);
+            if (singlePlayer.isDisconnected()){
+                detachObserver(ObserverType.VIEW, virtualView.get(singlePlayer.getUsername()));
+                virtualView.remove(singlePlayer.getUsername());
+            }
         } else {
             boolean go = true;
             while (go) {
@@ -213,6 +217,13 @@ public class TurnController extends Observable implements ControllerObserver {
                 }
             }
             startPlayerTurn(this.currentPlayer);
+            for (PlayerInterface player: turnSequence.values()) {
+                if (player.isDisconnected()){
+                    detachObserver(ObserverType.VIEW, virtualView.get(player.getUsername()));
+                    virtualView.remove(player.getUsername());
+                }
+
+            }
         }
     }
 
@@ -594,11 +605,13 @@ public class TurnController extends Observable implements ControllerObserver {
                     VStartWaitReconnectionMsg wait = new VStartWaitReconnectionMsg("a client disconnected so wait until a reconnection", singlePlayer.getUsername());
                     notifyAllObserver(ObserverType.VIEW, wait);
                     detachObserver(ObserverType.VIEW, virtualView.get(singlePlayer.getUsername()));
+                    virtualView.remove(singlePlayer.getUsername());
                 } else if (!isSoloMode && allDisconnected()) {
                     System.out.println("ALL PLAYERS DISCONNECTED");
                     VStartWaitReconnectionMsg wait = new VStartWaitReconnectionMsg("all client disconnected so wait until one (or more) reconnection", playerDisconnected.getUsername());
                     notifyAllObserver(ObserverType.VIEW, wait);
                     detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
+                    virtualView.remove(playerDisconnected.getUsername());
                 } else {
                     System.out.println("Only one disconnected, game still ON");
                     detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
@@ -612,6 +625,7 @@ public class TurnController extends Observable implements ControllerObserver {
                     notifyAllObserver(ObserverType.VIEW, wait);
                 }
                 detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
+                virtualView.remove(playerDisconnected.getUsername());
             }
 
 

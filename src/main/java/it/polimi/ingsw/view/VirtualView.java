@@ -494,7 +494,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
                 //choose random his resource
                 Random r = new Random();
                 Color[] resourceColor = new Color[]{Color.PURPLE, Color.YELLOW, Color.BLUE, Color.GREY};
-                Color c = resourceColor[r.nextInt(Color.values().length)];
+                Color c = resourceColor[r.nextInt(resourceColor.length)];
                 CChooseResourceAndDepotMsg fakeResponse = new CChooseResourceAndDepotMsg("", c, r.nextInt(3) +1, username);
                 notifyAllObserver(ObserverType.CONTROLLER, fakeResponse);
             }

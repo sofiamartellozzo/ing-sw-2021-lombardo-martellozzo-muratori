@@ -340,6 +340,14 @@ public class Room extends Observable {
         listOfVirtualView = null;
     }
 
+    public boolean checkGameModeReconnection(String gameMode){
+        if ((isSoloMode && gameMode.equals("0"))||(!isSoloMode && gameMode.equals("1"))){
+            return true;
+        }
+        else
+            return false;
+    }
+
 
     public void reconnectPlayer(String username, VirtualView VV) {
         VStopWaitReconnectionMsg stop = new VStopWaitReconnectionMsg("The client reconnected so stop the timer");

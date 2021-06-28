@@ -320,14 +320,18 @@ public class GUI extends Application implements ViewObserver {
             marketStructureSceneController.start();
             devCardTableSceneController.start();
             Platform.runLater(() -> changeScene(initializeScene));
-        }else{
+        }
             personalBoardSceneController.updateCardSpacesView(cardSpaces);
             personalBoardSceneController.updateLeaderCards(leaderCards);
             personalBoardSceneController.updateWarehouseView(warehouse);
             personalBoardSceneController.updateStrongBoxView(strongBox);
             personalBoardSceneController.updateVictoryPointsView(player.getVictoryPoints());
             personalBoardSceneController.updateAdditionalPPView(player.getSpecialCard());
-        }
+            personalBoardSceneController.updateFaithTrackView(faithTrack);
+            if (soloMode){
+                personalBoardSceneController.updateBlackFaithMarkerView(player.getGameSpace());
+            }
+
     }
 
     /**

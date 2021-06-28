@@ -352,7 +352,8 @@ public class InitializedController extends Observable implements ControllerObser
             }
             //System.out.println("the 2 cards chosen " + chosenCards);
             //take the player that choose the cards
-            if (this.getNumberOfPlayer() == 1) {
+            if (numberOfPlayer == 1) {
+                System.out.println("EIEIEIEIIEIEIEI");
                 singlePlayer.setLeaderCards(chosenCards);
                 VUpdateLeaderCards request = new VUpdateLeaderCards("Update leader cards",singlePlayer.getUsername(), singlePlayer.getLeaderCards());
                 notifyAllObserver(ObserverType.VIEW,request);
@@ -499,6 +500,10 @@ public class InitializedController extends Observable implements ControllerObser
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
         //NOT IMPLEMENTED HERE, but in Turn Controller
+        if (numberOfPlayer == 1){
+            //choose random leader card
+            chooseLeaderCard(true);
+        }
     }
 
     @Override

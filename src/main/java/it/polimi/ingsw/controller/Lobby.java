@@ -346,7 +346,7 @@ public class Lobby extends Observable implements ControllerObserver {
             try {
                 Room room = findUserRoom(msg.getUsername());
                 printLobbyMsg(room.getPlayerByUsername(msg.getUsername()).getUsername());
-                if (room.getPlayerByUsername(msg.getUsername())!=null && room.getPlayerByUsername(msg.getUsername()).isDisconnected()) {
+                if (room.getPlayerByUsername(msg.getUsername())!=null && room.getPlayerByUsername(msg.getUsername()).isDisconnected() && room.checkGameModeReconnection(msg.getGameSize())) {
                     System.out.println("IN LOBBY found player disconnected!!");
                     room.reconnectPlayer(msg.getUsername(), msg.getVV());
                     msg.getVV().setReconnected(true);
