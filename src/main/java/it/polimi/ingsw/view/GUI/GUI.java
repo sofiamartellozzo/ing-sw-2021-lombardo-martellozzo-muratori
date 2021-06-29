@@ -173,6 +173,7 @@ public class GUI extends Application implements ViewObserver {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/LobbyScene.fxml"));
         lobbyScene = new Scene(loader.load());
         lobbySceneController=loader.getController();
+        lobbySceneController.setGui(this);
     }
 
     /**
@@ -655,6 +656,7 @@ public class GUI extends Application implements ViewObserver {
                 e.printStackTrace();
             }
             endGameSceneController.start();
+            endGameSceneController.setVictoryPoints(msg.getWinnerUsername(),msg.getVictoryPoints(),msg.getLosersUsernames(),soloMode);
             if(soloMode){
                 endGameSceneController.showOutcome(msg.isSoloWin());
             }else {
@@ -670,6 +672,7 @@ public class GUI extends Application implements ViewObserver {
                         e.printStackTrace();
                     }
                     endGameSceneController.start();
+                    endGameSceneController.setVictoryPoints(msg.getWinnerUsername(),msg.getVictoryPoints(),msg.getLosersUsernames(),soloMode);
                     endGameSceneController.showOutcome(false);
                     Platform.runLater(()-> changeScene(endGameScene));
                 }
@@ -755,6 +758,8 @@ public class GUI extends Application implements ViewObserver {
             marketStructureSceneController.setWarningPane(msg);
         }else if(stage.getScene().equals(devCardTableScene)){
             devCardTableSceneController.setWarningPane(msg);
+        }else if(stage.getScene().equals(lobbyScene)){
+            lobbySceneController.serverUnable(msg);
         }
     }
 

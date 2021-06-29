@@ -23,7 +23,7 @@ public interface PlayerTurnInterface {
 
     public void activeLeaderCard(int which) throws InvalidActionException;
 
-    public void discardLeaderCard(int which) throws InvalidActionException;
+    public int discardLeaderCard(int which) throws InvalidActionException;
 
     public boolean checkEndGame() throws InvalidActionException;
 

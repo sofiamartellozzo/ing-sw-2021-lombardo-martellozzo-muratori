@@ -52,8 +52,8 @@ public interface PlayerInterface{
     public void endTurn();
     public void moveResource(int depot1, int depot2) throws InvalidActionException;
 
-    public void removeLeaderCard(LeaderCard card) throws InvalidActionException;
-    public void increasePosition();
+    public int removeLeaderCard(LeaderCard card) throws InvalidActionException;
+    public int increasePosition();
 
     public boolean checkEndGame();
     public HashMap<Integer, Boolean> getActivableLeaderCard();

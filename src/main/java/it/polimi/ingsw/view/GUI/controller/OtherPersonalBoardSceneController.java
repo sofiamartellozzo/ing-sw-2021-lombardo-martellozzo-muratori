@@ -250,7 +250,7 @@ public class OtherPersonalBoardSceneController {
      * @param victoryPoints the victory points model
      */
     public void updateVictoryPointsView(int victoryPoints){
-        setLabelText(this.victoryPoints,""+victoryPoints);
+        setLabelText(this.victoryPoints,"Victory Points: "+victoryPoints);
     }
 
 

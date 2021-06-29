@@ -15,7 +15,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.OtherPersonalBoardSceneController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="992.0" style="-fx-background-image: url('images/board_background.jpg');" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.OtherPersonalBoardSceneController">
    <children>
       <ImageView fitHeight="518.0" fitWidth="746.0" layoutX="130.21" layoutY="96.0" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="130.21" AnchorPane.rightAnchor="137.0094213867187" AnchorPane.topAnchor="96.0">
          <image>
@@ -484,5 +484,17 @@
          </children>
       </VBox>
       <Button fx:id="backButton" layoutX="37.0" layoutY="40.0" mnemonicParsing="false" onAction="#clickBackButton" text="BACK" />
+      <Label fx:id="victoryPoints" layoutX="381.0" layoutY="30.0" text="Victory Points: 0" textFill="#ffd900">
+         <font>
+            <Font name="System Bold Italic" size="30.0" />
+         </font>
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.5368421077728271" green="0.5368421077728271" blue="0.5368421077728271" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Label>
    </children>
 </AnchorPane>

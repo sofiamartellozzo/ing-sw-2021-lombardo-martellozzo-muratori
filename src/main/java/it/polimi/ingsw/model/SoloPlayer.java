@@ -42,9 +42,8 @@ public class SoloPlayer extends Player implements Serializable {
      * increases the position of the player's faith marker
      */
     @Override
-    public void increasePosition() {
-        gameSpace.getFaithTrack().increasePosition();
-        System.out.println(gameSpace.getFaithTrack().getPositionFaithMarker());
+    public int increasePosition() {
+        return gameSpace.getFaithTrack().increasePosition();
     }
 
     public void setGameSpace(SoloPersonalBoard gameSpace) {

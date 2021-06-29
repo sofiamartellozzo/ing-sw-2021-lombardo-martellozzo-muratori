@@ -248,7 +248,7 @@ public class PersonalBoardSceneController {
             stopPPPowerButton.setVisible(false);
             okButton.setDisable(false);
             errorMessagePane.setVisible(true);
-            setLabelText(errorMessage,"No available Production Power");
+            setLabelText(errorMessage,"No available\n Production Power");
         }
     }
 
@@ -709,7 +709,7 @@ public class PersonalBoardSceneController {
      * message of the production power with the card space chosen and disable all Production Power panes and images
      */
     public void clickCardSpace3(){
-        if(!cardSpace1.isDisable()){
+        if(!cardSpace3.isDisable()){
             response=new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,3);
             disablePP();
             gui.sendMsg(response);
@@ -1316,6 +1316,7 @@ public class PersonalBoardSceneController {
      * The player can see the MarketStructureScene without interact with it.
      */
     public void clickSeeMarketBoardButton(){
+        gui.getMarketStructureSceneController().update(gui.getMarketStructureData());
         gui.seeMarketBoard();
     }
     /**
@@ -1323,6 +1324,7 @@ public class PersonalBoardSceneController {
      */
     public void clickSeeDevCardTableButton(){
         gui.getDevCardTableSceneController().setAllCardNormal();
+        gui.getDevCardTableSceneController().setJustSee(true);
         gui.seeDevCardTable();
     }
 

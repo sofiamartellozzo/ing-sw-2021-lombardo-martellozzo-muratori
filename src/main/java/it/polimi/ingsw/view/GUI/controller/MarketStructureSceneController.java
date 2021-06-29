@@ -405,6 +405,35 @@ public class MarketStructureSceneController {
     }
 
     /**
+     * To resume the management of the resource received.
+     * @param resource the last resource the player had to manage.
+     */
+    public void resumeChooseDepot(TypeResource resource){
+        gui.seeMarketBoard();
+        backButton.setDisable(true);
+        copyWarehouseFromPersonalBoard();
+        enableDepotPane();
+        setLabelText(message,"Choose a depot\n" +
+                "where to store this resource:");
+        enableDepotPane();
+        resourceToStore=resource;
+        if(whiteSpecial!=null && whiteSpecial.size()==1 && resourceToStore.equals(TypeResource.BLANK)){
+            resourceToStore=whiteSpecial.get(0);
+            setResourceAndLabel(resourceToStore);
+            moveResourceButton.setDisable(false);
+            discardButton.setDisable(false);
+            chooseDepotPane.setVisible(true);
+        }else if(whiteSpecial!=null && whiteSpecial.size()>1 && resourceToStore.equals(TypeResource.BLANK)){
+            chooseResource();
+        }else if(!resourceToStore.equals(TypeResource.BLANK)){
+            setResourceAndLabel(resourceToStore);
+            moveResourceButton.setDisable(false);
+            discardButton.setDisable(false);
+            chooseDepotPane.setVisible(true);
+        }
+    }
+
+    /**
      * When the player choose a depot where he can't put the resource,
      * the pop-up of the depots is shown to put again correctly the resource.
      * The cycle to manage the resource received is momentarily interrupted
@@ -428,33 +457,6 @@ public class MarketStructureSceneController {
         chooseDepotPane.setVisible(true);
     }
 
-    /**
-     * To resume the management of the resource received.
-     * @param resource the last resource the player had to manage.
-     */
-    public void resumeChooseDepot(TypeResource resource){
-        gui.seeMarketBoard();
-        backButton.setDisable(true);
-        copyWarehouseFromPersonalBoard();
-        enableDepotPane();
-        setLabelText(message,"Choose a depot\n" +
-                "where to store this resource:");
-        enableDepotPane();
-        if(whiteSpecial!=null && whiteSpecial.size()==1 && resource.equals(TypeResource.BLANK)){
-            resource=whiteSpecial.get(0);
-            setResourceAndLabel(resource);
-            moveResourceButton.setDisable(false);
-            discardButton.setDisable(false);
-            chooseDepotPane.setVisible(true);
-        }else if(whiteSpecial!=null && whiteSpecial.size()>1 && resource.equals(TypeResource.BLANK)){
-            chooseResource();
-        }else if(!resource.equals(TypeResource.BLANK)){
-            setResourceAndLabel(resource);
-            moveResourceButton.setDisable(false);
-            discardButton.setDisable(false);
-            chooseDepotPane.setVisible(true);
-        }
-    }
 
     /**
      * When the mouse enters in the "Depot 1" pane
@@ -962,4 +964,5 @@ public class MarketStructureSceneController {
     public void clickOkButton(){
         gui.close();
     }
+
 }

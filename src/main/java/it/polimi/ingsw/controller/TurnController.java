@@ -528,7 +528,10 @@ public class TurnController extends Observable implements ControllerObserver {
             for (Integer key : turnSequence.keySet()) {
                 if (!turnSequence.get(key).getUsername().equals(msg.getUsername())) {
                     //not the player that discarded the resource
-                    turnSequence.get(key).increasePosition();
+                    int section = turnSequence.get(key).increasePosition();
+                    for(int i:this.boardManager.getPlayers().keySet()){
+                        this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                    }
                     //actionController.decrementNumberResourcesFromM();
                     VNotifyPositionIncreasedByMsg notify = new VNotifyPositionIncreasedByMsg("\" " + turnSequence.get(key).getUsername() + "\" increased his position because \"" + msg.getUsername() + "\"  discard a resource from the market", turnSequence.get(key).getUsername(), turnSequence.get(key).calculateVictoryPoints(), 1);
                     //remember to set all the other players!!!!

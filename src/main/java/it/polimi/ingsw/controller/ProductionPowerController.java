@@ -29,6 +29,8 @@ public class ProductionPowerController extends Observable implements ControllerO
         return player;
     }
 
+    private BoardManager boardManager;
+
     private final PlayerInterface player;
     private boolean notInterrupt;
     private final ArrayList<Resource> receivedResources;
@@ -100,7 +102,10 @@ public class ProductionPowerController extends Observable implements ControllerO
         ArrayList<Resource> resourcesToStrongBox = new ArrayList<>();
         for (Resource resource : receivedResources) {
             if (resource.getType().equals(TypeResource.FAITHMARKER)) {
-                player.getGameSpace().getFaithTrack().increasePosition();
+                int section=player.increasePosition();
+                for(int i:this.boardManager.getPlayers().keySet()){
+                    this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                }
                 VNotifyPositionIncreasedByMsg requestMsg1 = new VNotifyPositionIncreasedByMsg("The player's faithmarker is increased by one", player.getUsername(), player.calculateVictoryPoints(), 1);
                 VUpdateFaithTrackMsg requestMsg2 = new VUpdateFaithTrackMsg("updated faith Track", player.getUsername(), player.getGameSpace().getFaithTrack());
                 //put the player in the msg
@@ -273,6 +278,10 @@ public class ProductionPowerController extends Observable implements ControllerO
             //System.out.println("enter in STOP2");
             receiveResources();
         }
+    }
+
+    public void setBoardManager(BoardManager boardManager) {
+        this.boardManager = boardManager;
     }
 
     @Override

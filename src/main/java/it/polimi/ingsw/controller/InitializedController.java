@@ -267,7 +267,10 @@ public class InitializedController extends Observable implements ControllerObser
                 VChooseResourceAndDepotMsg msg2 = new VChooseResourceAndDepotMsg("You are the third player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(3).getUsername(),1);
                 notifyAllObserver(ObserverType.VIEW, msg2);
 
-                this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
+                int section=this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
+                for(int i:this.boardManager.getPlayers().keySet()){
+                    this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                }
                 /* notify all palyers that this one increase his position */
                 VNotifyPositionIncreasedByMsg notify1 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(3).getUsername(), turnSequence.get(3).calculateVictoryPoints(), 1);
                 notify1.setAllPlayerToNotify(getPlayersAsList());
@@ -280,7 +283,10 @@ public class InitializedController extends Observable implements ControllerObser
                     //VChooseResourceAndDepotMsg msg4 = new VChooseResourceAndDepotMsg("You are the fourth player, please select another resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(4).getUsername());
                     //notifyAllObserver(ObserverType.VIEW, msg4);
 
-                    this.turnSequence.get(4).getGameSpace().getFaithTrack().increasePosition();
+                    section=this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
+                    for(int i:this.boardManager.getPlayers().keySet()){
+                        this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                    }
                     /* notify all palyers that this one increase his position */
                     VNotifyPositionIncreasedByMsg notify2 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(4).getUsername(), turnSequence.get(4).calculateVictoryPoints(), 1);
                     notify2.setAllPlayerToNotify(getPlayersAsList());

@@ -646,4 +646,12 @@ public class DevCardTableSceneController {
     public void clickOkButton(){
         gui.close();
     }
+
+    /**
+     * Setter method
+     * @param justSee true the player wants just to see the table, false the player want to buy
+     */
+    public void setJustSee(boolean justSee) {
+        this.justSee=justSee;
+    }
 }

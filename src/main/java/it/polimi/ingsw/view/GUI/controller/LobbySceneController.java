@@ -1,10 +1,13 @@
 package it.polimi.ingsw.view.GUI.controller;
 
 import it.polimi.ingsw.controller.Room;
+import it.polimi.ingsw.message.connection.VServerUnableMsg;
 import it.polimi.ingsw.message.viewMsg.VRoomInfoMsg;
 import it.polimi.ingsw.view.GUI.GUI;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TitledPane;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,10 @@ public class LobbySceneController {
     private Label idRoom;
     @FXML
     private Label numberOfPlayers;
+    @FXML
+    private TitledPane errorPane;
+    @FXML
+    private Button okButton;
 
     public void setGui(GUI gui) {
         this.gui = gui;
@@ -32,6 +39,7 @@ public class LobbySceneController {
      * @param msg VRoomInfoMsg
      */
     public void updateLobby(VRoomInfoMsg msg){
+        errorPane.setVisible(false);
         ArrayList<Label> players = getPlayers();
         ArrayList<String> idPlayers = msg.getPlayersId();
         idRoom.setText(msg.getRoomId());
@@ -59,4 +67,14 @@ public class LobbySceneController {
         return players;
     }
 
+    public void clickOkButton(){
+        if(!okButton.isDisable()){
+            gui.close();
+        }
+    }
+
+    public void serverUnable(VServerUnableMsg msg){
+        errorPane.setVisible(true);
+        okButton.setDisable(false);
+    }
 }

@@ -38,11 +38,12 @@ public class SoloPlayerTurn extends PlayerTurn {
     }
 
     @Override
-    public void discardLeaderCard(int which) throws InvalidActionException {
+    public int discardLeaderCard(int which) throws InvalidActionException {
         LeaderCard card = this.currentPlayer.selectLeaderCard(which);
         if (card!=null){
-            currentPlayer.removeLeaderCard(card);
+            return currentPlayer.removeLeaderCard(card);
         }
+        return 0;
 
     }
 

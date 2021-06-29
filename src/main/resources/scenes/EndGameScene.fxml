@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.GUI.controller.EndGameSceneController">
@@ -20,7 +21,7 @@
             </ImageView>
             <Pane layoutX="63.0" layoutY="14.0" prefHeight="496.0" prefWidth="608.0">
                <children>
-                  <ImageView fx:id="winnerImage" fitHeight="87.0" fitWidth="499.0" layoutX="96.0" layoutY="205.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="winnerImage" fitHeight="87.0" fitWidth="499.0" layoutX="96.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/winnerLogo.png" />
                      </image>
@@ -28,7 +29,7 @@
                         <DropShadow />
                      </effect>
                   </ImageView>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="179.0" layoutY="145.0" text=".... CONGRATULATIONS, YOU'RE THE" textFill="#fce16a">
+                  <Label fx:id="message" alignment="CENTER" contentDisplay="CENTER" layoutX="179.0" layoutY="99.0" text=".... CONGRATULATIONS, YOU'RE THE" textFill="#fce16a">
                      <font>
                         <Font name="System Bold Italic" size="14.0" />
                      </font>
@@ -36,12 +37,12 @@
                         <DropShadow />
                      </effect>
                   </Label>
-                  <ImageView fitHeight="87.0" fitWidth="365.0" layoutX="117.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="87.0" fitWidth="365.0" layoutX="117.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/gameoverLogo.png" />
                      </image>
                   </ImageView>
-                  <Pane fx:id="askNewGamePane" layoutX="114.0" layoutY="320.0" prefHeight="163.0" prefWidth="400.0" style="-fx-background-color: rgba(0,0,1,0.5);">
+                  <Pane fx:id="askNewGamePane" layoutX="114.0" layoutY="339.0" prefHeight="144.0" prefWidth="400.0" style="-fx-background-color: rgba(0,0,1,0.5);">
                      <children>
                         <Label layoutX="45.0" layoutY="20.0" text="Do you want to play again?" textFill="#fce16a">
                            <font>
@@ -63,7 +64,7 @@
                         </Button>
                      </children>
                   </Pane>
-                  <ImageView fx:id="loserImage" fitHeight="150.0" fitWidth="200.0" layoutX="214.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="loserImage" fitHeight="150.0" fitWidth="200.0" layoutX="214.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/loserLogo.png" />
                      </image>
@@ -71,6 +72,38 @@
                         <DropShadow />
                      </effect>
                   </ImageView>
+                  <VBox fx:id="victoryPointsVBox" alignment="CENTER" layoutX="201.0" layoutY="233.0" prefHeight="99.0" prefWidth="206.0" style="-fx-background-color: rgba(0,0,1,0.5);">
+                     <children>
+                        <Label text="Victory Points" textFill="YELLOW">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font>
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Label>
+                        <Label fx:id="player1VictoryPoints" text="player 1 victory points: 100" textFill="YELLOW">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Label>
+                        <Label fx:id="player2VictoryPoints" text="player 2 victory points: 100" textFill="YELLOW">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Label>
+                        <Label fx:id="player3VictoryPoints" text="player 3 victory points 100" textFill="YELLOW">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Label>
+                        <Label fx:id="player4VictoryPoints" text="player 4 victory points: 100" textFill="YELLOW">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </Label>
+                     </children>
+                  </VBox>
                </children>
             </Pane>
          </children>

@@ -166,6 +166,7 @@ public class ActionController extends Observable implements ControllerObserver {
                 }
                 attachObserver(ObserverType.CONTROLLER, productionPowerController);
                 productionPowerController.start();
+                productionPowerController.setBoardManager(boardManager);
                 break;
             case REMOVE_LEADER_CARD:
                 //ask the player which card he want to remove, before see if there are any that
@@ -439,7 +440,10 @@ public class ActionController extends Observable implements ControllerObserver {
                     if (resource.equals(TypeResource.FAITHMARKER)) {
                         /* the FAITHMARKER is not a real resources, it increased the position of the player in FT*/
                         if (!isSolo) {
-                            player.increasePosition();
+                            int section = player.increasePosition();
+                            for(int i:this.boardManager.getPlayers().keySet()){
+                                this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                            }
                             System.out.println(player.getGameSpace().getFaithTrack().getPositionFaithMarker());
                         } else {
                             soloPlayerTurn.getCurrentPlayer().increasePosition();
@@ -606,7 +610,10 @@ public class ActionController extends Observable implements ControllerObserver {
                     //then this player proceed in the faith track of one
                     try {
                         if (!isSolo) {
-                            turn.discardLeaderCard(msg.getLeaderCards().get(0));
+                            int section = turn.discardLeaderCard(msg.getLeaderCards().get(0));
+                            for(int i:this.boardManager.getPlayers().keySet()){
+                                this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                            }
                         } else {
                             soloPlayerTurn.discardLeaderCard(msg.getLeaderCards().get(0));
                         }

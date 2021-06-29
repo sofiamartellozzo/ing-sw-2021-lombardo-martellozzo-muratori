@@ -590,10 +590,10 @@ public class Player implements PlayerInterface, Serializable {
      * @param card
      */
     @Override
-    public void removeLeaderCard(LeaderCard card) throws InvalidActionException{
+    public int removeLeaderCard(LeaderCard card) throws InvalidActionException{
         if (card.getState() instanceof Inactive){
             this.leaderCards.remove(card);
-            this.getGameSpace().getFaithTrack().increasePosition();
+            return this.getGameSpace().getFaithTrack().increasePosition();
         }
         else
             throw new InvalidActionException("You can't remove a Leader Card altready active!");
@@ -603,9 +603,8 @@ public class Player implements PlayerInterface, Serializable {
      * increases the position of this player
      */
     @Override
-    public void increasePosition() {
-        this.gameSpace.getFaithTrack().increasePosition();
-        System.out.println(gameSpace.getFaithTrack().getPositionFaithMarker());
+    public int increasePosition() {
+        return this.gameSpace.getFaithTrack().increasePosition();
     }
 
 
