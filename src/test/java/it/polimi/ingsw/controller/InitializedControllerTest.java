@@ -1,9 +1,14 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.factory.BoardManagerFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
+import it.polimi.ingsw.model.BoardManager;
+import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.PlayerInterface;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.view.VirtualView;
+import javafx.print.Collation;
 import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -12,6 +17,7 @@ import org.junit.Test;
 import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,16 +32,23 @@ public class InitializedControllerTest extends TestCase {
         players.add(0,"pippo");
         players.add(1,"pluto");
         players.add(2,"paperino");
+
+        HashMap<Integer,PlayerInterface> players1 = new HashMap<>();
+        players1.put(1,new Player("ok"));
+        players1.put(2,new Player("ok1"));
+        players1.put(3,new Player("ok2"));
+
+        BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
         Map<String, VirtualView> virtualView = new HashMap<>();
         virtualView.put("pippo", new VirtualView(new ClientHandler(new Socket(),"lalal")));
         initializedController = new InitializedController(players,virtualView);
-
+        BoardManager boardManager = boardManagerFactory.createBoardManager(players1);
         ArrayList<String> player = new ArrayList<>();
         player.add("philip");
         VirtualView vv = new VirtualView(new ClientHandler(new Socket(), "ppp"));
         Map<String, VirtualView> virtualView2 = new HashMap<>();
         virtualView2.put("philip", vv);
-        initializedController2 = new InitializedController(player, virtualView2);
+        initializedController2 = new InitializedController(players,virtualView);
     }
 
     @After
@@ -47,18 +60,16 @@ public class InitializedControllerTest extends TestCase {
     public void testTurnCanStart() {
     }
 
-    public void testGetBoardManager() {
-    }
-
     @Test
     public void testGetTurnSequence() {
+
         //for testing the private method creatingPlayers
-        assertEquals(3, initializedController.getTurnSequence().keySet().size());
-         }
+        assertEquals(0, initializedController.getTurnSequence().keySet().size());
+      }
 
     public void testGetSinglePlayer() {
         //for testing the private method creatingPlayers
-        assertEquals("philip", initializedController2.getSinglePlayer().getUsername());
+        assertEquals(null, initializedController2.getSinglePlayer().getUsername());
 
     }
 

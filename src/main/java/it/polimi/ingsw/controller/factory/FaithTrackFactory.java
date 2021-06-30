@@ -34,21 +34,49 @@ public class FaithTrackFactory {
         Type list = new TypeToken<ArrayList<SimpleBox>>() {
         }.getType();
         ArrayList<SimpleBox> simpleBoxes = gson.fromJson(new InputStreamReader(getClass().getResourceAsStream("/simpleBox.json")), list);
-        boxes.addAll(simpleBoxes);
+       //boxes.addAll(simpleBoxes);
 
         //7 gold box
         //BufferedReader reader1 = new BufferedReader(new FileReader("src/main/resources/goldBox.json"));
         Type list1 = new TypeToken<ArrayList<GoldBox>>() {
         }.getType();
         ArrayList<GoldBox> goldBoxes = gson.fromJson(new InputStreamReader(getClass().getResourceAsStream("/goldBox.json")), list1);
-        boxes.addAll(goldBoxes);
+        //boxes.addAll(goldBoxes);
 
         //3 pope box
         //BufferedReader reader2 = new BufferedReader(new FileReader("src/main/resources/popeBox.json"));
         Type list2 = new TypeToken<ArrayList<PopeBox>>() {
         }.getType();
         ArrayList<PopeBox> popeBoxes = gson.fromJson(new InputStreamReader(getClass().getResourceAsStream("/popeBox.json")), list2);
-        boxes.addAll(popeBoxes);
+        //boxes.addAll(popeBoxes);
+
+        /* creating the faith track of the game composed by 25 boxes*/
+        boxes.add(simpleBoxes.get(0));
+        boxes.add(simpleBoxes.get(1));
+        boxes.add(simpleBoxes.get(2));
+        boxes.add(goldBoxes.get(0));
+        boxes.add(simpleBoxes.get(3));
+        boxes.add(simpleBoxes.get(4));
+        boxes.add(goldBoxes.get(1));
+        boxes.add(simpleBoxes.get(5));
+        boxes.add(popeBoxes.get(0));
+        boxes.add(goldBoxes.get(2));
+        boxes.add(simpleBoxes.get(6));
+        boxes.add(simpleBoxes.get(7));
+        boxes.add(goldBoxes.get(3));
+        boxes.add(simpleBoxes.get(8));
+        boxes.add(simpleBoxes.get(9));
+        boxes.add(goldBoxes.get(4));
+        boxes.add(popeBoxes.get(1));
+        boxes.add(simpleBoxes.get(10));
+        boxes.add(goldBoxes.get(5));
+        boxes.add(simpleBoxes.get(11));
+        boxes.add(simpleBoxes.get(12));
+        boxes.add(goldBoxes.get(6));
+        boxes.add(simpleBoxes.get(13));
+        boxes.add(simpleBoxes.get(14));
+        boxes.add(popeBoxes.get(2));
+
 
         //create and add the 3 Popes Favor Tile
         ArrayList<PopesFavorTile> array3 = new ArrayList<>();

@@ -184,8 +184,8 @@ public class ProductionPowerController extends Observable implements ControllerO
                 }
                 if (putResource) {
                     receivedResources.add(new Resource(msg.getResourceToGet().getThisColor()));
-                    VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(), player.getGameSpace().getStrongbox());
-                    notifyAllObserver(ObserverType.VIEW, msg1);
+                    //VUpdateStrongboxMsg msg1 = new VUpdateStrongboxMsg("here is your strongbox updated", player.getUsername(), player.getGameSpace().getStrongbox());
+                    //notifyAllObserver(ObserverType.VIEW, msg1);
                 }
 
             } else if (msg.getWhich() >= 1 && msg.getWhich() <= 3) {

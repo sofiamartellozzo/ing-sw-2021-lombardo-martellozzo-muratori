@@ -21,7 +21,7 @@ This game is developed for the final examination of Software engineering course 
 You can play in Solo Mode, and try to fight against Lorenzo Il Magnifico, or in Multiplayers Mode (2 to 4 players) 
 
 ### Intro
-![Intro](deliverables/images/IntroImage.png?raw=true)
+![Intro](deliverables/images/introImage11.png?raw=true)
 
 ### Login
 ![Login](deliverables/images/LoginImage.png?raw=true)

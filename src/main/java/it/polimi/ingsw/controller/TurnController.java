@@ -256,7 +256,7 @@ public class TurnController extends Observable implements ControllerObserver {
         PlayerTurn pt = new PlayerTurn(player, this.boardManager);
         currentTurnIstance = pt;
         //send the msg to the client, to choose the action he want to make
-        VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), pt.getAvailableAction());
+        VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("Make your move: \uD83D\uDE09", player.getUsername(), pt.getAvailableAction());
         notifyAllObserver(ObserverType.VIEW, msg);
         for (PlayerInterface p : turnSequence.values()) {
             if (!p.getUsername().equals(player.getUsername())) {
@@ -483,10 +483,10 @@ public class TurnController extends Observable implements ControllerObserver {
         detachObserver(ObserverType.CONTROLLER, actionController);
         actionController = null;
         if (!isSoloMode) {
-            VChooseActionTurnRequestMsg requestMsg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", currentPlayer.getUsername(), currentTurnIstance.getAvailableAction());
+            VChooseActionTurnRequestMsg requestMsg = new VChooseActionTurnRequestMsg("Make your move: \uD83D\uDE09", currentPlayer.getUsername(), currentTurnIstance.getAvailableAction());
             notifyAllObserver(ObserverType.VIEW, requestMsg);
         } else {
-            VChooseActionTurnRequestMsg requestMsg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", singlePlayer.getUsername(), currentSoloTurnIstance.getAvailableAction());
+            VChooseActionTurnRequestMsg requestMsg = new VChooseActionTurnRequestMsg("Make your move: \uD83D\uDE09", singlePlayer.getUsername(), currentSoloTurnIstance.getAvailableAction());
             notifyAllObserver(ObserverType.VIEW, requestMsg);
         }
 
@@ -545,7 +545,7 @@ public class TurnController extends Observable implements ControllerObserver {
         } else {
             singlePlayer.getGameSpace().increaseLorenzoIlMagnifico();
             //actionController.decrementNumberResourcesFromM();
-            VLorenzoIncreasedMsg notify = new VLorenzoIncreasedMsg("Lorenzo incresed his position", singlePlayer.getUsername(), singlePlayer, 1);
+            VLorenzoIncreasedMsg notify = new VLorenzoIncreasedMsg("Lorenzo increased his position", singlePlayer.getUsername(), singlePlayer, 1);
             notifyAllObserver(ObserverType.VIEW, notify);
 
         }
@@ -586,7 +586,7 @@ public class TurnController extends Observable implements ControllerObserver {
         System.out.println("IN TURN CONTROLLER: received disconn Msg ");      //DEBUG
         if (playerDisconnected != null) {
             //check if the client disconnected is currently playing
-            System.out.println("NAME disconnectied: " + playerDisconnected.getUsername());
+            System.out.println("NAME disconnected: " + playerDisconnected.getUsername());
             playerDisconnected.setDisconnected(true);
             if (!isSoloMode) {
                 //notify all players about one disconnected
@@ -765,7 +765,7 @@ public class TurnController extends Observable implements ControllerObserver {
         return isSoloMode;
     }
 
-    public SoloPlayerTurn getCurrentSoloTurnIstance() {
+    public SoloPlayerTurn getCurrentSoloTurnInstance() {
         return currentSoloTurnIstance;
     }
 

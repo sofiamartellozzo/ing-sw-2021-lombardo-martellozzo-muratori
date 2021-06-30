@@ -87,6 +87,45 @@ public class BoardManagerFactory {
         return new MarketStructure(marbles, possibleMarbles.remove(0));
     }
 
+    /*protected MarketStructure createStructure() {
+        Marble[][] marbles = new Marble[3][4];
+        ArrayList<Marble> possibleMarbles = new ArrayList<>();
+        ColoredMarble purple = new ColoredMarble(Color.PURPLE);
+        ColoredMarble yellow = new ColoredMarble(Color.YELLOW);
+        ColoredMarble blue = new ColoredMarble(Color.BLUE);
+        ColoredMarble white = new ColoredMarble(Color.WHITE);
+        ColoredMarble grey = new ColoredMarble(Color.GREY);
+        RedMarble red = new RedMarble();
+        //2 PURPLE
+        possibleMarbles.add(0, white);
+        possibleMarbles.add(1, white);
+        //2 YELLOW
+        possibleMarbles.add(2, white);
+        possibleMarbles.add(3, white);
+        //2 BLUE
+        possibleMarbles.add(4, white);
+        possibleMarbles.add(5, white);
+        //4 WHITE
+        possibleMarbles.add(6, white);
+        possibleMarbles.add(7, white);
+        possibleMarbles.add(8, white);
+        possibleMarbles.add(9, white);
+        //2 GREY
+        possibleMarbles.add(10, white);
+        possibleMarbles.add(11, white);
+        //1 RED
+        possibleMarbles.add(12, white);
+        Collections.shuffle(possibleMarbles);
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                marbles[i][j] = possibleMarbles.remove(0);
+            }
+        }
+
+        return new MarketStructure(marbles, possibleMarbles.remove(0));
+    }*/
+
 
     /**
      * method implemented in the DevelopmentCardFactory that creates the card Table composed by decks of Development Cards (3 rows x 4 columns)

@@ -66,7 +66,19 @@ public class ActionControllerTest extends TestCase {
     }
 
     public void tearDown() throws Exception {
+        actionController = null;
     }
+
+
+    public void testEndAction(){
+        assertSame(actionController.endAction(),false);
+    }
+
+    public void testGetPlayer(){
+        PlayerInterface player = actionController.getPlayer();
+        assertEquals(player.getUsername(),"user");
+    }
+
 
     //TO PRIVATE METHOD
     public void testCardActivatableForPlayer() throws InvalidActionException, CardSpaceException {

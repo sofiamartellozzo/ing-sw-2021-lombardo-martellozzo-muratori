@@ -67,6 +67,14 @@ public class EndGameController extends Observable implements ControllerObserver 
     }
 
     /**
+     * getter method
+     * @return --> HashMap<Integer, PlayerInterface>
+     */
+    public HashMap<Integer, PlayerInterface> getTurnSequence() {
+        return turnSequence;
+    }
+
+    /**
      * attach all VV of the players so this class can notify them
      */
     private void attachAllVV() {
@@ -127,11 +135,6 @@ public class EndGameController extends Observable implements ControllerObserver 
             notifyAllObserver(ObserverType.VIEW, closeRoomMsg);
         }
     }
-
-    private void printTurnLastTurnMessage(String messageToPrint) {
-        System.out.println(messageToPrint);
-    }
-
     /**
      * auxiliary method used to calculate all the victory points of a specific player given in input
      *

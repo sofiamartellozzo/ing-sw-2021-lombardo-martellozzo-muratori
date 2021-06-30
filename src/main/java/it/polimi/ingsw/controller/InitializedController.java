@@ -115,16 +115,6 @@ public class InitializedController extends Observable implements ControllerObser
                 }
             }
         }
-        /*
-        if (numberOfPlayer == 1) {
-            SoloPlayer p = new SoloPlayer(players.get(0));
-            singlePlayer = p;
-        } else {
-            for (int i = 0; i < numberOfPlayer; i++) {
-                Player p = new Player(players.get(i));
-                turnSequence.put(i + 1, realPlayers.get());
-            }
-        }*/
     }
 
     public void fillSinglePlayer(SoloPlayer realPlayer){

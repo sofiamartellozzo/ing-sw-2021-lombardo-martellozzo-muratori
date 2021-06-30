@@ -67,7 +67,8 @@ public class CLI extends Observable implements ViewObserver {
 
     private MarketCLI marketCLI;
 
-    private TypeResource specialResource;
+    private TypeResource specialResource;    /* resource of the special depot activated by the leader card */
+    private boolean activeAtLeastOnePP;      /* set to true if the player has activated at least one production power */
 
     private Boolean soloMode;
     private BoardManager boardManager;
@@ -531,63 +532,72 @@ public class CLI extends Observable implements ViewObserver {
         int depot = 0;
         int fromDepot = 0;
         int toDepot = 0;
+        boolean correct = false;
 
-        printCLIMessage("Resource " + resource.toString() + ": \n" + " 0 --> move depots \n" +
-                " 1 --> keep resource \n" +
-                " 2 --> discard resource \n");
+        while(!correct) {
 
-        try {
-            choice = in.nextInt();
-        } catch (InputMismatchException eio) {
-            printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
-            in.nextLine();
-        }
-        if (choice == 0) {
-            // if the player before chooses to move the depots
-            //MarketCLI marketCLI = new MarketCLI(msg.getResourceToStore(), this);
-            showWarehouse(warehouse, specialResource);
-            printCLIMessage("You choose to move two depots, now type the two depot that you want to move, pressing ENTER between them");
+            printCLIMessage("Resource " + resource.toString() + ": \n" + " 0 --> move depots \n" +
+                    " 1 --> keep resource \n" +
+                    " 2 --> discard resource \n");
 
-            in = new Scanner(System.in);
-            in.reset();
             try {
-                fromDepot = in.nextInt();
-                toDepot = in.nextInt();
-
+                choice = in.nextInt();
             } catch (InputMismatchException eio) {
                 printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                 in.nextLine();
             }
 
-            marketCLI.setWaitMove(true);
-            marketCLI.setResourceStored(false);
-            CMoveResourceInfoMsg move = new CMoveResourceInfoMsg("I choose to move two depots", username, fromDepot, toDepot, false);
-            sendMsg(move);
+            if (choice == 0) {
+                // if the player before chooses to move the depots
+                //MarketCLI marketCLI = new MarketCLI(msg.getResourceToStore(), this);
+                correct = true;
+                showWarehouse(warehouse, specialResource);
+                printCLIMessage("You choose to move two depots, now type the two depot that you want to move, pressing ENTER between them");
 
-
-        } else if (choice == 1 || choice == 2) {
-            if (choice == 1) {
-                printCLIMessage("You decided to keep the resource ! ");
-                printCLIMessage("Choose the depot [1,2,3] where to store this resource: ");
+                in = new Scanner(System.in);
+                in.reset();
                 try {
-                    depot = in.nextInt();
+                    fromDepot = in.nextInt();
+                    toDepot = in.nextInt();
+
                 } catch (InputMismatchException eio) {
                     printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
                     in.nextLine();
                 }
 
-                Color rC = resource.getThisColor();
-                CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("the choice of the player for a resources received", rC, depot, username);
-                sendMsg(response);
+                marketCLI.setWaitMove(true);
                 marketCLI.setResourceStored(false);
+                CMoveResourceInfoMsg move = new CMoveResourceInfoMsg("I choose to move two depots", username, fromDepot, toDepot, false);
+                sendMsg(move);
 
+
+            } else if (choice == 1 || choice == 2) {
+                correct = true;
+                if (choice == 1) {
+                    printCLIMessage("You decided to keep the resource ! ");
+                    printCLIMessage("Choose the depot [1,2,3] where to store this resource: ");
+                    try {
+                        depot = in.nextInt();
+                    } catch (InputMismatchException eio) {
+                        printCLIMessage("⚠️ERROR: You can only insert numbers, type again");
+                        in.nextLine();
+                    }
+
+                    Color rC = resource.getThisColor();
+                    CChooseResourceAndDepotMsg response = new CChooseResourceAndDepotMsg("the choice of the player for a resources received", rC, depot, username);
+                    sendMsg(response);
+                    marketCLI.setResourceStored(false);
+
+                } else {
+
+                    CChooseDiscardResourceMsg discard = new CChooseDiscardResourceMsg("the player choose to discard the resources", username);
+                    sendMsg(discard);
+                    marketCLI.setResourceStored(true);
+                    marketCLI.handleResources();
+
+                }
             } else {
-
-                CChooseDiscardResourceMsg discard = new CChooseDiscardResourceMsg("the player choose to discard the resources", username);
-                sendMsg(discard);
-                marketCLI.setResourceStored(true);
-                marketCLI.handleResources();
-
+                System.out.println("Error you can type only 1,2 or 3 :(, type again");
             }
         }
     }
@@ -907,7 +917,7 @@ public class CLI extends Observable implements ViewObserver {
 
 
             } else {
-                printCLIMessage("Sorry you cannot " + msg.getWhatFor() + " any Leader Card!");
+                printCLIMessage(AnsiColors.RED_BOLD+"Sorry you cannot " + msg.getWhatFor() + " any Leader Card!"+AnsiColors.RESET);
                 //send a msg to change the action
                 CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.ACTIVE_LEADER_CARD);
                 sendMsg(change);
@@ -1104,9 +1114,9 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VUpdateVictoryPointsMsg msg) {
         if (msg.getUsername().equals(username)) {
-            printCLIMessage(msg.getMsgContent());
             victoryPoints = msg.getUpdateVictoryPoints();
-            showVictoryPoints(victoryPoints);
+            //printCLIMessage(msg.getMsgContent());
+            //showVictoryPoints(victoryPoints);
         }
     }
 
@@ -1262,6 +1272,10 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    /**
+     * received when the card space chosen is wrong and as to choose another one
+     * @param msg
+     */
     @Override
     public void receiveMsg(VNotValidCardSpaceMsg msg) {
 
@@ -1305,7 +1319,9 @@ public class CLI extends Observable implements ViewObserver {
 
             cardSpaces = msg.getUpdateCardSpace();
             victoryPoints = msg.getUpdateVictoryPoints();
-            showCardSpaces(cardSpaces);
+            if(!soloMode) {
+                showCardSpaces(cardSpaces);
+            }
             showVictoryPoints(victoryPoints);
 
         }
@@ -1509,6 +1525,7 @@ public class CLI extends Observable implements ViewObserver {
         if (msg.getUsername().equals(username)) {
 
             if (!msg.getActivatablePP().isEmpty() && msg.getActivatablePP() != null) {   // if the player can activate at least 1 PP
+
                 System.out.println(msg.getMsgContent());
                 System.out.println("Available card Spaces from which you can choose:  " + msg.getActivatablePP() + "\n" +
                         "If you don't want to use others Production Powers please insert 9 !! ");
@@ -1525,6 +1542,7 @@ public class CLI extends Observable implements ViewObserver {
 
                 if (msg.getActivatablePP().contains(choice)) {
 
+                    activeAtLeastOnePP = true;
                     in = new Scanner(System.in);
                     in.reset();
                     printCLIMessage("Insert from where you want to take the resources to pay the production (strongBox or wareHouse) ");
@@ -1639,6 +1657,10 @@ public class CLI extends Observable implements ViewObserver {
                 }
             } else {
                 //if the player can't activate any production power
+                if(!activeAtLeastOnePP) {
+                    System.out.println(AnsiColors.RED_BOLD + "Sorry you can't active any production Power!" + AnsiColors.RESET);
+                }
+                activeAtLeastOnePP = false;
                 CStopPPMsg msg1 = new CStopPPMsg(" I don't want to activate any other Production Power", username);
                 sendMsg(msg1);
 
@@ -1742,32 +1764,37 @@ public class CLI extends Observable implements ViewObserver {
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
-        //in server
+        //implemented in server
     }
 
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
 
+        //implemented in server
     }
 
     @Override
     public void receiveMsg(VStartWaitReconnectionMsg msg) {
 
+        //implemented in server
     }
 
     @Override
     public void receiveMsg(VStopWaitReconnectionMsg msg) {
 
+        //implemented in server
     }
 
     @Override
     public void receiveMsg(VUpdateLeaderCards msg) {
 
+        //implemented in server
     }
 
     @Override
     public void receiveMsg(VUpdateCardSpaces msg) {
 
+        //implemented in server
     }
 
 
@@ -1787,18 +1814,12 @@ public class CLI extends Observable implements ViewObserver {
             System.out.print("\n");
             System.out.println("   CardId: " + AnsiColors.CYAN_BOLD + msg.getActionToken().getCardID() + AnsiColors.RESET);
             if (msg.getActionToken().getAbility().equals("Card Action Ability")) {
-                System.out.println(((CardActionAbility) msg.getActionToken().getActionAbility()).toString());
+                System.out.println((AnsiColors.CYAN_BOLD+(CardActionAbility) msg.getActionToken().getActionAbility()).toString()+AnsiColors.RESET);
             } else {
-                System.out.println("   Ability: " + msg.getActionToken().getAbility());
+                System.out.println("   Ability: " +AnsiColors.CYAN_BOLD+msg.getActionToken().getAbility()+AnsiColors.RESET);
             }
             System.out.print("\n");
             System.out.println("└----------------------┘");
-            /*
-            try {
-                msg.getActionToken().activeActionToken(boardManager, (SoloPlayer) player);
-            } catch (InvalidActionException e) {
-                e.printStackTrace();
-            }*/
 
         }
     }
@@ -1824,7 +1845,7 @@ public class CLI extends Observable implements ViewObserver {
         PlayerInterface otherPlayer = msg.getPlayer();
         printCLIMessage("you asked to see the " + AnsiColors.BLUE_BOLD + otherPlayer.getUsername() + AnsiColors.RESET + " stuff: ");
         showFaithTrack(otherPlayer.getGameSpace().getFaithTrack());
-        showWarehouse(otherPlayer.getGameSpace().getWarehouse(), null);
+        showWarehouse(otherPlayer.getGameSpace().getWarehouse(), specialResource);
         showStrongBox(otherPlayer.getGameSpace().getStrongbox());
         showCardSpaces(otherPlayer.getGameSpace().getCardSpaces());
         if(otherPlayer.getUsername().equals(username)){
@@ -1834,6 +1855,7 @@ public class CLI extends Observable implements ViewObserver {
             }
 
         }
+        showVictoryPoints(otherPlayer.getVictoryPoints());
     }
 
     @Override
@@ -1844,7 +1866,7 @@ public class CLI extends Observable implements ViewObserver {
                 printCLIMessage(AnsiColors.BLUE_BOLD + username + AnsiColors.RESET);
             }
             printCLIMessage("Or if you want you can also see YOUR actual situation :)");
-            printCLIMessage("Your Username:" + msg.getUsername());
+            printCLIMessage(AnsiColors.BLUE_BOLD+"Your Username: "+msg.getUsername()+AnsiColors.RESET);
 
             in = new Scanner(System.in);
             String userChosen = in.nextLine();
@@ -1954,7 +1976,7 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     private void showVictoryPoints(int victoryPoints) {
-        printCLIMessage("your Victory Points are: : " + AnsiColors.YELLOW_BOLD + victoryPoints + " ✯" + AnsiColors.RESET);
+        printCLIMessage(AnsiColors.YELLOW_BOLD+"Victory Points : "+ victoryPoints + " ✯" + AnsiColors.RESET);
     }
 
 

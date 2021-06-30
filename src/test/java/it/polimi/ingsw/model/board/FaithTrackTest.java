@@ -17,6 +17,9 @@ public class FaithTrackTest extends TestCase {
         PersonalBoard personalBoard = new PersonalBoardFactory().createGame();
         faithTrack=personalBoard.getFaithTrack();
         popesFavorTiles=personalBoard.getFaithTrack().getPopesFavorTiles();
+        popesFavorTiles.get(0).setState(new Inactive());
+        popesFavorTiles.get(1).setState(new Inactive());
+        popesFavorTiles.get(2).setState(new Inactive());
 /*
         GoldBox box = new GoldBox(1,0,9);
         GoldBox box1 = new GoldBox(1,1,2);
@@ -81,12 +84,33 @@ public class FaithTrackTest extends TestCase {
 
         faithTrack.getFaithMarker().setPosition(4);
         int j = faithTrack.getAllVictoryPoints();
-
         assertEquals(1,j);
 
         faithTrack.getFaithMarker().setPosition(21);
         j=faithTrack.getAllVictoryPoints();
         assertEquals(16,j);
+
+
+        faithTrack.getFaithMarker().setPosition(2);
+        j=faithTrack.getAllVictoryPoints();
+        assertEquals(0,j);
+
+        faithTrack.getFaithMarker().setPosition(15);
+        j=faithTrack.getAllVictoryPoints();
+        assertEquals(9,j);
+
+        faithTrack.getFaithMarker().setPosition(3);
+        j=faithTrack.getAllVictoryPoints();
+        assertEquals(1,j);
+
+        faithTrack.getFaithMarker().setPosition(7);
+        j=faithTrack.getAllVictoryPoints();
+        assertEquals(2,j);
+
+
+        faithTrack.getFaithMarker().setPosition(24);
+        j=faithTrack.getAllVictoryPoints();
+        assertEquals(20,j);
 
     }
 

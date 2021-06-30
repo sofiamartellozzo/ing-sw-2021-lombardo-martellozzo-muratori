@@ -341,7 +341,7 @@ public class ActionController extends Observable implements ControllerObserver {
 
                 VUpdateDevTableMsg update = new VUpdateDevTableMsg("new develop table", player.getUsername(), player.calculateVictoryPoints(), player.getGameSpace().getCardSpaces(), boardManager.getDevelopmentCardTable(), boardManager.getPlayers());
                 notifyAllObserver(ObserverType.VIEW, update);
-                VUpdateWarehouseMsg secondUpdate = new VUpdateWarehouseMsg("update the warehose", player.getUsername(), player.getGameSpace().getWarehouse());
+                VUpdateWarehouseMsg secondUpdate = new VUpdateWarehouseMsg("update the warehouse", player.getUsername(), player.getGameSpace().getWarehouse());
                 notifyAllObserver(ObserverType.VIEW, secondUpdate);
                 VUpdateStrongboxMsg thirdUpdate = new VUpdateStrongboxMsg("update the strongbox", player.getUsername(), player.getGameSpace().getStrongbox());
                 notifyAllObserver(ObserverType.VIEW, thirdUpdate);
@@ -486,9 +486,16 @@ public class ActionController extends Observable implements ControllerObserver {
                             sent = true;
                             notifyAllObserver(ObserverType.VIEW, request);
                         }
+
                     }
                 }
 
+                /* the case that the player receives from the market all white resources*/
+                if (resourcesToStore.isEmpty() && numberResourcesFromM == resourcesToStore.size()) {
+                    CStopMarketMsg fakeMsg = new CStopMarketMsg("no resources to store", this.player.getUsername(), TurnAction.BUY_FROM_MARKET);
+                    System.out.print("qui1");
+                    this.receiveMsg(fakeMsg);
+                }
 
                 /*we suppose that the action ended, if one depot is not valid the boolean will turn false and the next action wait*/
                 endAction = true;
@@ -496,7 +503,6 @@ public class ActionController extends Observable implements ControllerObserver {
                 /* remove tre 3 action from the able ones because can be made only once */
                 removeAction(msg.getActionChose());
 
-                //nextAction();
 
             } catch (InvalidActionException e) {
                 e.printStackTrace();
@@ -529,7 +535,6 @@ public class ActionController extends Observable implements ControllerObserver {
         //remove tre 3 action from the able ones because can be made only once
         removeAction(msg.getActionChose());
         endAction = false;
-        //nextAction();
     }
 
 
@@ -753,11 +758,11 @@ public class ActionController extends Observable implements ControllerObserver {
             VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("You're actual amount of Victory Points is: ", player.getUsername(), player.calculateVictoryPoints());
             notifyAllObserver(ObserverType.VIEW, update);
             if (!isSolo) {
-                VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), turn.getAvailableAction());
+                VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("Make your move: \uD83D\uDE09", player.getUsername(), turn.getAvailableAction());
                 notifyAllObserver(ObserverType.VIEW, msg);
                 //System.out.println("next action");        DEBUG
             } else {
-                VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("A new turn is started, make your move:", player.getUsername(), soloPlayerTurn.getAvailableAction());
+                VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("Make your move: \uD83D\uDE09", player.getUsername(), soloPlayerTurn.getAvailableAction());
                 notifyAllObserver(ObserverType.VIEW, msg);
             }
         }
@@ -783,21 +788,4 @@ public class ActionController extends Observable implements ControllerObserver {
             }
         }
     }
-
-
-    /*
-            NOT USED ANYMORE
-     */
-    public void decrementNumberResourcesFromM() {
-        this.numberResourcesFromM--;
-        checkNextActionMarket();
-    }
-
-    private void checkNextActionMarket() {
-        if (numberResourcesFromM == 0) {
-            nextAction();
-        }
-    }
-
-
 }
