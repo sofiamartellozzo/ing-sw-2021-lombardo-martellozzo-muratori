@@ -603,7 +603,7 @@ public class CLI extends Observable implements ViewObserver {
     }
 
     public void choseAndBuyFromMarket(){
-        printCLIMessage("You have tro White Special Ability Activate and you have received a white marble from the market");
+        printCLIMessage("You have two White Special Ability Activate and you have received a white marble from the market");
         printCLIMessage("Choose one of these two resource");
         printCLIMessage(player.getWhiteSpecialResources().get(0).toString());
         printCLIMessage(player.getWhiteSpecialResources().get(1).toString());
@@ -1764,6 +1764,7 @@ public class CLI extends Observable implements ViewObserver {
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
+
         //implemented in server
     }
 
@@ -1795,6 +1796,27 @@ public class CLI extends Observable implements ViewObserver {
     public void receiveMsg(VUpdateCardSpaces msg) {
 
         //implemented in server
+    }
+
+    /**
+     * msg used if a player wants to move two depots that can't be exchanged
+     * @param msg
+     */
+    @Override
+    public void receiveMsg(VNotValidMoveMsg msg) {
+        System.out.println(AnsiColors.RED_BOLD+"I'm sorry you can't move these two depots ! TRY AGAIN"+AnsiColors.RESET);
+
+        if(marketCLI != null) {
+            marketCLI.setResourceStored(false);
+            marketCLI.setWaitMove(false);
+            marketCLI.handleResources();
+        }
+        else{
+            System.out.println("Choose another Action Please! ");
+            CChangeActionTurnMsg msg2 = new CChangeActionTurnMsg("changing action",username,TurnAction.MOVE_RESOURCE);
+            sendMsg(msg2);
+        }
+
     }
 
 

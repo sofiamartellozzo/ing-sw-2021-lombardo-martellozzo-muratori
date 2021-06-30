@@ -111,4 +111,6 @@ public interface ViewObserver extends Observer{
     public void receiveMsg(VUpdateLeaderCards msg);
     /*msg used to update the situation of the card spaces*/
     public void receiveMsg(VUpdateCardSpaces msg);
+    /*msg used if a player can't move two depots*/
+    public void receiveMsg(VNotValidMoveMsg msg);
 }

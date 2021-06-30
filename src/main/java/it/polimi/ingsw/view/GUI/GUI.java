@@ -729,6 +729,11 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(VNotValidMoveMsg msg) {
+
+    }
+
     /**
      * In the SoloGame, shows which action token was drawn in the PersonalBoardScene.
      * @param msg VActionTokenActivateMsg

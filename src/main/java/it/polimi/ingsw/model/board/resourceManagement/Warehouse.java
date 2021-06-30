@@ -107,7 +107,7 @@ public abstract class Warehouse implements Serializable {
                         }
                         from.removeResources(from.getNumberResources());
                     } else if (!to.isEmpty()) { //The "to" is not empty, the player can exchange the two contents if the size allows to
-                        if (to.getNumberResources() <= from.getSize() || from.getNumberResources() <= to.getSize()) {
+                        if (to.getNumberResources() <= from.getSize() && from.getNumberResources() <= to.getSize()) {
                             //Clone the two contents
                             ArrayList<Resource> contentFrom = (ArrayList<Resource>) from.getResources().clone();
                             ArrayList<Resource> contentTo = (ArrayList<Resource>) to.getResources().clone();

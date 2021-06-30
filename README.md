@@ -30,13 +30,13 @@ You can play in Solo Mode, and try to fight against Lorenzo Il Magnifico, or in 
 ![Match creation](deliverables/images/RoomSizeImage.png?raw=true)
 
 ### Card selection
-![Card selection](deliverables/images/ChooseCardsImage.png?raw=true)
+![Card selection](deliverables/images/LCards.png?raw=true)
 
 ### PersonalBoard
-![PersonalBoard](deliverables/images/PersonalBoardImage.png?raw=true)
+![PersonalBoard](deliverables/images/PBoard.png?raw=true)
 
 ### End Game, Win!
-![End Game](deliverables/images/EndGameImage.png?raw=true)
+![End Game](deliverables/images/EGame.png?raw=true)
 
 
 <a name="toolused"></a>

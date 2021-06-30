@@ -308,6 +308,13 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
     }
 
     @Override
+    public void receiveMsg(VNotValidMoveMsg msg) {
+        if(msg.getUsername().equals(username)) {
+            sendToClient(msg);
+        }
+    }
+
+    @Override
     public void receiveMsg(VStopWaitReconnectionMsg msg) {
 
         client.resetTimer();

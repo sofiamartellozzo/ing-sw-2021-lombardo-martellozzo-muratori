@@ -68,23 +68,22 @@ public class MessageHandler extends Observable implements Runnable{
     public void run() {
         printDebug("inside run");
         thread = new Thread (() -> {
-            while (gameOn){
-                try {
-                    Thread.sleep(1000);
+            while (gameOn) {
+                /*try {
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
                 printDebug("inside run while");
-                if (messageQueueForVV.size()>0){
+                if (messageQueueForVV.size() > 0) {
                     //send Msg as FIFO logic
                     printDebug("in run");
                     sendMsgToVV();
-                }
-                else if (messageQueueForView.size()>0){
+                } else if (messageQueueForView.size() > 0) {
                     sendMsgToView();
                 }
-            }
-        });
+              }
+            });
         thread.start();
 
     }
