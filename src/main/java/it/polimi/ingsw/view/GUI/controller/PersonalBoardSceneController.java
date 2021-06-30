@@ -1156,6 +1156,8 @@ public class PersonalBoardSceneController {
             gui.sendMsg(new CChangeActionTurnMsg("Not possible to do action, I want to change action", gui.getUsername(), action));
         }else if(action==TurnAction.ACTIVE_PRODUCTION_POWER){
             gui.sendMsg(new CStopPPMsg("No Production Power Available",gui.getUsername()));
+            notVisibleDepotPanes();
+            disableDepotPanes();
         }else if(!gui.isServerAvailable()){
             gui.close();
         }
@@ -1327,6 +1329,8 @@ public class PersonalBoardSceneController {
     public void clickSeeDevCardTableButton(){
         gui.getDevCardTableSceneController().setAllCardNormal();
         gui.getDevCardTableSceneController().setJustSee(true);
+        gui.getDevCardTableSceneController().update(gui.getDevelopmentCardTable());
+        gui.getDevCardTableSceneController().update(gui.getDevelopmentCardTable());
         gui.seeDevCardTable();
     }
 

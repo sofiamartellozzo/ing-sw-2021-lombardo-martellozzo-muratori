@@ -175,7 +175,7 @@ public class DevelopmentCardTableTest extends TestCase {
     @Test
     public void testTakeCard() {
        for(int i=0;i<4;i++){
-           developmentCardTable.takeCard(1,0);
+           developmentCardTable.removeCard(1,0);
        }
 
         //DevelopmentCard card4 = developmentCardTable.takeCard(2,0);
@@ -187,33 +187,13 @@ public class DevelopmentCardTableTest extends TestCase {
 
         boolean thrown = false;
            try {
+               for(int i=0;i<4;i++){
+                   developmentCardTable.removeCard(2,0);
+                   developmentCardTable.removeCard(1,0);
+                   developmentCardTable.removeCard(0,0);
+               }
 
                developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-               developmentCardTable.getSquare(Color.GREEN);
-
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
-               developmentCardTable.getSquare(Color.BLUE);
 
            }catch (InvalidActionException e){
                thrown = true;
@@ -225,20 +205,20 @@ public class DevelopmentCardTableTest extends TestCase {
     @Test
     public void testCheckIfEmpty() throws InvalidActionException {
 
-        developmentCardTable.getTable()[0][0].takeCard();
-        developmentCardTable.getTable()[0][0].takeCard();
-        developmentCardTable.getTable()[0][0].takeCard();
-        developmentCardTable.getTable()[0][0].takeCard();
+        developmentCardTable.getTable()[0][0].removeCard();
+        developmentCardTable.getTable()[0][0].removeCard();
+        developmentCardTable.getTable()[0][0].removeCard();
+        developmentCardTable.getTable()[0][0].removeCard();
 
-        developmentCardTable.getTable()[1][0].takeCard();
-        developmentCardTable.getTable()[1][0].takeCard();
-        developmentCardTable.getTable()[1][0].takeCard();
-        developmentCardTable.getTable()[1][0].takeCard();
+        developmentCardTable.getTable()[1][0].removeCard();
+        developmentCardTable.getTable()[1][0].removeCard();
+        developmentCardTable.getTable()[1][0].removeCard();
+        developmentCardTable.getTable()[1][0].removeCard();
 
-        developmentCardTable.getTable()[2][0].takeCard();
-        developmentCardTable.getTable()[2][0].takeCard();
-        developmentCardTable.getTable()[2][0].takeCard();
-        developmentCardTable.getTable()[2][0].takeCard();
+        developmentCardTable.getTable()[2][0].removeCard();
+        developmentCardTable.getTable()[2][0].removeCard();
+        developmentCardTable.getTable()[2][0].removeCard();
+        developmentCardTable.getTable()[2][0].removeCard();
 
         assertTrue(developmentCardTable.checkIfEmpty());
     }

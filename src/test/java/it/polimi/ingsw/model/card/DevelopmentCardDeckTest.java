@@ -68,11 +68,12 @@ public class DevelopmentCardDeckTest extends TestCase {
         boolean thrown = false;
 
         DevelopmentCard card = developmentCardDeck.takeCard();
-        assertEquals(developmentCardDeck.getDevelopDeck().size(),2);
+        assertEquals(developmentCardDeck.getDevelopDeck().size(),3);
 
         try {
-            developmentCardDeck.takeCard();
-            developmentCardDeck.takeCard();
+            developmentCardDeck.removeCard();
+            developmentCardDeck.removeCard();
+            developmentCardDeck.removeCard();
             developmentCardDeck.takeCard();
         }catch (IndexOutOfBoundsException e){
             thrown = true;

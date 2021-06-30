@@ -1,11 +1,15 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.factory.BoardManagerFactory;
+import it.polimi.ingsw.controller.factory.PersonalSoloBoardFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.message.controllerMsg.CChooseLeaderCardResponseMsg;
 import it.polimi.ingsw.model.BoardManager;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.PlayerInterface;
+import it.polimi.ingsw.model.SoloPlayer;
+import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.board.SoloPersonalBoard;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.view.VirtualView;
 import javafx.print.Collation;
@@ -33,6 +37,11 @@ public class InitializedControllerTest extends TestCase {
         players.add(1,"pluto");
         players.add(2,"paperino");
 
+        ArrayList<Player> players0=new ArrayList<>();
+        players0.add(new Player(players.get(0)));
+        players0.add(new Player(players.get(1)));
+        players0.add(new Player(players.get(2)));
+
         HashMap<Integer,PlayerInterface> players1 = new HashMap<>();
         players1.put(1,new Player("ok"));
         players1.put(2,new Player("ok1"));
@@ -42,6 +51,7 @@ public class InitializedControllerTest extends TestCase {
         Map<String, VirtualView> virtualView = new HashMap<>();
         virtualView.put("pippo", new VirtualView(new ClientHandler(new Socket(),"lalal")));
         initializedController = new InitializedController(players,virtualView);
+        initializedController.creatingPlayersSequence(players,players0);
         BoardManager boardManager = boardManagerFactory.createBoardManager(players1);
         ArrayList<String> player = new ArrayList<>();
         player.add("philip");
@@ -49,6 +59,14 @@ public class InitializedControllerTest extends TestCase {
         Map<String, VirtualView> virtualView2 = new HashMap<>();
         virtualView2.put("philip", vv);
         initializedController2 = new InitializedController(players,virtualView);
+        SoloPlayer soloPlayer=new SoloPlayer("gian");
+        HashMap<Integer,PlayerInterface> players2=new HashMap<>();
+        players2.put(1,soloPlayer);
+        BoardManager boardManager1=boardManagerFactory.createBoardManager(players2);
+        PersonalSoloBoardFactory soloPersonalBoard=new PersonalSoloBoardFactory();
+        soloPlayer.setGameSpace(soloPersonalBoard.createGame());
+        initializedController2.fillSinglePlayer(soloPlayer);
+        initializedController2.createGame();
     }
 
     @After
@@ -64,12 +82,12 @@ public class InitializedControllerTest extends TestCase {
     public void testGetTurnSequence() {
 
         //for testing the private method creatingPlayers
-        assertEquals(0, initializedController.getTurnSequence().keySet().size());
+        assertEquals(3, initializedController.getTurnSequence().keySet().size());
       }
 
     public void testGetSinglePlayer() {
         //for testing the private method creatingPlayers
-        assertEquals(null, initializedController2.getSinglePlayer().getUsername());
+        assertEquals("gian", initializedController2.getSinglePlayer().getUsername());
 
     }
 

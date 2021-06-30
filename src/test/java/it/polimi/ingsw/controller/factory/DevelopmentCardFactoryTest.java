@@ -342,6 +342,8 @@ public class DevelopmentCardFactoryTest extends TestCase {
 
         costToBuy18.add(new Resource(Color.YELLOW));
         costToBuy18.add(new Resource(Color.YELLOW));
+        costToBuy18.add(new Resource(Color.YELLOW));
+        costToBuy18.add(new Resource(Color.GREY));
         costToBuy18.add(new Resource(Color.GREY));
 
         earnProductionPower18.add(new Resource(Color.PURPLE));

@@ -798,7 +798,7 @@ public class GUI extends Application implements ViewObserver {
         if(msg.getUsername().equals(username)){
             warehouse=msg.getWarehouse();
             personalBoardSceneController.updateWarehouseView(msg.getWarehouse());
-            if(personalBoardSceneController.getAction().equals(BUY_FROM_MARKET)){
+            if(personalBoardSceneController.getAction()!=null && personalBoardSceneController.getAction().equals(BUY_FROM_MARKET)){
                 if(!marketStructureSceneController.isWaitMove()){
                     marketStructureSceneController.setResourceStored(true);
                 }else{
