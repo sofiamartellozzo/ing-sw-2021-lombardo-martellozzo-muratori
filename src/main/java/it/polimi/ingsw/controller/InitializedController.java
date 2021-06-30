@@ -268,8 +268,10 @@ public class InitializedController extends Observable implements ControllerObser
                 notifyAllObserver(ObserverType.VIEW, msg2);
 
                 int section=this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
-                for(int i:this.boardManager.getPlayers().keySet()){
-                    this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                if(section!=0) {
+                    for (int i : this.boardManager.getPlayers().keySet()) {
+                        this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().doVaticanReport(section);
+                    }
                 }
                 /* notify all palyers that this one increase his position */
                 VNotifyPositionIncreasedByMsg notify1 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(3).getUsername(), turnSequence.get(3).calculateVictoryPoints(), 1);
@@ -284,8 +286,10 @@ public class InitializedController extends Observable implements ControllerObser
                     //notifyAllObserver(ObserverType.VIEW, msg4);
 
                     section=this.turnSequence.get(3).getGameSpace().getFaithTrack().increasePosition();
-                    for(int i:this.boardManager.getPlayers().keySet()){
-                        this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                    if(section!=0) {
+                        for (int i : this.boardManager.getPlayers().keySet()) {
+                            this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().doVaticanReport(section);
+                        }
                     }
                     /* notify all palyers that this one increase his position */
                     VNotifyPositionIncreasedByMsg notify2 = new VNotifyPositionIncreasedByMsg("one user increased his position in FT", turnSequence.get(4).getUsername(), turnSequence.get(4).calculateVictoryPoints(), 1);

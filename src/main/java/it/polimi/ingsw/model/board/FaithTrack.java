@@ -144,15 +144,4 @@ public class FaithTrack implements Serializable{
             return section;
     }
 
-    /**
-     *
-     */
-    public void setPopeBoxActiveInSection(int section){
-        for(PopeBox popeBox:getPopeBoxes()){
-            if(popeBox.getWhichSection()==section){
-                popeBox.setActivated(true);
-
-            }
-        }
-    }
 }

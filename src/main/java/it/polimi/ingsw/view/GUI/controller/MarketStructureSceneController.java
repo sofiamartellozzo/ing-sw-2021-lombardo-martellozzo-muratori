@@ -25,6 +25,8 @@ import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.model.TypeResource.BLANK;
+
 /**
  * When the player interacts with the market, the scene is set to the MarketStructureScene and
  * every action is managed here.
@@ -73,9 +75,11 @@ public class MarketStructureSceneController {
 
     private ArrayList<TypeResource> resourcesToStore;
     private ArrayList<TypeResource> whiteSpecial;
+    private boolean waitMove;
     private TypeResource resourceToStore;
     private boolean notValidDepot=false;
     private TypeResource resourceToRestore;
+    private boolean resourceStored;
 
     /**
      * When the MarketStructureScene is set, this method prepares it
@@ -371,7 +375,7 @@ public class MarketStructureSceneController {
      * is checked what type of resource is received and the possible ability activated, to prepare the pop-up.
      * If the player has finished to manage the resources received, the scene returns to personalboard.
      */
-    public void chooseDepot(){
+    /*public void chooseDepot(){
         if(resourcesToStore.size()>0){
             gui.seeMarketBoard();
             backButton.setDisable(true);
@@ -408,7 +412,7 @@ public class MarketStructureSceneController {
      * To resume the management of the resource received.
      * @param resource the last resource the player had to manage.
      */
-    public void resumeChooseDepot(TypeResource resource){
+    /*public void resumeChooseDepot(TypeResource resource){
         gui.seeMarketBoard();
         backButton.setDisable(true);
         copyWarehouseFromPersonalBoard();
@@ -439,7 +443,7 @@ public class MarketStructureSceneController {
      * The cycle to manage the resource received is momentarily interrupted
      * @param msg VNotValidDepotMsg
      */
-    public void chooseDepot(VNotValidDepotMsg msg){
+    /*public void chooseDepot(VNotValidDepotMsg msg){
         gui.seeMarketBoard();
         notValidDepot=true;
         backButton.setDisable(true);
@@ -457,6 +461,60 @@ public class MarketStructureSceneController {
         chooseDepotPane.setVisible(true);
     }
 
+
+
+
+     */
+    public void chooseDepot(){
+        if(resourceStored){
+            resourcesToStore.remove(0);
+        }
+
+        if(resourcesToStore.size()>0){
+            resourceStored=false;
+            gui.seeMarketBoard();
+            backButton.setDisable(true);
+            copyWarehouseFromPersonalBoard();
+            enableDepotPane();
+            setLabelText(message,"Choose a depot\n" +
+                    "where to store this resource:");
+            resourceToStore=resourcesToStore.get(0);
+            if(!resourceToStore.equals(BLANK)){
+                setResourceAndLabel(resourceToStore);
+                moveResourceButton.setDisable(false);
+                discardButton.setDisable(false);
+                chooseDepotPane.setVisible(true);
+            }else{
+
+            }
+        }else{
+            gui.seePersonalBoard();
+            backButton.setDisable(false);
+            disableDepotPane();
+            chooseDepotPane.setVisible(false);
+            if(gui.getPersonalBoardSceneController().getAction().equals(TurnAction.BUY_FROM_MARKET)) {
+                gui.getPersonalBoardSceneController().setTurnAction(null);
+            }
+            gui.sendMsg(new CStopMarketMsg("Finished to buy",gui.getUsername(), TurnAction.BUY_FROM_MARKET));
+        }
+    }
+
+    public void chooseDepot(VNotValidDepotMsg msg){
+        gui.seeMarketBoard();
+        backButton.setDisable(true);
+        copyWarehouseFromPersonalBoard();
+        enableDepotPane();
+        chooseResourcePane.setVisible(false);
+        getDepotPanes().get(msg.getUnableDepot()-1).setDisable(true);
+        setLabelText(message,"Chosen depot not valid.\n" +
+                "Choose a depot\n" +
+                "where to store this resource:");
+        resourceToStore = fromColorToType(msg.getResourceChooseBefore());
+        setResourceAndLabel(resourceToStore);
+        moveResourceButton.setDisable(false);
+        discardButton.setDisable(false);
+        chooseDepotPane.setVisible(true);
+    }
 
     /**
      * When the mouse enters in the "Depot 1" pane
@@ -546,7 +604,9 @@ public class MarketStructureSceneController {
      */
     public void clickDepot1(){
         if(!depot1.isDisable()){
-            if(notValidDepot){
+            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 1, gui.getUsername()));
+            resourceStored =false;
+            /*if(notValidDepot){
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 1, gui.getUsername()));
                 resourceToRestore=null;
                 notValidDepot=false;
@@ -561,7 +621,7 @@ public class MarketStructureSceneController {
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 1, gui.getUsername()));
                 resourceToStore=null;
                 chooseDepot();
-            }
+            }*/
         }
     }
     /**
@@ -571,7 +631,9 @@ public class MarketStructureSceneController {
      */
     public void clickDepot2(){
         if(!depot2.isDisable()){
-            if(notValidDepot){
+            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 2, gui.getUsername()));
+            resourceStored=false;
+            /*if(notValidDepot){
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 2, gui.getUsername()));
                 resourceToRestore=null;
                 notValidDepot=false;
@@ -586,7 +648,7 @@ public class MarketStructureSceneController {
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 2, gui.getUsername()));
                 resourceToStore=null;
                 chooseDepot();
-            }
+            }*/
         }
     }
     /**
@@ -596,7 +658,9 @@ public class MarketStructureSceneController {
      */
     public void clickDepot3(){
         if(!depot3.isDisable()){
-            if(notValidDepot){
+            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 3, gui.getUsername()));
+            resourceStored=false;
+            /*if(notValidDepot){
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 3, gui.getUsername()));
                 resourceToRestore=null;
                 notValidDepot=false;
@@ -611,7 +675,7 @@ public class MarketStructureSceneController {
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 3, gui.getUsername()));
                 resourceToStore=null;
                 chooseDepot();
-            }
+            }*/
         }
     }
     /**
@@ -621,7 +685,9 @@ public class MarketStructureSceneController {
      */
     public void clickDepot4(){
         if(!depot4.isDisable()){
-            if(notValidDepot){
+            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 4, gui.getUsername()));
+            resourceStored=false;
+           /* if(notValidDepot){
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 4, gui.getUsername()));
                 resourceToRestore=null;
                 notValidDepot=false;
@@ -636,7 +702,7 @@ public class MarketStructureSceneController {
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 4, gui.getUsername()));
                 resourceToStore=null;
                 chooseDepot();
-            }
+            }*/
         }
     }
     /**
@@ -646,7 +712,9 @@ public class MarketStructureSceneController {
      */
     public void clickDepot5(){
         if(!depot5.isDisable()){
-            if(notValidDepot){
+            gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 5, gui.getUsername()));
+            resourceStored=false;
+           /* if(notValidDepot){
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToRestore.getThisColor(), 5, gui.getUsername()));
                 resourceToRestore=null;
                 notValidDepot=false;
@@ -661,7 +729,7 @@ public class MarketStructureSceneController {
                 gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 5, gui.getUsername()));
                 resourceToStore=null;
                 chooseDepot();
-            }
+            }*/
         }
     }
 
@@ -670,10 +738,26 @@ public class MarketStructureSceneController {
      */
     public void clickDiscardButton(){
         gui.sendMsg(new CChooseDiscardResourceMsg("I want to discard this resource",gui.getUsername()));
-        chooseDepotPane.setVisible(false);
-        discardButton.setDisable(true);
-        moveResourceButton.setDisable(true);
+        resourceStored =true;
         chooseDepot();
+        /*if(notValidDepot){
+            gui.sendMsg(new CChooseDiscardResourceMsg("I want to discard this resource",gui.getUsername()));
+            resourceToRestore=null;
+            notValidDepot=false;
+            if(resourceToStore!=null){
+                resumeChooseDepot(resourceToStore);
+            }else{
+                discardButton.setDisable(true);
+                moveResourceButton.setDisable(true);
+                chooseDepot();
+            }
+        }else {
+            gui.sendMsg(new CChooseDiscardResourceMsg("I want to discard this resource", gui.getUsername()));
+            chooseDepotPane.setVisible(false);
+            discardButton.setDisable(true);
+            moveResourceButton.setDisable(true);
+            chooseDepot();
+        }*/
     }
 
     /**
@@ -683,6 +767,7 @@ public class MarketStructureSceneController {
     public void clickMoveResourceButton(){
         gui.getPersonalBoardSceneController().setTurnAction(TurnAction.MOVE_RESOURCE);
         gui.seePersonalBoard();
+        waitMove=true;
         gui.getPersonalBoardSceneController().setReturnToMarket(true);
         gui.getPersonalBoardSceneController().chooseDepots();
     }
@@ -965,4 +1050,15 @@ public class MarketStructureSceneController {
         gui.close();
     }
 
+    public void setResourceStored(boolean resourceStored) {
+        this.resourceStored = resourceStored;
+    }
+
+    public void setWaitMove(boolean waitMove) {
+        this.waitMove=waitMove;
+    }
+
+    public boolean isWaitMove() {
+        return waitMove;
+    }
 }

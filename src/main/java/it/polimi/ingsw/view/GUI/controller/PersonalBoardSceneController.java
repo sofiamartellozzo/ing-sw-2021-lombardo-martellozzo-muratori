@@ -210,6 +210,7 @@ public class PersonalBoardSceneController {
         gui.sendMsg(msg);
         disableActionButtons();
         actionButtons.setVisible(false);
+        action=TurnAction.BUY_FROM_MARKET;
     }
 
     //PRODUCTION POWER
@@ -875,8 +876,8 @@ public class PersonalBoardSceneController {
                     chosenDepots=new ArrayList<>();
                     action=null;
                     if(returnToMarket){
-                        gui.seeMarketBoard();
-                        gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        //gui.seeMarketBoard();
+                        //gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
                     }
@@ -924,8 +925,8 @@ public class PersonalBoardSceneController {
                     chosenDepots=new ArrayList<>();
                     action=null;
                     if(returnToMarket){
-                        gui.seeMarketBoard();
-                        gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        //gui.seeMarketBoard();
+                        //gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();*/
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
                     }
@@ -974,8 +975,8 @@ public class PersonalBoardSceneController {
                     chosenDepots=new ArrayList<>();
                     action=null;
                     if(returnToMarket){
-                        gui.seeMarketBoard();
-                        gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        //gui.seeMarketBoard();
+                        //gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
                     }
@@ -1023,9 +1024,10 @@ public class PersonalBoardSceneController {
                     chosenDepots=new ArrayList<>();
                     action=null;
                     if(returnToMarket){
-                        gui.seeMarketBoard();
-                        gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        //gui.seeMarketBoard();
+                        //gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
+                        returnToMarket=!returnToMarket;
                     }
                     if(actionButtonsVisible){
                         actionButtonsVisible=false;
@@ -1940,5 +1942,9 @@ public class PersonalBoardSceneController {
         chooseResourcePane.setVisible(false);
         chooseOtherPlayerPane.setVisible(false);
         disableOtherPlayersButtons();
+    }
+
+    public TurnAction getAction() {
+        return action;
     }
 }

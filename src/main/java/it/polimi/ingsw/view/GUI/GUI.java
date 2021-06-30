@@ -33,6 +33,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.model.TurnAction.BUY_FROM_MARKET;
+
 /**
  * GUI version of the View
  */
@@ -598,6 +600,7 @@ public class GUI extends Application implements ViewObserver {
         if(msg.getUsername().equals(username)){
             marketStructureSceneController.setResourcesToStore(msg.getResourceToStore());
             marketStructureSceneController.setWhiteSpecial(msg.getWhiteSpecialResources());
+            marketStructureSceneController.setResourceStored(false);
             marketStructureSceneController.chooseDepot();
         }
     }
@@ -795,6 +798,14 @@ public class GUI extends Application implements ViewObserver {
         if(msg.getUsername().equals(username)){
             warehouse=msg.getWarehouse();
             personalBoardSceneController.updateWarehouseView(msg.getWarehouse());
+            if(personalBoardSceneController.getAction().equals(BUY_FROM_MARKET)){
+                if(!marketStructureSceneController.isWaitMove()){
+                    marketStructureSceneController.setResourceStored(true);
+                }else{
+                    marketStructureSceneController.setWaitMove(false);
+                }
+                marketStructureSceneController.chooseDepot();
+            }
         }
     }
 

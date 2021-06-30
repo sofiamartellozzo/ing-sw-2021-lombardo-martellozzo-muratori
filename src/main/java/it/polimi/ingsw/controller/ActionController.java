@@ -441,8 +441,10 @@ public class ActionController extends Observable implements ControllerObserver {
                         /* the FAITHMARKER is not a real resources, it increased the position of the player in FT*/
                         if (!isSolo) {
                             int section = player.increasePosition();
-                            for(int i:this.boardManager.getPlayers().keySet()){
-                                this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                            if(section!=0) {
+                                for (int i : this.boardManager.getPlayers().keySet()) {
+                                    this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().doVaticanReport(section);
+                                }
                             }
                             System.out.println(player.getGameSpace().getFaithTrack().getPositionFaithMarker());
                         } else {
@@ -611,8 +613,10 @@ public class ActionController extends Observable implements ControllerObserver {
                     try {
                         if (!isSolo) {
                             int section = turn.discardLeaderCard(msg.getLeaderCards().get(0));
-                            for(int i:this.boardManager.getPlayers().keySet()){
-                                this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().setPopeBoxActiveInSection(section);
+                            if(section!=0) {
+                                for (int i : this.boardManager.getPlayers().keySet()) {
+                                    this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().doVaticanReport(section);
+                                }
                             }
                         } else {
                             soloPlayerTurn.discardLeaderCard(msg.getLeaderCards().get(0));
