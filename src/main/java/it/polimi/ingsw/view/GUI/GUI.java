@@ -449,6 +449,7 @@ public class GUI extends Application implements ViewObserver {
             if(stage.getScene().equals(initializeScene)){
                 Platform.runLater(()->changeScene(personalBoardScene));
             }
+            personalBoardSceneController.setLabelText(personalBoardSceneController.getActionLabel(),"");
             personalBoardSceneController.chooseAction(msg);
         }
     }
@@ -613,6 +614,7 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VLorenzoIncreasedMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
+            personalBoardSceneController.setLabelText(personalBoardSceneController.getActionLabel(),"Lorenzo's faithmarker has increased");
             personalBoardSceneController.updateBlackFaithMarkerView(msg.getPlayer().getGameSpace());
         }
     }
@@ -731,7 +733,15 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VNotValidMoveMsg msg) {
-
+        System.out.println(msg.toString());
+        if(msg.getUsername().equals(username)) {
+            if(stage.getScene().equals(marketStructureScene)){
+                marketStructureSceneController.setWaitMove(false);
+                marketStructureSceneController.moveNotValid();
+            }else if(stage.getScene().equals(personalBoardScene)){
+                personalBoardSceneController.setErrorMessage("Move not valid!");
+            }
+        }
     }
 
     /**
@@ -886,6 +896,16 @@ public class GUI extends Application implements ViewObserver {
         }
     }
 
+    @Override
+    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
+        System.out.println(msg.toString());
+        if(msg.getUsernameIncreased().equals(username)){
+            personalBoardSceneController.setLabelText(personalBoardSceneController.getActionLabel(),"Your faithmarker has increased");
+        }else {
+            personalBoardSceneController.setLabelText(personalBoardSceneController.getActionLabel(), msg.getUsernameIncreased() + "'s faithmarker has increased");
+        }
+    }
+
     //GETTER AND SETTER METHOD
 
     public void setMessageHandler(MessageHandler messageHandler) {
@@ -1015,14 +1035,5 @@ public class GUI extends Application implements ViewObserver {
        // Message not used here
         System.out.println(msg.toString());
     }
-
-
-    @Override
-    public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
-        //Message not used here
-        System.out.println(msg.toString());
-    }
-
-
 }
 

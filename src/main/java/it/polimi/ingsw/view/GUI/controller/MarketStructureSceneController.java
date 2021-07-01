@@ -35,7 +35,7 @@ public class MarketStructureSceneController {
     private GUI gui;
 
     @FXML
-    private ImageView marble1_1,marble1_2,marble1_3,marble1_4,marble2_1,marble2_2,marble2_3,marble2_4,marble3_1,marble3_2,marble3_3,marble3_4,outMarble;
+    private ImageView m00,m01,m02,m03,m10,m11,m12,m13,m20,m21,m22,m23,slideMarble;
 
     @FXML
     private Button row1Button,row2Button,row3Button,column1Button,column2Button,column3Button,column4Button,backButton;
@@ -71,6 +71,9 @@ public class MarketStructureSceneController {
     private TitledPane warningPane;
 
     @FXML
+    private Label moveNotValidLabel;
+
+    @FXML
     private Button okButton;
 
     private ArrayList<TypeResource> resourcesToStore;
@@ -83,6 +86,7 @@ public class MarketStructureSceneController {
      * When the MarketStructureScene is set, this method prepares it
      */
     public void start(){
+        moveNotValidLabel.setVisible(false);
         warningPane.setVisible(false);
         update(gui.getMarketStructureData());
         ArrayList<Button> buttons = getButtons();
@@ -103,23 +107,24 @@ public class MarketStructureSceneController {
         ImageView[][] marketStructureView=getMarketStructureView();
         for(int i=0;i<3;i++){
             for(int j=0;j<4;j++){
+                System.out.println(marketStruct.getStructure()[i][j].getColor());
                 switch(marketStructure.getStructure()[i][j].getColor()){
-                    case RED: marketStructureView[i][j].setImage(new Image("/images/market/red_marble.png"));break;
-                    case YELLOW:marketStructureView[i][j].setImage(new Image("/images/market/yellow_marble.png"));break;
-                    case BLUE:marketStructureView[i][j].setImage(new Image("/images/market/blue_marble.png"));break;
-                    case GREY:marketStructureView[i][j].setImage(new Image("/images/market/grey_marble.png"));break;
-                    case PURPLE:marketStructureView[i][j].setImage(new Image("/images/market/purple_marble.png"));break;
-                    case WHITE:marketStructureView[i][j].setImage(new Image("/images/market/white_marble.png"));break;
+                    case RED: System.out.println((i+1)+" "+(j+1)+": RED");marketStructureView[i][j].setImage(new Image("/images/market/red_marble.png"));break;
+                    case YELLOW:System.out.println((i+1)+" "+(j+1)+": YELLOW");marketStructureView[i][j].setImage(new Image("/images/market/yellow_marble.png"));break;
+                    case BLUE:System.out.println((i+1)+" "+(j+1)+": BLUE");marketStructureView[i][j].setImage(new Image("/images/market/blue_marble.png"));break;
+                    case GREY:System.out.println((i+1)+" "+(j+1)+": GREY");marketStructureView[i][j].setImage(new Image("/images/market/grey_marble.png"));break;
+                    case PURPLE:System.out.println((i+1)+" "+(j+1)+": PURPLE");marketStructureView[i][j].setImage(new Image("/images/market/purple_marble.png"));break;
+                    case WHITE:System.out.println((i+1)+" "+(j+1)+": WHITE");marketStructureView[i][j].setImage(new Image("/images/market/white_marble.png"));break;
                 }
             }
         }
         switch(marketStructure.getSlide().getColor()){
-            case RED: outMarble.setImage(new Image("/images/market/red_marble.png"));break;
-            case YELLOW:outMarble.setImage(new Image("/images/market/yellow_marble.png"));break;
-            case BLUE:outMarble.setImage(new Image("/images/market/blue_marble.png"));break;
-            case GREY:outMarble.setImage(new Image("/images/market/grey_marble.png"));break;
-            case PURPLE:outMarble.setImage(new Image("/images/market/purple_marble.png"));break;
-            case WHITE:outMarble.setImage(new Image("/images/market/white_marble.png"));break;
+            case RED: System.out.println("Slide: RED");slideMarble.setImage(new Image("/images/market/red_marble.png"));break;
+            case YELLOW:System.out.println("Slide: YELLOW");slideMarble.setImage(new Image("/images/market/yellow_marble.png"));break;
+            case BLUE:System.out.println("Slide: BLUE");slideMarble.setImage(new Image("/images/market/blue_marble.png"));break;
+            case GREY:System.out.println("Slide: GREY");slideMarble.setImage(new Image("/images/market/grey_marble.png"));break;
+            case PURPLE:System.out.println("Slide: PURPLE");slideMarble.setImage(new Image("/images/market/purple_marble.png"));break;
+            case WHITE:System.out.println("Slide: WHITE");slideMarble.setImage(new Image("/images/market/white_marble.png"));break;
         }
     }
 
@@ -130,6 +135,7 @@ public class MarketStructureSceneController {
      */
     public void chooseRowColumn(VBuyFromMarketRequestMsg msg){
         update(msg.getMarket());
+        moveNotValidLabel.setVisible(false);
         backButton.setDisable(true);
         ArrayList<Button> buttons=getButtons();
         for(Button button:buttons){
@@ -240,6 +246,7 @@ public class MarketStructureSceneController {
             getResourcesView().get(which).setDisable(false);
         }
         chooseResourcePane.setVisible(true);
+        chooseDepotPane.setVisible(false);
     }
 
     /**
@@ -314,6 +321,8 @@ public class MarketStructureSceneController {
     public void clickCoin(){
         if(!coin.isDisable()){
             resourceToStore=TypeResource.COIN;
+            resourcesToStore.remove(0);
+            resourcesToStore.add(0,resourceToStore);
             disableResources();
             chooseResourcePane.setVisible(false);
             setResourceAndLabel(resourceToStore);
@@ -329,6 +338,8 @@ public class MarketStructureSceneController {
     public void clickServant(){
         if(!servant.isDisable()){
             resourceToStore=TypeResource.SERVANT;
+            resourcesToStore.remove(0);
+            resourcesToStore.add(0,resourceToStore);
             disableResources();
             chooseResourcePane.setVisible(false);
             setResourceAndLabel(resourceToStore);
@@ -344,6 +355,8 @@ public class MarketStructureSceneController {
     public void clickShield(){
         if(!shield.isDisable()){
             resourceToStore=TypeResource.SHIELD;
+            resourcesToStore.remove(0);
+            resourcesToStore.add(0,resourceToStore);
             disableResources();
             chooseResourcePane.setVisible(false);
             setResourceAndLabel(resourceToStore);
@@ -359,6 +372,8 @@ public class MarketStructureSceneController {
     public void clickStone(){
         if(!stone.isDisable()){
             resourceToStore=TypeResource.STONE;
+            resourcesToStore.remove(0);
+            resourcesToStore.add(0,resourceToStore);
             disableResources();
             chooseResourcePane.setVisible(false);
             setResourceAndLabel(resourceToStore);
@@ -525,6 +540,7 @@ public class MarketStructureSceneController {
     public void clickDepot1(){
         if(!depot1.isDisable()){
             gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 1, gui.getUsername()));
+            moveNotValidLabel.setVisible(false);
             resourceStored =false;
         }
     }
@@ -536,6 +552,7 @@ public class MarketStructureSceneController {
     public void clickDepot2(){
         if(!depot2.isDisable()){
             gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 2, gui.getUsername()));
+            moveNotValidLabel.setVisible(false);
             resourceStored=false;
         }
     }
@@ -547,6 +564,7 @@ public class MarketStructureSceneController {
     public void clickDepot3(){
         if(!depot3.isDisable()){
             gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 3, gui.getUsername()));
+            moveNotValidLabel.setVisible(false);
             resourceStored=false;
         }
     }
@@ -558,6 +576,7 @@ public class MarketStructureSceneController {
     public void clickDepot4(){
         if(!depot4.isDisable()){
             gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 4, gui.getUsername()));
+            moveNotValidLabel.setVisible(false);
             resourceStored=false;
         }
     }
@@ -569,6 +588,7 @@ public class MarketStructureSceneController {
     public void clickDepot5(){
         if(!depot5.isDisable()){
             gui.sendMsg(new CChooseResourceAndDepotMsg("I choose the depot", resourceToStore.getThisColor(), 5, gui.getUsername()));
+            moveNotValidLabel.setVisible(false);
             resourceStored=false;
         }
     }
@@ -619,18 +639,18 @@ public class MarketStructureSceneController {
      */
     private ImageView[][] getMarketStructureView(){
         ImageView[][] marketStructureView = new ImageView[3][4];
-        marketStructureView[0][0]=marble1_1;
-        marketStructureView[0][1]=marble1_2;
-        marketStructureView[0][2]=marble1_3;
-        marketStructureView[0][3]=marble1_4;
-        marketStructureView[1][0]=marble2_1;
-        marketStructureView[1][1]=marble2_2;
-        marketStructureView[1][2]=marble2_3;
-        marketStructureView[1][3]=marble2_4;
-        marketStructureView[2][0]=marble3_1;
-        marketStructureView[2][1]=marble3_2;
-        marketStructureView[2][2]=marble3_3;
-        marketStructureView[2][3]=marble3_4;
+        marketStructureView[0][0]=m00;
+        marketStructureView[0][1]=m01;
+        marketStructureView[0][2]=m02;
+        marketStructureView[0][3]=m03;
+        marketStructureView[1][0]=m10;
+        marketStructureView[1][1]=m11;
+        marketStructureView[1][2]=m12;
+        marketStructureView[1][3]=m13;
+        marketStructureView[2][0]=m20;
+        marketStructureView[2][1]=m21;
+        marketStructureView[2][2]=m22;
+        marketStructureView[2][3]=m23;
         return marketStructureView;
     }
 
@@ -883,4 +903,6 @@ public class MarketStructureSceneController {
     public boolean isWaitMove() {
         return waitMove;
     }
+
+    public void moveNotValid(){moveNotValidLabel.setVisible(true);}
 }

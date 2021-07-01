@@ -336,7 +336,6 @@ public class ActionController extends Observable implements ControllerObserver {
 
         if (player.getUsername().equals(msg.getUsername())) {
             try {
-
                 player.buyCard(msg.getRow(), msg.getColumn(), boardManager, msg.getCardSpaceToStoreIt());
 
                 VUpdateDevTableMsg update = new VUpdateDevTableMsg("new develop table", player.getUsername(), player.calculateVictoryPoints(), player.getGameSpace().getCardSpaces(), boardManager.getDevelopmentCardTable(), boardManager.getPlayers());
@@ -391,11 +390,14 @@ public class ActionController extends Observable implements ControllerObserver {
 
 
             } catch (InvalidActionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 System.out.println("Not able to move the resource from " + msg.getFromDepot() + " depot, to " + msg.getToDepot() + " depot!");
                 VNotValidMoveMsg msg1 = new VNotValidMoveMsg("you can't move these two depots",player.getUsername());
                 notifyAllObserver(ObserverType.VIEW, msg1);
-
+                if (msg.isNextA()) {
+                    endAction = true;
+                    nextAction();
+                }
             }
         }
     }
