@@ -140,21 +140,17 @@ public class ProductionPowerController extends Observable implements ControllerO
     public void receiveMsg(CActivateProductionPowerResponseMsg msg) {
 
         boolean putResource = false;
-        //System.out.println("Receiving REQUEST OF WITCH PP");
         if (msg.getUsername().equals(player.getUsername())) {
             if (msg.getWhich() == 0) {
 
-                //System.out.println("IN REMOVING RESOURCE");
                 ArrayList<Resource> resourcesToRemove = new ArrayList<>();
                 //remove 2 resources
                 for (TypeResource r : msg.getResourcesToPay()) {
                     resourcesToRemove.add(new Resource(r.getThisColor()));
                 }
                 if (msg.getWhere().equals("warehouse")) {
-                    //System.out.println("TRY WWWW1");
                     Warehouse warehouse = player.getGameSpace().getWarehouse();
                     try {
-                        //System.out.println("TRY WWWWWWWWWWW2");
                         warehouse.removeResources(resourcesToRemove);
                         putResource = true;
                         VUpdateWarehouseMsg update = new VUpdateWarehouseMsg("removed resources from warehouse", player.getUsername(), warehouse);
@@ -168,10 +164,8 @@ public class ProductionPowerController extends Observable implements ControllerO
                     }
 
                 } else if (msg.getWhere().equals("strongbox")) {
-                    //System.out.println("TRY SSSSSSS1");
                     StrongBox strongBox = player.getGameSpace().getStrongbox();
                     try {
-                        //System.out.println("TRY SSSSSSSSS2");
                         strongBox.removeResources(resourcesToRemove);
                         VUpdateStrongboxMsg update = new VUpdateStrongboxMsg("remove resources from strong box", player.getUsername(), strongBox);
                         notifyAllObserver(ObserverType.VIEW, update);
@@ -274,10 +268,8 @@ public class ProductionPowerController extends Observable implements ControllerO
      */
     @Override
     public void receiveMsg(CStopPPMsg msg) {
-        //System.out.println("enter in STOP");
         notInterrupt = true;
         if (receivedResources != null && receivedResources.size() > 0) {
-            //System.out.println("enter in STOP2");
             receiveResources();
         }
     }

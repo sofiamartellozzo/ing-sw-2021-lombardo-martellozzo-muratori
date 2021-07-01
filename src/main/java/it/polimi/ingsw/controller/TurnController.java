@@ -111,7 +111,6 @@ public class TurnController extends Observable implements ControllerObserver {
         int index = 1;
         while (!setFirst && index<players.keySet().size()) {
             if (currentPlayer.isDisconnected()){
-                System.out.println("SERVER SEE DISCONNECTION (TURN CONTROLLER)");
                 index++;
                 currentPlayer = (Player) players.get(index);
             }
@@ -129,7 +128,6 @@ public class TurnController extends Observable implements ControllerObserver {
     private void setTurnSequence(HashMap<Integer, PlayerInterface> players) {
         turnSequence = players;
         numberOfPlayer = players.keySet().size();
-        System.out.println("number of players " + numberOfPlayer + " index " + players.keySet());
     }
 
     /**
@@ -193,7 +191,6 @@ public class TurnController extends Observable implements ControllerObserver {
      */
     public void gamePlay() throws InvalidActionException {
         //where the turn game starts
-        printTurnCMesssage("A Turn can start...");
         if (isSoloMode) {
             startSoloPlayerTurn(this.singlePlayer);
             if (singlePlayer.isDisconnected()){
@@ -203,14 +200,10 @@ public class TurnController extends Observable implements ControllerObserver {
         } else {
             boolean go = true;
             while (go) {
-                printTurnCMesssage(" is disconnected? " +currentPlayer.isDisconnected());
                 if (currentPlayer.isDisconnected()) {
-                    printTurnCMesssage("in game play");
-                    printTurnCMesssage("the p disconnected " +currentPlayer.getUsername());
                     int index = currentPlayer.getNumber();
                     index++;
                     currentPlayer = (Player) turnSequence.get(index);
-                    printTurnCMesssage("the p disconnected " +currentPlayer.getUsername());
                 }
                 else{
                     go = false;
@@ -234,7 +227,6 @@ public class TurnController extends Observable implements ControllerObserver {
      * @param player of which the turn has to start
      */
     private void startSoloPlayerTurn(SoloPlayer player) throws InvalidActionException {
-        printTurnCMesssage("The client \"" + player.getUsername() + "\" choose to play in Solo Mode, starting his turn");
         player.setPlaying(true);
         SoloPlayerTurn spt = new SoloPlayerTurn(player, this.boardManager);
         spt.removeAction(TurnAction.SEE_OTHER_PLAYER);
@@ -251,7 +243,6 @@ public class TurnController extends Observable implements ControllerObserver {
      */
     private void startPlayerTurn(Player player) {
         currentPlayer = player;
-        printTurnCMesssage("New Turn for \"" + player.getUsername() + "\" is ready to start");
         player.setPlaying(true);
         PlayerTurn pt = new PlayerTurn(player, this.boardManager);
         currentTurnIstance = pt;
@@ -329,7 +320,6 @@ public class TurnController extends Observable implements ControllerObserver {
      */
     private void checkEndGame() {
         //check the conditions fot the last turn of the game
-        printTurnCMesssage("CHECK end Game in Turn Controller ❀");
         if (!isSoloMode) {
 
                         //MULTIPLAYER MODE
@@ -375,9 +365,6 @@ public class TurnController extends Observable implements ControllerObserver {
         }
     }
 
-    private void printTurnCMesssage(String messageToPrint) {
-        System.out.println("[Turn Controller]: " +messageToPrint);
-    }
 
     /*------------------------------------------------------------------------------------------------------------------*/
 
@@ -397,7 +384,6 @@ public class TurnController extends Observable implements ControllerObserver {
             checkIfFirstAction();
 
             if (!msg.getActionChose().equals(TurnAction.END_TURN)) {
-                printTurnCMesssage("New action of the game");
 
                 /* create the controller to handle the specific action of the turn */
                 ActionController controller = null;
@@ -407,7 +393,6 @@ public class TurnController extends Observable implements ControllerObserver {
                     controller = new ActionController(singlePlayer, currentSoloTurnIstance, boardManager, virtualView);
                 }
                 this.actionController = controller;
-                //System.out.println("HERE ACTION CONTROLLER: " + actionController);        //DEBUG
 
                 //attach it as an observer
                 attachObserver(ObserverType.CONTROLLER, controller);
@@ -422,7 +407,6 @@ public class TurnController extends Observable implements ControllerObserver {
                 } else {
                     callRightAction();
                     /*
-                    System.out.println("Number of last turns: " +numberOfLastTurn);
 
                     if (numberOfLastTurn > 0) {
                         numberOfLastTurn--;    //decrease the number of players that have to play
@@ -451,7 +435,6 @@ public class TurnController extends Observable implements ControllerObserver {
         if (!lastTurns) {
             nextTurn();
         } else {
-            System.out.println("Number of last turns: " +numberOfLastTurn);
 
             if (numberOfLastTurn > 0) {
                 numberOfLastTurn--;    //decrease the number of players that have to play
@@ -583,49 +566,38 @@ public class TurnController extends Observable implements ControllerObserver {
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
         PlayerInterface playerDisconnected = getPlayerByUsername(msg.getUsernameDisconnected());
-        System.out.println("IN TURN CONTROLLER: received disconn Msg ");      //DEBUG
         if (playerDisconnected != null) {
             //check if the client disconnected is currently playing
-            System.out.println("NAME disconnected: " + playerDisconnected.getUsername());
             playerDisconnected.setDisconnected(true);
             if (!isSoloMode) {
                 //notify all players about one disconnected
                 notifyAllObserver(ObserverType.VIEW, msg);
             }
-            System.out.println(playerDisconnected.isDisconnected());
-            System.out.println(playerDisconnected.isPlaying());
-            System.out.println(actionController != null);
             if (playerDisconnected.isPlaying() ) {
-                System.out.println("not here.......$$$$$");       //DEBUG
 
                 if (actionController != null){
                     detachObserver(ObserverType.CONTROLLER, actionController);
                     actionController = null;
                 }
                 playerDisconnected.setPlaying(false);
-                System.out.println(isSoloMode);
                 if (isSoloMode) {
                     //solo mode, wait until a reconnection
-                    System.out.println("Disconnect SOLO MODE");
                     VStartWaitReconnectionMsg wait = new VStartWaitReconnectionMsg("a client disconnected so wait until a reconnection", singlePlayer.getUsername());
                     notifyAllObserver(ObserverType.VIEW, wait);
                     detachObserver(ObserverType.VIEW, virtualView.get(singlePlayer.getUsername()));
                     virtualView.remove(singlePlayer.getUsername());
                 } else if (!isSoloMode && allDisconnected()) {
-                    System.out.println("ALL PLAYERS DISCONNECTED");
                     VStartWaitReconnectionMsg wait = new VStartWaitReconnectionMsg("all client disconnected so wait until one (or more) reconnection", playerDisconnected.getUsername());
                     notifyAllObserver(ObserverType.VIEW, wait);
                     detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
                     virtualView.remove(playerDisconnected.getUsername());
                 } else {
-                    System.out.println("Only one disconnected, game still ON");
                     detachObserver(ObserverType.VIEW, virtualView.get(playerDisconnected.getUsername()));
                     virtualView.remove(playerDisconnected.getUsername());
                     nextTurn();
                 }
             } else {
                 if (!isSoloMode && allDisconnected()) {
-                    System.out.println("ALL PLAYERS DISCONNECTED");
                     VStartWaitReconnectionMsg wait = new VStartWaitReconnectionMsg("all client disconnected so wait until one (or more) reconnection", playerDisconnected.getUsername());
                     notifyAllObserver(ObserverType.VIEW, wait);
                 }
@@ -639,8 +611,6 @@ public class TurnController extends Observable implements ControllerObserver {
             //playerDisconnected.setPlaying(false);
             //playerDisconnected.setDisconnected(true);
 
-            System.out.println(virtualView);
-            System.out.println(playerDisconnected.isDisconnected());
         }
     }
 

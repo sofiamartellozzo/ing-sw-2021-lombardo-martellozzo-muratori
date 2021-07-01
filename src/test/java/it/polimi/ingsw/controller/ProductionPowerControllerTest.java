@@ -117,7 +117,6 @@ public class ProductionPowerControllerTest extends TestCase {
         assertSame(expectedWarehouse.size(),warehouse.getDepots().size());
         for(int i=0;i<warehouse.getDepots().size();i++){
             Depot depot = warehouse.getDepots().get(i);
-            System.out.println("Depot "+(i+1));
             assertEquals(expectedWarehouse.get(i).size(),depot.getResources().size());
             assertEquals(expectedWarehouse.get(i).isEmpty(),depot.getResources().isEmpty());
             if(!depot.getResources().isEmpty()){

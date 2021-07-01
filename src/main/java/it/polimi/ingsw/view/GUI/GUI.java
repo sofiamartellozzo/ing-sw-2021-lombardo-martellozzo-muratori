@@ -187,7 +187,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VRoomSizeRequestMsg msg) {
-        System.out.println(msg.toString());
         Platform.runLater(()->{
             try {
                 roomSizeRequest(msg.getRoomID());
@@ -226,7 +225,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VRoomInfoMsg msg) {
-        System.out.println(msg.toString());
         Platform.runLater(()-> {
             lobbySceneController.updateLobby(msg);
             changeScene(lobbyScene);
@@ -297,7 +295,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
-        System.out.println(msg.toString());
         player = msg.getPlayer();
         boardManager = msg.getBoardManager();
         marketStructureData = msg.getBoardManager().getMarketStructure();
@@ -346,7 +343,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VChooseResourceAndDepotMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
             if(stage.getScene().equals(initializeScene)) {
                 initializeSceneController.setResourceToReceive(msg.getNumberOfResources());
@@ -364,7 +360,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VNotValidDepotMsg msg) {
-        System.out.println(msg.toString());
             if(stage.getScene().equals(initializeScene)){
                 initializeSceneController.chooseDepot(msg);
             }else if(stage.getScene().equals(marketStructureScene)||stage.getScene().equals(personalBoardScene)){
@@ -378,12 +373,10 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VChooseLeaderCardRequestMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
             if (msg.getWhatFor().equals("initialization")) {
                 initializeSceneController.chooseLeaderCard(msg);
             }else if(msg.getWhatFor().equals("active")||msg.getWhatFor().equals("remove")){
-                System.out.println(msg.getWhatFor());
                 personalBoardSceneController.chooseLeaderCard(msg);
             }
         }
@@ -396,7 +389,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
             initializeSceneController.showWaitPane();
         }
@@ -408,7 +400,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-        System.out.println(msg.toString());
         Platform.runLater(()-> changeScene(personalBoardScene));
     }
 
@@ -446,7 +437,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VChooseActionTurnRequestMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             if(stage.getScene().equals(initializeScene)){
                 Platform.runLater(()->changeScene(personalBoardScene));
@@ -464,7 +454,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VAnotherPlayerInfoMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsernameAsking().equals(username)){
             otherPersonalBoardSceneController.update(msg.getPlayer());
             seeOtherPersonalBoard();
@@ -478,7 +467,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VWhichPlayerRequestMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             personalBoardSceneController.chooseOtherPlayer(msg.getOtherPlayers());
         }
@@ -491,7 +479,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VBuyFromMarketRequestMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             seeMarketBoard();
             marketStructureSceneController.chooseRowColumn(msg);
@@ -504,7 +491,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VUpdateMarketMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             marketStructureData=msg.getMarketUpdate();
             marketStructureSceneController.update(msg.getMarketUpdate());
@@ -517,7 +503,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VUpdateFaithTrackMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             faithTrack=msg.getFaithTrack();
             personalBoardSceneController.updateFaithTrackView(msg.getFaithTrack());
@@ -532,7 +517,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VChooseDevelopCardRequestMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             seeDevCardTable();
             devCardTableSceneController.choose(msg);
@@ -546,7 +530,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VNotValidCardSpaceMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             seeDevCardTable();
             devCardTableSceneController.chooseCardSpace(msg);
@@ -559,7 +542,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VUpdateDevTableMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             developmentCardTable=msg.getUpdateTable();
             devCardTableSceneController.update(msg.getUpdateTable());
@@ -585,7 +567,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VMoveResourceRequestMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(getUsername())) {
             personalBoardSceneController.chooseDepots();
         }
@@ -599,7 +580,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VChooseDepotMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             marketStructureSceneController.setResourcesToStore(msg.getResourceToStore());
             marketStructureSceneController.setWhiteSpecial(msg.getWhiteSpecialResources());
@@ -614,7 +594,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VLorenzoIncreasedMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
             personalBoardSceneController.setLabelText(personalBoardSceneController.getActionLabel(),"Lorenzo's faithmarker has increased");
             personalBoardSceneController.updateBlackFaithMarkerView(msg.getPlayer().getGameSpace());
@@ -629,7 +608,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VActivateProductionPowerRequestMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             personalBoardSceneController.choosePP(msg);
         }
@@ -641,7 +619,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VUpdateStrongboxMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             strongBox=msg.getStrongBox();
             personalBoardSceneController.updateStrongBoxView(msg.getStrongBox());
@@ -655,7 +632,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VShowEndGameResultsMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getWinnerUsername().equals(username)) {
             try {
                 setEndGameScene();
@@ -693,7 +669,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VAskNewGameMsg msg) {
-        System.out.println(msg.toString());
         endGameSceneController.askNewGame();
     }
 
@@ -703,7 +678,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-        System.out.println(msg.toString());
         personalBoardSceneController.setWarningPane(msg);
     }
 
@@ -713,7 +687,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VUpdateLeaderCards msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             leaderCards=msg.getLeaderCards();
             personalBoardSceneController.updateLeaderCards(msg.getLeaderCards());
@@ -726,7 +699,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VUpdateCardSpaces msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             cardSpaces=msg.getCardSpaces();
             personalBoardSceneController.updateCardSpacesView(msg.getCardSpaces());
@@ -735,7 +707,6 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VNotValidMoveMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
             if(personalBoardSceneController.getAction()!=null && personalBoardSceneController.getAction().equals(BUY_FROM_MARKET)){
                 marketStructureSceneController.setResourceStored(false);
@@ -755,7 +726,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VActionTokenActivateMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             personalBoardSceneController.updateLastActionToken(msg);
         }
@@ -767,7 +737,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VServerUnableMsg msg) {
-        System.out.println(msg.toString());
         serverAvailable=false;
         if(stage.getScene().equals(personalBoardScene)){
             personalBoardSceneController.setWarningPane(msg);
@@ -792,7 +761,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VWaitYourTurnMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             personalBoardSceneController.showWaitPane();
             if(!stage.getScene().equals(personalBoardScene)){
@@ -814,7 +782,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsername().equals(username)){
             warehouse=msg.getWarehouse();
             personalBoardSceneController.updateWarehouseView(msg.getWarehouse());
@@ -877,7 +844,6 @@ public class GUI extends Application implements ViewObserver {
      */
     @Override
     public void receiveMsg(VNackConnectionRequestMsg msg) {
-        System.out.println(msg.toString());
         switch(msg.getErrorInformation()){
             case "USER_NOT_VALID":  // if the username is already taken, the player has to insert a new one
                 getIntroSceneController().userNotValid();
@@ -903,7 +869,6 @@ public class GUI extends Application implements ViewObserver {
 
     @Override
     public void receiveMsg(VNotifyPositionIncreasedByMsg msg) {
-        System.out.println(msg.toString());
         if(msg.getUsernameIncreased().equals(username)){
             personalBoardSceneController.setLabelText(personalBoardSceneController.getActionLabel(),"Your faithmarker has increased");
         }else {
@@ -1014,31 +979,26 @@ public class GUI extends Application implements ViewObserver {
     @Override
     public void receiveMsg(CVStartInitializationMsg msg){
         //Message not used here
-        System.out.println(msg.toString());
     }
 
     @Override
     public void receiveMsg(VResourcesNotFoundMsg msg) {
         //Message not used here
-        System.out.println(msg.toString());
     }
 
     @Override
     public void receiveMsg(CCloseRoomMsg msg) {
         //Message not used here
-        System.out.println(msg.toString());
     }
 
     @Override
     public void receiveMsg(VStartWaitReconnectionMsg msg) {
         //Message not used here
-        System.out.println(msg.toString());
     }
 
     @Override
     public void receiveMsg(VStopWaitReconnectionMsg msg) {
        // Message not used here
-        System.out.println(msg.toString());
     }
 }
 

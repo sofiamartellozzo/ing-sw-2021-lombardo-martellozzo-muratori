@@ -130,7 +130,6 @@ public class ActionController extends Observable implements ControllerObserver {
 
         switch (msg.getActionChose()) {
             case BUY_CARD:
-                System.out.println("enter in buy card of action controller");
                 //I need the input from the real player (person)
                 //from boardManager.getAvailable
 
@@ -173,7 +172,6 @@ public class ActionController extends Observable implements ControllerObserver {
                 //is inactive, otherwise send a msg that this action can't be made
                 //player.
                 //and remove from the possible action
-                System.out.println("choice of removing leader card");
                 ArrayList<Integer> possibleCardToBeDiscarded = cardAbleForPlayer();
                 VChooseLeaderCardRequestMsg request4 = new VChooseLeaderCardRequestMsg("Because you chose to discard a card, select which one", possibleCardToBeDiscarded, player.getUsername(), "remove");
                 notifyAllObserver(ObserverType.VIEW, request4);
@@ -188,7 +186,6 @@ public class ActionController extends Observable implements ControllerObserver {
             case SEE_OTHER_PLAYER:
                 //ask the player which palyer wants to see
                 VWhichPlayerRequestMsg message = new VWhichPlayerRequestMsg("", player.getUsername(), getNotPlaying());
-                System.out.println(message);
                 notifyAllObserver(ObserverType.VIEW, message);
             case END_TURN:
                 this.player.endTurn();
@@ -207,11 +204,8 @@ public class ActionController extends Observable implements ControllerObserver {
         ArrayList<Integer> possibleCardToBeDiscarded = new ArrayList<>();
         ArrayList<LeaderCard> leaderCards = this.player.getLeaderCards();
         if (leaderCards != null) {
-            //System.out.println("bug2");       DEBUGGING
             for (LeaderCard card : leaderCards) {
-                //System.out.println("bug3");           DEBUGGING
                 if (card.getState() instanceof Inactive) {
-                    //System.out.println(card.getCardID());     DEBUGGING
                     possibleCardToBeDiscarded.add(card.getCardID());
                 }
             }
@@ -320,7 +314,6 @@ public class ActionController extends Observable implements ControllerObserver {
             //I do not check if is or not in Solo Mode because this action is possible only in Multiplayer mode
             if (!player.getUsername().equals(p.getUsername())) {
                 players.add(p.getUsername());
-                //System.out.println(players);
             }
         }
         return players;
@@ -352,7 +345,6 @@ public class ActionController extends Observable implements ControllerObserver {
                 nextAction();
 
             } catch (InvalidActionException e) {
-                System.out.println("Cannot buy this card, sorry!");
                 e.printStackTrace();
             } catch (CardSpaceException e) {
 
@@ -378,10 +370,8 @@ public class ActionController extends Observable implements ControllerObserver {
         if (player.getUsername().equals(msg.getUsername())) {
             try {
                 player.moveResource(msg.getFromDepot(), msg.getToDepot());
-                System.out.println("the move went successfully!!");
                 VUpdateWarehouseMsg notification = new VUpdateWarehouseMsg("The warehouse has changed..", player.getUsername(), player.getGameSpace().getWarehouse());
                 notifyAllObserver(ObserverType.VIEW, notification);
-                System.out.println(notification);
 
                 if (msg.isNextA()) {
                     endAction = true;
@@ -391,7 +381,6 @@ public class ActionController extends Observable implements ControllerObserver {
 
             } catch (InvalidActionException e) {
                 //e.printStackTrace();
-                System.out.println("Not able to move the resource from " + msg.getFromDepot() + " depot, to " + msg.getToDepot() + " depot!");
                 VNotValidMoveMsg msg1 = new VNotValidMoveMsg("you can't move these two depots",player.getUsername());
                 notifyAllObserver(ObserverType.VIEW, msg1);
             }
@@ -447,10 +436,8 @@ public class ActionController extends Observable implements ControllerObserver {
                                     this.boardManager.getPlayers().get(i).getGameSpace().getFaithTrack().doVaticanReport(section);
                                 }
                             }
-                            System.out.println(player.getGameSpace().getFaithTrack().getPositionFaithMarker());
                         } else {
                             soloPlayerTurn.getCurrentPlayer().increasePosition();
-                            System.out.println(soloPlayerTurn.getCurrentPlayer().getGameSpace().getFaithTrack().getPositionFaithMarker());
                         }
 
                         VUpdateFaithTrackMsg notification1 = new VUpdateFaithTrackMsg("because of a red marble, this player increased his position", player.getUsername(), player.getGameSpace().getFaithTrack());
@@ -458,7 +445,6 @@ public class ActionController extends Observable implements ControllerObserver {
                         Map<Integer, PlayerInterface> players = boardManager.getPlayers();
                         notification.setAllPlayerToNotify(getPlayerAsList(players));
                         notifyAllObserver(ObserverType.VIEW, notification1);
-                        System.out.println(notification1.getFaithTrack().getPopesFavorTiles().get(0).getState());
                         notifyAllObserver(ObserverType.VIEW, notification);
 
                         if (numberResourcesFromM == resourcesToStore.size() && !sent) {
@@ -507,7 +493,6 @@ public class ActionController extends Observable implements ControllerObserver {
 
             } catch (InvalidActionException e) {
                 e.printStackTrace();
-                System.out.println("Something went wrong in buying from the market...");
             }
         }
     }
@@ -561,7 +546,6 @@ public class ActionController extends Observable implements ControllerObserver {
             for (PlayerInterface p : boardManager.getPlayers().values()) {
                 if (p.getUsername().equals(msg.getUsernameAsked())) {
                     VAnotherPlayerInfoMsg info = new VAnotherPlayerInfoMsg("", p, boardManager, player.getUsername());
-                    System.out.println(info);
                     notifyAllObserver(ObserverType.VIEW, info);
                 }
             }
@@ -585,7 +569,6 @@ public class ActionController extends Observable implements ControllerObserver {
                     //if the player ask to active it
                     try {
                         if (!isSolo) {
-                            //System.out.println(" in active multiplayer ");        DEBUG
                             turn.activeLeaderCard(msg.getLeaderCards().get(0));
                             VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("activating a Leader Card your Victory points has changed", player.getUsername(), player.calculateVictoryPoints());
                             notifyAllObserver(ObserverType.VIEW, update);
@@ -594,7 +577,6 @@ public class ActionController extends Observable implements ControllerObserver {
                             VSendPlayerDataMsg allData = new VSendPlayerDataMsg("all new info", player, boardManager, false);
                             notifyAllObserver(ObserverType.VIEW, allData);
                         } else {
-                            //System.out.println(" in active1 ");           DEBUG
                             soloPlayerTurn.activeLeaderCard(msg.getLeaderCards().get(0));
                             VUpdateVictoryPointsMsg update = new VUpdateVictoryPointsMsg("activating a Leader Card your Victory points has changed", soloPlayerTurn.getCurrentPlayer().getUsername(), soloPlayerTurn.getCurrentPlayer().calculateVictoryPoints());
                             notifyAllObserver(ObserverType.VIEW, update);
@@ -608,7 +590,6 @@ public class ActionController extends Observable implements ControllerObserver {
                         nextAction();
                     } catch (InvalidActionException e) {
                         e.printStackTrace();
-                        System.out.println("Cannot active " + msg.getLeaderCards().get(0) + " Leader Card!");
                     } finally {
                         endAction = true;
                     }
@@ -647,7 +628,6 @@ public class ActionController extends Observable implements ControllerObserver {
                     //not handled here
                     break;
                 default:
-                    System.out.println("error, action not valid in the msg!");
                     break;
             }
             VUpdateLeaderCards request = new VUpdateLeaderCards("Update leader cards",player.getUsername(),player.getLeaderCards());
@@ -761,7 +741,6 @@ public class ActionController extends Observable implements ControllerObserver {
             if (!isSolo) {
                 VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("Make your move: \uD83D\uDE09", player.getUsername(), turn.getAvailableAction());
                 notifyAllObserver(ObserverType.VIEW, msg);
-                //System.out.println("next action");        DEBUG
             } else {
                 VChooseActionTurnRequestMsg msg = new VChooseActionTurnRequestMsg("Make your move: \uD83D\uDE09", player.getUsername(), soloPlayerTurn.getAvailableAction());
                 notifyAllObserver(ObserverType.VIEW, msg);

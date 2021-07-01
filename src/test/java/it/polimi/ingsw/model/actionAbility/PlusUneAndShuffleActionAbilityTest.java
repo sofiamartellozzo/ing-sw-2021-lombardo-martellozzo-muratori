@@ -36,14 +36,8 @@ public class PlusUneAndShuffleActionAbilityTest extends TestCase {
         SoloPersonalBoard soloPersonalBoard = personalSoloBoardFactory.createGame();
         player.setGameSpace(soloPersonalBoard);
         for (ActionToken actionToken: player.getGameSpace().getActionTokens()) {
-            System.out.println(actionToken.toString());
         }
         a.activeAbility(boardManager, player);
-
-        System.out.println("---------");
-        for (ActionToken actionToken: player.getGameSpace().getActionTokens()) {
-            System.out.println(actionToken.toString());
-        }
 
         assertEquals(1, player.getGameSpace().getLorenzoIlMagnifico().getPosition());
     }

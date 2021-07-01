@@ -88,7 +88,6 @@ public class ClientHandler extends Observable implements Runnable {
                 /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the controller*/
                 if (received != null) {
                     if ((received instanceof PongMsg)) {
-                        System.out.println(((PongMsg) received).getMsgContent() + " from: " + threadId);
                     } else {
                         msgReceived = (GameMsg) received;
                         //add msg in the queue
@@ -170,7 +169,6 @@ public class ClientHandler extends Observable implements Runnable {
     }
 
     public void startWaitReconnection() {
-        System.out.println("START THREAD WAITING");
         notifyDisconnectionTimer = new Timer();
         notifyDisconnectionTimer.schedule(new DisconnectHandler(this), TIMER);
     }
@@ -209,7 +207,6 @@ public class ClientHandler extends Observable implements Runnable {
             if (!closeBecauseEnded) {
                 CClientDisconnectedMsg notification = new CClientDisconnectedMsg("the client is not reachable anymore", virtualView.getUsername());
                 notifyAllObserver(ObserverType.CONTROLLER, notification);
-                System.out.println("DEBUG HAHAHAHHAHA");
             }
             clientSocket.close();
         } catch (IOException e) {

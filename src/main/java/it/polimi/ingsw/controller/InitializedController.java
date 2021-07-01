@@ -62,7 +62,6 @@ public class InitializedController extends Observable implements ControllerObser
 
         this.canStart = false;
         this.numberOfPlayer = players.size();
-        //System.out.println(players.size());       DEBUGGING
         this.turnSequence = new HashMap<>();
         this.virtualView = new HashMap<>();
         this.virtualView = virtualView;
@@ -111,7 +110,6 @@ public class InitializedController extends Observable implements ControllerObser
             for (Player p: realPlayers) {
                 if (p.getUsername().equals(players.get(i))){
                     turnSequence.put(i+1, p);
-                    System.out.println("[Init Controller]: " +turnSequence.get(i+1).getUsername());
                 }
             }
         }
@@ -146,7 +144,6 @@ public class InitializedController extends Observable implements ControllerObser
         //create the board manager
         BoardManagerFactory boardManagerFactory = new BoardManagerFactory();
         boardManager = boardManagerFactory.createBoardManager(turnSequence);
-        System.out.println("in INITIALIZEDC " + boardManager.toString());
 
         if (numberOfPlayer == 1) {
             /*initialized solo Mode*/
@@ -240,10 +237,8 @@ public class InitializedController extends Observable implements ControllerObser
      * @throws InvalidActionException
      */
     private void giveStartResources() throws InvalidActionException {
-        //System.out.println("giving the resources to the second player outside");      DEBUGGING
         if (this.turnSequence.get(2) != null) {
             //the second player receive one resources that he choose
-            //System.out.println("giving the resources to the second player inside");       DEBUGGING
                 //send wait mag to the first player
             VWaitOtherPlayerInitMsg firstWait = new VWaitOtherPlayerInitMsg("", turnSequence.get(1).getUsername());
             notifyAllObserver(ObserverType.VIEW, firstWait);
@@ -252,7 +247,6 @@ public class InitializedController extends Observable implements ControllerObser
             notifyAllObserver(ObserverType.VIEW, msg1);
 
             if (this.turnSequence.get(3) != null) {
-                //System.out.println("giving the resources to the 3 player inside");        DEBUGGING
                 //the third player receive one resource and a faith marker(so increase of one his position)
                 VChooseResourceAndDepotMsg msg2 = new VChooseResourceAndDepotMsg("You are the third player, please select a resource and the depot where you want to store it (1, 2 or 3) !", this.turnSequence.get(3).getUsername(),1);
                 notifyAllObserver(ObserverType.VIEW, msg2);
@@ -335,13 +329,10 @@ public class InitializedController extends Observable implements ControllerObser
      */
     @Override
     public void receiveMsg(CChooseLeaderCardResponseMsg msg) {
-        //System.out.println("in receiving the 2 cards chosen ");       DEBUGGING
         counterPlayerInitialized++;
-        System.out.println(counterPlayerInitialized);           //DEBUGGING
         if (msg.getAction().equals("firstChoose")) {
             //take all the Integer for Leader Card
             ArrayList<Integer> twoChosen = msg.getLeaderCards();
-            //System.out.println("the 2 cards chosen " + twoChosen);
             ArrayList<LeaderCard> chosenCards = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
                 if (boardManager.getAllLeaderCard().contains(twoChosen.get(i))) {
@@ -350,14 +341,11 @@ public class InitializedController extends Observable implements ControllerObser
                     chosenCards.add(chosen);
                 }
             }
-            //System.out.println("the 2 cards chosen " + chosenCards);
             //take the player that choose the cards
             if (numberOfPlayer == 1) {
-                System.out.println("EIEIEIEIIEIEIEI");
                 singlePlayer.setLeaderCards(chosenCards);
                 VUpdateLeaderCards request = new VUpdateLeaderCards("Update leader cards",singlePlayer.getUsername(), singlePlayer.getLeaderCards());
                 notifyAllObserver(ObserverType.VIEW,request);
-                //System.out.println("the 2 cards chosen now in player " + singlePlayer.getLeaderCards());
             } else {
                 PlayerInterface player = null;
                 try {
@@ -368,19 +356,15 @@ public class InitializedController extends Observable implements ControllerObser
                 player.setLeaderCards(chosenCards);
                 VUpdateLeaderCards request = new VUpdateLeaderCards("Update leader cards",player.getUsername(), player.getLeaderCards());
                 notifyAllObserver(ObserverType.VIEW,request);
-                //System.out.println("the 2 cards chosen now in player " + player.getLeaderCards());
             }
 
             //now remove the card from the deck
             boardManager.getLeaderCardDeck().remove(chosenCards);
             if (counterPlayerInitialized == numberOfPlayer) {
-                System.out.println("enter in can start!!!!");
                 //now the came can start... Create the turn controller
                 canStart = true;
-                System.out.println(getPlayersAsList());
                 CGameCanStartMsg startGame = new CGameCanStartMsg("", getPlayersAsList());
                 notifyAllObserver(ObserverType.VIEW, startGame);
-                //System.out.println(startGame);
             } else {
                 VWaitOtherPlayerInitMsg wait = new VWaitOtherPlayerInitMsg("", msg.getUsername());
                 notifyAllObserver(ObserverType.VIEW, wait);
@@ -403,7 +387,6 @@ public class InitializedController extends Observable implements ControllerObser
     public void receiveMsg(CChooseResourceAndDepotMsg msg) {
         //find the player by username
         counterResourcesChosen++;
-        System.out.println("inizial resource: " +counterResourcesChosen);
         Resource r = new Resource(msg.getResource());
         if (singlePlayer == null) {
             Player player = null;

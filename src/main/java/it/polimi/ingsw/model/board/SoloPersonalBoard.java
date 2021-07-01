@@ -48,7 +48,6 @@ import java.util.*;
         this.lorenzoIlMagnifico.increasePosition();
         int section= checkInvokeVaticanReport();
         if (section != 0){
-            System.out.println("KKKKKK");
             faithTrack.doVaticanReport(section);
         }
     }

@@ -266,11 +266,8 @@ public class Lobby extends Observable implements ControllerObserver {
      * @return true if the controller can start, false otherwise
      */
     public boolean canInitializeGameFor(String username) {
-        System.out.println(usersAssigned.toString());
         if (usersAssigned.contains(username)) {
             //the user has been assigned to a Room
-            System.out.println("PLEASEEEE");
-            System.out.println(usersAssigned.toString());
             Room userRoom = null;
             try {
                 //find his room
@@ -308,7 +305,6 @@ public class Lobby extends Observable implements ControllerObserver {
      * @param username
      */
     public void startInitializationOfTheGame(String username) {
-        System.out.println("START IN LOBBY");
         try {
             findUserRoom(username).initializedGame();
         } catch (NotFreeRoomAvailableError | InvalidActionException error) {
@@ -335,26 +331,20 @@ public class Lobby extends Observable implements ControllerObserver {
     public void receiveMsg(CConnectionRequestMsg msg) {
         String gameMode = msg.getGameSize();
         String convertedGameMode = convertStringForMode(gameMode);
-        System.out.println("[Lobby] request of a connection from: " + msg.getIP() + " on @" + msg.getPort() + " given  \"" + msg.getUsername() + "\" as username " +
-                "asking for playing in " + convertedGameMode + " Game!");
 
-        printLobbyMsg(usersAssigned.toString());
 
         //check if the username is not used yet
         if (usersAssigned.contains(msg.getUsername())) {
             //check if is a user disconnected that is trying to reconnect
             try {
                 Room room = findUserRoom(msg.getUsername());
-                printLobbyMsg(room.getPlayerByUsername(msg.getUsername()).getUsername());
                 if (room.getPlayerByUsername(msg.getUsername())!=null && room.getPlayerByUsername(msg.getUsername()).isDisconnected() && room.checkGameModeReconnection(msg.getGameSize())) {
-                    System.out.println("IN LOBBY found player disconnected!!");
                     room.reconnectPlayer(msg.getUsername(), msg.getVV());
                     msg.getVV().setReconnected(true);
                     detachObserver(ObserverType.VIEW, room.getListOfVirtualView().get(msg.getUsername()));
                 } else {
                     //username used yet
                     sendNackConnectionRequest(msg, "USER_NOT_VALID");
-                    System.out.println("Error, username \"" + msg.getUsername() + "\" not valid because is taken already");
                 }
             } catch (NotFreeRoomAvailableError error) {
                 error.printStackTrace();
@@ -375,7 +365,6 @@ public class Lobby extends Observable implements ControllerObserver {
                             VRoomInfoMsg requestMsg = new VRoomInfoMsg("You have been added to the room", room.getPlayersId(), room.getRoomID(), room.getNumberOfPlayer(), room.getSIZE());
                             notifyAllObserver(ObserverType.VIEW, requestMsg);
                         }
-                        //System.out.println("user added: " +room.getPlayersId().get(1));
                     }
                 } catch (NotFreeRoomAvailableError | LimitExceededException e) {
                     e.printStackTrace();
@@ -383,18 +372,14 @@ public class Lobby extends Observable implements ControllerObserver {
             } else if (!creatingRoomLock.isLocked()) {
                 //all occupied room are full but one can be created, or Solo Mode
                 if (gameMode.equals("0") || canCreateRoom.get()) {
-                    System.out.println("HHHHHHH");
-                    System.out.println(usersAssigned.toString());
                     createNewRoom(msg.getUsername(), gameMode, msg.getVV());
                 }
             } else if (this.numberOfRooms == MAX_NUMBER_ROOM) {
                 //all rooms are full and is not possible to create a new room
                 sendNackConnectionRequest(msg, "FULL_SIZE");
-                System.out.println("Error: all rooms are Full, Sorry try later!");
             } else if (!canCreateRoom.get()) {
                 //if you arrived here this means that all rooms are occupied but the server is not full (#room==16) so the reason is that someone else is creating a new room
                 sendNackConnectionRequest(msg, "WAIT");
-                System.out.println("Error: someone else is creating a room, please wait a few seconds!");
             }
         }
     }
@@ -420,7 +405,6 @@ public class Lobby extends Observable implements ControllerObserver {
      */
     @Override
     public void receiveMsg(CRoomSizeResponseMsg msg) {
-        //System.out.println("setting size room in Lobby");         DEBUGGING
         String roomId = msg.getRoomID();
         Room room = findRoomByID(roomId);
         if (room != null) {
@@ -483,13 +467,10 @@ public class Lobby extends Observable implements ControllerObserver {
      */
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
-        //System.out.println(" try found room ");
         try {
             Room room = findUserRoom(msg.getPlayers().get(0));
-            //System.out.println("found room " + room);
             room.startFirstTurn();
             room.detachInitializedC();
-            //room.notifyAllObserver(ObserverType.CONTROLLER, msg);
         } catch (NotFreeRoomAvailableError | InvalidActionException error) {
             error.printStackTrace();
         }
@@ -646,7 +627,6 @@ public class Lobby extends Observable implements ControllerObserver {
      */
     @Override
     public void receiveMsg(CClientDisconnectedMsg msg) {
-        System.out.println("DISCONNECT IN LOBBY");
         //send to TurnController by Room, to set him disconnected
         try {
             Room room = findUserRoom(msg.getUsernameDisconnected());
@@ -676,13 +656,9 @@ public class Lobby extends Observable implements ControllerObserver {
             room.removeVV();
             //remove the room from the not empty ones
             idRoomToUse.add(room.getIntId());
-            System.out.println("Remove this Room in LOBBY: " +room);
-            System.out.println(idRoomToUse);
-            System.out.println(numberOfRooms);
             notEmptyRoom.remove(room);
             updateRoomCounter();
 
-            System.out.println(numberOfRooms);
             canCreateRoom.set(true);
 
         } catch (NotFreeRoomAvailableError error) {
@@ -776,10 +752,6 @@ public class Lobby extends Observable implements ControllerObserver {
                 return "Multiplayer Mode";
         }
         return null;
-    }
-
-    private void printLobbyMsg(String message){
-        System.out.println("[LOBBY]: " +message);
     }
 
 

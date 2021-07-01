@@ -85,7 +85,6 @@ public class ResourceManager implements Serializable {
      * @throws InvalidActionException -> If one of the conditions is not respected
      */
     public void removeResourcesFromBoth(ArrayList<Resource> resources) throws InvalidActionException {
-        System.out.println("XXX");
         if(!resources.isEmpty()){
 
             if(!checkEnoughResources(resources)) throw new InvalidActionException("The warehouse or the strongbox don't contain some resources!");
@@ -94,7 +93,6 @@ public class ResourceManager implements Serializable {
             for(Resource resource: resources) {
                 int found = warehouse.searchResource(resource);
                 if (found!=-1){
-                    System.out.println("FOUND THE DEPOT ????? "+found);   //DEBUGGING
                     warehouse.removeResource(found);
                 }else{
                     removeFromStrongBox.add(resource);

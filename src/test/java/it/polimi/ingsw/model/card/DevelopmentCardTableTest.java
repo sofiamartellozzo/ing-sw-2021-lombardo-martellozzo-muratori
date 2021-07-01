@@ -286,8 +286,6 @@ public class DevelopmentCardTableTest extends TestCase {
                     expected[row][column]=true;
                 }
                 if(expected[row][column]!=developmentCardTable.getAvailable(player)[row][column]){
-                    System.out.println((row+1)+" "+(column+1));
-                    System.out.println(developmentCardTable.getTable()[row][column].getUpperCard().getId());
                     int coin=0;
                     int shield=0;
                     int servant=0;
@@ -303,11 +301,6 @@ public class DevelopmentCardTableTest extends TestCase {
                             stone++;
                         }
                     }
-                    System.out.println("COIN: "+coin);
-                    System.out.println("SHIELD: "+shield);
-                    System.out.println("SERVANT: "+servant);
-                    System.out.println("STONE: "+stone);
-                    System.out.println("ENOUGH RESOURCES: "+player.getGameSpace().getResourceManager().checkEnoughResources(developmentCardTable.getTable()[row][column].getUpperCard().getCost()));
                 }
 
                 assertEquals(expected[row][column],developmentCardTable.getAvailable(player)[row][column]);

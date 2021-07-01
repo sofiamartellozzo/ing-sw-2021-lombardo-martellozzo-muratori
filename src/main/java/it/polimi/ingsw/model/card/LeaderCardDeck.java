@@ -44,8 +44,6 @@ public class LeaderCardDeck implements Serializable {
      * @throws IllegalArgumentException
      */
     public LeaderCard getLeaderCardById (int IdCard) throws IllegalArgumentException {
-        //System.out.println(cards.toString());
-        //System.out.println(cards.size());
         for (LeaderCard card: cards) {
             if (card.getCardID() == IdCard)
             {

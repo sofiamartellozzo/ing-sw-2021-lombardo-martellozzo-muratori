@@ -137,7 +137,6 @@ public class FaithTrack implements Serializable{
             faithMarker.increasePosition();
             int section = checkInvokeVaticanReport();
             if (section != 0){
-                System.out.println("KKKKKK");
                 doVaticanReport(section);
 
             }

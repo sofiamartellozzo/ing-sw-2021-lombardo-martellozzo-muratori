@@ -984,7 +984,6 @@ public class DevelopmentCardFactoryTest extends TestCase {
         DevelopmentCardDeck[][] table = new DevelopmentCardFactory().createTable();
         for(int column=0;column<4;column++){
             for(int row=2;row>=0;row--){
-                System.out.println("Row: "+row+", Column: "+column);
                 ArrayList<DevelopmentCard> deck = table[row][column].getDevelopDeck();
                 ArrayList<DevelopmentCard> expectedDeck = expected[row][column].getDevelopDeck();
                 //Check is not empty
@@ -1002,8 +1001,6 @@ public class DevelopmentCardFactoryTest extends TestCase {
                 }
                 for(int i=0;i<4;i++){
                     //Based on the expected
-                    System.out.println("Card n° "+ (i+1));
-                    System.out.println("ID: "+deck.get(i).getId());
                     //Check id
                     assertSame(expectedDeck.get(i).getId(),deck.get(i).getId());
                     //Check the color
@@ -1017,7 +1014,6 @@ public class DevelopmentCardFactoryTest extends TestCase {
 
                     //Check the single resources of the costToBuy
                     for(int j=0;j<deck.get(i).getCost().size();j++){
-                        System.out.println("CostToBuy: "+ (j+1));
                         assertEquals(expectedDeck.get(i).getCost().get(j).getColor(),deck.get(i).getCost().get(j).getColor());
                         assertEquals(expectedDeck.get(i).getCost().get(j).getType(),deck.get(i).getCost().get(j).getType());
                     }
@@ -1025,7 +1021,6 @@ public class DevelopmentCardFactoryTest extends TestCase {
                     assertSame(expectedDeck.get(i).showProceedsProductionPower().size(),deck.get(i).showProceedsProductionPower().size());
                     //Check the single resources of the earnPP
                     for(int j=0;j<deck.get(i).showProceedsProductionPower().size();j++){
-                        System.out.println("EarnPP: "+ (j+1));
                         assertEquals(expectedDeck.get(i).showProceedsProductionPower().get(j).getColor(),deck.get(i).showProceedsProductionPower().get(j).getColor());
                         assertEquals(expectedDeck.get(i).showProceedsProductionPower().get(j).getType(),deck.get(i).showProceedsProductionPower().get(j).getType());
                     }
@@ -1033,7 +1028,6 @@ public class DevelopmentCardFactoryTest extends TestCase {
                     assertSame(expectedDeck.get(i).showCostProductionPower().size(),deck.get(i).showCostProductionPower().size());
                     //Check the single resources of the costPP
                     for(int j=0;j<deck.get(i).showCostProductionPower().size();j++){
-                        System.out.println("CostPP: "+ (j+1));
                         assertEquals(expectedDeck.get(i).showCostProductionPower().get(j).getColor(),deck.get(i).showCostProductionPower().get(j).getColor());
                         assertEquals(expectedDeck.get(i).showCostProductionPower().get(j).getType(),deck.get(i).showCostProductionPower().get(j).getType());
                     }

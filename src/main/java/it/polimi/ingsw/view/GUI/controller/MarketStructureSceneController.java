@@ -107,24 +107,23 @@ public class MarketStructureSceneController {
         ImageView[][] marketStructureView=getMarketStructureView();
         for(int i=0;i<3;i++){
             for(int j=0;j<4;j++){
-                System.out.println(marketStruct.getStructure()[i][j].getColor());
                 switch(marketStructure.getStructure()[i][j].getColor()){
-                    case RED: System.out.println((i+1)+" "+(j+1)+": RED");marketStructureView[i][j].setImage(new Image("/images/market/red_marble.png"));break;
-                    case YELLOW:System.out.println((i+1)+" "+(j+1)+": YELLOW");marketStructureView[i][j].setImage(new Image("/images/market/yellow_marble.png"));break;
-                    case BLUE:System.out.println((i+1)+" "+(j+1)+": BLUE");marketStructureView[i][j].setImage(new Image("/images/market/blue_marble.png"));break;
-                    case GREY:System.out.println((i+1)+" "+(j+1)+": GREY");marketStructureView[i][j].setImage(new Image("/images/market/grey_marble.png"));break;
-                    case PURPLE:System.out.println((i+1)+" "+(j+1)+": PURPLE");marketStructureView[i][j].setImage(new Image("/images/market/purple_marble.png"));break;
-                    case WHITE:System.out.println((i+1)+" "+(j+1)+": WHITE");marketStructureView[i][j].setImage(new Image("/images/market/white_marble.png"));break;
+                    case RED: marketStructureView[i][j].setImage(new Image("/images/market/red_marble.png"));break;
+                    case YELLOW:marketStructureView[i][j].setImage(new Image("/images/market/yellow_marble.png"));break;
+                    case BLUE:marketStructureView[i][j].setImage(new Image("/images/market/blue_marble.png"));break;
+                    case GREY:marketStructureView[i][j].setImage(new Image("/images/market/grey_marble.png"));break;
+                    case PURPLE:marketStructureView[i][j].setImage(new Image("/images/market/purple_marble.png"));break;
+                    case WHITE:marketStructureView[i][j].setImage(new Image("/images/market/white_marble.png"));break;
                 }
             }
         }
         switch(marketStructure.getSlide().getColor()){
-            case RED: System.out.println("Slide: RED");slideMarble.setImage(new Image("/images/market/red_marble.png"));break;
-            case YELLOW:System.out.println("Slide: YELLOW");slideMarble.setImage(new Image("/images/market/yellow_marble.png"));break;
-            case BLUE:System.out.println("Slide: BLUE");slideMarble.setImage(new Image("/images/market/blue_marble.png"));break;
-            case GREY:System.out.println("Slide: GREY");slideMarble.setImage(new Image("/images/market/grey_marble.png"));break;
-            case PURPLE:System.out.println("Slide: PURPLE");slideMarble.setImage(new Image("/images/market/purple_marble.png"));break;
-            case WHITE:System.out.println("Slide: WHITE");slideMarble.setImage(new Image("/images/market/white_marble.png"));break;
+            case RED: slideMarble.setImage(new Image("/images/market/red_marble.png"));break;
+            case YELLOW:slideMarble.setImage(new Image("/images/market/yellow_marble.png"));break;
+            case BLUE:slideMarble.setImage(new Image("/images/market/blue_marble.png"));break;
+            case GREY:slideMarble.setImage(new Image("/images/market/grey_marble.png"));break;
+            case PURPLE:slideMarble.setImage(new Image("/images/market/purple_marble.png"));break;
+            case WHITE:slideMarble.setImage(new Image("/images/market/white_marble.png"));break;
         }
     }
 

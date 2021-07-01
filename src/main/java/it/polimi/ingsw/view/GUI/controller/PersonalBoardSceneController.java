@@ -1133,7 +1133,6 @@ public class PersonalBoardSceneController {
         ArrayList<Integer> leaderCards=msg.getMiniDeckLeaderCardFour();
         if(msg.getMiniDeckLeaderCardFour().size()>0) {
             for(int i=0;i<leaderCards.size();i++){
-                System.out.println("LeaderCardsView: "+leaderCards.get(i));
                 getLeaderCardViewByID(leaderCards.get(i)).setDisable(false);
                 getLeaderCardViewByID(leaderCards.get(i)).setEffect(null);
                 setLabelText(actionLabel,"Choose leader card to "+msg.getWhatFor());
@@ -1362,7 +1361,6 @@ public class PersonalBoardSceneController {
         leaderCardWithID=new HashMap<>();
         for(int i=0;i<2;i++){
             if(i+1<=leaderCards.size()){
-                System.out.println(leaderCards.get(i).getCardID());
                 leaderCardWithID.put(leaderCards.get(i).getCardID(),getLeaderCardsView().get(i));
                 getLeaderCardsView().get(i).setImage(new Image("/images/frontCards/LeaderCard ("+leaderCards.get(i).getCardID()+").png"));
             }else{

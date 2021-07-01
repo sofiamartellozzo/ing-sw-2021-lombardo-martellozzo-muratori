@@ -183,8 +183,5 @@ public class OfflineLobby extends Observable implements ControllerObserver {
         //NOT HERE, implemented in Virtual View
     }
 
-    private void printOffLobbyMessage(String message) {
-        System.out.println(message);
-    }
 
 }

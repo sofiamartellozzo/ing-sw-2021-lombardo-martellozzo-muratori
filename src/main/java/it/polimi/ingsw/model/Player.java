@@ -212,7 +212,6 @@ public class Player implements PlayerInterface, Serializable {
     @Override
     public void setWhiteSpecialMarble(MarbleSpecial whiteSpecialMarble) {
         this.whiteSpecialMarble = whiteSpecialMarble;
-        System.out.println("set the white special marble");
     }
 
 
@@ -373,7 +372,6 @@ public class Player implements PlayerInterface, Serializable {
      */
     @Override
     public void activeLeaderCardAbility(LeaderCard card) throws InvalidActionException {
-        System.out.println("debug2");
         ArrayList<DevelopmentCard> allDevelopmentCards = this.getGameSpace().getAllCards();
         //verify the cost
         if(card.getState() instanceof Inactive){
@@ -441,7 +439,6 @@ public class Player implements PlayerInterface, Serializable {
                 counter = 0;
             }
             if(counter==0){
-                System.out.println("debug3");
                 card.activeCard(this);
             }else{
                 throw new InvalidActionException("This leader card can't be activated!");

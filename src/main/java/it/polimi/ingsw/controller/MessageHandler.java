@@ -56,7 +56,6 @@ public class MessageHandler extends Observable implements Runnable{
     }
 
     public void receiveMsgForVV(GameMsg msg){
-        printDebug("in receive msg");
         messageQueueForVV.add(msg);
     }
 
@@ -66,18 +65,16 @@ public class MessageHandler extends Observable implements Runnable{
 
     @Override
     public void run() {
-        printDebug("inside run");
         thread = new Thread (() -> {
             while (gameOn) {
-                /*try {
+                try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }*/
-                printDebug("inside run while");
+                }
+                //printDebug("inside run while");
                 if (messageQueueForVV.size() > 0) {
                     //send Msg as FIFO logic
-                    printDebug("in run");
                     sendMsgToVV();
                 } else if (messageQueueForView.size() > 0) {
                     sendMsgToView();
@@ -91,9 +88,5 @@ public class MessageHandler extends Observable implements Runnable{
     public void stopMessageHandler(){
         gameOn = false;
         thread.interrupt();
-    }
-
-    private void printDebug(String message) {
-        System.out.println(message);
     }
 }

@@ -90,7 +90,6 @@ public class IntroSceneController {
     public void clickPlayButton() throws IOException {
             if (!gui.isOffline() && customIP) {
                 selectedIP = ip.getText();
-                System.out.println("New selected IP: " + selectedIP);
             }
 
 
@@ -100,15 +99,12 @@ public class IntroSceneController {
 
 
         String getUsername = username.getText().toLowerCase();
-        System.out.println("New username gotten: "+getUsername);
 
         if(getUsername!=null && !getUsername.equals("") && selectedIP.length()>=7 && selectedIP.length()<=15 && !gui.isOffline()/*&& !offlineButton.isSelected()*/) {
             //gui.setOffline(false);
             ClientSocket client = new ClientSocket(selectedIP, gui);
             client.beginConnection();
-            System.out.println("Client connected");
             gui.setClient(client);
-            System.out.println("Client add to gui");
             String gameMode = null;
             if (singlePlayerModeButton.selectedProperty().getValue()) {
                 gameMode = "0";

@@ -295,7 +295,6 @@ public class LeaderCardFactoryTest extends TestCase {
 
         //Check expected with factory(json)
         for(int i=0;i<16;i++){
-            System.out.println(i+1);
             LeaderCard expectedLeaderCard = expected.get(i);
             LeaderCard leaderCard = leaderCards.get(i);
             assertSame(expectedLeaderCard.getCardID(),leaderCard.getCardID());

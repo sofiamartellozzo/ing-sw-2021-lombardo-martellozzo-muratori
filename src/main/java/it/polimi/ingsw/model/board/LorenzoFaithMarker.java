@@ -44,7 +44,6 @@ public class LorenzoFaithMarker extends Resource implements Serializable {
      * Increase the "position" by one.
      */
     public void increasePosition() {
-        System.out.println("Increase Lorenzo");
         if (position<24){
         this.position++;}
     }

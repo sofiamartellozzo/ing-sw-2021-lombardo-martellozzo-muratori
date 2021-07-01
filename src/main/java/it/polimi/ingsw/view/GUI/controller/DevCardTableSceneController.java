@@ -480,7 +480,6 @@ public class DevCardTableSceneController {
      * the card chosen (row and column) and the card space where to put. Then change scene in the Personal Board.
      */
     public void clickCardSpace1Button(){
-        System.out.println("Chosen row: "+chosenRow+", chosen column: "+chosenColumn);
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,0));
         chooseCardSpacePane.setVisible(false);
         gui.seePersonalBoard();
@@ -493,7 +492,6 @@ public class DevCardTableSceneController {
      * the card chosen (row and column) and the card space where to put. Then change scene in the Personal Board.
      */
     public void clickCardSpace2Button(){
-        System.out.println("Chosen row: "+chosenRow+", chosen column: "+chosenColumn);
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,1));
         chooseCardSpacePane.setVisible(false);
         gui.seePersonalBoard();
@@ -505,7 +503,6 @@ public class DevCardTableSceneController {
      * the card chosen (row and column) and the card space where to put. Then change scene in the Personal Board.
      */
     public void clickCardSpace3Button(){
-        System.out.println("Chosen row: "+chosenRow+", chosen column: "+chosenColumn);
         gui.sendMsg(new CBuyDevelopCardResponseMsg("I choose a development card to buy",gui.getUsername(),chosenRow,chosenColumn,2));
         chooseCardSpacePane.setVisible(false);
         gui.seePersonalBoard();

@@ -171,7 +171,6 @@ public class ClientSocket extends Observable implements Runnable {
                 Object received = in.readObject(); //deserialized the msg from the server
                 /* control that the msg received is not a ping msg, that one is to keep the connection cannot be send to the view*/
                 if ((received instanceof PingMsg)) {
-                    System.out.println(((PingMsg) received).getMsgContent() + " from the server: ");
                     //response with a Pong msg
                     sendMsg(new PongMsg("Pong!"));
                 } else {
