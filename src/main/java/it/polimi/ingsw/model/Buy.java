@@ -19,7 +19,7 @@ public class Buy implements BuyCard, Serializable {
         DevelopmentCard cardBought = boardManager.getDevelopmentCardTable().takeCard(row,column);
         ArrayList<Resource> cost = cardBought.getCost();
         PersonalBoard playerBoard = player.getGameSpace();
-        if (player.getGameSpace().getResourceManager().checkEnoughResources(cost)){
+        if (checkBeforeBuy(cardBought, player)){
             try {
                 playerBoard.getCardSpaces().get(selectedCardSpace).addCard(cardBought);
                 playerBoard.getResourceManager().removeResourcesFromBoth(cost);
