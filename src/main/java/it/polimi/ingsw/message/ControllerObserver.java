@@ -28,10 +28,12 @@ public interface ControllerObserver extends Observer{
     /* notification by VV of a starting initialization*/
     public void receiveMsg(CVStartInitializationMsg msg);
 
-    /* from CLI to InitializedC*/
+    /* from CLI to InitializedC to choose the resource and the depot*/
     public void receiveMsg(CChooseResourceAndDepotMsg msg);     //also in Action Controller
+    /*from client to controller with the answer of the player (the two leader cards that he wants) */
     public void receiveMsg(CChooseLeaderCardResponseMsg msg);   //this also to ActionController
 
+    /*send after initialization of the game*/
     public void receiveMsg(CGameCanStartMsg msg);
 
     /* from CLI to TurnController*/
@@ -68,6 +70,8 @@ public interface ControllerObserver extends Observer{
 
     /*end of a game situation*/
     public void receiveMsg(VShowEndGameResultsMsg msg);
+    /*send from the client if he doesn't want to play another game*/
     public void receiveMsg(CNotStartAgainMsg msg);
+    /*msg used if the player wants to play another match*/
     public void receiveMsg(CNewStartMsg msg);
 }

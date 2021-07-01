@@ -35,6 +35,7 @@ public interface ViewObserver extends Observer{
     /* send to all player to notify this action of one*/
     public void receiveMsg(VNotifyPositionIncreasedByMsg msg);
 
+    /* send from controller to client to update the points at each turn*/
     public void receiveMsg(VUpdateVictoryPointsMsg msg);
 
     /* send to the player after try to initialized the game*/
@@ -48,14 +49,14 @@ public interface ViewObserver extends Observer{
 
     /* from Turn Controller to the client */
     public void receiveMsg(VChooseActionTurnRequestMsg msg);
-    /*msg to all other players that are not actually playing (beacouse is someone else turn)*/
+    /*msg to all other players that are not actually playing (because is someone else turn)*/
     public void receiveMsg(VWaitYourTurnMsg msg);
 
     /* fist (only in code order) of action chosen in ActionController, so send this msg to client for asking which card to buy */
     public void receiveMsg(VChooseDevelopCardRequestMsg msg);
-    /*notify the client that the card space choosen is not valid*/
+    /*notify the client that the card space chosen is not valid*/
     public void receiveMsg(VNotValidCardSpaceMsg msg);
-    /*notify all player the new situation of the DevTable after someone bougth a card*/
+    /*notify all player the new situation of the DevTable after someone bought a card*/
     public void receiveMsg(VUpdateDevTableMsg msg);
 
     /* from ActionC to the client */
@@ -77,6 +78,7 @@ public interface ViewObserver extends Observer{
 
     /*from PPController if the player doesn't have te resources to "pay" the PP*/
     public void receiveMsg(VResourcesNotFoundMsg msg);
+    /*from controller to client to update the strongBox at every change*/
     public void receiveMsg(VUpdateStrongboxMsg msg);
 
     /* only SOLO mode, after the player end the turn (is Lorenzo playing) */
@@ -84,10 +86,14 @@ public interface ViewObserver extends Observer{
 
     /* from client Socket main to cli gui*/
     public void receiveMsg(VServerUnableMsg msg);
+    /*used to start the initialization of the game*/
     public void receiveMsg(CVStartInitializationMsg msg);
+    /*used when the initialization is finished */
     public void receiveMsg(CGameCanStartMsg msg);
 
+    /*msg used to ask to see the board of another player*/
     public void receiveMsg(VAnotherPlayerInfoMsg msg);
+    /*msg used to choose the name of which other player the client wants to see*/
     public void receiveMsg(VWhichPlayerRequestMsg msg);
 
     /*notify the View with the result of the game*/
