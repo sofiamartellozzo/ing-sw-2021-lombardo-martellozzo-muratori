@@ -904,5 +904,8 @@ public class MarketStructureSceneController {
         return waitMove;
     }
 
-    public void moveNotValid(){moveNotValidLabel.setVisible(true);}
+    public void moveNotValid(){
+        moveNotValidLabel.setVisible(true);
+        chooseDepot();
+    }
 }

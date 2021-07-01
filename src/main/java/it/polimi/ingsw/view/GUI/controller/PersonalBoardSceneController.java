@@ -1159,7 +1159,7 @@ public class PersonalBoardSceneController {
             gui.sendMsg(new CStopPPMsg("No Production Power Available",gui.getUsername()));
             notVisibleDepotPanes();
             disableDepotPanes();
-        }else if(!gui.isServerAvailable()){
+        }else if(!gui.isServerAvailable() && !gui.isOffline()){
             gui.close();
         }
         action = null;

@@ -394,10 +394,6 @@ public class ActionController extends Observable implements ControllerObserver {
                 System.out.println("Not able to move the resource from " + msg.getFromDepot() + " depot, to " + msg.getToDepot() + " depot!");
                 VNotValidMoveMsg msg1 = new VNotValidMoveMsg("you can't move these two depots",player.getUsername());
                 notifyAllObserver(ObserverType.VIEW, msg1);
-                if (msg.isNextA()) {
-                    endAction = true;
-                    nextAction();
-                }
             }
         }
     }

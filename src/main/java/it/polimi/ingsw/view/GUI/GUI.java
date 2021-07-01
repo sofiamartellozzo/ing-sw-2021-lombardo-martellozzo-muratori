@@ -5,6 +5,7 @@ import it.polimi.ingsw.message.GameMsg;
 import it.polimi.ingsw.message.ViewObserver;
 import it.polimi.ingsw.message.connection.CClientDisconnectedMsg;
 import it.polimi.ingsw.message.connection.VServerUnableMsg;
+import it.polimi.ingsw.message.controllerMsg.CChangeActionTurnMsg;
 import it.polimi.ingsw.message.controllerMsg.CCloseRoomMsg;
 import it.polimi.ingsw.message.controllerMsg.VStartWaitReconnectionMsg;
 import it.polimi.ingsw.message.updateMsg.*;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.model.TurnAction.BUY_FROM_MARKET;
+import static it.polimi.ingsw.model.TurnAction.MOVE_RESOURCE;
 
 /**
  * GUI version of the View
@@ -735,11 +737,14 @@ public class GUI extends Application implements ViewObserver {
     public void receiveMsg(VNotValidMoveMsg msg) {
         System.out.println(msg.toString());
         if(msg.getUsername().equals(username)) {
-            if(stage.getScene().equals(marketStructureScene)){
+            if(personalBoardSceneController.getAction()!=null && personalBoardSceneController.getAction().equals(BUY_FROM_MARKET)){
+                marketStructureSceneController.setResourceStored(false);
                 marketStructureSceneController.setWaitMove(false);
                 marketStructureSceneController.moveNotValid();
-            }else if(stage.getScene().equals(personalBoardScene)){
+            }else{
+                System.out.println(personalBoardSceneController.getAction());
                 personalBoardSceneController.setErrorMessage("Move not valid!");
+                sendMsg(new CChangeActionTurnMsg("This action failed another action",username,MOVE_RESOURCE));
             }
         }
     }
