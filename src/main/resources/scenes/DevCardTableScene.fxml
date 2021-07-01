@@ -140,37 +140,46 @@
       </Pane>
       <TitledPane fx:id="chooseCardSpacePane" animated="false" layoutX="189.0" layoutY="208.0" text="Choose Card Space">
          <content>
-            <GridPane prefHeight="283.0" prefWidth="394.0">
-              <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="217.19998779296876" minHeight="10.0" prefHeight="217.19998779296876" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="126.79996337890623" minHeight="10.0" prefHeight="47.60001220703123" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <VBox alignment="CENTER">
                <children>
-                  <ImageView fx:id="cardSpace1" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/frontCards/DevelopmentCard (1).png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="cardSpace2" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                     <image>
-                        <Image url="@../images/frontCards/DevelopmentCard (1).png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="cardSpace3" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
-                     <image>
-                        <Image url="@../images/frontCards/DevelopmentCard (1).png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="cardSpace1Button" mnemonicParsing="false" onAction="#clickCardSpace1Button" text="Card Space 1" GridPane.rowIndex="1" />
-                  <Button fx:id="cardSpace3Button" mnemonicParsing="false" onAction="#clickCardSpace3Button" text="Card Space 3" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Button fx:id="cardSpace2Button" mnemonicParsing="false" onAction="#clickCardSpace2Button" text="Card Space 2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="cardSpaceNotValidMessage" text="Not valid card space. Choose another card space:" textFill="#990000">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <GridPane prefHeight="283.0" prefWidth="394.0">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="217.19998779296876" minHeight="10.0" prefHeight="217.19998779296876" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="126.79996337890623" minHeight="10.0" prefHeight="47.60001220703123" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView fx:id="cardSpace1" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/frontCards/DevelopmentCard (1).png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="cardSpace2" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                           <image>
+                              <Image url="@../images/frontCards/DevelopmentCard (1).png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="cardSpace3" fitHeight="150.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                           <image>
+                              <Image url="@../images/frontCards/DevelopmentCard (1).png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="cardSpace1Button" mnemonicParsing="false" onAction="#clickCardSpace1Button" text="Card Space 1" GridPane.rowIndex="1" />
+                        <Button fx:id="cardSpace3Button" mnemonicParsing="false" onAction="#clickCardSpace3Button" text="Card Space 3" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Button fx:id="cardSpace2Button" mnemonicParsing="false" onAction="#clickCardSpace2Button" text="Card Space 2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
                </children>
-            </GridPane>
+            </VBox>
          </content>
       </TitledPane>
       <TitledPane fx:id="errorPopup" animated="false" layoutX="264.0" layoutY="304.0" prefHeight="94.0" prefWidth="253.0">

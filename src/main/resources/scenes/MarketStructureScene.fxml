@@ -47,62 +47,62 @@
                   <RowConstraints maxHeight="45.600012207031256" minHeight="10.0" prefHeight="35.999975585937506" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ImageView fx:id="marble1_1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="m00" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble2_1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                  <ImageView fx:id="m10" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/market/grey_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble3_1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                  <ImageView fx:id="m20" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/market/blue_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble1_2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                  <ImageView fx:id="m01" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                      <image>
                         <Image url="@../images/market/red_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble2_2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <ImageView fx:id="m11" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/market/yellow_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble3_2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <ImageView fx:id="m21" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/market/blue_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble1_3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                  <ImageView fx:id="m02" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                      <image>
                         <Image url="@../images/market/grey_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble2_3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <ImageView fx:id="m12" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/market/white_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble3_3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <ImageView fx:id="m22" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble1_4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                  <ImageView fx:id="m03" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                      <image>
                         <Image url="@../images/market/red_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble2_4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <ImageView fx:id="m13" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <image>
                         <Image url="@../images/market/purple_marble.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="marble3_4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                  <ImageView fx:id="m23" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
                      <image>
                         <Image url="@../images/market/yellow_marble.png" />
                      </image>
@@ -124,7 +124,7 @@
             </Pane>
             <Pane layoutX="190.0" layoutY="124.0" prefHeight="79.0" prefWidth="366.0">
                <children>
-                  <ImageView fx:id="outMarble" fitHeight="50.0" fitWidth="50.0" layoutX="293.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="slideMarble" fitHeight="50.0" fitWidth="50.0" layoutX="293.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/market/white_marble.png" />
                      </image>
@@ -182,6 +182,10 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
+                        <Label fx:id="moveNotValidLabel" text="Move not valid!" textFill="#ae0303">
+                           <font>
+                              <Font name="System Bold Italic" size="12.0" />
+                           </font></Label>
                         <Label fx:id="message" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="150.0" text="Choose a depot&#10;where to store this resource:" textAlignment="CENTER" />
                         <ImageView fx:id="resource" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                            <image>

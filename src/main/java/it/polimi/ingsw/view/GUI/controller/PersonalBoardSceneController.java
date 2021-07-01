@@ -141,7 +141,7 @@ public class PersonalBoardSceneController {
      * of the Personal Board
      */
     public void start(){
-        actionLabel.setVisible(false);
+        setLabelText(actionLabel,"");
         updateFaithTrackView(gui.getPlayer().getGameSpace().getFaithTrack());
         if(gui.getSoloMode()){
             updateBlackFaithMarkerView(gui.getPlayer().getGameSpace());
@@ -287,6 +287,7 @@ public class PersonalBoardSceneController {
         disableDepotPanes();
         strongBoxPane.setVisible(false);
         strongBoxPane.setDisable(true);
+        setLabelText(actionLabel,"");
         action=null;
     }
 
@@ -356,7 +357,7 @@ public class PersonalBoardSceneController {
             disablePP();
             setLabelText(chooseResourceLabel,"Choose first resource to remove");
             chooseResourcePane.setVisible(true);
-            actionLabel.setVisible(false);
+            setLabelText(actionLabel,"");
         }
     }
 
@@ -387,7 +388,7 @@ public class PersonalBoardSceneController {
             disablePP();
             setLabelText(chooseResourceLabel,"Choose the resource you want");
             chooseResourcePane.setVisible(true);
-            actionLabel.setVisible(false);
+            setLabelText(actionLabel,"");
         }
     }
     /**
@@ -417,7 +418,7 @@ public class PersonalBoardSceneController {
             disablePP();
             setLabelText(chooseResourceLabel,"Choose the resource you want");
             chooseResourcePane.setVisible(true);
-            actionLabel.setVisible(false);
+            setLabelText(actionLabel,"");
         }
     }
 
@@ -690,7 +691,7 @@ public class PersonalBoardSceneController {
             response=new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,1);
             disablePP();
             gui.sendMsg(response);
-            actionLabel.setVisible(false);
+            setLabelText(actionLabel,"");
         }
     }
     /**
@@ -702,7 +703,7 @@ public class PersonalBoardSceneController {
             response=new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,2);
             disablePP();
             gui.sendMsg(response);
-            actionLabel.setVisible(false);
+            setLabelText(actionLabel,"");
         }
     }
     /**
@@ -714,7 +715,7 @@ public class PersonalBoardSceneController {
             response=new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,3);
             disablePP();
             gui.sendMsg(response);
-            actionLabel.setVisible(false);
+            setLabelText(actionLabel,"");
         }
     }
 
@@ -869,15 +870,15 @@ public class PersonalBoardSceneController {
                 setLabelText(actionLabel,"Choose the depot where to move the resource to");
                 actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
-                    actionLabel.setVisible(false);
+                    setLabelText(actionLabel,"");
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
                     chosenDepots=new ArrayList<>();
                     action=null;
                     if(returnToMarket){
-                        //gui.seeMarketBoard();
-                        //gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        gui.seeMarketBoard();
+                        gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
                     }
@@ -918,15 +919,15 @@ public class PersonalBoardSceneController {
                 setLabelText(actionLabel,"Choose the depot where to move the resource to");
                 actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
-                    actionLabel.setVisible(false);
+                    setLabelText(actionLabel,"");
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
                     chosenDepots=new ArrayList<>();
                     action=null;
                     if(returnToMarket){
-                        //gui.seeMarketBoard();
-                        //gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();*/
+                        gui.seeMarketBoard();
+                        gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
                     }
@@ -968,15 +969,15 @@ public class PersonalBoardSceneController {
                 setLabelText(actionLabel,"Choose the depot where to move the resource to");
                 actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
-                    actionLabel.setVisible(false);
+                    setLabelText(actionLabel,"");
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
                     chosenDepots=new ArrayList<>();
                     action=null;
                     if(returnToMarket){
-                        //gui.seeMarketBoard();
-                        //gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        gui.seeMarketBoard();
+                        gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
                     }
@@ -1017,15 +1018,15 @@ public class PersonalBoardSceneController {
                 setLabelText(actionLabel,"Choose the depot where to move the resource to");
                 actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
-                    actionLabel.setVisible(false);
+                    setLabelText(actionLabel,"");
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
                     chosenDepots=new ArrayList<>();
                     action=null;
                     if(returnToMarket){
-                        //gui.seeMarketBoard();
-                        //gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
+                        gui.seeMarketBoard();
+                        gui.getMarketStructureSceneController().copyWarehouseFromPersonalBoard();
                         action=TurnAction.BUY_FROM_MARKET;
                         returnToMarket=!returnToMarket;
                     }
@@ -1066,7 +1067,7 @@ public class PersonalBoardSceneController {
                 setLabelText(actionLabel,"Choose the depot where to move the resource to");
                 actionLabel.setVisible(true);
                 if(chosenDepots.size()==2){
-                    actionLabel.setVisible(false);
+                    setLabelText(actionLabel,"");
                     notVisibleDepotPanes();
                     disableDepotPanes();
                     gui.sendMsg(new CMoveResourceInfoMsg("I choose the depots",gui.getUsername(),chosenDepots.get(0),chosenDepots.get(1),true));
@@ -1164,7 +1165,6 @@ public class PersonalBoardSceneController {
         action = null;
         okButton.setDisable(true);
         errorMessagePane.setVisible(false);
-        action=null;
     }
 
     /**
@@ -1217,7 +1217,7 @@ public class PersonalBoardSceneController {
                 leaderCard1.setDisable(true);
                 leaderCard1.setImage(new Image("/images/backCards/LeaderCard (1).png"));
             }
-            actionLabel.setVisible(false);
+            setLabelText(actionLabel,"");
             action=null;
         }
     }
@@ -1237,7 +1237,7 @@ public class PersonalBoardSceneController {
                 leaderCard2.setDisable(true);
                 leaderCard2.setImage(new Image("/images/backCards/LeaderCard (1).png"));
             }
-            actionLabel.setVisible(false);
+            setLabelText(actionLabel,"");
             action=null;
         }
     }
@@ -1845,7 +1845,7 @@ public class PersonalBoardSceneController {
      * @param label the label to change
      * @param content the text to set
      */
-    private void setLabelText(Label label,String content){
+    public void setLabelText(Label label,String content){
         Platform.runLater(()->{
             label.setText(content);
         });
@@ -1951,4 +1951,14 @@ public class PersonalBoardSceneController {
     public TurnAction getAction() {
         return action;
     }
+
+    public Label getActionLabel(){return actionLabel;}
+
+    public void setErrorMessage(String content) {
+        setLabelText(errorMessage,content);
+        errorMessagePane.setVisible(true);
+        okButton.setDisable(false);
+    }
+
+    public boolean isReturnToMarket() {return returnToMarket; }
 }

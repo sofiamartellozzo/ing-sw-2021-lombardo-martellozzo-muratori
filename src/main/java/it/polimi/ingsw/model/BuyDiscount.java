@@ -53,7 +53,7 @@ public class BuyDiscount implements BuyCard, Serializable {
                 j--;
             }
         }
-        if (checkBeforeBuy(cardBought, player, auxiliarCost)) {
+        if (player.getGameSpace().getResourceManager().checkEnoughResources(auxiliarCost)) {
             playerBoard.getResourceManager().removeResourcesFromBoth(auxiliarCost);
             //playerBoard.removeResource(cost.get(1), new RealDepot(1,1));
             playerBoard.getCardSpaces().get(selectedCardSpace).addCard(cardBought);

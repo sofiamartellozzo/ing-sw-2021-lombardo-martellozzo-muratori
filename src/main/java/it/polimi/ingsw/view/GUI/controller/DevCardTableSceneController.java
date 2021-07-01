@@ -47,6 +47,9 @@ public class DevCardTableSceneController {
     @FXML
     private Label errorMessage;
 
+    @FXML
+            private Label cardSpaceNotValidMessage;
+
     int chosenRow,chosenColumn;
     boolean justSee;
 
@@ -108,6 +111,7 @@ public class DevCardTableSceneController {
      */
     public void chooseCardSpace(VNotValidCardSpaceMsg msg){
         justSee=false;
+        cardSpaceNotValidMessage.setVisible(true);
         backButton.setVisible(false);
         backButton.setDisable(true);
         chosenColumn=msg.getColumnTable();
@@ -144,6 +148,7 @@ public class DevCardTableSceneController {
         if(!devCard1_1.isDisable() && !justSee) {
             chosenRow = 0;
             chosenColumn = 0;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -154,6 +159,7 @@ public class DevCardTableSceneController {
         if(!devCard1_2.isDisable() && !justSee) {
             chosenRow = 0;
             chosenColumn = 1;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -164,6 +170,7 @@ public class DevCardTableSceneController {
         if(!devCard1_3.isDisable() && !justSee) {
             chosenRow = 0;
             chosenColumn = 2;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -174,6 +181,7 @@ public class DevCardTableSceneController {
         if(!devCard1_4.isDisable() && !justSee) {
             chosenRow = 0;
             chosenColumn = 3;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -184,6 +192,7 @@ public class DevCardTableSceneController {
         if(!devCard2_1.isDisable() && !justSee) {
             chosenRow = 1;
             chosenColumn = 0;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -194,6 +203,7 @@ public class DevCardTableSceneController {
         if(!devCard2_2.isDisable() && !justSee) {
             chosenRow = 1;
             chosenColumn = 1;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -204,6 +214,7 @@ public class DevCardTableSceneController {
         if(!devCard2_3.isDisable() && !justSee) {
             chosenRow = 1;
             chosenColumn = 2;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -214,6 +225,7 @@ public class DevCardTableSceneController {
         if(!devCard2_4.isDisable() && !justSee) {
             chosenRow = 1;
             chosenColumn = 3;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -224,6 +236,7 @@ public class DevCardTableSceneController {
         if(!devCard3_1.isDisable() && !justSee) {
             chosenRow = 2;
             chosenColumn = 0;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -234,6 +247,7 @@ public class DevCardTableSceneController {
         if(!devCard3_2.isDisable() && !justSee) {
             chosenRow = 2;
             chosenColumn = 1;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -244,6 +258,7 @@ public class DevCardTableSceneController {
         if(!devCard3_3.isDisable() && !justSee) {
             chosenRow = 2;
             chosenColumn = 2;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
@@ -254,6 +269,7 @@ public class DevCardTableSceneController {
         if(!devCard3_4.isDisable() && !justSee) {
             chosenRow = 2;
             chosenColumn = 3;
+            cardSpaceNotValidMessage.setVisible(false);
             chooseCardSpace();
         }
     }
