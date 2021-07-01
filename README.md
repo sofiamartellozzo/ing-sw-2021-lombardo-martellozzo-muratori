@@ -21,22 +21,22 @@ This game is developed for the final examination of Software engineering course 
 You can play in Solo Mode, and try to fight against Lorenzo Il Magnifico, or in Multiplayers Mode (2 to 4 players) 
 
 ### Intro
-![Intro](deliverables/images/introImage11.png?raw=true)
+![Intro](deliverables/final/screenshots/introImage11.png?raw=true)
 
 ### Login
-![Login](deliverables/images/LoginImage.png?raw=true)
+![Login](deliverables/final/screenshots/LoginImage.png?raw=true)
 
 ### Match creation
-![Match creation](deliverables/images/RoomSizeImage.png?raw=true)
+![Match creation](deliverables/final/screenshots/RoomSizeImage.png?raw=true)
 
 ### Card selection
-![Card selection](deliverables/images/LCards.png?raw=true)
+![Card selection](deliverables/final/screenshots/LCards.png?raw=true)
 
 ### PersonalBoard
-![PersonalBoard](deliverables/images/PBoard.png?raw=true)
+![PersonalBoard](deliverables/final/screenshots/PBoard.png?raw=true)
 
 ### End Game, Win!
-![End Game](deliverables/images/EGame.png?raw=true)
+![End Game](deliverables/final/screenshots/EGame.png?raw=true)
 
 
 <a name="toolused"></a>

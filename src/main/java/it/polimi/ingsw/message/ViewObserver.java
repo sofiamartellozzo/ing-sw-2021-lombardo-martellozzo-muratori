@@ -74,15 +74,13 @@ public interface ViewObserver extends Observer{
 
     /*from PPController to client*/
     public void receiveMsg(VActivateProductionPowerRequestMsg msg);
+
     /*from PPController if the player doesn't have te resources to "pay" the PP*/
     public void receiveMsg(VResourcesNotFoundMsg msg);
     public void receiveMsg(VUpdateStrongboxMsg msg);
 
-
     /* only SOLO mode, after the player end the turn (is Lorenzo playing) */
     public void receiveMsg(VActionTokenActivateMsg msg);
-
-    //void receiveMsg(CVStartInitializationMsg msg);
 
     /* from client Socket main to cli gui*/
     public void receiveMsg(VServerUnableMsg msg);

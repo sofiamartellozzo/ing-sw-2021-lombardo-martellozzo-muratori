@@ -429,7 +429,7 @@ public class Player implements PlayerInterface, Serializable {
                         Double value = (Double) values[j];
                         for (int k = 0; k < allDevelopmentCards.size(); k++) {
                             DevelopmentCard developmentCard = allDevelopmentCards.get(k);
-                            if ((developmentCard.getColor().equals(color) && ((value == 0) || (value != 0 && developmentCard.getlevel() == value)))) {
+                            if ((developmentCard.getColor().equals(color) && ((value == 0) || (value != 0 && developmentCard.getLevel() == value)))) {
                                 allDevelopmentCards.remove(k);
                                 counter--;
                             }

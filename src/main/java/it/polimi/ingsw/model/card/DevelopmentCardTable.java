@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model.card;
 
-import it.polimi.ingsw.controller.factory.DevelopmentCardFactory;
 import it.polimi.ingsw.exception.InvalidActionException;
 import it.polimi.ingsw.model.Color;
 
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 import it.polimi.ingsw.model.PlayerInterface;
@@ -162,7 +160,7 @@ public class DevelopmentCardTable implements Serializable {
             for (int j = 0; j < 4; j++) {
                 if (!table[i][j].getDevelopDeck().isEmpty() && player.getGameSpace().getResourceManager().checkEnoughResources(table[i][j].getUpperCard().getCost())) {
                     for (CardSpace cardSpace : player.getGameSpace().getCardSpaces()) {
-                        if ((cardSpace.getCards().size() == 0 && table[i][j].getUpperCard().getlevel() == 1) || (cardSpace.getCards().size() != 0 && cardSpace.getUpperCard().getlevel() == table[i][j].getUpperCard().getlevel() - 1)) {
+                        if ((cardSpace.getCards().size() == 0 && table[i][j].getUpperCard().getLevel() == 1) || (cardSpace.getCards().size() != 0 && cardSpace.getUpperCard().getLevel() == table[i][j].getUpperCard().getLevel() - 1)) {
                             availableDecks[i][j] = true;
                         }
                     }

@@ -994,10 +994,10 @@ public class DevelopmentCardFactoryTest extends TestCase {
                 //Check if there are 4 cards
                 assertSame(expectedDeck.size(),deck.size());
                 //Check if all cards in the deck have the same color and level
-                int level=deck.get(0).getlevel();
+                int level=deck.get(0).getLevel();
                 Color color = deck.get(0).getColor();
                 for(DevelopmentCard card: deck){
-                    assertSame(level,card.getlevel());
+                    assertSame(level,card.getLevel());
                     assertEquals(color,card.getColor());
                 }
                 for(int i=0;i<4;i++){
@@ -1009,7 +1009,7 @@ public class DevelopmentCardFactoryTest extends TestCase {
                     //Check the color
                     assertEquals(expectedDeck.get(i).getColor(),deck.get(i).getColor());
                     //Check the level
-                    assertSame(expectedDeck.get(i).getlevel(),deck.get(i).getlevel());
+                    assertSame(expectedDeck.get(i).getLevel(),deck.get(i).getLevel());
                     //Check the victory points
                     assertSame(expectedDeck.get(i).getVictoryPoints(),deck.get(i).getVictoryPoints());
                     //Check if has the same size of costToBuy
@@ -1051,10 +1051,10 @@ public class DevelopmentCardFactoryTest extends TestCase {
         }
         //Verify all the cards of a row have the same level
         for(int row=0;row<3;row++){
-            int level = table[row][0].getDevelopDeck().get(0).getlevel();
+            int level = table[row][0].getDevelopDeck().get(0).getLevel();
             for(int column=0;column<4;column++){
                 for(DevelopmentCard card:table[row][column].getDevelopDeck()){
-                    assertSame(level,card.getlevel());
+                    assertSame(level,card.getLevel());
                 }
             }
         }

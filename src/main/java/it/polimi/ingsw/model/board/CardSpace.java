@@ -93,12 +93,12 @@ public class CardSpace implements Serializable{
         if(newCard==null) throw new IllegalArgumentException("Error, card not valid!");
 
         /*if you don't have any card you can add it without controls, but it has to be level 1 !! */
-        else if((cards.size()==0)&&(newCard.getlevel()==1)){
+        else if((cards.size()==0)&&(newCard.getLevel()==1)){
             this.cards.add(newCard);
             setNumberOfCards(this.cards.size());
         }
         /*you can add the card in the card space only if its level is one bigger than the previous one*/
-        else if(cards.size()>0 && newCard.getlevel()==(cards.get(getNumberOfCards()-1).getlevel())+1) {
+        else if(cards.size()>0 && newCard.getLevel()==(cards.get(getNumberOfCards()-1).getLevel())+1) {
             this.cards.add(newCard);
             setNumberOfCards(this.cards.size());
         }

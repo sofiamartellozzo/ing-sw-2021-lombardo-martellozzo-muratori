@@ -64,7 +64,6 @@ public class CLI extends Observable implements ViewObserver {
     private ConverterForCLI converter = new ConverterForCLI();   //used to do the conversion from Strings to ...
 
     //local variables used to save locally the dates about a player and his game space
-
     private MarketCLI marketCLI;
 
     private TypeResource specialResource;    /* resource of the special depot activated by the leader card */
@@ -86,8 +85,6 @@ public class CLI extends Observable implements ViewObserver {
 
     /*-------------------------------------------------------------------------------------*/
 
-    /* create a cache of the Leader Card chosen by this client */
-    //private List<Integer> myLeaderCards = new ArrayList<>();
     /* local info about the client position of faith marker */
     private int positionOnFaithTrack;
 
@@ -163,7 +160,6 @@ public class CLI extends Observable implements ViewObserver {
 
                     /* try to create the connection sending the username, port and ip */
                     VVConnectionRequestMsg request = new VVConnectionRequestMsg("Request Connection ", iP, 0, username, gameSize);
-                    //client.sendMsg(request);
                     sendMsg(request);
 
                     // start client Thread ....
@@ -192,15 +188,8 @@ public class CLI extends Observable implements ViewObserver {
         messageHandler = new MessageHandler();
         /*generate a sort of Virtual View*/
         messageHandler.generateVV(username);
-        /*
-        offlineVirtualView = new VirtualView(username);
-        attachObserver(ObserverType.VIEW, offlineVirtualView);
-        attachObserver(ObserverType.CONTROLLER, offlineVirtualView);*/
-        //this.offlineVirtualView.attachObserver(ObserverType.VIEW, this);
         messageHandler.attachObserver(ObserverType.VIEW, this);
-        //printCLIMessage("before run");
         new Thread(messageHandler).start();
-        //printCLIMessage("after run");
         /* try to create the connection sending the username, port and ip */
         VVConnectionRequestMsg request = new VVConnectionRequestMsg("OFFLINE", username);
         sendMsg(request);
@@ -282,7 +271,7 @@ public class CLI extends Observable implements ViewObserver {
             username = in.nextLine();
             // if the player insert a Tab as username this can't be possible
             if (username.length() < 1) {
-                System.out.println("!! Invalid Usernam, insert a new one ");
+                System.out.println("!! Invalid Username, insert a new one ");
 
             } else {
                 correct = true;
@@ -321,10 +310,7 @@ public class CLI extends Observable implements ViewObserver {
             //send it throw the net
             client.sendMsg(msg);
         } else {
-            //send to the VV
-            //offlineVirtualView.notifyAllObserver(ObserverType.CONTROLLER,msg);
-            //msg.notifyHandler((ControllerObserver) offlineVirtualView);
-            //notifyAllObserver(ObserverType.CONTROLLER, msg);
+
             messageHandler.receiveMsgForVV(msg);
         }
     }
@@ -549,7 +535,6 @@ public class CLI extends Observable implements ViewObserver {
 
             if (choice == 0) {
                 // if the player before chooses to move the depots
-                //MarketCLI marketCLI = new MarketCLI(msg.getResourceToStore(), this);
                 correct = true;
                 showWarehouse(warehouse, specialResource);
                 printCLIMessage("You choose to move two depots, now type the two depot that you want to move, pressing ENTER between them");
@@ -639,8 +624,6 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VNackConnectionRequestMsg msg) {
 
-        printCLIMessage("ARRIVED");
-
         String newUsername = null;
         switch (msg.getErrorInformation()) {
             case "USER_NOT_VALID":  // if the username is already taken, the player has to insert a new one
@@ -684,10 +667,10 @@ public class CLI extends Observable implements ViewObserver {
     @Override
     public void receiveMsg(VRoomSizeRequestMsg msg) {
 
-        printCLIMessage("setting size room in CLI");
+        printCLIMessage("Setting size room in CLI");
         int roomSize = -1;
 
-        printCLIMessage(" Please insert the number of players you want to play with [2,3 or 4]");
+        printCLIMessage("Please insert the number of players you want to play with [2,3 or 4]");
 
         roomSize = askRoomSize();
 
@@ -703,8 +686,6 @@ public class CLI extends Observable implements ViewObserver {
      */
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
-
-        printCLIMessage("Arrived to client the player DATA");
 
         soloMode = msg.isSoloMode();
         player = msg.getPlayer();
@@ -756,7 +737,6 @@ public class CLI extends Observable implements ViewObserver {
             possibleActions = msg.getAvailableActions();
 
             printCLIMessage(msg.getMsgContent());
-            //printCLIMessage(" The actions that you are allowed to do are: " + msg.getAvailableActions());
             printCLIMessage(" The actions that you are allowed to do are: ");
             for (TurnAction action : msg.getAvailableActions()) {
                 printCLIMessage("- " + action.toString());
@@ -774,7 +754,6 @@ public class CLI extends Observable implements ViewObserver {
             if (msg.getAvailableActions().contains(turnAction) && turnAction != TurnAction.ERROR) {
 
                 CChooseActionTurnResponseMsg response = new CChooseActionTurnResponseMsg(" I made my choice, I decided the action I want to do", username, turnAction);
-                //client.sendMsg(response);
                 sendMsg(response);
 
             } else {
@@ -886,14 +865,12 @@ public class CLI extends Observable implements ViewObserver {
             }
 
             CChooseLeaderCardResponseMsg response = new CChooseLeaderCardResponseMsg(" chosen cards ", chosenCards, msg.getUsername(), "firstChoose");
-            //client.sendMsg(response);
             sendMsg(response);
         } else {
             //discard or activate
             if (!msg.getMiniDeckLeaderCardFour().isEmpty()) {
                 printCLIMessage(AnsiColors.BLUE_BOLD+"Choose which card you want to \"" + msg.getWhatFor() + "\"  from:"+AnsiColors.RESET);
                 for (LeaderCard card: myLeaderCards) {
-                    //printCLIMessage(myLeaderCards.toString());
                     if (msg.getMiniDeckLeaderCardFour().contains(card.getCardID())) {
                         System.out.print(card.toString());
                     }
@@ -925,6 +902,10 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    /**
+     * msg shown when a player has to wait because it isn't his turn
+     * @param msg
+     */
     @Override
     public void receiveMsg(VWaitOtherPlayerInitMsg msg) {
         WriteMessageDisplay.writeWaitOtherPlayers();
@@ -956,8 +937,6 @@ public class CLI extends Observable implements ViewObserver {
             if (msg.getUsername().equals(username)) {
 
                 printCLIMessage(msg.getMsgContent());
-                //System.out.println(" Here is your current Warehouse's situation ");
-                //showWarehouse(warehouse, player);
 
                 printCLIMessage(" If you want to discard the resource digit 0, otherwise if you want to keep it digit 1! \uD83D\uDE00" + AnsiColors.RESET);
                 in = new Scanner(System.in);
@@ -995,8 +974,8 @@ public class CLI extends Observable implements ViewObserver {
                             resourceColor = in.nextLine().toUpperCase();
                         }
 
-                /* create the color starting from the string written by the player,
-                with the function toUpperCase we are sure that the input of the player will be in an upperCase mode */
+                        /* create the color starting from the string written by the player,
+                        with the function toUpperCase we are sure that the input of the player will be in an upperCase mode */
                         resColor = converter.getColorFromString(resourceColor.toUpperCase());
 
                     } else {
@@ -1073,6 +1052,10 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    /**
+     * msg used to update the warehouse of a player
+     * @param msg
+     */
     @Override
     public void receiveMsg(VUpdateWarehouseMsg msg) {
 
@@ -1111,12 +1094,14 @@ public class CLI extends Observable implements ViewObserver {
 
     }
 
+    /**
+     * msg used to update the total of victory points of a player
+     * @param msg
+     */
     @Override
     public void receiveMsg(VUpdateVictoryPointsMsg msg) {
         if (msg.getUsername().equals(username)) {
             victoryPoints = msg.getUpdateVictoryPoints();
-            //printCLIMessage(msg.getMsgContent());
-            //showVictoryPoints(victoryPoints);
         }
     }
 
@@ -1262,9 +1247,6 @@ public class CLI extends Observable implements ViewObserver {
             } else  //if all cards are not available he has to change the action he wants to play and send it to the controller
             {
                 printCLIMessage(AnsiColors.RED_BOLD + " Any Development Card is available, so you have to change the action you want to play! " + AnsiColors.RESET);
-                //System.out.println(" The actions you can choose from are: " + possibleActions);
-                //System.out.println(" Write the action you chose with _ between every word! ");
-                //in.reset();
                 CChangeActionTurnMsg change = new CChangeActionTurnMsg("you have to change the Action of this turn", msg.getUsername(), TurnAction.BUY_CARD);
                 sendMsg(change);
             }
@@ -1302,7 +1284,7 @@ public class CLI extends Observable implements ViewObserver {
                 showWarehouse(warehouse, specialResource);
                 boolean[][] matrix = new boolean[4][3]; //this will be 3x4
                 matrix = boardManager.getAvailable(player);
-                showDevelopmentCardTable(developmentCardTable, matrix);
+                //showDevelopmentCardTable(developmentCardTable, matrix);
                 CBuyDevelopCardResponseMsg response = new CBuyDevelopCardResponseMsg(" I made my choice, I want this development card ", username, msg.getRowTable(), msg.getColumnTable(), cardSpace);
                 sendMsg(response);
                 correct = true;
@@ -1311,6 +1293,10 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    /**
+     * msg used to update the table of development cards
+     * @param msg
+     */
     @Override
     public void receiveMsg(VUpdateDevTableMsg msg) {
 
@@ -1390,7 +1376,6 @@ public class CLI extends Observable implements ViewObserver {
         int number = 0;
 
         if (msg.getUsername().equals(username)) {
-            printCLIMessage("enter in ask info for market");
             marketStructureData = msg.getMarket();
 
             printCLIMessage(msg.getMsgContent());
@@ -1452,16 +1437,23 @@ public class CLI extends Observable implements ViewObserver {
 
     }
 
+    /**
+     * msg received to update the market
+     * @param msg
+     */
     @Override
     public void receiveMsg(VUpdateMarketMsg msg) {
         marketStructureData = msg.getMarketUpdate();
         if (msg.getUsername().equals(username)) {
             printCLIMessage(" That's the updated situation of your market! ");
             showMarketStructure(marketStructureData);
-            //showWarehouse(warehouse,specialResource);
         }
     }
 
+    /**
+     * msg received to update the Faith Track
+     * @param msg
+     */
     @Override
     public void receiveMsg(VUpdateFaithTrackMsg msg) {
         faithTrack = msg.getFaithTrack();
@@ -1483,17 +1475,19 @@ public class CLI extends Observable implements ViewObserver {
         marketCLI = new MarketCLI(msg.getResourceToStore(), this);
         marketCLI.setResourceStored(false);
         marketCLI.handleResources();
-
-
     }
 
 
+    /**
+     * msg received when in SOLO mode, Lorenzo increases his position in the faith track of one
+     * @param msg
+     */
     @Override
     public void receiveMsg(VLorenzoIncreasedMsg msg) {
         if (msg.getUsername().equals(username)) {
             player = msg.getPlayer();
             faithTrack = msg.getPlayer().getGameSpace().getFaithTrack();
-            printCLIMessage(" Lorenzo increased his position in FT of " + msg.getNumberStep() + " step");
+            printCLIMessage(" Lorenzo increased his position in Faith Track of " + msg.getNumberStep() + " step");
             showFaithTrack(faithTrack);
         }
     }
@@ -1610,8 +1604,6 @@ public class CLI extends Observable implements ViewObserver {
                             }
 
                         }
-
-                        //if(warehouse.getContent().contains(resources))
                         CActivateProductionPowerResponseMsg response = new CActivateProductionPowerResponseMsg("I chose the base production power to activate", username, where, choice);
                         response.setResourcesToPay(resources);
                         response.setResourceToGet(converter.getTypeFromString(resourceToGet.toUpperCase()));
@@ -1669,11 +1661,19 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    /**
+     * msg received when a resource is invalid and doesn't exist
+     * @param msg
+     */
     @Override
     public void receiveMsg(VResourcesNotFoundMsg msg) {
         printCLIMessage(AnsiColors.RED_BOLD+msg.getMsgContent()+AnsiColors.RESET);
     }
 
+    /**
+     * received to update the strongBox
+     * @param msg
+     */
     @Override
     public void receiveMsg(VUpdateStrongboxMsg msg) {
         strongBox = msg.getStrongBox();
@@ -1724,6 +1724,10 @@ public class CLI extends Observable implements ViewObserver {
         out.flush();
     }
 
+    /**
+     * msg used to ask to the player if he wants to play another game
+     * @param msg
+     */
     @Override
     public void receiveMsg(VAskNewGameMsg msg) {
         printCLIMessage("----------------------------------------------\n\n");
@@ -1857,11 +1861,19 @@ public class CLI extends Observable implements ViewObserver {
 
     }
 
+    /**
+     * msg sent at te beginning of the game
+     * @param msg
+     */
     @Override
     public void receiveMsg(CGameCanStartMsg msg) {
         printCLIMessage("Game can start... 😉");
     }
 
+    /**
+     * msg used when a player wants to see the boards of other players
+     * @param msg
+     */
     @Override
     public void receiveMsg(VAnotherPlayerInfoMsg msg) {
         PlayerInterface otherPlayer = msg.getPlayer();
@@ -1880,6 +1892,10 @@ public class CLI extends Observable implements ViewObserver {
         showVictoryPoints(otherPlayer.getVictoryPoints());
     }
 
+    /**
+     * msg in which the player chooses the name of the other of which he wants to see the personal board
+     * @param msg
+     */
     @Override
     public void receiveMsg(VWhichPlayerRequestMsg msg) {
         if (username.equals(msg.getUsername())) {
@@ -1899,6 +1915,10 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
+    /**
+     * msg received if the server in that moment is unable and the game will start automatically in offline mode
+     * @param msg
+     */
     @Override
     public void receiveMsg(VServerUnableMsg msg) {
         connectionOFF = false;
@@ -1916,12 +1936,10 @@ public class CLI extends Observable implements ViewObserver {
         }
     }
 
-
     /**
      * method to clear the screen and remove older prints
      */
     private void clearScreen() {
-        //System.out.println("reset and clear the screen");
         System.out.println("\033[H\033[2J");  //H is for go back to the top and 2J is for clean the screen
         System.out.flush();
     }
@@ -1997,11 +2015,19 @@ public class CLI extends Observable implements ViewObserver {
         cardSpaceDisplay.showCardSpaces();
     }
 
+    /**
+     * msg used to show the vp of a player
+     * @param victoryPoints of the player
+     */
     private void showVictoryPoints(int victoryPoints) {
         printCLIMessage(AnsiColors.YELLOW_BOLD+"Victory Points : "+ victoryPoints + " ✯" + AnsiColors.RESET);
     }
 
 
+    /**
+     * method used to show a generic msg to the client
+     * @param message
+     */
     private void printCLIMessage(String message) {
         System.out.println(message);
     }

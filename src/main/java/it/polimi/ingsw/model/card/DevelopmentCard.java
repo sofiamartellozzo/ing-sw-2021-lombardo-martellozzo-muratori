@@ -46,7 +46,7 @@ public class DevelopmentCard extends Card implements Serializable {
     // Getter methods
     public int getId(){return id;}
     public Color getColor(){ return color; }
-    public int getlevel(){ return level; }
+    public int getLevel(){ return level; }
     public ArrayList<Resource> getCost(){ return costToBuy;}
 
     /**

@@ -29,13 +29,13 @@ public abstract class Observable {
             case VIEW:
                 for (ViewObserver observerV :viewObserver) {
                     msg.notifyHandler(observerV);
-                    System.out.println("notify a view " +observerV);
+                    //System.out.println("notify a view " +observerV);
                 }
                 break;
             case CONTROLLER:
                 for (ControllerObserver observerC :controllerObserver) {
                     msg.notifyHandler(observerC);
-                    System.out.println("notify a controller " +observerC);
+                    //System.out.println("notify a controller " +observerC);
                 }
                 break;
         }
@@ -49,16 +49,18 @@ public abstract class Observable {
         switch (observerType){
 
             case VIEW:
-                if (!viewObserver.contains((ViewObserver) observer)){
-                viewObserver.add((ViewObserver) observer);
-                //debugging
-                System.out.println("attach a view " +observer.toString());}
+                if (!viewObserver.contains((ViewObserver) observer)) {
+                    viewObserver.add((ViewObserver) observer);
+                    //debugging
+                    //System.out.println("attach a view " +observer.toString());
+                }
                 break;
             case CONTROLLER:
-                if (!controllerObserver.contains((ControllerObserver) observer)){
-                controllerObserver.add((ControllerObserver) observer);
-                //debugging
-                System.out.println("attach a controller " +observer.toString());}
+                if (!controllerObserver.contains((ControllerObserver) observer)) {
+                    controllerObserver.add((ControllerObserver) observer);
+                    //debugging
+                    //System.out.println("attach a controller " +observer.toString());
+                }
                 break;
         }
     }
@@ -72,12 +74,12 @@ public abstract class Observable {
             case VIEW:
                 viewObserver.remove((ViewObserver) observer);
                 //debugging
-                System.out.println("detach a view " +observer.toString());
+                //System.out.println("detach a view " +observer.toString());
                 break;
             case CONTROLLER:
                 controllerObserver.remove((ControllerObserver) observer);
                 //debugging
-                System.out.println("detach a controller " +observer.toString());
+                //System.out.println("detach a controller " +observer.toString());
                 break;
         }
     }

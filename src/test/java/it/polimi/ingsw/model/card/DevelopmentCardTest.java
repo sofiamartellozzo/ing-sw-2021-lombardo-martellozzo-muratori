@@ -73,4 +73,35 @@ public class DevelopmentCardTest extends TestCase {
         assertEquals(player.getGameSpace().getResourceManager().getStrongBox().getContent().get(1).getType(), TypeResource.SERVANT);
 
     }
+
+    @Test
+    public void testGetId() {
+        assertEquals(developmentCard.getId(),3);
+    }
+
+    @Test
+    public void testGetColor() {
+        assertSame(developmentCard.getColor(),Color.BLUE);
+    }
+
+    @Test
+    public void TestGetLevel(){
+        assertSame(developmentCard.getLevel(),1);
+    }
+
+    @Test
+    public void TestGetCost(){
+       assertEquals(developmentCard.getCost().size(),2);
+    }
+
+    @Test
+    public void testShowCostProductionPower() {
+       assertEquals(developmentCard.showCostProductionPower().size(),1);
+    }
+    @Test
+    public void testShowProceedsProductionPower() {
+        assertEquals(developmentCard.showProceedsProductionPower().size(),1);
+    }
+
+
 }

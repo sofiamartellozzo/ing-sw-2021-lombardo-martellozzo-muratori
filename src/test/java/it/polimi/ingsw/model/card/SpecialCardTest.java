@@ -37,6 +37,12 @@ public class SpecialCardTest extends TestCase {
     }
 
     @Test
+    public void testGetCostProductionPower() {
+        assertEquals(specialCard.getCostProductionPower().size(),2);
+    }
+
+
+    @Test
     public void testUseProductionPower() throws InvalidActionException {
 
         PersonalBoardFactory personalBoardFactory = new PersonalBoardFactory();

@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.board.Active;
 import it.polimi.ingsw.model.board.Inactive;
 import it.polimi.ingsw.model.board.PersonalBoard;
+import it.polimi.ingsw.model.board.State;
 import it.polimi.ingsw.model.cardAbility.SpecialAbility;
 import it.polimi.ingsw.model.cardAbility.TransformWhiteMarble;
 import it.polimi.ingsw.model.cardAbility.TypeAbility;
@@ -17,12 +18,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LeaderCardTest extends TestCase {
-
     LeaderCard leaderCard = null;
     Player player = new Player("bob");
     PersonalBoardFactory f = new PersonalBoardFactory();
@@ -53,6 +52,10 @@ public class LeaderCardTest extends TestCase {
     }
 
     @Test
+    public void TestGetCardID(){
+        assertEquals(leaderCard.getCardID(),2);
+    }
+    @Test
     public void testGetRequirements() {
 
         ArrayList<Object> ob = new ArrayList<>();
@@ -65,9 +68,12 @@ public class LeaderCardTest extends TestCase {
     }
 
     @Test
+    public void TestGetSpecialResource(){
+        assertEquals(leaderCard.getSpecialResource(),TypeResource.STONE);
+    }
+
+    @Test
     public void testActiveCard() throws InvalidActionException, CardSpaceException {
-
-
 
         player.getGameSpace().getCardSpace(0).addCard(boardManager.getDevelopmentCardTable().takeCard(2,3));
         player.getGameSpace().getCardSpace(0).addCard(boardManager.getDevelopmentCardTable().takeCard(1,3));

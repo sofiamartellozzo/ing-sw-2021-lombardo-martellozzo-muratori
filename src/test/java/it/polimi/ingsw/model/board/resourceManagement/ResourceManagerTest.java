@@ -36,13 +36,46 @@ public class ResourceManagerTest {
     }
 
     @Test
-    public void getStrongBox() {
+    public void TestGetStrongBox() {
         assertEquals(strongBox,resourceManager.getStrongBox());
     }
 
     @Test
-    public void getWarehouse() {
+    public void TestGetWarehouse() {
         assertEquals(warehouse,resourceManager.getWarehouse());
+    }
+
+    @Test
+    public void TestSetWarehouse(){
+        Warehouse warehouse = new WarehouseStandard();
+        resourceManager.setWarehouse(warehouse);
+        assertSame(warehouse,resourceManager.getWarehouse());}
+
+    @Test
+    public void TestSetStrongBox(){
+        StrongBox strongBox = new StrongBox();
+        resourceManager.setStrongBox(strongBox);
+        assertSame(strongBox,resourceManager.getStrongBox());}
+
+    @Test
+    public void TestGetVictoryPoints() throws InvalidActionException {
+        Resource coin = new Resource(Color.YELLOW);
+        Resource shield = new Resource(Color.BLUE);
+        Resource stone = new Resource(Color.GREY);
+        Resource servant = new Resource(Color.PURPLE);
+        Resource servant1 = new Resource(Color.PURPLE);
+
+        ArrayList<Resource> resources = new ArrayList<>();
+        resources.add(coin);
+        resources.add(shield);
+        resources.add(stone);
+        resources.add(servant);
+        resources.add(servant1);
+
+        strongBox.addResources(resources);
+
+        assertEquals(resourceManager.getVictoryPoints(),1);
+
     }
 
     @Test
@@ -176,19 +209,6 @@ public class ResourceManagerTest {
 
 
     @Test
-    public void getVictoryPoints() throws InvalidActionException {
-        // Depot 1 -> 1 Shield
-        // Depot 2 -> 2 Servants
-        // Depot 3 -> EMPTY
-        // Depot 4 -> 1 Shield
-        // StrongBox -> 8 Coins, 8 Stones
-        this.getResources();
-
-        int victoryPoints = (1 + 2 + 1 + 8 + 8)/5;
-        assertSame(victoryPoints,resourceManager.getVictoryPoints());
-    }
-
-    @Test
     public void countResource() throws InvalidActionException {
         Random randomNumber = new Random();
         ArrayList<Resource> resourcesToAdd = new ArrayList<>();
@@ -222,6 +242,88 @@ public class ResourceManagerTest {
         assertSame(shield,resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(TypeResource.SHIELD)));
         assertSame(coin,resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(TypeResource.COIN)));
         assertSame(servant,resourceManager.countResource(resourceManager.getStrongBox().getContent(),new Resource(TypeResource.SERVANT)));
+    }
+
+    @Test
+    public void TestGetContent() throws InvalidActionException {
+        Resource coin = new Resource(Color.YELLOW);
+        Resource shield = new Resource(Color.BLUE);
+        Resource stone = new Resource(Color.GREY);
+        Resource servant = new Resource(Color.PURPLE);
+        Resource servant1 = new Resource(Color.PURPLE);
+
+        ArrayList<Resource> resources = new ArrayList<>();
+        resources.add(coin);
+        resources.add(shield);
+        resources.add(stone);
+        resources.add(servant);
+        resources.add(servant1);
+
+        strongBox.addResources(resources);
+
+        Resource coin1 = new Resource(Color.YELLOW);
+        Resource coin2 = new Resource(Color.YELLOW);
+        Resource coin3 = new Resource(Color.YELLOW);
+
+        warehouse.addResource(coin1,3);
+        warehouse.addResource(coin2,3);
+        warehouse.addResource(coin3,3);
+
+        assertEquals(resourceManager.getContent().size(),8);
+    }
+
+    @Test
+    public void TestAddResourcesToStrongbox() throws InvalidActionException {
+        Resource coin3 = new Resource(Color.YELLOW);
+        ArrayList<Resource> resources = new ArrayList<>();
+        resources.add(coin3);
+
+        strongBox.addResources(resources);
+        assertEquals(strongBox.getContent().size(),1);
+
+    }
+
+    @Test
+    public void TestRemoveResourcesFromStrongBox() throws InvalidActionException {
+        Resource coin = new Resource(Color.YELLOW);
+        Resource shield = new Resource(Color.BLUE);
+        Resource stone = new Resource(Color.GREY);
+        Resource servant = new Resource(Color.PURPLE);
+
+        ArrayList<Resource> resources = new ArrayList<>();
+        resources.add(coin);
+        resources.add(shield);
+        resources.add(stone);
+        resources.add(servant);
+
+        Resource servant11 = new Resource(Color.PURPLE);
+
+        ArrayList<Resource> removedResources = new ArrayList<>();
+        removedResources.add(servant11);
+
+
+        strongBox.addResources(resources);
+        strongBox.removeResources(removedResources);
+
+        assertSame(strongBox.getContent().get(2).getType(),TypeResource.STONE);
+    }
+
+    @Test
+    public void TestAddResourceToWarehouse() throws InvalidActionException {
+        Resource coin = new Resource(Color.YELLOW);
+        Resource shield = new Resource(Color.BLUE);
+        Resource stone = new Resource(Color.GREY);
+        Resource servant = new Resource(Color.PURPLE);
+
+       warehouse.addResource(coin,1);
+       warehouse.addResource(stone,2);
+       warehouse.addResource(servant,3);
+
+       assertEquals(warehouse.depots.get(0).getType(),TypeResource.COIN);
+       assertEquals(warehouse.depots.get(1).getType(),TypeResource.STONE);
+       assertEquals(warehouse.depots.get(2).getType(),TypeResource.SERVANT);
+
+
     }
 
 }

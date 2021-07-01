@@ -290,7 +290,7 @@ public class ActionController extends Observable implements ControllerObserver {
                                 Object value = values[j];
                                 for (int k = 0; k < allDevelopmentCards.size(); k++) {
                                     DevelopmentCard developmentCard = allDevelopmentCards.get(k);
-                                    if ((developmentCard.getColor().equals(color) && ((value instanceof Double && (((Double)value == 0) || ((Double) value != 0 && developmentCard.getlevel() == (Double) value)))||(value instanceof Integer && (((Integer)value == 0) || ((Integer) value != 0 && developmentCard.getlevel() == (Integer) value)))))) {
+                                    if ((developmentCard.getColor().equals(color) && ((value instanceof Double && (((Double)value == 0) || ((Double) value != 0 && developmentCard.getLevel() == (Double) value)))||(value instanceof Integer && (((Integer)value == 0) || ((Integer) value != 0 && developmentCard.getLevel() == (Integer) value)))))) {
                                         allDevelopmentCards.remove(k);
                                         counter--;
                                     }
