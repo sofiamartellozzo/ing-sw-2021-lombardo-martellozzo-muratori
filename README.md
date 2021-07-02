@@ -49,22 +49,22 @@ You can play in Solo Mode, and try to fight against Lorenzo Il Magnifico, or in 
 
 <a name="usage"></a>
 ## How to start
-To launch the program go to `target\*`
+To launch the program go to `deliverables\final\jar\*`
 
 ## Client.jar
-in the directory save the `target\client.jar` and from the terminal 
+in the directory save the `deliverables\final\jar\Client.jar` and from the terminal 
 
 ```bash
-java -jar client.jar
+java -jar Client.jar
 ```
 
 You will be able to choose in which mode play: *CLI* or *GUI* 
 
 ## Server.jar
-in the directory save the `target\server.jar` and from the terminal
+in the directory save the `deliverables\final\jar\Server.jar` and from the terminal
 
 ```bash
-java -jar server.jar
+java -jar Server.jar
 ```
 
 <a name="requirements"></a>
