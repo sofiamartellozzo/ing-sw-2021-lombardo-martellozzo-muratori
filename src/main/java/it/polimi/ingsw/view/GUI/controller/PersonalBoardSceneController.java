@@ -176,6 +176,7 @@ public class PersonalBoardSceneController {
      */
     public void chooseAction(VChooseActionTurnRequestMsg msg){
         waitPane.setVisible(false);
+        chooseResourcePane.setVisible(false);
         if(!returnToMarket) {
             setLabelText(chooseActionMessage,"These are your available actions.\nChoose one action:");
 
@@ -354,6 +355,7 @@ public class PersonalBoardSceneController {
     public void clickStandardPPPane(){
         if(!standardPPPane.isDisable()){
             whichPP=0;
+            stopPPPowerButton.setVisible(false);
             disablePP();
             setLabelText(chooseResourceLabel,"Choose first resource to remove");
             chooseResourcePane.setVisible(true);
@@ -385,6 +387,7 @@ public class PersonalBoardSceneController {
     public void clickSpecialCard1(){
         if(!specialCard1.isDisable()) {
             whichPP = 4;
+            stopPPPowerButton.setVisible(false);
             disablePP();
             setLabelText(chooseResourceLabel,"Choose the resource you want");
             chooseResourcePane.setVisible(true);
@@ -415,6 +418,7 @@ public class PersonalBoardSceneController {
     public void clickSpecialCard2(){
         if(!specialCard2.isDisable()) {
             whichPP = 5;
+            stopPPPowerButton.setVisible(false);
             disablePP();
             setLabelText(chooseResourceLabel,"Choose the resource you want");
             chooseResourcePane.setVisible(true);
@@ -507,6 +511,7 @@ public class PersonalBoardSceneController {
             }else if(whichPP==0 && resourcesToRemove.size()==2){
                 //STANDARD PP AND 2 RESOURCES ALREADY CHOSEN, SO CHOSEN THE THIRD RESOURCE AND SEND MESSAGE
                 CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                stopPPPowerButton.setVisible(true);
                 responseMsg.setResourcesToPay(resourcesToRemove);
                 responseMsg.setResourceToGet(TypeResource.COIN);
                 disableCardSpaces();
@@ -518,6 +523,7 @@ public class PersonalBoardSceneController {
             }else if((whichPP>=4 && whichPP<=5)){
                 //ADDITIONAL POWER CHOSEN, SO CHOSEN THE UNIQUE RESOURCE TO RECEIVE AND SEND MSG
                 CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                stopPPPowerButton.setVisible(true);
                 responseMsg.setResourceToGet(TypeResource.COIN);
                 disableCardSpaces();
                 standardPPPane.setVisible(false);
@@ -543,6 +549,7 @@ public class PersonalBoardSceneController {
                 setLabelText(chooseResourceLabel,"Choose the resource you want to receive");
             }else if(whichPP==0 && resourcesToRemove.size()==2){
                 CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                stopPPPowerButton.setVisible(true);
                 responseMsg.setResourcesToPay(resourcesToRemove);
                 responseMsg.setResourceToGet(TypeResource.SHIELD);
                 disableCardSpaces();
@@ -553,6 +560,7 @@ public class PersonalBoardSceneController {
                 gui.sendMsg(responseMsg);
             }else if((whichPP>=4 && whichPP<=5)){
                 CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                stopPPPowerButton.setVisible(true);
                 responseMsg.setResourceToGet(TypeResource.SHIELD);
                 disableCardSpaces();
                 standardPPPane.setVisible(false);
@@ -578,6 +586,7 @@ public class PersonalBoardSceneController {
                 setLabelText(chooseResourceLabel,"Choose the resource you want to receive");
             }else if(whichPP==0 && resourcesToRemove.size()==2){
                 CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                stopPPPowerButton.setVisible(true);
                 responseMsg.setResourcesToPay(resourcesToRemove);
                 responseMsg.setResourceToGet(TypeResource.STONE);
                 disableCardSpaces();
@@ -588,6 +597,7 @@ public class PersonalBoardSceneController {
                 gui.sendMsg(responseMsg);
             }else if((whichPP>=4 && whichPP<=5)){
                 CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                stopPPPowerButton.setVisible(true);
                 responseMsg.setResourceToGet(TypeResource.STONE);
                 disableCardSpaces();
                 standardPPPane.setVisible(false);
@@ -613,6 +623,7 @@ public class PersonalBoardSceneController {
                 setLabelText(chooseResourceLabel,"Choose the resource you want to receive");
             }else if(whichPP==0 && resourcesToRemove.size()==2){
                 CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                stopPPPowerButton.setVisible(true);
                 responseMsg.setResourcesToPay(resourcesToRemove);
                 responseMsg.setResourceToGet(TypeResource.SERVANT);
                 disableCardSpaces();
@@ -623,6 +634,7 @@ public class PersonalBoardSceneController {
                 gui.sendMsg(responseMsg);
             }else if((whichPP>=4 && whichPP<=5)){
                 CActivateProductionPowerResponseMsg responseMsg = new CActivateProductionPowerResponseMsg("I choose my production power",gui.getUsername(),where,whichPP);
+                stopPPPowerButton.setVisible(true);
                 responseMsg.setResourceToGet(TypeResource.SERVANT);
                 disableCardSpaces();
                 standardPPPane.setVisible(false);
@@ -1447,16 +1459,16 @@ public class PersonalBoardSceneController {
                 if (i+1==4||i+1==5) {
                     switch (depot.getType()) {
                         case COIN:
-                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalBoard/SpecialDepotCoin.png"));
+                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalboard/SpecialDepotCoin.png"));
                             break;
                         case SERVANT:
-                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalBoard/SpecialDepotServant.png"));
+                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalboard/SpecialDepotServant.png"));
                             break;
                         case STONE:
-                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalBoard/SpecialDepotStone.png"));
+                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalboard/SpecialDepotStone.png"));
                             break;
                         case SHIELD:
-                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalBoard/SpecialDepotShield.png"));
+                            getSpecialDepotsView().get(i-3).setImage(new Image("/images/personalboard/SpecialDepotShield.png"));
                             break;
                     }
                     getDepotPanes().get(i).setVisible(true);
@@ -1885,6 +1897,7 @@ public class PersonalBoardSceneController {
      */
     public void showWaitPane(){
         waitPane.setVisible(true);
+        chooseResourcePane.setVisible(false);
     }
 
     /**

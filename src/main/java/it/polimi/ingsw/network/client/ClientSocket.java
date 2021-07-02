@@ -181,7 +181,7 @@ public class ClientSocket extends Observable implements Runnable {
                 }
 
             } catch (IOException | ClassNotFoundException /*| InterruptedException*/ e) {
-                System.out.println("this client disconnected from the server, because of the Server");
+                System.out.println("This client disconnected from the server");
                 /* setting the attribute to false because the connection shut down */
                 connectionOpen = false;
                 closeConnection();

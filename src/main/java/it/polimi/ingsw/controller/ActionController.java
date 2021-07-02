@@ -480,7 +480,6 @@ public class ActionController extends Observable implements ControllerObserver {
                 /* the case that the player receives from the market all white resources*/
                 if (resourcesToStore.isEmpty() && numberResourcesFromM == resourcesToStore.size()) {
                     CStopMarketMsg fakeMsg = new CStopMarketMsg("no resources to store", this.player.getUsername(), TurnAction.BUY_FROM_MARKET);
-                    System.out.print("qui1");
                     this.receiveMsg(fakeMsg);
                 }
 

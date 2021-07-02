@@ -440,7 +440,7 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
 
         if (msg.getUsername().equals(this.username)) {
             /* send this message (notify) to the client */
-            if  (!userConnected.get() && offLobby==null){
+            if  (!userConnected.get() && offLobby==null && msg.getWhatFor().equals("initialization")){
                 //client disconnected during initialization
                 //so choose random 2 leader cards for him
                 ArrayList<Integer> chosenCards = new ArrayList<>();

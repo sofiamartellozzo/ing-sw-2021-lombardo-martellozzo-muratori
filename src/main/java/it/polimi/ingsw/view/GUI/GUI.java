@@ -127,7 +127,6 @@ public class GUI extends Application implements ViewObserver {
         stage.setScene(startScene);
         stage.show();
         stage.setOnCloseRequest(e -> close());
-
     }
 
     /**
@@ -823,7 +822,13 @@ public class GUI extends Application implements ViewObserver {
     public void close(){
         stage.close();
         Platform.exit();
-        client.closeConnection();
+        if(!offline) {
+            client.setClientFinish(true);
+            client.closeConnection();
+        }else{
+            messageHandler.stopMessageHandler();
+            messageHandler=null;
+        }
         System.exit(0);
     }
 
@@ -973,6 +978,8 @@ public class GUI extends Application implements ViewObserver {
     }
 
     public void setIP(String iP) { this.iP = iP; }
+
+    public MessageHandler getMessageHandler(){return messageHandler;}
 
     //Messages not used here
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.GUI.controller;
 
+import it.polimi.ingsw.message.controllerMsg.CNewStartMsg;
 import it.polimi.ingsw.message.controllerMsg.CNotStartAgainMsg;
 import it.polimi.ingsw.message.viewMsg.VShowEndGameResultsMsg;
 import it.polimi.ingsw.model.Player;
@@ -85,6 +86,14 @@ public class EndGameSceneController {
      */
     public void clickYesButton(){
         if(!yesButton.isDisable()){
+            if(!gui.isOffline()) {
+                gui.sendMsg(new CNewStartMsg("I want to play again", gui.getUsername()));
+                gui.getClient().setClientFinish(true);
+                gui.getClient().closeConnection();
+            }else{
+                gui.getMessageHandler().stopMessageHandler();
+                gui.setMessageHandler(null);
+            }
             gui.restartIntroScene();
         }
     }
@@ -94,7 +103,9 @@ public class EndGameSceneController {
      */
     public void clickNoButton(){
         if(!noButton.isDisable()){
-            gui.sendMsg(new CNotStartAgainMsg("I don't want to play again"));
+            if(!gui.isOffline()) {
+                gui.sendMsg(new CNotStartAgainMsg("I don't want to play again"));
+            }
             gui.close();
         }
     }

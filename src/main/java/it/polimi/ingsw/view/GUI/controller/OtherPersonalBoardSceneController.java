@@ -130,16 +130,16 @@ public class OtherPersonalBoardSceneController {
                 if (i == 4||i==5) {
                     switch (depot.getType()) {
                         case COIN:
-                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotCoin.png"));
+                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalboard/SpecialDepotCoin.png"));
                             break;
                         case SERVANT:
-                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotServant.png"));
+                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalboard/SpecialDepotServant.png"));
                             break;
                         case STONE:
-                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotStone.png"));
+                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalboard/SpecialDepotStone.png"));
                             break;
                         case SHIELD:
-                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalBoard/SpecialDepotShield.png"));
+                            getSpecialDepotsView().get(0).setImage(new Image("/images/personalboard/SpecialDepotShield.png"));
                             break;
                     }
                     getSpecialDepotsView().get(i-4).setVisible(true);
