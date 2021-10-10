@@ -134,7 +134,7 @@ public class ClientHandler extends Observable implements Runnable {
      * private method to start the Ping process, so keep the connection alive
      * from the server to the client every 5000 mills
      */
-    private void startPing() {
+    private void startPing(){
 
         ping = new Thread(() -> {
             try {

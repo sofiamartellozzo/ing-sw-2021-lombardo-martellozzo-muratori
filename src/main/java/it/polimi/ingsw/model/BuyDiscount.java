@@ -54,9 +54,10 @@ public class BuyDiscount implements BuyCard, Serializable {
             }
         }
         if (checkBeforeBuy(cardBought, player, auxiliarCost)) {
-            playerBoard.getResourceManager().removeResourcesFromBoth(auxiliarCost);
-            //playerBoard.removeResource(cost.get(1), new RealDepot(1,1));
+
             playerBoard.getCardSpaces().get(selectedCardSpace).addCard(cardBought);
+            playerBoard.getResourceManager().removeResourcesFromBoth(auxiliarCost);
+            boardManager.getDevelopmentCardTable().removeCard(row, column);
         } else {
             throw new InvalidActionException("Not enought resources for buy this Development Card!");
         }

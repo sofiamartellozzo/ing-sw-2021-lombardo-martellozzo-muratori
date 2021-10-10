@@ -389,6 +389,11 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+    /**
+     * msg the Server send to the client with all his Model part
+     * for an update or at the initialization or after a reconnection
+     * @param msg
+     */
     @Override
     public void receiveMsg(VSendPlayerDataMsg msg) {
         if (msg.getPlayer().getUsername().equals(this.username)) {
@@ -396,6 +401,12 @@ public class VirtualView extends Observable implements ControllerObserver, ViewO
         }
     }
 
+    /**
+     * at the first steps in the game, when the room is created
+     * if the client wants to play in multiplayer mode but the room is not full
+     * he receive the actual situation of the room
+     * @param msg
+     */
     @Override
     public void receiveMsg(VRoomInfoMsg msg) {
         for (String player : msg.getPlayersId()) {
