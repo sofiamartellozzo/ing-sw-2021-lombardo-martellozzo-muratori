@@ -90,3 +90,8 @@ The external libraries we used to implement some game's features are linked belo
 | ------ | ------ | ------ |
 | GSON | https://github.com/google/gson | We use this library to create all the game cards, and the different boxes in the Faith Track. |
 
+
+## License
+All rights of graphic resources are reserved to [Cranio Creation](https://www.craniocreations.it).
+
+This project is developed in collaboration with [Politecnico di Milano](https://www.polimi.it).
