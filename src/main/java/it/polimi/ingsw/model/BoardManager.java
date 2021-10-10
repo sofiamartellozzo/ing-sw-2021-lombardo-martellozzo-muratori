@@ -87,6 +87,21 @@ public class BoardManager implements Serializable {
         return developmentCardTable.getAvailable(player);
     }
 
+    /**
+     * method used to check if in the solo game the table of development card has an empty column
+     * @return
+     */
+    public boolean checkEmptyColumn(){
+
+        for(int column = 0; column < 4; column ++) {
+                if (this.getDevelopmentCardTable().getTable()[0][column].getDevelopDeck().size() == 0) {
+                   return true;
+                }
+
+        }
+        return false;
+    }
+
 
 
 }

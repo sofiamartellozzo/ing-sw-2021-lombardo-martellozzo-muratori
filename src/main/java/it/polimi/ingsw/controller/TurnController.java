@@ -340,7 +340,7 @@ public class TurnController extends Observable implements ControllerObserver {
             callRightAction();
         } else {
                         //SINGLE PLAYER MODE
-            if (singlePlayer.checkEndGame()) {
+            if (singlePlayer.checkEndGame() || boardManager.checkEmptyColumn()) {
                 //single mode the game has ended ...
                 EndGameController endGameController = new EndGameController(singlePlayer, this, virtualView);
                 attachObserver(ObserverType.CONTROLLER, endGameController);

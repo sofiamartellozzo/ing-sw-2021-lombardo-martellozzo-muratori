@@ -76,12 +76,12 @@ public class SoloPlayer extends Player implements Serializable {
         return points;
     }
 
-    public String checkIfWin() {
+    public String checkIfWin(BoardManager boardManager) {
         if ((gameSpace.getFaithTrack().getPositionFaithMarker()==24)||(gameSpace.getAllCards().size()==7)){
             result= Result.WINNER;
             return "Winner";
         }
-        else if (gameSpace.getLorenzoIlMagnifico().getPosition()==24){
+        else if (gameSpace.getLorenzoIlMagnifico().getPosition()==24 || boardManager.checkEmptyColumn()){
             result = Result.LOOSER;
             return "Looser";
         }

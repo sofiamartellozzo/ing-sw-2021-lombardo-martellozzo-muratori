@@ -27,9 +27,12 @@ public class CardActionAbility implements ActionAbility, Serializable {
      * method called when is taken an Action Token with this ability
      */
     public void activeAbility(BoardManager boardManager, SoloPlayer player) throws InvalidActionException {
-        /* remove two card of this.color */
+        /* remove two card of this.color if the deck is not empty */
         boardManager.getDevelopmentCardTable().removeCardByColor(this.color);
-        boardManager.getDevelopmentCardTable().removeCardByColor(this.color);
+        if(!boardManager.checkEmptyColumn()){
+            boardManager.getDevelopmentCardTable().removeCardByColor(this.color);
+        }
+
     }
 
     @Override
