@@ -218,7 +218,7 @@ public class ProductionPowerController extends Observable implements ControllerO
                 }
 
             } else if (msg.getWhich() >= 4 && msg.getWhich() <= 5) {
-                int choose = 4 - msg.getWhich();
+                int choose = msg.getWhich() - 4;
                 Warehouse warehouse = player.getGameSpace().getWarehouse();
                 StrongBox strongBox = player.getGameSpace().getStrongbox();
                 SpecialCard specialCard = player.getSpecialCard().get(choose);
